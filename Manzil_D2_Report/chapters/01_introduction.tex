@@ -1,0 +1,74 @@
+\chapter{Introduction}
+\label{ch:introduction}
+
+Urban traffic control is a networked decision problem. Demand can change by approach, queue spillback at one junction can obstruct another, and a timing plan that is adequate in one period may waste capacity in another. Emergency travel adds a stricter timing objective. An ambulance does not benefit merely from a short geometric path if that path contains slow links, long queues, or signals that repeatedly stop it. These observations motivate Manzil, a research and development prototype that studies traffic perception, adaptive signal control, congestion-aware emergency routing, and coordinated signal priority in one simulation-based environment.
+
+Manzil is not presented as a deployable municipal controller. It is a controlled experimental platform based on the microscopic traffic simulator SUMO and its TraCI interface \cite{lopez2018sumo,sumodocs}. The platform is intended to make policies repeatable, observable, and comparable before any real-world actuation is considered. Recorded video supplies a second, deliberately bounded input mode for studying whether vehicle detection and tracking can produce useful traffic indicators. The simulator remains the authoritative source of network state in routing and signal-control experiments.
+
+\section{Purpose of this Document}
+
+This Deliverable 2 report translates the approved proposal into a traceable research and software design. It defines the questions to be investigated, reviews the evidence behind major design choices, specifies externally visible requirements, and describes the methodology and architecture needed to conduct fair experiments. It also records the distinction between confirmed project scope, proposed technical choices, and future implementation work.
+
+The report does not claim experimental improvements, real-time performance, model accuracy, or deployment readiness. At the proposal stage the problem definition, major functions, and conceptual architecture were established; dataset preparation, implementation, tuning, and evaluation were still planned work. The methodology therefore defines how later claims must be produced rather than anticipating their outcome.
+
+\section{Intended Audience}
+
+The primary audience is the FAST--NUCES FYP supervisor and evaluation panel. They require enough detail to judge research relevance, software scope, feasibility, and the validity of the proposed evaluation. The report is also written for the student implementation team, who should be able to derive interfaces, experiment configurations, and acceptance checks from it. A secondary audience consists of traffic-domain and emergency-service stakeholders who may assess the assumptions and limitations, although those stakeholders are not treated as current project clients.
+
+\section{Project Status and Evidence Boundaries}
+\label{sec:status}
+
+Table \ref{tab:status} prevents proposed components from being read as completed ones. A choice is described as ``proposed'' where the repository contains a design decision but no implementation artifact or measured evidence. This convention is used throughout the report.
+
+\begin{table}[H]
+\centering
+\caption{Project status at Deliverable 2}
+\label{tab:status}
+\begin{tabularx}{\textwidth}{p{0.25\textwidth}YY}
+\toprule
+\textbf{Area} & \textbf{Confirmed evidence} & \textbf{Not yet evidenced}\\
+\midrule
+Problem and scope & Approved proposal, objectives, exclusions, and simulation basis & Field deployment or agency integration\\
+Architecture & Conceptual React/FastAPI/SUMO and perception decomposition & Deployed services and measured capacity\\
+Traffic control & Fixed, rule-adaptive, and RL comparison plan & Final RL policy and comparative results\\
+Emergency operation & Dynamic route and moving-corridor design & Validated timing parameters and achieved savings\\
+Perception & YOLO-based detector and tracker direction & Final checkpoint, annotated split, and measured accuracy\\
+Data persistence & Experiment records and candidate entities & Confirmed database engine and schema migrations\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Definitions, Acronyms, and Abbreviations}
+
+\begin{longtable}{p{0.19\textwidth}p{0.72\textwidth}}
+\caption{Key terminology}\label{tab:terms}\\
+\toprule
+\textbf{Term} & \textbf{Definition in this report}\\
+\midrule\endfirsthead
+\toprule
+\textbf{Term} & \textbf{Definition in this report}\\
+\midrule\endhead
+A* & A shortest-path search that ranks candidates using accumulated cost plus an admissible lower-bound heuristic \cite{hart1968astar}.\\
+API & Application Programming Interface.\\
+CV & Computer vision; here, processing traffic video into observable vehicle-level and aggregate indicators.\\
+Green corridor & A sequence of bounded, moving signal-priority interventions ahead of an ambulance; not permanent green on the whole route.\\
+MOT & Multi-object tracking, which associates detections into identities across frames.\\
+Queue proxy & An operational estimate based on tracked, slow or stationary vehicles in a defined lane region; not a direct physical queue measurement unless calibrated.\\
+RL & Reinforcement learning, in which a policy is optimized using state, actions, and cumulative reward.\\
+Signal preemption & Interruption or modification of normal signal operation to serve an emergency request, including transition and recovery.\\
+SUMO & Simulation of Urban MObility, a microscopic road-traffic simulator.\\
+TraCI & Traffic Control Interface, used by an external process to read and change a running SUMO simulation.\\
+Traffic-state contract & Versioned representation of approach observations, signal state, source mode, timestamps, units, confidence, and validity.\\
+Throughput & Vehicles completing a defined movement or leaving a measured network region per unit time.\\
+Waiting time & Time accumulated under the explicitly configured low-speed threshold; the exact SUMO definition and threshold will be recorded with each experiment.\\
+\bottomrule
+\end{longtable}
+
+\section{Report Organization}
+
+Chapter \ref{ch:vision} defines the problem, objectives, boundaries, stakeholders, constraints, and research questions. Chapter \ref{ch:literature} critically reviews perception, traffic-control, routing, and emergency-priority research. Chapter \ref{ch:srs} specifies functional and quality requirements, use cases, wireframes, data, risk, and traceability. Chapter \ref{ch:method} defines the proposed pipelines, algorithms, experimental protocol, metrics, and validity controls. Chapter \ref{ch:design} presents the component architecture, domain model, interactions, corridor lifecycle, contracts, concurrency model, and engineering policies.
+
+\section{Conclusion}
+
+Manzil is framed as a reproducible investigation of interacting traffic decisions rather than as a collection of unrelated AI features. The remainder of the report maintains a strict boundary between planned methods and completed evidence, which is essential for evaluating Deliverable 2 on the quality of its design.
+

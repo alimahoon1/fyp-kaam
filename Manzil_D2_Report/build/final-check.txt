@@ -1,0 +1,2589 @@
+    National University of Computer and Emerging Sciences, Lahore
+
+
+
+
+Manzil: Intelligent Traffic & Emergency
+                           Routing
+
+                       Deliverable 2 Report
+
+                      Project/Group ID: F26-104
+
+
+
+                 Muhammad Ali Mahoon         23L-0531
+                 Muzammil Ahmed Bhatti       23L-0688
+                 Mohammad Ibrahim Salman     23L-0723
+
+
+                   Supervisor: Miss Umm-e-Ammarah
+
+                     Department of Computer Science
+                     2
+
+
+Final Year Project
+
+7 October 2026
+Anti-Plagiarism Declaration
+
+We declare that this report, entitled Manzil: Intelligent Traffic & Emergency Routing, is the original
+work of the listed authors. Material derived from other work has been identified and cited. No part
+has been reproduced in a manner that constitutes plagiarism. We accept responsibility for any violation
+established under the University’s academic-integrity policy.
+
+
+
+ Date:                                               Muhammad Ali Mahoon:
+
+
+
+                                                     Muzammil Ahmed Bhatti:
+
+
+
+                                                     Mohammad Ibrahim Salman:
+
+
+
+
+Authors’ Declaration
+
+We declare that the work presented in this Deliverable 2 report is our own project work and has not been
+submitted previously, in whole or in part, to another institution for an academic award. This document
+describes a proposed system and planned evaluation; it does not present unperformed experiments as
+completed results.
+                                                                                                    ii
+
+
+Abstract
+
+Manzil is a simulation-based research and development prototype for adaptive urban traffic control and
+emergency routing. It combines video-based vehicle detection and tracking, traffic-state estimation,
+comparative signal-control policies, congestion-aware ambulance routing, and a moving green corridor
+within a SUMO test environment. A React dashboard and FastAPI services are proposed to expose
+system state and experimental records. This report specifies the requirements, research method, archi-
+tecture, and controlled evaluation protocol; implementation and measured results remain subsequent
+project work.
+                                                                                                          iii
+
+
+Executive Summary
+
+Urban road demand changes over time and between approaches, whereas a fixed timing plan cannot
+respond to every short-term imbalance. Emergency vehicles face a related but stricter problem: a ge-
+ographically short route can still be slow when queues, signal delay, or an incident obstruct the path.
+Manzil studies these two problems in one controlled prototype. The system is intended to compare
+fixed-time, rule-based adaptive, and reinforcement-learning signal control, then determine the contribu-
+tion of dynamic routing and a moving green corridor to ambulance travel while measuring the disruption
+imposed on ordinary traffic.
+
+The project deliberately separates two evidence paths. Recorded traffic video is used to study whether a
+detector and multi-object tracker can produce observable counts, speeds, and queue proxies. SUMO and
+TraCI provide exact, repeatable network state for controller and routing experiments. These paths share
+a versioned traffic-state contract, but this report does not claim that arbitrary camera footage reconstructs
+a complete road network. Camera calibration, lane mapping, observation freshness, and uncertainty are
+explicit constraints.
+
+The proposed system uses a React dashboard, FastAPI application services, a background perception
+worker, a SUMO/TraCI adapter, controller and routing services, and persistent experimental records.
+PostgreSQL is a proposed persistence choice rather than a confirmed implementation fact. A selected,
+manageable urban network is to be imported from OpenStreetMap and cleaned in SUMO NetEdit, with a
+synthetic grid retained as a fallback. The core emergency case contains one active ambulance. Dynamic
+edge costs combine estimated travel time, queue and signal delay without treating distance alone as the
+objective. Priority is activated only for the next relevant intersections, uses safe clearance transitions,
+detects passage, and then restores normal operation.
+
+Evaluation is planned as matched, repeated simulation runs under light, medium, and heavy demand.
+Normal traffic experiments compare the three controllers using travel time, waiting time, queue length,
+throughput, and starvation checks. Emergency experiments compare an unassisted reference, congestion-
+aware routing, and routing with corridor control using ambulance travel time and stops together with
+normal-traffic delay and recovery time. Training and tuning scenarios will be separated from held-out
+evaluation scenarios, and all configurations, random seeds, software versions, and failures will be re-
+tained. No performance values are reported at this Deliverable 2 stage.
+
+This report covers the project vision, a critical review of relevant research, software requirements, the
+proposed research method, and high- and low-level design. Its main contribution at this stage is a
+traceable and reproducible specification for investigating an integrated traffic-control and emergency-
+TABLE OF CONTENTS                                                                                          iv
+
+
+priority approach without overstating implementation maturity or real-world deployability.
+
+
+
+
+Table of Contents
+
+List of Figures                                                                                           viii
+
+1   Introduction                                                                                            1
+    1.1   Purpose of this Document . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .      1
+    1.2   Intended Audience . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       1
+    1.3   Project Status and Evidence Boundaries . . . . . . . . . . . . . . . . . . . . . . . . . .        2
+    1.4   Definitions, Acronyms, and Abbreviations . . . . . . . . . . . . . . . . . . . . . . . . .        2
+    1.5   Report Organization . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     3
+    1.6   Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .      4
+
+List of Tables                                                                                              1
+
+2   Project Vision                                                                                          5
+    2.1   Problem Domain Overview . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .         5
+    2.2   Problem Statement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       6
+    2.3   Problem Elaboration . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       6
+    2.4   Research Questions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .      6
+    2.5   Goals and Objectives . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .      7
+    2.6   Project Scope . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     8
+    2.7   Sustainable Development Goals . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .         8
+    2.8   Constraints and Assumptions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       8
+    2.9   Business and Practical Opportunity . . . . . . . . . . . . . . . . . . . . . . . . . . . . .      9
+    2.10 Stakeholders and User Characteristics . . . . . . . . . . . . . . . . . . . . . . . . . . .        9
+    2.11 Success Criteria . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     9
+    2.12 Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+
+3   Literature Review and Related Work                                                                     11
+    3.1   Review Method and Terminology . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+    3.2   Vision-Based Traffic Observation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+TABLE OF CONTENTS                                                                                       v
+
+
+          3.2.1   One-Stage Object Detection . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+          3.2.2   Multi-Object Association . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+          3.2.3   Traffic Datasets and Domain Coverage . . . . . . . . . . . . . . . . . . . . . . 12
+    3.3   Conventional and Adaptive Signal Control . . . . . . . . . . . . . . . . . . . . . . . . . 13
+          3.3.1   Fixed-Time Baseline . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+          3.3.2   Max-Pressure Control . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+    3.4   Reinforcement Learning for Traffic Signals . . . . . . . . . . . . . . . . . . . . . . . . 13
+          3.4.1   Cycle-Level Deep Q-Learning . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+          3.4.2   Pressure-Informed Reward Design . . . . . . . . . . . . . . . . . . . . . . . . . 14
+          3.4.3   Phase Competition and Network Cooperation . . . . . . . . . . . . . . . . . . . 14
+          3.4.4   Simulation Environments . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+    3.5   Dynamic Routing . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+    3.6   Emergency Routing and Signal Preemption . . . . . . . . . . . . . . . . . . . . . . . . 15
+    3.7   Synthesis and Research Gap . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+    3.8   Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+
+4   Software Requirement Specifications                                                                21
+    4.1   System Features . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+    4.2   Functional Requirements . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+    4.3   Quality Attributes and Non-Functional Requirements . . . . . . . . . . . . . . . . . . . 23
+    4.4   Assumptions and Dependencies . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+    4.5   Hardware and Software Requirements . . . . . . . . . . . . . . . . . . . . . . . . . . . 25
+    4.6   Use Cases . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25
+    4.7   Proposed Graphical User Interface . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 29
+    4.8   Data Design . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 31
+    4.9   Risk Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32
+    4.10 Requirements Traceability . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33
+    4.11 Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34
+
+5   Proposed Approach and Methodology                                                                  36
+    5.1   Overall Research Workflow . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 36
+    5.2   Network and Scenario Preparation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 37
+          5.2.1   Network Provenance and Validation . . . . . . . . . . . . . . . . . . . . . . . . 37
+          5.2.2   Demand and Incidents . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 37
+    5.3   Video Perception Pipeline . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 37
+TABLE OF CONTENTS                                                                                        vi
+
+
+    5.4   Normal Traffic Controllers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 38
+          5.4.1   Fixed-Time Controller . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 38
+          5.4.2   Rule-Based Adaptive Controller . . . . . . . . . . . . . . . . . . . . . . . . . . 38
+          5.4.3   Proposed RL Formulation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 39
+    5.5   Dynamic Graph Routing . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 39
+    5.6   Moving Green Corridor . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 40
+    5.7   Integrated Control Loop . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 42
+    5.8   Experimental Protocol . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 43
+          5.8.1   Comparison Matrix . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 43
+          5.8.2   Scenario Assignment and Repetition . . . . . . . . . . . . . . . . . . . . . . . . 43
+          5.8.3   Metric Definitions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 44
+          5.8.4   Reproducibility Package . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 44
+    5.9   Threats to Validity . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 44
+    5.10 Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 45
+
+6   High-Level and Low-Level Design                                                                      46
+    6.1   System Overview and Design Goals . . . . . . . . . . . . . . . . . . . . . . . . . . . . 46
+    6.2   High-Level Architecture . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 46
+    6.3   Component Responsibilities and Interfaces . . . . . . . . . . . . . . . . . . . . . . . . . 47
+    6.4   Architectural Decisions and Tradeoffs . . . . . . . . . . . . . . . . . . . . . . . . . . . 47
+    6.5   Domain Model and Class Diagram . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 49
+    6.6   Interaction Sequences . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 50
+          6.6.1   Normal Control Update . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 50
+          6.6.2   Ambulance Dispatch and Corridor Activation . . . . . . . . . . . . . . . . . . . 50
+          6.6.3   Rerouting and Recovery . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 51
+    6.7   Corridor State Model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 51
+    6.8   Traffic-State and Event Contracts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 51
+    6.9   Concurrency, Synchronization, and Resource Ownership . . . . . . . . . . . . . . . . . 53
+    6.10 Error Handling and Fallback . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 54
+    6.11 Detailed Module Policies . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 54
+          6.11.1 Controller Policy . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 54
+          6.11.2 Routing Policy . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 55
+          6.11.3 Persistence Policy . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 55
+          6.11.4 User-Interface Policy . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 55
+    6.12 Testing Strategy . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 55
+TABLE OF CONTENTS                                                                                   vii
+
+
+   6.13 Coding, Build, and Maintainability Policies . . . . . . . . . . . . . . . . . . . . . . . . 56
+   6.14 Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 56
+
+A Deliverable 2 Requirements Coverage                                                               60
+
+B Open Items for Team Confirmation                                                                  61
+LIST OF FIGURES                                                                                   viii
+
+
+
+
+List of Figures
+
+  2.1   Manzil project context and the separation of evidence paths . . . . . . . . . . . . . .     5
+
+  4.1   Proposed operator use-case diagram . . . . . . . . . . . . . . . . . . . . . . . . . . . 26
+  4.2   Proposed traffic overview wireframe . . . . . . . . . . . . . . . . . . . . . . . . . . . 29
+  4.3   Proposed perception and intersection-detail wireframe . . . . . . . . . . . . . . . . 29
+  4.4   Proposed emergency dispatch and route wireframe . . . . . . . . . . . . . . . . . . 30
+  4.5   Proposed experiment-configuration wireframe . . . . . . . . . . . . . . . . . . . . . 30
+  4.6   Proposed comparative-analytics wireframe; bars are schematic and not results . . . 30
+  4.7   Proposed experiment-record entity relationship model . . . . . . . . . . . . . . . . . 31
+
+  5.1   Proposed research and evaluation workflow . . . . . . . . . . . . . . . . . . . . . . . 36
+  5.2   Proposed traffic-video perception pipeline . . . . . . . . . . . . . . . . . . . . . . . . 37
+
+  6.1   Proposed high-level architecture . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 46
+  6.2   Proposed domain model/class diagram . . . . . . . . . . . . . . . . . . . . . . . . . 49
+  6.3   Sequence for a normal signal-control update . . . . . . . . . . . . . . . . . . . . . . 50
+  6.4   Sequence for ambulance dispatch and corridor activation . . . . . . . . . . . . . . . 50
+  6.5   Sequence for route revision, obsolete-priority cancellation, and recovery . . . . . . . 51
+  6.6   Intersection-level moving-corridor state transitions . . . . . . . . . . . . . . . . . . 51
+LIST OF TABLES                                                                                        ix
+
+
+
+
+List of Tables
+
+  1.1   Project status at Deliverable 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .   2
+  1.2   Key terminology . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .   2
+
+  2.1   Scope boundaries . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .    8
+  2.2   Stakeholder summary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     9
+
+  3.1   Literature review summary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+
+  4.1   Functional requirements . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+  4.2   Non-functional requirements and design targets . . . . . . . . . . . . . . . . . . . . 23
+  4.3   Development and demonstration environment . . . . . . . . . . . . . . . . . . . . . 25
+  4.4   UC-01 Configure a scenario . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 26
+  4.5   UC-02 Run and control a simulation . . . . . . . . . . . . . . . . . . . . . . . . . . . 26
+  4.6   UC-03 Process traffic video . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 27
+  4.7   UC-04 Inspect traffic state . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 27
+  4.8   UC-05 Dispatch an ambulance . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 27
+  4.9   UC-06 Monitor route and corridor . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28
+  4.10 UC-07 Handle blockage or changed route . . . . . . . . . . . . . . . . . . . . . . . . 28
+  4.11 UC-08 Compare and export runs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28
+  4.12 Data dictionary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 31
+  4.13 Risk register . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32
+  4.14 Requirements traceability matrix . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34
+
+  5.1   Planned experiments and primary evidence . . . . . . . . . . . . . . . . . . . . . . . 43
+
+  6.1   Component responsibility allocation . . . . . . . . . . . . . . . . . . . . . . . . . . . 47
+  6.2   Architectural decision record . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 48
+  6.3   Core interface and data-contract fields . . . . . . . . . . . . . . . . . . . . . . . . . 52
+  6.4   Failure handling strategy . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 54
+
+  A.1 Requirements coverage matrix . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 60
+CHAPTER 1. INTRODUCTION                                                                                    1
+
+
+Chapter 1 Introduction
+
+Urban traffic control is a networked decision problem. Demand can change by approach, queue spillback
+at one junction can obstruct another, and a timing plan that is adequate in one period may waste capacity
+in another. Emergency travel adds a stricter timing objective. An ambulance does not benefit merely
+from a short geometric path if that path contains slow links, long queues, or signals that repeatedly
+stop it. These observations motivate Manzil, a research and development prototype that studies traffic
+perception, adaptive signal control, congestion-aware emergency routing, and coordinated signal priority
+in one simulation-based environment.
+
+Manzil is not presented as a deployable municipal controller. It is a controlled experimental platform
+based on the microscopic traffic simulator SUMO and its TraCI interface [1, 2]. The platform is intended
+to make policies repeatable, observable, and comparable before any real-world actuation is considered.
+Recorded video supplies a second, deliberately bounded input mode for studying whether vehicle detec-
+tion and tracking can produce useful traffic indicators. The simulator remains the authoritative source of
+network state in routing and signal-control experiments.
+
+
+
+1.1    Purpose of this Document
+
+This Deliverable 2 report translates the approved proposal into a traceable research and software design.
+It defines the questions to be investigated, reviews the evidence behind major design choices, specifies
+externally visible requirements, and describes the methodology and architecture needed to conduct fair
+experiments. It also records the distinction between confirmed project scope, proposed technical choices,
+and future implementation work.
+
+The report does not claim experimental improvements, real-time performance, model accuracy, or de-
+ployment readiness. At the proposal stage the problem definition, major functions, and conceptual archi-
+tecture were established; dataset preparation, implementation, tuning, and evaluation were still planned
+work. The methodology therefore defines how later claims must be produced rather than anticipating
+their outcome.
+
+
+
+1.2    Intended Audience
+
+The primary audience is the FAST–NUCES FYP supervisor and evaluation panel. They require enough
+detail to judge research relevance, software scope, feasibility, and the validity of the proposed evaluation.
+The report is also written for the student implementation team, who should be able to derive interfaces,
+experiment configurations, and acceptance checks from it. A secondary audience consists of traffic-
+CHAPTER 1. INTRODUCTION                                                                                     2
+
+
+domain and emergency-service stakeholders who may assess the assumptions and limitations, although
+those stakeholders are not treated as current project clients.
+
+
+
+1.3      Project Status and Evidence Boundaries
+
+Table 1.1 prevents proposed components from being read as completed ones. A choice is described as
+“proposed” where the repository contains a design decision but no implementation artifact or measured
+evidence. This convention is used throughout the report.
+
+                                 Table 1.1: Project status at Deliverable 2
+
+
+ Area                          Confirmed evidence                      Not yet evidenced
+
+ Problem and scope             Approved proposal, objectives,          Field deployment or agency
+                               exclusions, and simulation basis        integration
+ Architecture                  Conceptual React/FastAPI/SUMO           Deployed services and measured
+                               and perception decomposition            capacity
+ Traffic control               Fixed, rule-adaptive, and RL            Final RL policy and comparative
+                               comparison plan                         results
+ Emergency operation           Dynamic route and                       Validated timing parameters and
+                               moving-corridor design                  achieved savings
+ Perception                    YOLO-based detector and tracker         Final checkpoint, annotated split,
+                               direction                               and measured accuracy
+ Data persistence              Experiment records and candidate        Confirmed database engine and
+                               entities                                schema migrations
+
+
+
+1.4      Definitions, Acronyms, and Abbreviations
+
+                                          Table 1.2: Key terminology
+
+
+   Term                   Definition in this report
+
+   A*                     A shortest-path search that ranks candidates using accumulated cost plus
+                          an admissible lower-bound heuristic [3].
+   API                    Application Programming Interface.
+   CV                     Computer vision; here, processing traffic video into observable vehicle-
+                          level and aggregate indicators.
+CHAPTER 1. INTRODUCTION                                                                                   3
+
+
+   Term                    Definition in this report
+
+   Green corridor          A sequence of bounded, moving signal-priority interventions ahead of an
+                           ambulance; not permanent green on the whole route.
+   MOT                     Multi-object tracking, which associates detections into identities across
+                           frames.
+   Queue proxy             An operational estimate based on tracked, slow or stationary vehicles in a
+                           defined lane region; not a direct physical queue measurement unless cali-
+                           brated.
+   RL                      Reinforcement learning, in which a policy is optimized using state, actions,
+                           and cumulative reward.
+   Signal preemption       Interruption or modification of normal signal operation to serve an emer-
+                           gency request, including transition and recovery.
+   SUMO                    Simulation of Urban MObility, a microscopic road-traffic simulator.
+   TraCI                   Traffic Control Interface, used by an external process to read and change a
+                           running SUMO simulation.
+   Traffic-state    con-   Versioned representation of approach observations, signal state, source
+   tract                   mode, timestamps, units, confidence, and validity.
+   Throughput              Vehicles completing a defined movement or leaving a measured network
+                           region per unit time.
+   Waiting time            Time accumulated under the explicitly configured low-speed threshold; the
+                           exact SUMO definition and threshold will be recorded with each experi-
+                           ment.
+
+
+
+1.5     Report Organization
+
+Chapter 2 defines the problem, objectives, boundaries, stakeholders, constraints, and research questions.
+Chapter 3 critically reviews perception, traffic-control, routing, and emergency-priority research. Chap-
+ter 4 specifies functional and quality requirements, use cases, wireframes, data, risk, and traceability.
+Chapter 5 defines the proposed pipelines, algorithms, experimental protocol, metrics, and validity con-
+trols. Chapter 6 presents the component architecture, domain model, interactions, corridor lifecycle,
+contracts, concurrency model, and engineering policies.
+CHAPTER 1. INTRODUCTION                                                                                    4
+
+
+1.6       Conclusion
+
+Manzil is framed as a reproducible investigation of interacting traffic decisions rather than as a collection
+of unrelated AI features. The remainder of the report maintains a strict boundary between planned
+methods and completed evidence, which is essential for evaluating Deliverable 2 on the quality of its
+design.
+CHAPTER 2. PROJECT VISION                                                                                  5
+
+
+Chapter 2 Project Vision
+
+This chapter converts the broad motivation into a bounded project vision. It identifies the decisions
+Manzil will make, the evidence needed to judge those decisions, and the conditions under which con-
+clusions will remain limited to simulation and selected video.
+
+
+
+2.1    Problem Domain Overview
+
+Traffic-signal control allocates time among incompatible movements. Fixed plans are understandable
+and easy to reproduce, but cannot react to short-term imbalance. Adaptive control can use measured
+demand, yet an apparently efficient policy can be unfair if a lightly loaded approach waits indefinitely.
+Network coordination complicates the problem because an action at one intersection changes arrivals at
+downstream intersections.
+
+Emergency routing operates on the same network but has a different objective. A route is useful only
+when its costs reflect current travel time and intersection delay. Signal priority can reduce stops, but
+careless preemption can create unsafe phase changes or long recovery queues. The project therefore
+treats route selection, priority activation, passage detection, and recovery as one lifecycle while retaining
+separate measurements for the ambulance and ordinary traffic.
+
+                                 Recorded traffic video          SUMO scenario state
+
+
+
+                                  Detection, tracking                  Exact simulated
+                                    and observation               network measures
+
+
+
+                                              Traffic-state contract
+                                          source, time, units, validity
+
+
+                Signal-control         Dashboard and experiment records            Emergency route
+                 comparison                                                          and corridor
+
+                 Figure 2.1: Manzil project context and the separation of evidence paths
+
+
+
+Figure 2.1 shows the central scope decision. Video observations may be evaluated against annotations,
+while SUMO state drives repeatable control experiments. Both can populate a common contract, but a
+measurement from one source is never silently treated as ground truth from the other.
+CHAPTER 2. PROJECT VISION                                                                               6
+
+
+2.2      Problem Statement
+
+The project addresses the absence, within the selected prototype setting, of a reproducible way to com-
+pare traffic-signal strategies and to quantify the combined effect of congestion-aware ambulance routing
+and coordinated signal priority. The problem is to design a system that observes or simulates traffic
+state, makes bounded control and routing decisions, records their causes and outcomes, and supports
+fair comparison without claiming that simulation results transfer directly to a deployed city.
+
+
+
+2.3      Problem Elaboration
+
+Five linked sub-problems must be controlled. First, detections must be associated over time so that
+frame-level boxes can become counts, trajectories, and lane-region observations. Second, normal signal
+control requires fixed and adaptive baselines before RL is meaningful. Third, route costs must use
+consistent units and must not count congestion twice. Fourth, the corridor must anticipate an ambulance
+without holding unnecessary intersections green. Fifth, all comparisons must use matched demand,
+seeds, and configurations.
+
+An error can cross module boundaries. A stale observation may alter an edge cost; a route change
+may invalidate planned signal priority; a prolonged priority phase may improve ambulance time while
+worsening ordinary traffic; and an uncontrolled simulation clock may allow different services to act on
+different steps. The vision therefore includes explicit freshness, ownership, fallback, and audit require-
+ments.
+
+
+
+2.4      Research Questions
+
+RQ1        With declared video sources and annotations, how accurately and consistently can the pro-
+           posed detector-tracker pipeline estimate observable vehicle counts and queue-related indica-
+           tors?
+
+RQ2        Under matched SUMO demand scenarios, how do fixed-time, rule-based adaptive, and a
+           selected RL controller differ in waiting time, queue length, travel time, throughput, and ap-
+           proach fairness?
+
+RQ3        Holding signal control constant, what change in ambulance travel time, stops, and route sta-
+           bility is attributable to dynamic congestion-aware routing?
+
+RQ4        Holding routing logic constant, what additional emergency benefit and ordinary-traffic dis-
+           ruption result from the moving green corridor?
+CHAPTER 2. PROJECT VISION                                                                            7
+
+
+RQ5        How sensitive are the conclusions to demand level, incident placement, random seed, and
+           observation uncertainty?
+
+These questions avoid a single vague claim of “better traffic.” Each comparison names a controlled
+factor and paired outcome measures.
+
+
+
+2.5    Goals and Objectives
+
+The goal is to develop and evaluate a simulation-based intelligent traffic-management prototype that
+supports normal traffic control and a single emergency mission. The measurable objectives are:
+
+ O1. Define and implement a versioned traffic-state representation shared by perception, simulation,
+      control, routing, and visualization.
+
+ O2. Evaluate a pretrained vehicle detector with multi-object tracking on held-out, source-separated
+      traffic-video segments.
+
+ O3. Construct a manageable multi-intersection SUMO network and repeatable demand scenarios.
+
+ O4. Implement fixed-time and reproducible rule-adaptive controllers, followed by one feasible RL
+      controller.
+
+ O5. Compute valid ambulance routes using time-based dynamic edge costs and bounded rerouting.
+
+ O6. Coordinate safe, moving signal priority and restore normal control after passage or cancellation.
+
+ O7. Provide a React dashboard and FastAPI service boundary for scenario control, monitoring, and
+      experiment comparison.
+
+ O8. Record configurations and outcomes so each reported run can be reproduced and audited.
+CHAPTER 2. PROJECT VISION                                                                                  8
+
+
+2.6    Project Scope
+
+                                        Table 2.1: Scope boundaries
+
+
+ In scope                                              Outside the current scope
+
+ Recorded-video vehicle detection, tracking,           Live government CCTV integration or citywide
+ counts, and queue proxies                             camera calibration
+ Selected multi-intersection SUMO network and          All of Lahore or safety-certified field
+ synthetic demand                                      deployment
+ Fixed, rule-adaptive, and one RL controller           Replacing real traffic-controller firmware
+ Single active ambulance with dynamic routing          Multiple competing emergency fleets as a core
+ and moving priority                                   case
+ Simulated closure or incident as a routing trigger    Visual accident classification or traffic
+                                                       forecasting
+ React dashboard, FastAPI services, and                Native mobile application, enforcement, facial
+ experiment records                                    or number-plate recognition
+ OpenStreetMap import with manual cleanup              A guarantee that map attributes are complete or
+ where feasible                                        current
+
+
+
+2.7    Sustainable Development Goals
+
+Manzil aligns principally with United Nations Sustainable Development Goal 11, which concerns in-
+clusive, safe, resilient, and sustainable cities [4]. The project investigates more efficient use of existing
+intersection capacity and more timely emergency movement, but it does not claim city-level impact from
+a simulator. A secondary connection exists with health outcomes because ambulance delay can matter,
+although the project neither measures clinical outcomes nor models medical priority.
+
+
+
+2.8    Constraints and Assumptions
+
+The main constraints are a semester-scale implementation window, limited access to local calibrated
+traffic data, camera occlusion and perspective, the simulation-to-reality gap, and finite training hardware.
+The selected network must therefore remain small enough for repeated trials. A real urban extract is
+preferred, but a controlled grid is an acceptable fallback if map signal logic is incomplete.
+
+The core experiments assume one active ambulance, valid origin and destination edges, controlled traffic
+CHAPTER 2. PROJECT VISION                                                                                9
+
+
+generation, and no direct actuation of public infrastructure. Video-derived queue length is an observable
+proxy unless the scene is calibrated. PostgreSQL, the precise tracker, the RL algorithm, and computing
+hardware remain proposed choices until implementation evidence confirms them.
+
+
+
+2.9     Business and Practical Opportunity
+
+The prototype’s practical value is as a decision-support and experimentation environment. It can demon-
+strate how policies react to repeatable congestion and emergency scenarios, help compare controller de-
+signs, and expose the cost imposed on non-priority traffic. Any commercial or public-sector opportunity
+would require validated local data, authority approval, hardware integration, cybersecurity assessment,
+safety engineering, and field trials. No partnership, deployment commitment, or revenue expectation is
+assumed.
+
+
+
+2.10       Stakeholders and User Characteristics
+
+                                    Table 2.2: Stakeholder summary
+
+
+ Stakeholder                 Interest                               Expected interaction
+
+ Student research team       Correct implementation and             Configure, run, diagnose, export,
+                             defensible experiments                 and compare experiments
+ Supervisor and evalua-      Scope, rigor, traceability, and        Review report, configurations,
+ tors                        evidence quality                       demonstrations, and results
+ Prototype operator          Clear scenario and emergency           Use the dashboard; inspect
+                             controls                               warnings and system state
+ Prospective traffic au-     Safety, reliability, network impact,   Future consultation only; no
+ thority                     auditability                           current operational role
+ Prospective emergency       Travel-time benefit and predictable    Future requirements input only
+ service                     priority behavior
+ Road users                  Fairness and limited disruption        Indirect beneficiaries or affected
+                                                                    parties in simulated evaluation
+
+
+
+2.11       Success Criteria
+
+Deliverable success is not defined by a visually impressive ambulance alone. The research prototype
+should execute matched scenarios without hidden configuration changes, record all interventions, reject
+CHAPTER 2. PROJECT VISION                                                                            10
+
+
+invalid routes and stale inputs, and report both benefits and side effects. A conclusion is considered
+supported only when it is tied to a named scenario set, repeated seeds, variability, and an unchanged
+measurement definition.
+
+
+
+2.12     Conclusion
+
+The vision is deliberately narrower than real traffic management: a controlled, auditable prototype with
+one core emergency case and explicit evidence boundaries. These boundaries shape the literature review
+and prevent later design choices from silently expanding the approved scope.
+CHAPTER 3. LITERATURE REVIEW AND RELATED WORK                                                              11
+
+
+Chapter 3 Literature Review and Related Work
+
+This chapter examines the research needed to justify Manzil’s design rather than treating the use of fa-
+miliar tools as a contribution. The review is organized around five decisions: how traffic is observed,
+how normal signals are controlled, how learned policies are evaluated, how emergency routes are se-
+lected, and how signal priority is activated and recovered. Reported results are interpreted within their
+original datasets and environments; values from incompatible benchmarks are not compared as though
+they were a common test.
+
+
+
+3.1     Review Method and Terminology
+
+The approved proposal provided an initial bibliography. Each retained study was checked against a
+publisher page, proceedings record, DOI, or official open-access paper. Studies were selected for direct
+relevance to detection and tracking, traffic-signal control, shortest-path routing, emergency routing, pre-
+emption, or simulation. Official software documentation is used for interfaces but is not counted among
+the research studies.
+
+The review distinguishes detection from tracking. Detection locates and classifies objects in a frame;
+tracking associates those observations through time. It also distinguishes priority from preemption. Pri-
+ority may adjust normal timing within constraints, whereas preemption interrupts normal operation for
+an emergency request. Manzil uses “corridor” for a coordinated sequence of such bounded interventions.
+
+
+
+3.2     Vision-Based Traffic Observation
+
+3.2.1   One-Stage Object Detection
+
+Redmon et al. formulated YOLO as a single network that predicts bounding boxes and class probabilities
+from an image in one evaluation [5]. The work established the feasibility of real-time one-stage detection
+and reported strong speed, while also identifying localization errors as a relative weakness. For Manzil,
+this supports a pretrained one-stage detector as a feasible starting point, not an assumption that all vehicle
+classes and viewpoints will be accurate. A detector checkpoint must be evaluated on the selected traffic
+scenes, and confidence thresholds cannot be copied from an unrelated benchmark.
+
+The practical relevance is latency and a simple inference path. The limitation is that frame-level boxes do
+not provide stable counts by themselves. Repeatedly counting the same vehicle, missed detections under
+occlusion, and perspective-dependent apparent size require tracking and region rules. Manzil therefore
+treats the detector as one stage in a measurement pipeline.
+CHAPTER 3. LITERATURE REVIEW AND RELATED WORK                                                             12
+
+
+3.2.2   Multi-Object Association
+
+Wojke et al. extended a simple online tracker with a learned appearance metric, improving association
+through longer occlusions [6]. The method illustrates a tradeoff: appearance information can reduce
+identity switches but adds a feature-extraction model and domain sensitivity. It is a useful alternative if
+traffic identities fragment severely, but its additional cost must be justified by the metrics that Manzil
+actually needs.
+
+ByteTrack instead associates high-confidence detections first and then attempts to recover objects from
+lower-confidence detections rather than discarding them [7]. The authors evaluated the approach across
+multiple tracking benchmarks and reported strong MOT17 accuracy with real-time throughput on their
+specified hardware. This is relevant because traffic occlusion often lowers confidence. Its benchmark
+speed cannot be adopted as Manzil’s performance target, and an identity-preserving tracker does not by
+itself determine lane membership or queue state.
+
+Together, these studies motivate an empirical tracker selection. The decision should be based on count
+error, identity stability where needed, and end-to-end throughput on the team’s hardware. If aggregate
+counts are reliable without expensive appearance features, the simpler configuration may be preferable.
+
+
+3.2.3   Traffic Datasets and Domain Coverage
+
+BDD100K provides a large and diverse driving dataset with multiple tasks, including detection and
+tracking, collected across varied locations, weather, and times [8]. This diversity is useful for initializ-
+ing or stress-testing a perception pipeline. The camera perspective is primarily vehicle-mounted, how-
+ever, whereas Manzil may use roadside or elevated recorded video. The dataset cannot substitute for
+validation on the intended viewpoint.
+
+UA-DETRAC is a benchmark focused on vehicle detection and tracking in traffic-surveillance video [9].
+Its fixed-camera scenes are closer to an intersection-observation use case and its protocol makes detector-
+tracker interactions visible. Its scenes still do not guarantee representation of Lahore traffic composition,
+motorcycle density, rickshaws, lane discipline, or camera mounting. The strongest plan is therefore
+to use licensed public material for reproducible comparison and a small, separately documented local
+sample for domain analysis if collection is feasible and ethically permitted.
+
+These dataset studies also shape data splitting. Adjacent video frames are highly correlated. Random
+frame splitting can leak nearly identical scenes into training and test sets. Manzil will split by sequence
+or source and will retain a held-out set that is not used for threshold tuning.
+CHAPTER 3. LITERATURE REVIEW AND RELATED WORK                                                             13
+
+
+3.3     Conventional and Adaptive Signal Control
+
+3.3.1   Fixed-Time Baseline
+
+A fixed-time controller remains necessary even when it is not expected to dominate every scenario. It
+supplies a stable reference, exposes whether demand generation itself is biased, and enables exact re-
+production. The plan will specify phases, yellow and all-red transitions, cycle length, offsets if any, and
+demand assumptions. A weak or arbitrarily misconfigured fixed baseline would exaggerate improve-
+ments and undermine the comparison.
+
+
+3.3.2   Max-Pressure Control
+
+Varaiya formalized max-pressure control for networks of signalized intersections [10]. Pressure is de-
+rived from upstream and downstream queue conditions, and selecting phases that reduce network pres-
+sure has a stronger theoretical basis than using an unexplained weighted score. The method is decentral-
+ized and responsive, which makes it a valuable non-learning reference.
+
+Its assumptions and measurements still matter. Queue observations must be available, movements and
+saturation behavior must be represented correctly, and phase switching must respect minimum green and
+clearance. Manzil’s first rule-based controller will be deliberately transparent; a max-pressure-inspired
+score is a stronger candidate than ad hoc percentages if the required downstream queues are reliable.
+Fairness and maximum-red safeguards remain explicit even when pressure is used.
+
+
+
+3.4     Reinforcement Learning for Traffic Signals
+
+3.4.1   Cycle-Level Deep Q-Learning
+
+Liang et al. used deep reinforcement learning to adjust traffic-light cycle behavior from traffic state [11].
+The study demonstrates how state observations and action granularity can be connected to a learned
+controller. It also illustrates a recurring limitation: a policy evaluated in a particular intersection and
+demand setting may not generalize to unseen networks or demand distributions.
+
+For Manzil, deep Q-learning is feasible only after the action space has been bounded and a stable baseline
+exists. The report does not commit to reproducing the paper’s network or treating its reported improve-
+ment as a project expectation. The applicable lesson is to define decision interval, phase legality, and
+reward terms before training.
+CHAPTER 3. LITERATURE REVIEW AND RELATED WORK                                                           14
+
+
+3.4.2   Pressure-Informed Reward Design
+
+PressLight connects an RL reward and state representation to max-pressure traffic theory [12]. The paper
+argues that a transportation-grounded reward reduces dependence on arbitrary handcrafted objectives
+and evaluates the method against conventional and learning baselines in arterial settings. This is directly
+relevant to Manzil because a reward based only on total waiting time can obscure spillback or starvation.
+
+PressLight does not remove the need for careful evaluation. Network topology, flows, phase definitions,
+and training budget influence performance. Manzil can use pressure as a principal reward signal or
+baseline concept, but it must report the exact state and movement mapping. Emergency priority will be
+implemented as a safety-constrained supervisory mode rather than silently folded into normal-controller
+reward during the first comparison.
+
+
+3.4.3   Phase Competition and Network Cooperation
+
+FRAP represents competition among phases and was designed to exploit invariance across phase con-
+figurations [13]. This is valuable where equivalent movements should not require independent learning
+from scratch. Its structured representation increases implementation complexity and still depends on
+an accurate phase graph. Manzil may adopt its representational lesson without claiming to reproduce
+FRAP.
+
+CoLight uses graph-attention mechanisms to support cooperation among intersections [14]. The study
+addresses the limitation of isolated agents by allowing neighboring traffic information to influence de-
+cisions. Such coordination is relevant for a multi-intersection corridor, yet attention-based multi-agent
+training can exceed an undergraduate project’s tuning budget and complicate attribution. The initial
+RL scope should therefore use either a centralized policy for a small network or a clearly defined
+independent-agent arrangement, with coordination as a measured design choice.
+
+Chu et al. studied multi-agent deep RL for larger signal networks and emphasized scalable coordination
+[15]. Like CoLight, the work supports the importance of communication and local observations. It also
+reinforces the risk of non-stationarity: when multiple agents update policies, each agent experiences an
+environment affected by changing peers. Manzil should not claim network-level RL simply because
+multiple signals exist; the policy ownership and training scheme must be explicit.
+
+
+3.4.4   Simulation Environments
+
+CityFlow was introduced as a multi-agent RL environment for large-scale city traffic scenarios [16].
+Its contribution is chiefly simulation throughput and support for large networks. SUMO is retained
+for Manzil because the proposal already depends on its microscopic model, traffic-light control, map
+CHAPTER 3. LITERATURE REVIEW AND RELATED WORK                                                              15
+
+
+toolchain, and TraCI integration [1]. CityFlow remains an important alternative in the design tradeoff:
+it may train faster in some large-scale settings, but switching simulators would add model-equivalence
+work and reduce alignment with the approved proposal.
+
+Lopez et al. describe SUMO’s architecture and microscopic simulation capabilities [1]. Simulation
+provides repeatability and access to internal state, but a simulator is not a validation of real-world impact.
+Car-following parameters, route demand, signal programs, and map cleanup can materially affect results.
+Manzil will version those artifacts and frame its conclusions as performance within declared simulation
+conditions.
+
+
+
+3.5    Dynamic Routing
+
+Dijkstra’s shortest-path method finds minimum-cost paths on a graph with nonnegative edge weights
+[17]. Hart, Nilsson, and Raphael introduced the formal basis of A*, which adds a heuristic estimate to
+guide the search [3]. These algorithms are well established; using them is not Manzil’s novelty. The
+project-specific work is the definition and update of valid edge costs, the treatment of closures, and the
+interaction between routing and signal priority.
+
+For time-dependent routing, physical distance is insufficient. Manzil proposes expected link travel time
+plus non-overlapping estimates of queue discharge and residual signal delay. Each term must be ex-
+pressed in seconds, or normalized with a documented interpretation. If travel time already includes
+observed queue delay, adding a second congestion penalty would double-count the same effect. Dijkstra
+is the reference implementation. A* may be used when a lower-bound free-flow travel-time heuristic
+remains admissible under nonnegative added delays.
+
+Dynamic rerouting can itself be harmful if small fluctuations repeatedly switch the route. The selected
+path will be changed only when the remaining cost improvement exceeds a threshold and persists for a
+defined interval, or when the current route becomes infeasible. Route revisions and computation time
+are part of evaluation, not merely logs.
+
+
+
+3.6    Emergency Routing and Signal Preemption
+
+Humagain et al. systematically reviewed emergency-vehicle route optimization and preemption methods
+[18]. The review identifies recurring gaps: limited real-world application, insufficient use of dynamic
+traffic data, weak treatment of travel time, effects on general traffic, and safety. This supports Manzil’s
+integrated evaluation, but it does not justify a claim that no integrated systems exist. It also motivates
+measuring ordinary-traffic disruption alongside emergency benefit.
+CHAPTER 3. LITERATURE REVIEW AND RELATED WORK                                                            16
+
+
+Qin and Khan studied transitions into emergency preemption and recovery to normal timing [19]. Their
+work explicitly addresses safe clearance, use of otherwise unnecessary green time, and recovery queues.
+The key design lesson is that preemption is a lifecycle rather than a single “set green” command. Manzil
+therefore models requested, safe-transition, active, passage, and recovery states, and retains timing val-
+ues as configurable simulation policies rather than certified field parameters.
+
+Louati et al. investigated multi-agent, queue-aware emergency crossing at signalized intersections [20].
+Queue-aware prioritization is relevant because a green indication alone does not guarantee an unob-
+structed approach. The method is more ambitious than Manzil’s core single-ambulance case, but it
+motivates look-ahead activation and checking whether downstream storage is available. Manzil will not
+infer safety merely from the absence of simulated collisions.
+
+
+
+3.7    Synthesis and Research Gap
+
+The literature establishes reliable building blocks, but also exposes integration risks. One-stage detection
+is fast enough to investigate traffic video, yet traffic indicators require tracking, geometry, and local
+validation. Max-pressure and RL research offers responsive control, yet comparison is sensitive to state,
+reward, phase constraints, and simulator assumptions. Shortest-path algorithms are mature, yet their
+usefulness depends on dynamic costs and route-stability rules. Emergency-preemption research stresses
+transition and recovery, yet ordinary-traffic impact is often a central tradeoff.
+
+Manzil’s proposed contribution is therefore not a new detector, shortest-path algorithm, or RL family.
+It is the design and controlled evaluation of an integrated, traceable prototype in which: (1) perception
+and simulator evidence are not conflated; (2) normal controllers are compared under matched scenarios;
+(3) routing and corridor contributions are ablated; and (4) ambulance benefit is reported together with
+network disruption and recovery. The unresolved research question is whether this integration produces
+consistent benefit under the selected scenarios and constraints.
+                                                                                                                                                         CHAPTER 3. LITERATURE REVIEW AND RELATED WORK
+                                                  Table 3.1: Literature review summary
+
+
+Study               Method/setting                 Reported result in context            Limitations for Manzil            Design implication
+
+Redmon et al. [5]   Unified one-stage object       Demonstrated             real-time    Original   benchmark        and   Evaluate       a      pre-
+                    detector on standard im-       detection       and         strong    classes do not establish          trained descendant on
+                    age benchmarks                 speed/accuracy tradeoff               roadside traffic accuracy         selected traffic video
+Wojke et al. [6]    Online    tracking     with    Improved            association       Added       compute         and   Consider when iden-
+                    learned          appearance    through occlusion in pedes-           domain-dependent            ap-   tity fragmentation af-
+                    association                    trian tracking setting                pearance model                    fects counts
+Zhang et al. [7]    Two-stage association in-      Strong results on several             Benchmark speed and iden-         Candidate          tracker;
+                    cluding low-score boxes        MOT benchmarks; real-time             tities do not imply calibrated    measure       end-to-end
+                                                   operation on stated hardware          traffic measures                  count error
+Yu et al. [8]       Large, multi-task driving-     Provides varied conditions            Mostly      vehicle-mounted       Use    for      pretrain-
+                    video dataset                  and annotations                       viewpoint; domain shift to        ing/stress tests, not
+                                                                                         roadside Lahore scenes            sole validation
+Wen et al. [9]      Vehicle              detec-    Provides        joint       detec-    Limited local vehicle mix         Prefer sequence-level
+                    tion/tracking benchmark        tion/tracking           evaluation    and site geometry                 split and report local
+                    for surveillance scenes        protocol                                                                limitations
+Varaiya [10]        Max-pressure       network     Establishes             theoretical   Requires movement queues          Use    as       transpar-
+                    signal control                 network-control         properties    and lawful phases                 ent   adaptive        con-
+                                                   under model assumptions                                                 cept/baseline
+
+
+
+
+                                                                                                                                                         17
+                                                                                                                                              CHAPTER 3. LITERATURE REVIEW AND RELATED WORK
+Study               Method/setting                Reported result in context      Limitations for Manzil           Design implication
+
+Liang et al. [11]   Deep Q-learning for cycle     Showed adaptive learned         Transfer across demand and       Bound actions and
+                    control                       control in simulated setting    topology remains uncertain       evaluate    only     on
+                                                                                                                   held-out scenarios
+Wei et al. [12]     RL with max-pressure-         Outperformed tested con-        Results depend on tested         Prefer grounded re-
+                    grounded state/reward         ventional and learning base-    networks and flows               ward over arbitrary
+                                                  lines                                                            weighted sum
+Zheng et al. [13]   Phase competition repre-      Learns      relations   among   More complex phase encod-        Preserve    phase    le-
+                    sentation                     competing phases                ing                              gality and invariance
+                                                                                                                   where feasible
+Wei et al. [14]     Graph-attention coopera-      Demonstrated network-level      Training     and   attribution   Keep first network
+                    tion across signals           cooperation in tested simula-   complexity                       small; declare coordi-
+                                                  tions                                                            nation model
+Chu et al. [15]     Multi-agent deep RL for       Studied scalable decentral-     Multi-agent non-stationarity     Avoid vague “multi-
+                    larger networks               ized coordination               and tuning cost                  agent” claim; record
+                                                                                                                   ownership
+Ma et al. [16]      High-throughput       city-   Supports large traffic-RL ex-   Switching simulator compli-      Retain SUMO; note
+                    scale RL simulator            periments                       cates proposal alignment         CityFlow as alterna-
+                                                                                                                   tive
+
+
+
+
+                                                                                                                                              18
+                                                                                                                                                  CHAPTER 3. LITERATURE REVIEW AND RELATED WORK
+Study                Method/setting                Reported result in context        Limitations for Manzil           Design implication
+
+Lopez et al. [1]     Microscopic SUMO sim-         Supports detailed and exter-      Simulation parameters de-        Version        network,
+                     ulator architecture           nally controlled experiments      termine external validity        demand,     and      car-
+                                                                                                                      following settings
+Dijkstra [17]        Nonnegative       shortest-   Guarantees minimum path           Static snapshot unless costs     Reference route im-
+                     path search                   cost under assumptions            are refreshed                    plementation
+Hart et al. [3]      Heuristic minimum-cost        Guides    search    efficiently   Invalid heuristic can lose op-   Use free-flow time
+                     path search                   with suitable heuristic           timality                         lower bound or retain
+                                                                                                                      Dijkstra
+Humagain et al.      Systematic              re-   Identified real-time, safety,     Review does not validate a       Measure     both     EV
+[18]                 view     of    emergency      deployment, and side-effect       particular implementation        benefit and ordinary-
+                     route/preemption work         gaps                                                               traffic impact
+Qin and Khan [19]    Simulation of entry and       Reported improved transi-         Parameters are not certified     Implement        explicit
+                     recovery strategies           tions over tested conven-         for Manzil’s network             safe   transition    and
+                                                   tional approaches                                                  recovery states
+Louati et al. [20]   Queue-aware multi-agent       Coordinates emergency pas-        Multi-EV/multi-agent scope       Use queue awareness
+                     emergency crossing            sage in tested interrupted in-    exceeds core case                and        downstream
+                                                   tersections                                                        checks
+
+
+
+
+                                                                                                                                                  19
+CHAPTER 3. LITERATURE REVIEW AND RELATED WORK                                                         20
+
+
+3.8       Conclusion
+
+The review supports a conservative technical strategy: start with transparent baselines, define mea-
+surements before optimization, select one feasible RL formulation, and model emergency priority as a
+stateful safety-constrained intervention. It also establishes the need for source-separated video evalu-
+ation, matched simulation seeds, ablation of routing and corridor effects, and explicit external-validity
+limits.
+CHAPTER 4. SOFTWARE REQUIREMENT SPECIFICATIONS                                                           21
+
+
+Chapter 4 Software Requirement Specifications
+
+This chapter specifies the behavior required of the Manzil research prototype. Requirements are testable
+where current evidence permits; numerical values that require benchmarking are explicitly identified
+as design targets. The specification avoids account management, enforcement, and other modules not
+justified by the approved scope.
+
+
+
+4.1     System Features
+
+The prototype is divided into six feature groups:
+
+   1. Scenario management: select a network, demand profile, controller, seed, incident, duration, and
+       emergency mission.
+
+   2. Traffic perception: process licensed recorded video into detections, tracks, lane-region observa-
+       tions, and aggregate measures with timestamps and confidence.
+
+   3. Simulation and normal control: step SUMO through a single owner, read traffic state, apply
+       fixed or adaptive actions, and preserve legal phase transitions.
+
+   4. Emergency routing and corridor: validate origin and destination, compute dynamic paths, apply
+       stable rerouting, activate moving priority, detect passage, and recover.
+
+   5. Monitoring: show map state, signals, traffic indicators, ambulance route, corridor state, warnings,
+       and data-source mode.
+
+   6. Experiment records: persist immutable configuration, run events, aggregate metrics, software
+       versions, seed, and termination state for comparison and export.
+
+
+
+4.2     Functional Requirements
+
+                                    Table 4.1: Functional requirements
+
+
+      ID           Requirement
+
+      FR-01        The system shall validate a scenario configuration before starting and shall reject
+                   missing network, controller, seed, duration, or demand inputs.
+      FR-02        The system shall start, pause, resume, and stop one controlled SUMO run while
+                   preserving an unambiguous run state.
+CHAPTER 4. SOFTWARE REQUIREMENT SPECIFICATIONS                                                     22
+
+
+   ID       Requirement
+
+   FR-03    The simulation adapter shall be the sole owner of SUMO stepping and signal
+            actuation.
+   FR-04    The perception worker shall process a selected recorded video and emit times-
+            tamped detections, tracks, source metadata, and processing status.
+   FR-05    The observation service shall aggregate valid vehicle observations into defined
+            road, lane, or approach intervals without silently mixing sources.
+   FR-06    The operator shall be able to select fixed-time, rule-adaptive, or the configured
+            RL controller before a run.
+   FR-07    Every signal action shall identify its intersection, requested and applied phase,
+            effective simulation step, controller, and reason.
+   FR-08    The system shall enforce minimum green and configured yellow/all-red clearance
+            before incompatible movements receive right of way.
+   FR-09    The emergency service shall validate ambulance origin and destination and return
+            a clear no-route response if either is invalid or disconnected.
+   FR-10    The route service shall compute a valid remaining path using nonnegative time-
+            based edge costs and shall record the cost snapshot.
+   FR-11    The rerouting service shall re-evaluate the remaining path after a closure, invali-
+            dated edge, or sustained cost improvement above the configured threshold.
+   FR-12    The corridor coordinator shall activate priority only for a bounded look-ahead set
+            of intersections on the current ambulance route.
+   FR-13    The corridor coordinator shall detect passage or cancellation and restore the af-
+            fected intersection to a safe normal-control state.
+   FR-14    A route revision shall cancel priority requests that no longer belong to the remain-
+            ing path before activating new ones.
+   FR-15    The dashboard shall display the current source mode, simulation status, con-
+            troller, signal state, traffic indicators, ambulance position, route, and corridor
+            state.
+   FR-16    The dashboard shall present stale, invalid, disconnected, and fallback states visi-
+            bly rather than continuing with apparently current data.
+   FR-17    The system shall record configuration, seed, component versions, periodic met-
+            rics, route revisions, signal events, failures, and termination reason for each run.
+CHAPTER 4. SOFTWARE REQUIREMENT SPECIFICATIONS                                                       23
+
+
+      ID       Requirement
+
+      FR-18    The comparison service shall align selected runs by metric definition and warn
+               when network, demand, duration, warm-up, or measurement versions are incom-
+               patible.
+      FR-19    The operator shall be able to export run configuration and metrics in a docu-
+               mented machine-readable format.
+      FR-20    On loss of the learned controller or invalid action, the control service shall fall
+               back to a configured safe baseline and record the transition.
+
+
+
+4.3     Quality Attributes and Non-Functional Requirements
+
+                    Table 4.2: Non-functional requirements and design targets
+
+
+ ID           Attribute                Requirement or target
+
+ NFR-01       Reproducibility          A run shall store network and demand identifiers, seed,
+                                       controller configuration, software/model versions, warm-
+                                       up, duration, and metric schema.
+ NFR-02       Safety in simulation     Incompatible green movements shall never be commanded
+                                       intentionally; all emergency transitions shall use the con-
+                                       figured clearance sequence.
+ NFR-03       Auditability             Applied decisions shall be distinguishable from requests,
+                                       and their simulation timestamps and reasons shall be re-
+                                       tained.
+ NFR-04       Freshness                Each observation shall carry produced-at and effective sim-
+                                       ulation time. Stale thresholds are configuration values and
+                                       stale data shall not silently drive control.
+ NFR-05       Responsiveness           The control action for step t should be available before its
+                                       configured decision deadline. The exact deadline is a de-
+                                       sign target to be set after baseline profiling, not an achieved
+                                       value.
+ NFR-06       Isolation                Background video inference and dashboard clients shall not
+                                       advance SUMO or directly actuate signals.
+CHAPTER 4. SOFTWARE REQUIREMENT SPECIFICATIONS                                                         24
+
+
+  ID            Attribute                 Requirement or target
+
+  NFR-07        Usability                 A trained operator should be able to configure the core
+                                          demonstration from one experiment screen, with units and
+                                          validation messages visible.
+  NFR-08        Portability               Services should be runnable from versioned environments;
+                                          containerization is proposed after local baseline integration
+                                          is stable.
+  NFR-09        Maintainability           Component interfaces shall use typed, versioned data con-
+                                          tracts and controller implementations shall share one inter-
+                                          face.
+  NFR-10        Data integrity            A completed run configuration shall be immutable; derived
+                                          summaries shall retain their metric version and source run
+                                          identifiers.
+  NFR-11        Privacy                   Video shall be limited to licensed or team-authorized ma-
+                                          terial, stored only as needed, and excluded from exports
+                                          unless explicitly requested.
+  NFR-12        Availability              The prototype shall fail visibly and recover to a safe stopped
+                                          or baseline-controlled simulation state; no public-service
+                                          availability is claimed.
+
+
+
+4.4    Assumptions and Dependencies
+
+SUMO and TraCI are required for controlled traffic experiments [1, 2]. A selected network has legal
+lane connections and signal plans after import and cleanup. Video sources have sufficient quality and
+permission for the selected evaluation. The simulation uses one clock owner. Edge costs are nonnegative.
+Emergency origin and destination lie on ambulance-accessible edges. The dashboard is an operator tool,
+not an autonomous public dispatch system.
+
+React and FastAPI are fixed by the approved proposal for the interface and application service bound-
+ary [21, 22]. Python is implied by the planned perception, RL, and TraCI ecosystem. PostgreSQL, a
+WebSocket transport, Docker, and specific chart or map libraries are proposed dependencies and remain
+replaceable until implementation confirms them.
+CHAPTER 4. SOFTWARE REQUIREMENT SPECIFICATIONS                                                        25
+
+
+4.5     Hardware and Software Requirements
+
+                        Table 4.3: Development and demonstration environment
+
+
+ Area                          Development/training need             Demonstration need
+
+ Compute                       Multi-core CPU; CUDA-capable          CPU able to run selected SUMO
+                               GPU is desirable for detector/RL      network and services; GPU only
+                               experiments but exact memory is       if live video inference is
+                               unconfirmed                           demonstrated
+ Memory/storage                Sufficient for environments,          Selected scenario, service builds,
+                               video, checkpoints, run logs, and     model, and demonstration records
+                               repeated traces; capacity to be
+                               measured
+ Core software                 Python, SUMO/TraCI,                   Version-pinned runtime and
+                               detector/tracker framework, RL        browser
+                               library, Node.js/React toolchain,
+                               Git
+ Data tools                    OpenStreetMap import, SUMO            Prepared network and approved
+                               NetEdit, annotation tooling           demonstration clips
+ Persistence                   File-backed prototype acceptable      Same schema/version as
+                               initially; PostgreSQL proposed        evaluation records
+                               for structured records
+
+
+
+4.6     Use Cases
+
+The primary actor is a research operator. SUMO, the video source, and the experiment store are sup-
+porting systems. Evaluators are read-only consumers of dashboards and exported records. Figure 4.1
+presents the coverage; Tables 4.4–4.11 define the principal flows.
+CHAPTER 4. SOFTWARE REQUIREMENT SPECIFICATIONS                                                           26
+
+
+                                        Configure scenario                     Dispatch ambulance
+
+
+
+                                      Run/control simulation                  Monitor route/corridor
+       Research operator
+
+                                       Process traffic video                  Handle route change
+
+
+
+                                        Inspect traffic state                 Compare/export runs
+
+
+                            Figure 4.1: Proposed operator use-case diagram
+
+
+                                 Table 4.4: UC-01 Configure a scenario
+
+
+Name / actor               UC-01 Configure a scenario / Research operator
+Preconditions              Network and controller descriptors are available.
+Trigger                    Operator requests a new experiment.
+Main success flow          Select network, demand, controller, seed, warm-up, duration, source mode,
+                           incident, and optional mission; validate; store a draft configuration.
+Alternative/failure        Reject incompatible controller/network, invalid duration, missing seed, or
+flow                       inaccessible input with field-specific messages.
+Postconditions             A valid, versioned configuration is ready; no run has started.
+
+
+                             Table 4.5: UC-02 Run and control a simulation
+
+
+Name / actor               UC-02 Run and control a simulation / Research operator
+Preconditions              UC-01 is valid; SUMO adapter is available.
+Trigger                    Operator selects Start.
+Main success flow          Create run record; launch SUMO; complete warm-up; step the simulation;
+                           collect state; request and apply lawful actions; publish snapshots; stop at
+                           terminal condition.
+Alternative/failure        If launch/TraCI fails, mark failed and retain logs. Pause/resume does not
+flow                       create competing clock owners. Invalid controller action invokes fallback.
+Postconditions             Run is completed, stopped, or failed with an explicit reason.
+CHAPTER 4. SOFTWARE REQUIREMENT SPECIFICATIONS                                                    27
+
+                                Table 4.6: UC-03 Process traffic video
+
+
+Name / actor          UC-03 Process traffic video / Research operator
+Preconditions         Licensed video and model configuration are available.
+Trigger               Operator selects a video job.
+Main success flow     Validate source; decode frames; detect vehicles; associate tracks; map valid
+                      tracks to regions; aggregate interval observations; store metrics and job
+                      status.
+Alternative/failure   Unreadable media, unsupported format, model failure, missing calibration,
+flow                  or low-confidence observation is reported; physical queue length is omitted
+                      when calibration is unavailable.
+Postconditions        Completed observations identify source, model, interval, units, and
+                      confidence.
+
+
+                                Table 4.7: UC-04 Inspect traffic state
+
+
+Name / actor          UC-04 Inspect traffic state / Research operator
+Preconditions         A run or perception job has emitted data.
+Trigger               Operator opens overview or intersection detail.
+Main success flow     Display source mode, freshness, counts, queues/proxies, speeds, phases,
+                      controller, and warnings; allow time/intersection selection.
+Alternative/failure   Disconnected or stale streams remain visibly marked; last value is not
+flow                  presented as current.
+Postconditions        No system decision is changed; the inspected state is traceable to its source.
+
+
+                           Table 4.8: UC-05 Dispatch an ambulance
+
+
+Name / actor          UC-05 Dispatch an ambulance / Research operator
+Preconditions         A running emergency-enabled scenario exists.
+Trigger               Operator submits origin and destination.
+Main success flow     Validate accessible edges; create mission; compute route/cost; assign
+                      simulated ambulance; publish route; request bounded corridor look-ahead.
+Alternative/failure   Invalid edge or no route returns a reason without partial priority. Duplicate
+flow                  active mission is rejected in the core single-ambulance mode.
+Postconditions        Mission is active with a valid current route, or rejected cleanly.
+CHAPTER 4. SOFTWARE REQUIREMENT SPECIFICATIONS                                                    28
+
+                         Table 4.9: UC-06 Monitor route and corridor
+
+
+Name / actor          UC-06 Monitor route and corridor / Research operator
+Preconditions         An emergency mission is active.
+Trigger               Ambulance advances through the network.
+Main success flow     Update position and remaining path; request safe transition ahead; display
+                      corridor states; detect passage; release and recover each intersection.
+Alternative/failure   Missing vehicle, stale position, unsafe request, or corridor timeout triggers
+flow                  cancellation/fallback and a visible alert.
+Postconditions        Mission progress and all priority transitions are recorded.
+
+
+                      Table 4.10: UC-07 Handle blockage or changed route
+
+
+Name / actor          UC-07 Handle blockage or changed route / Research operator
+Preconditions         An active mission has a feasible current position.
+Trigger               Closure or sustained cost change triggers evaluation.
+Main success flow     Recompute path from a valid remaining edge; compare benefits; if
+                      threshold is met, atomically revise route, cancel obsolete requests, and
+                      activate new look-ahead.
+Alternative/failure   If improvement is too small, retain route. If no route exists, cancel
+flow                  upcoming priority and mark mission blocked.
+Postconditions        Exactly one route version is current; every revision has cause and cost
+                      snapshot.
+
+
+                         Table 4.11: UC-08 Compare and export runs
+
+
+Name / actor          UC-08 Compare and export runs / Research operator
+Preconditions         At least two completed or failed run records exist.
+Trigger               Operator selects runs and metrics.
+Main success flow     Check comparability; align metric definitions; present distributions and
+                      configuration differences; export selected records.
+Alternative/failure   Warn or refuse direct comparison when network, demand, duration,
+flow                  warm-up, or metric version differs. Failed runs are not silently omitted.
+Postconditions        Comparison and export identify source run IDs and schema version.
+CHAPTER 4. SOFTWARE REQUIREMENT SPECIFICATIONS                                                                           29
+
+
+4.7    Proposed Graphical User Interface
+
+The following figures are proposed wireframes, not screenshots of implemented software. Their purpose
+is to validate information hierarchy and required operator actions without fabricating progress.
+
+         MANZIL / Traffic Overview
+
+
+                    Network map: congestion, signals, ambulance and route                    Run RUN-021
+                                                                                             Controller: Rule adaptive
+                                                                                             Source: SUMO / current
+
+                                                                                             Emergency EV-01
+                                                                                             ETA: computed
+                                                                                             Corridor: TRANSITION
+                                                                                             Next: I-07
+
+
+                                                                                             Warnings / event timeline
+                                                                                             stale and fallback states
+                                                                                             remain visible
+
+
+
+
+                                    Figure 4.2: Proposed traffic overview wireframe
+
+
+
+         Intersection I-07 / Perception Detail
+
+                                                                                        Source: video-03
+                       Processed video preview (when available)
+                                                                                        Model: version / checksum
+                                                                                        Freshness: 120 ms
+                                                                                        Calibration: unavailable
+
+                                                                                      North: count 12; queue proxy 7
+                                                                                      East: count 8; queue proxy 3
+                                   track 23
+                track 17                                                              Confidence and invalid flags
+
+
+
+                               Time-series area: count, occupancy, queue proxy, processing throughput
+
+
+
+
+                       Figure 4.3: Proposed perception and intersection-detail wireframe
+CHAPTER 4. SOFTWARE REQUIREMENT SPECIFICATIONS                                                                          30
+
+
+      Emergency Dispatch and Route
+
+
+            Origin [select edge]                                Map with route alternatives and current mission
+            Destination [select edge]
+            Dispatch [button]
+
+         Selected cost: seconds
+         Route version: 3
+         Reroute threshold: config
+         Reason: sustained improvement
+
+       Corridor lifecycle
+       I-07 ACTIVE / I-08 REQUESTED
+
+
+
+                       Figure 4.4: Proposed emergency dispatch and route wireframe
+
+
+
+      Experiment Configuration
+
+
+         Network and demand profile
+                                                                                        Validation summary
+         Controller and policy version                                                  ✓IDs resolve
+
+         Seed, warm-up and duration                                                     ✓phase plan legal
+                                                                                        ! video calibration absent
+         Incident and emergency mission
+                                                                                        ! RL checkpoint mismatch
+         Metric schema and sample interval
+
+
+                                                                                      Save draft            Start run
+
+
+
+
+                         Figure 4.5: Proposed experiment-configuration wireframe
+
+
+
+      Comparative Analytics
+
+
+                                     Run selector / comparability warning / metric definition
+
+
+                       Distribution with mean and variability
+
+                                                                                          Configuration differences
+                                                                                          Seed coverage
+                                                                                          Failed runs
+                                                                                          Export data + manifest
+
+               Fixed              Rule             RL
+
+
+
+     Figure 4.6: Proposed comparative-analytics wireframe; bars are schematic and not results
+CHAPTER 4. SOFTWARE REQUIREMENT SPECIFICATIONS                                                                         31
+
+
+4.8      Data Design
+
+Persistent data is reserved for configuration, observations, decisions, missions, and outcomes that require
+audit or comparison. The live road graph, current TraCI subscription, and frame buffers are in-memory
+runtime state. Raw video remains an external file with a content identifier rather than a database blob.
+
+                   SCENARIO                     1:N    RUN                          1:N   OBSERVATION
+                   id, network, demand                 id, seed, status, versions         source, time, measures
+
+
+
+                 MISSION                        1:N      ROUTE VERSION
+                                                       CONTROL DECISION                   PRIORITY EVENT
+                 origin, destination, status              edges, cost, trigger
+                                                       requested/applied,  reason         intersection, state, time
+
+
+
+                                                       METRIC SAMPLE
+                                                       name, value, unit, version
+
+                     Figure 4.7: Proposed experiment-record entity relationship model
+
+
+
+                                                 Table 4.12: Data dictionary
+
+
+   Entity                     Key fields                          Integrity rule
+
+   Scenario                   scenario_id,               net-     References immutable network and demand man-
+                              work_version,               de-     ifests.
+                              mand_version
+   Run                        run_id,                    sce-     Configuration becomes immutable after start; ter-
+                              nario_id,                seed,      minal reason required.
+                              controller_version,
+                              status
+   Observation                run_id/job_id,                      Source and units are mandatory; validity interval
+                              source_mode,                en-     cannot be inferred.
+                              tity_id,         observed_at,
+                              valid_until,            values,
+                              units
+   ControlDecision            run_id,                  inter-     Requested and applied actions are separate fields.
+                              section_id,                  re-
+                              quested_phase,
+                              applied_phase,               ef-
+                              fective_step, reason
+CHAPTER 4. SOFTWARE REQUIREMENT SPECIFICATIONS                                                                           32
+
+
+  Entity                        Key fields                    Integrity rule
+
+  Mission                       mission_id,        run_id,    Only one active core mission per run.
+                                vehicle_id,         origin,
+                                destination, status
+  RouteVersion                  mission_id,           ver-    Version increases monotonically; path begins at
+                                sion,            edge_list,   valid current position.
+                                cost_seconds, trigger,
+                                created_at
+  PriorityEvent                 mission_id,                   References the route version that justified priority.
+                                route_version,          in-
+                                tersection_id,       state,
+                                requested/applied time
+  MetricSample                  run_id, metric_name,          Comparisons require matching metric name, ver-
+                                metric_version, value,        sion, and unit.
+                                unit, interval
+  Artifact                      run/job_id,          type,    Content is addressable and provenance is retained.
+                                URI,          checksum,
+                                license/provenance
+
+
+
+4.9      Risk Analysis
+
+                                                  Table 4.13: Risk register
+
+
+      Risk                        Likelihood       Impact        Mitigation                         Fallback
+
+      Map     import    lacks     Medium           High          Inspect and clean a small ex-      Use     a    doc-
+      valid signals/turns                                        tract early; validate routes and   umented
+                                                                 phases                             synthetic grid
+      Local video lacks la-       Medium           High          Use licensed public sequences      Evaluate pub-
+      bels or permission                                         and record provenance              lic data only;
+                                                                                                    state   domain
+                                                                                                    gap
+      Occlusion causes un-        High             Medium        Region rules, temporal aggrega-    Limit       claims
+      stable counts                                              tion, tracker comparison           to      labelled
+                                                                                                    conditions
+CHAPTER 4. SOFTWARE REQUIREMENT SPECIFICATIONS                                                                 33
+
+
+   RL fails to converge or   Medium   High        Stable baselines, bounded ac-          Report        base-
+   generalize                                     tion space, tune only on training      line     compar-
+                                                  scenarios                              ison;         treat
+                                                                                         RL       as   neg-
+                                                                                         ative/partial
+                                                                                         finding
+   Reward improves one       Medium   High        Multi-metric     evaluation     and    Reject         pol-
+   metric unfairly                                starvation constraints                 icy      violating
+                                                                                         safety or fair-
+                                                                                         ness checks
+   Rerouting oscillates      Medium   Medium      Benefit threshold, persistence,        Freeze current
+                                                  cooldown, closure exception            feasible route
+   Preemption leaves un-     Low      Very high   Central state machine and in-          Cancel request
+   safe phase                                     variant tests                          and use safe
+                                                                                         baseline tran-
+                                                                                         sition
+   Service timing drifts     Medium   High        One step owner, simulation             Run           syn-
+   from simulation                                timestamps, bounded queues             chronously
+                                                                                         without        live
+                                                                                         perception
+   Insufficient compute      Medium   Medium      Profile early;     smaller net-        Demonstrate
+                                                  work/model and offline training        recorded
+                                                                                         inference
+                                                                                         and      compact
+                                                                                         scenarios
+   Results are not repro-    Medium   High        Immutable manifests,          seeds,   Exclude        un-
+   ducible                                        versioned metrics and exports          traceable
+                                                                                         runs
+
+
+
+
+4.10    Requirements Traceability
+CHAPTER 4. SOFTWARE REQUIREMENT SPECIFICATIONS                                                           34
+
+
+                              Table 4.14: Requirements traceability matrix
+
+
+     Requirements      Use cases               Design modules                 Planned        verifica-
+                                                                              tion
+
+     FR-01, 17–19;     UC-01, UC-08            Experiment service, store      Schema, validation,
+     NFR-01,10                                                                replay and compari-
+                                                                              son tests
+     FR-02,03,07;      UC-02                   Simulation adapter, control    Single-owner        and
+     NFR-02,06                                 orchestrator                   phase-invariant tests
+     FR-04,05;         UC-03, UC-04            Perception worker, state ag-   Annotated sequence
+     NFR-04,11                                 gregator                       evaluation and stale-
+                                                                              data tests
+     FR-06,08,20       UC-02                   Controller interface, safety   Fixed        scenarios,
+                                               filter                         illegal-action      and
+                                                                              fallback tests
+     FR-09–11,14       UC-05, UC-07            Graph/routing service          Disconnected graph,
+                                                                              closure,     hysteresis
+                                                                              and        path-validity
+                                                                              tests
+     FR-12,13          UC-06, UC-07            Corridor coordinator           Lifecycle, timeout,
+                                                                              cancellation and re-
+                                                                              covery tests
+     FR-15,16          UC-04, UC-06            API gateway, dashboard         UI state and warning
+                                                                              acceptance checks
+     NFR-              All                     Cross-cutting contracts and    Log audit,       profil-
+     03,05,07–                                 deployment                     ing, usability walk-
+     09,12                                                                    through, failure in-
+                                                                              jection
+
+
+
+4.11     Conclusion
+
+The specification centers on traceability and failure visibility. It requires one simulation-clock owner,
+legal signal transitions, stable route revision, explicit source freshness, reproducible run records, and
+comparisons that cannot hide incompatible configurations. These requirements become procedural and
+CHAPTER 4. SOFTWARE REQUIREMENT SPECIFICATIONS    35
+
+
+architectural choices in the next two chapters.
+CHAPTER 5. PROPOSED APPROACH AND METHODOLOGY                                                         36
+
+
+Chapter 5 Proposed Approach and Methodology
+
+This chapter defines how Manzil will be constructed and evaluated. The methodology is designed to an-
+swer the research questions with controlled comparisons, not to optimize a demonstration for a favorable
+single run. Figure 5.1 summarizes the sequence from preparation to evidence.
+
+
+
+5.1    Overall Research Workflow
+
+                   Freeze research questions, metric definitions, baselines, and exclusions
+
+
+
+                 Prepare versioned SUMO network/demand and source-separated video data
+
+
+
+               Validate simulator, measurements, fixed controller, and rule-adaptive controller
+
+
+
+               Evaluate detector/tracker; train and tune one RL controller on training scenarios
+
+
+
+                  Validate routing, rerouting, corridor lifecycle, cancellation, and recovery
+
+
+
+                   Run matched held-out scenarios with repeated seeds and retain failures
+
+
+
+                  Aggregate variability, ablations, validity threats, artifacts, and conclusions
+
+                         Figure 5.1: Proposed research and evaluation workflow
+
+
+
+Two input modes are retained. In video mode, annotations supply the reference for perception metrics
+and no claim is made that video determines the full selected road network. In simulation mode, SUMO
+supplies exact lane, vehicle, signal, and route state for control experiments. A future noise study may
+inject measured perception error into the simulation-state contract, but it will be included only if the
+baseline experiments are complete and the protocol is fixed in advance.
+CHAPTER 5. PROPOSED APPROACH AND METHODOLOGY                                                             37
+
+
+5.2     Network and Scenario Preparation
+
+5.2.1   Network Provenance and Validation
+
+A selected, manageable Lahore road area will be exported from OpenStreetMap under its applicable
+attribution and license conditions [23]. The exact bounding box, extraction date, source file checksum,
+and conversion command will be stored. SUMO’s import toolchain will convert the graph, after which
+NetEdit inspection will verify lane counts, legal turns, junction types, traffic-light programs, pedestrian-
+only edges, disconnected components, and ambulance-accessible routes.
+
+The initial size target from project context is approximately 10–20 signalized intersections, but this
+remains a planning range rather than a confirmed network fact. A smaller validated extract is preferable
+to a larger inaccurate one. If import quality prevents stable experiments within the schedule, a synthetic
+multi-intersection grid with documented geometry and demand becomes the fallback; results will be
+identified as synthetic.
+
+
+5.2.2   Demand and Incidents
+
+Demand files will define light, medium, and heavy conditions plus an uneven approach case. Vehicle
+insertion will use explicit random seeds. The warm-up period allows the network to reach a represen-
+tative occupancy before measurements. Incident scenarios will close an edge, reduce lane capacity, or
+insert a controlled obstruction at a declared simulation time. A failed insertion due to a full lane will be
+recorded rather than retried until a favorable run occurs.
+
+The same demand realization will be replayed across controllers where SUMO semantics permit. If a
+controller changes route choices or insertion feasibility, the manifest will distinguish the original demand
+request from actual departures. Scenario families will be separated into development, tuning, and held-
+out evaluation sets.
+
+
+
+5.3     Video Perception Pipeline
+
+              Licensed           Pretrained        Multi-object        Region/lane          Interval
+           video sequence     vehicle detector     association         assignment          aggregation
+
+
+                            Held-out annotations                   Counts, speed proxy,
+                             and error analysis                   occupancy, queue proxy
+
+                            Figure 5.2: Proposed traffic-video perception pipeline
+CHAPTER 5. PROPOSED APPROACH AND METHODOLOGY                                                            38
+
+
+As Figure 5.2 shows, the detector produces class, confidence, and image coordinates; the tracker as-
+signs a temporary identity; and a bottom-center or calibrated road-contact point assigns each track to
+a polygonal region. Counts use a directed line-crossing or region-entry rule and track history to avoid
+frame-wise duplication. A speed in physical units requires camera calibration or known scale. Without
+calibration, the system reports pixel displacement or a categorical slow/stationary state, not kilometres
+per hour.
+
+For a lane region l over interval k, a simple occupancy proxy is
+
+                                                 1      ∑i∈Vl,t A(Bi,t ∩ Rl )
+                                       Ol,k =       ∑                         ,                       (5.1)
+                                                 Tk t∈k        A(Rl )
+
+where Bi,t is a tracked box, Rl is the image region, and Tk is the number of sampled frames. This is
+image occupancy, not road density. A queue proxy counts stable tracks inside a defined upstream region
+whose image-motion or calibrated speed is below a threshold for a minimum persistence time.
+
+The detector will be initialized from a documented pretrained checkpoint, consistent with the practi-
+cal motivation of YOLO-family detection [5]. ByteTrack is the leading proposed tracker because its
+low-score association may reduce occlusion fragmentation [7]; DeepSORT remains a comparison if ap-
+pearance association materially improves the selected scenes [6]. The final choice will be based on the
+held-out count and tracking requirements, not benchmark reputation.
+
+
+
+5.4     Normal Traffic Controllers
+
+5.4.1   Fixed-Time Controller
+
+The fixed controller will use a declared cycle and phase sequence appropriate to the selected junction.
+Green, yellow, and all-red durations and offsets will be versioned. It will not be intentionally starved or
+given unrealistic timing to make adaptive methods appear superior. A basic saturation check will ensure
+that at least the light scenario is serviceable.
+
+
+5.4.2   Rule-Based Adaptive Controller
+
+The initial transparent controller evaluates only legal candidate phases. A pressure-inspired score for
+phase p is
+                                 S p (t) =     ∑ (ql (t) − αqm (t)) + β wl (t),                       (5.2)
+                                             (l,m)∈p
+
+where ql and qm are upstream and downstream queues for a served movement, wl is the maximum
+accumulated wait among its approaches, and α, β are documented configuration values. This follows
+CHAPTER 5. PROPOSED APPROACH AND METHODOLOGY                                                          39
+
+
+the motivation of max-pressure control [10] while retaining a direct anti-starvation term.
+
+At each decision instant, the current green is held until minimum green. A phase may be extended if
+it remains best and maximum green is not reached. A phase whose maximum red exceeds a limit is
+promoted. Switching inserts the same clearance sequence used by all controllers. No controller can
+directly bypass the safety filter.
+
+
+5.4.3   Proposed RL Formulation
+
+One RL formulation will be selected after the rule baseline is stable. A feasible initial choice is a
+discrete-action value-based policy for a small, fixed phase set; pressure-informed reward design is sup-
+ported by PressLight [12]. If the network needs coordinated agents and the training budget permits,
+centralized observations with per-intersection actions are preferred over loosely defined independent
+learners.
+
+The proposed state for each decision interval includes normalized incoming and outgoing queues, ap-
+proach waiting time, occupancy, current phase, elapsed phase time, and an emergency-mode flag. An
+action requests a legal phase or a bounded extension. The safety layer remains authoritative. A candidate
+reward is
+                                     rt = −λ p Pt − λwWt − λs Xt − λcCt ,                           (5.3)
+
+where Pt is network pressure, Wt normalized waiting, Xt a starvation violation, and Ct an unnecessary-
+switch penalty. Coefficients and normalization will be fixed on training/tuning scenarios. Emergency
+performance is evaluated in a separate supervisory experiment so that the first normal-controller com-
+parison is not confounded by rare mission rewards.
+
+Training will record episode seed, demand profile, exploration schedule, optimizer settings, network
+checksum, reward components, and checkpoints. Evaluation uses deterministic policy settings where
+applicable and held-out demands. Training return alone is not an evaluation result.
+
+
+
+5.5     Dynamic Graph Routing
+
+The routing graph represents legal vehicle movements. Nodes may be junctions or lane/edge transition
+points; edges store length, allowed class, free-flow time, current travel-time estimate, queue discharge
+estimate, residual signal delay, closure state, and observation time. The exact representation will match
+SUMO route validity rather than an abstract map that permits illegal turns.
+CHAPTER 5. PROPOSED APPROACH AND METHODOLOGY                                                             40
+
+
+The primary edge cost is expressed in seconds:
+
+
+                               ce (t) = T̂elink (t) + D̂signal
+                                                        e      (t) + D̂queue
+                                                                       e     (t) + Me (t),            (5.4)
+
+
+where Me (t) = 0 for an open edge and infinity for a hard closure. Queue delay is included only if it is not
+already represented in the link travel-time estimate. Every cost snapshot records source and freshness.
+
+Dijkstra’s algorithm provides the reference minimum-cost path under nonnegative weights [17]. A* is
+permitted with h(n) equal to a lower bound based on straight-line distance divided by the maximum
+allowed free-flow speed; this remains no greater than true time when added delays are nonnegative [3].
+If that condition cannot be guaranteed, Dijkstra is retained.
+Data: Current ambulance edge s, destination g, current route R, cost snapshot Ct
+Result: Retained or revised valid remaining route
+Reject stale or negative costs; apply closures to Ct ;
+R′ ← ShortestPath(s, g,Ct );
+if R′ does not exist then
+    return NO_ROUTE and cancel future corridor requests;
+end
+Compute remaining costs J(R) and J(R′ ) under the same snapshot;
+if current route is infeasible then
+    accept R′ immediately;
+else
+    accept R′ only if J(R) − J(R′ ) > δ for persistence window τ and cooldown has elapsed;
+end
+Validate route continuity from the current position;
+Atomically increment route version, cancel obsolete priority, and publish the revision;
+               Algorithm 1: Congestion-aware route selection and stable rerouting
+The improvement threshold δ , persistence τ, and cooldown are configuration parameters to be tuned
+before held-out tests. This prevents small state fluctuations from producing route oscillation.
+
+
+
+5.6    Moving Green Corridor
+
+The corridor operates on a bounded number of route intersections ahead of the ambulance. Activation
+may use estimated time to arrival and queue clearance rather than a fixed distance alone. Each inter-
+section receives a request containing mission ID, route version, approach movement, predicted arrival,
+expiry, and priority level.
+CHAPTER 5. PROPOSED APPROACH AND METHODOLOGY                                                          41
+
+
+Before serving the ambulance movement, the coordinator completes minimum green and applies the
+configured yellow and all-red clearance for conflicting movements. It does not set every route signal
+green at once. Passage is confirmed from the simulated vehicle position and lane transition, with a time-
+out as failure detection. After passage, the intersection enters recovery and either completes a bounded
+compensation plan or returns at a safe cycle boundary. A revised route cancels obsolete requests. These
+mechanisms follow the transition and recovery emphasis in emergency-preemption research [19].
+Data: Priority request, ambulance state, signal state, safety configuration
+if request is stale, route version is obsolete, or movement is invalid then
+    reject and log reason;
+end
+Queue the request and estimate activation time;
+At activation, finish minimum green and apply legal clearance;
+Serve the ambulance movement within maximum priority duration;
+if passage is confirmed then
+    release and enter recovery;
+end
+else if mission is cancelled, route changes, or timeout occurs then
+    cancel safely and enter recovery/fallback;
+end
+Restore normal controller ownership at a valid phase boundary and record recovery time;
+                       Algorithm 2: Corridor lifecycle at one intersection
+The core scope contains one active ambulance, which avoids inventing an untested arbitration policy.
+Multiple emergency vehicles remain future work. Normal-traffic harm is bounded using a maximum
+priority duration, downstream occupancy check, and maximum-red monitoring. Exact limits are simu-
+lation parameters to be justified through sensitivity analysis, not field safety values.
+CHAPTER 5. PROPOSED APPROACH AND METHODOLOGY                                                              42
+
+
+5.7    Integrated Control Loop
+
+Data: Validated run configuration and initialized services
+while run is active and before terminal simulation time do
+    Advance SUMO by exactly one configured step;
+    Read subscribed vehicle, lane, signal, and mission state;
+    Construct a timestamped traffic-state snapshot;
+    Update route costs and evaluate rerouting at its configured interval;
+    Update corridor requests and lifecycle states;
+    if corridor owns an intersection then
+        request its safe priority action;
+    else
+        request action from the selected normal controller;
+    end
+    Validate every requested action through the phase safety filter;
+    Apply accepted actions through the TraCI adapter only;
+    Record applied actions, events, and metric samples;
+    Publish a non-authoritative dashboard snapshot;
+end
+Finalize run status, artifacts, and checksums;
+                       Algorithm 3: Single-owner simulation and decision loop
+Algorithm 3 makes event order explicit. Dashboard refresh and perception jobs cannot step the simula-
+tion. A snapshot used at time t carries its effective step so that late data is either mapped deliberately or
+rejected.
+CHAPTER 5. PROPOSED APPROACH AND METHODOLOGY                                                             43
+
+
+5.8     Experimental Protocol
+
+5.8.1   Comparison Matrix
+
+                           Table 5.1: Planned experiments and primary evidence
+
+
+ Question                 Controlled comparison                  Primary measures
+
+ RQ1 perception           Detector/tracker output vs. held-      Precision/recall or mAP where
+                          out sequence annotations               suitable; count MAE; identity metric
+                                                                 only when required; queue-proxy
+                                                                 error; throughput
+ RQ2 normal control       Fixed vs. rule-adaptive vs. selected   Mean travel and waiting time, queue
+                          RL under matched scenarios/seeds       mean/max, throughput, phase changes,
+                                                                 max-red/fairness violations
+ RQ3 routing              Static/reference route vs. dynamic     Ambulance travel time, delay, stops,
+                          route, holding signal policy fixed     route revisions, computation time
+ RQ4 corridor             Same routing without vs. with cor-     Ambulance time/stops; ordinary traffic
+                          ridor                                  delay/queues; recovery time; safety
+                                                                 invariant violations
+ RQ5 robustness           Demand, incident, seed, and op-        Effect distributions and sensitivity;
+                          tional observation-noise strata        failed and no-route runs retained
+
+
+
+5.8.2   Scenario Assignment and Repetition
+
+The evaluation manifest will define demand levels, origin/destination pairs, incident timing, warm-up,
+measurement horizon, and repeated seeds before final runs. Every controller receives the same set. The
+number of repetitions will be chosen using pilot variance and available computation, then reported rather
+than retroactively reduced to favorable cases. Averages will be accompanied by standard deviation or
+confidence intervals, and paired differences will be used when runs share a demand seed.
+
+RL training and hyperparameter selection use only training/tuning scenarios. Held-out demand com-
+binations and at least one unseen seed set are reserved for final evaluation. Perception data is split by
+source or continuous sequence to reduce temporal leakage. The report will include failures, timeouts,
+infeasible routes, and safety-filter interventions.
+CHAPTER 5. PROPOSED APPROACH AND METHODOLOGY                                                           44
+
+
+5.8.3       Metric Definitions
+
+For N completed vehicles with travel times Ti , mean travel time is T̄ = N −1 ∑i Ti . Queue length is sam-
+pled at fixed simulation intervals and reported as time mean and maximum by approach. Throughput is
+the number of vehicles crossing a declared network boundary during the measurement interval. Fairness
+includes maximum red time and approach-level delay distribution; an aggregate mean alone can conceal
+starvation.
+
+Ambulance delay is actual travel time minus free-flow route time under the same network definition.
+Ordinary-traffic impact is evaluated on non-emergency vehicles and includes delay during the mission
+plus a recovery interval. Route computation time is measured separately from simulated travel time. For
+perception counts yk and estimates ŷk , mean absolute error is
+
+                                                  1 K
+                                         MAE =      ∑ |yk − ŷk |.
+                                                  K k=1
+                                                                                                     (5.5)
+
+
+
+5.8.4       Reproducibility Package
+
+Each run will retain the source revision, dependency manifest, SUMO version, network and route check-
+sums, controller/model version, full configuration, seed, logs, metric schema, and terminal reason. Large
+external video and pretrained weights may be referenced by license-aware URI and checksum. A script
+should recreate a run from its manifest; any manual NetEdit change must be committed as a network
+artifact.
+
+
+
+5.9     Threats to Validity
+
+Construct validity is threatened if queue proxies, waiting-time definitions, or reward components do
+not represent the intended concept. Definitions and units will be versioned, and perception proxies will
+not be renamed as physical quantities without calibration.
+
+Internal validity is threatened by unmatched demand, different warm-up, hidden seed changes, or
+controller-specific failures. Paired manifests, one measurement implementation, and retention of failed
+runs mitigate these risks.
+
+External validity is limited by synthetic demand, map inaccuracies, simulator car-following assump-
+tions, and video domain shift. Findings will be bounded to the tested network, demand families, and
+video sources. No clinical response-time or public-road safety conclusion will be drawn.
+
+Conclusion validity is threatened by few repetitions, tuning on the test set, and reporting only means.
+CHAPTER 5. PROPOSED APPROACH AND METHODOLOGY                                                               45
+
+
+Pilot variance, held-out scenarios, paired comparisons, variability, and sensitivity analysis will be used.
+Statistical tests, if used, will name assumptions and effect sizes; significance alone will not establish
+practical value.
+
+
+
+5.10     Conclusion
+
+The methodology specifies a feasible progression from validated baselines to integrated emergency con-
+trol. It uses time-consistent route costs, hysteresis, explicit corridor transitions, held-out evaluation, and
+reproducibility artifacts. Most importantly, it defines how negative or mixed results remain valid findings
+rather than prompting undocumented changes to the experiment.
+CHAPTER 6. HIGH-LEVEL AND LOW-LEVEL DESIGN                                                                                           46
+
+
+Chapter 6 High-Level and Low-Level Design
+
+This chapter maps the requirements and methodology to a service-oriented prototype design. The de-
+composition protects simulation determinism: one adapter owns the simulation clock and all signal actu-
+ation, while the API, dashboard, perception, controllers, and experiment store exchange typed messages
+without competing for control.
+
+
+
+6.1       System Overview and Design Goals
+
+The system must support repeatable research runs, interactive demonstrations, and post-run analysis. Its
+principal design goals are: deterministic ownership of state changes; replaceable controller and percep-
+tion implementations; explicit time, units, and validity; safe corridor transitions; immutable experimen-
+tal configuration; and visible failure. Performance is important only after these properties are preserved.
+
+The design assumes a single machine or small development deployment for Deliverable 2/FYP-I. Sep-
+arating components logically does not require premature distribution. In-process modules may be used
+initially behind the same interfaces, then isolated as workers if profiling justifies it.
+
+
+
+6.2       High-Level Architecture
+
+                                                              React dashboard
+                                                           operator and evaluator
+
+                                                                       REST / stream
+
+                                                             FastAPI boundary
+                                                                                                                 Recorded video
+                                                           validation and queries
+
+
+
+   Experiment store          Experiment service             Control orchestrator        Traffic-state service   Perception worker
+ proposed PostgreSQL       config, lifecycle, metrics     ordering and ownership          typed snapshots       detector / tracker
+
+
+
+                              Controller registry          SUMO/TraCI adapter           Routing and corridor
+                               fixed / rule / RL        sole step and actuation owner    mission lifecycle
+
+
+
+
+                                                              SUMO process
+
+
+
+                                    Figure 6.1: Proposed high-level architecture
+
+
+
+The dashboard never calls TraCI. It sends validated commands to FastAPI and consumes views. The
+orchestrator executes Algorithm 3; the adapter alone advances SUMO and applies signals. Controllers
+return requests, not side effects. The routing and corridor service maintains mission/route versions
+and intersection priority states. The state service normalizes simulator or perception observations but
+preserves their source. The experiment service stores configuration and evidence.
+CHAPTER 6. HIGH-LEVEL AND LOW-LEVEL DESIGN                                                                 47
+
+
+6.3   Component Responsibilities and Interfaces
+
+                          Table 6.1: Component responsibility allocation
+
+
+  Component               Consumes                               Produces / owns
+
+  React dashboard         Query responses, event snap-           Presentation state; no control author-
+                          shots, user input                      ity
+  FastAPI boundary        HTTP/stream           commands,        Validation, command/query bound-
+                          identity-free    local      operator   ary, error mapping
+                          session
+  Experiment service      Valid      configuration,      met-    Run lifecycle, immutable manifest,
+                          ric/event batches                      comparison eligibility
+  Control orchestrator    Run config and ordered state           Decision schedule, module ordering,
+                          snapshot                               requested actions
+  SUMO/TraCI adapter      Validated step and action com-         Simulation process, clock, subscrip-
+                          mands                                  tions, applied actions
+  Traffic-state service   SUMO observations or percep-           Versioned source-specific snapshots
+                          tion messages                          and freshness
+  Perception worker       Video and model configuration          Detections, tracks, aggregates, job
+                                                                 health
+  Controller registry     State, legal phases, timing con-       Requested normal-control action and
+                          straints                               explanation
+  Routing service         Graph, mission, cost snapshot          Route versions, no-route reason,
+                                                                 reroute decision
+  Corridor coordinator    Route      version,      ambulance     Priority request/state, release and re-
+                          state, signal state                    covery requests
+  Experiment store        Validated records and artifacts        Durable configuration, events, met-
+                                                                 rics, checksums
+
+
+
+6.4   Architectural Decisions and Tradeoffs
+CHAPTER 6. HIGH-LEVEL AND LOW-LEVEL DESIGN                                                                    48
+
+
+                                  Table 6.2: Architectural decision record
+
+
+   Decision                 Selected approach              Alternative and rea-        Consequence
+                                                           son not selected ini-
+                                                           tially
+
+   Simulation    owner-     One orchestrator/TraCI         Multiple services call-     Simple       replay
+   ship                     adapter controls step-         ing TraCI risks non-        and concurrency
+                            ping and signals               deterministic order         model
+   Simulator                SUMO, as approved              CityFlow offers train-      Lower            mi-
+                            and       supported       by   ing      throughput   but   gration        risk;
+                            detailed       road/signal     changes the approved        performance
+                            tooling                        environment                 profiled later
+   API/UI                   FastAPI      plus     React,   Server-rendered mono-       Typed API and
+                            fixed by proposal              lith     would   simplify   independent UI
+                                                           deployment but reduce       iteration
+                                                           clear service contracts
+   Controller    integra-   Common request inter-          Direct controller access    Comparable
+   tion                     face plus safety filter        to TraCI couples re-        controllers;
+                                                           search code to simula-      applied      action
+                                                           tion                        may differ from
+                                                                                       request
+   Emergency control        Supervisory         corridor   Adding emergency re-        Clear       ablation
+                            state machine                  ward directly to normal     and           safety
+                                                           RL confounds attribu-       ownership
+                                                           tion
+   Routing                  Dijkstra reference; A*         Distance-only route is      Time-based, au-
+                            only with admissible           simpler but ignores the     ditable costs
+                            lower bound                    research question
+   Persistence              Structured experiment          Flat files are quick but    Engine remains
+                            schema;       PostgreSQL       weak for cross-run in-      replaceable be-
+                            proposed                       tegrity                     hind repository
+                                                                                       interface
+CHAPTER 6. HIGH-LEVEL AND LOW-LEVEL DESIGN                                                                                      49
+
+
+      Decision                       Selected approach                    Alternative and rea-                 Consequence
+                                                                          son not selected ini-
+                                                                          tially
+
+      Perception       execu-        Background             worker        In-request       inference           Adds job state
+      tion                           with bounded messages                blocks API and control               and queue man-
+                                                                          loop                                 agement
+
+
+
+6.5     Domain Model and Class Diagram
+
+                          ExperimentRun                     Scenario                      TrafficSnapshot
+                                                     1
+                          id, seed, status                  network, demand               source, time, validity
+                          start(), finalize()               validate()                    isFresh()
+
+                             uses
+
+                           Controller                      SimulationAdapter              ControlDecision
+                           version
+                              0..1                         step, subscriptions            requested, applied
+                           requestAction()                 advance(), apply()             reason, effectiveStep
+
+
+
+                      EmergencyMission                     RouteVersion                    CorridorState
+                                                    1..*                           0..*
+                      origin, destination, status          edges, cost, trigger            intersection, state
+                      cancel()                             isValid()                       transition()
+
+                                    Figure 6.2: Proposed domain model/class diagram
+
+
+
+The domain model deliberately separates a requested decision from an applied decision. A controller
+can request an illegal early switch, but the safety filter and adapter determine the action actually applied.
+RouteVersion is immutable and corridor states refer to one version, allowing obsolete requests to be
+cancelled reliably.
+CHAPTER 6. HIGH-LEVEL AND LOW-LEVEL DESIGN                                                                                      50
+
+
+6.6     Interaction Sequences
+
+6.6.1   Normal Control Update
+
+               Orchestrator            Adapter                      State               Controller              Store
+                         advance(step)
+
+                                                raw observations
+                                      snapshot(t)
+
+                                                request(snapshot)
+
+                                                  phase request
+
+                        validated action
+                                                                            applied event
+
+
+
+                          Figure 6.3: Sequence for a normal signal-control update
+
+
+
+The snapshot is created only after the simulation step completes. A controller never observes a partial
+update. If a decision interval spans several simulation steps, the orchestrator reuses the last applied
+action while metrics continue to sample at their specified interval.
+
+
+6.6.2   Ambulance Dispatch and Corridor Activation
+
+          Dashboard             API                   Routing                Corridor                Adapter            Store
+                  dispatch(o,d)
+                                   validate + compute
+
+                                           route v1
+                                                         look-ahead requests
+                                                                                safe transition request
+                                                                                     applied state
+                                                                                              priority events
+
+                  mission view
+
+
+
+                   Figure 6.4: Sequence for ambulance dispatch and corridor activation
+CHAPTER 6. HIGH-LEVEL AND LOW-LEVEL DESIGN                                                                     51
+
+
+6.6.3   Rerouting and Recovery
+
+                  State                Routing              Corridor            Adapter               Store
+                      cost/closure change
+
+                               candidate + threshold
+
+                                                 route v2
+                                                                  cancel obsolete
+                                                               request new look-ahead
+                                passage confirmed
+                                                                  recovery action
+                                                                             revision/events
+
+
+           Figure 6.5: Sequence for route revision, obsolete-priority cancellation, and recovery
+
+
+
+6.7     Corridor State Model
+
+                                    valid request                 activation due
+                        IDLE                        REQUESTED                  SAFE TRANSITION
+
+                  normal boundary
+                                                                                          clearance complete
+
+                                                             vehicle clears
+                    RECOVERY                       PASSAGE
+                                                CANCEL/FAILURE            ACTIVE PRIORITY
+                                    safe fallback
+
+                      Figure 6.6: Intersection-level moving-corridor state transitions
+
+
+
+State transitions are event-driven and guarded. REQUESTED does not imply signal ownership. SAFE
+TRANSITION waits for the normal phase’s minimum service and clearance. ACTIVE PRIORITY has a
+maximum duration. PASSAGE is a recorded event, and RECOVERY must complete before the normal
+controller resumes direct ownership. Cancellation never jumps directly to an arbitrary normal phase.
+
+
+
+6.8     Traffic-State and Event Contracts
+CHAPTER 6. HIGH-LEVEL AND LOW-LEVEL DESIGN                                                         52
+
+
+                    Table 6.3: Core interface and data-contract fields
+
+
+  Contract          Required fields             Rule
+
+  TrafficSnapshot   schemaVersion,              Consumers reject unknown schema or expired
+                    sourceMode,         pro-    validity; wall time and simulation time are dis-
+                    ducedAt,          effec-    tinct.
+                    tiveStep, validUntil,
+                    networkId
+  ApproachState     intersectionId,      ap-    Missing is not zero; uncalibrated physical quan-
+                    proachId,         count,    tities are omitted.
+                    queue, wait, speed,
+                    occupancy,         units,
+                    confidence
+  SignalState       intersectionId,     pro-    Owner is NORMAL or CORRIDOR; legal next
+                    gramId,         phaseId,    phases come from validated configuration.
+                    phaseElapsed, legal-
+                    Next, owner
+  ControlRequest    controllerId,         in-   Request has no side effect and may be rejected
+                    tersectionId,         re-   or transformed.
+                    questedPhase,        du-
+                    ration/extension,
+                    snapshotStep, reason
+  AppliedControl    requestId,      applied-    This record is authoritative for analysis.
+                    Phase, effectiveStep,
+                    safetyIntervention,
+                    reason
+  RoutePlan         missionId,       routeV-    Edge order must be continuous from valid cur-
+                    ersion,         edgeIds,    rent position.
+                    costSeconds,       snap-
+                    shotStep, trigger
+  PriorityRequest   missionId, routeVer-        Obsolete route version or expired request is re-
+                    sion,     intersectionId,   jected.
+                    movementId,        ETA,
+                    expiresAt
+CHAPTER 6. HIGH-LEVEL AND LOW-LEVEL DESIGN                                                            53
+
+
+    Contract                 Required fields         Rule
+
+    MetricSample             runId,   metricName,    Aggregation across mismatched versions is pro-
+                             metricVersion, inter-   hibited.
+                             val, value, unit
+
+
+
+Event ordering is based on simulation step within a run and a monotonic sequence number assigned
+by the orchestrator. Wall-clock timestamps support diagnostics but do not determine traffic causality.
+Route revisions and priority events are committed in an order that prevents an old request from being
+interpreted as current.
+
+
+
+6.9    Concurrency, Synchronization, and Resource Ownership
+
+The orchestrator is the only writer to simulation time. TraCI access is serialized behind the adapter.
+Controller computation receives an immutable snapshot. Perception uses a bounded work queue; if it
+falls behind, the worker marks observations late rather than blocking control. Dashboard streams are
+lossy views: a slow client may skip intermediate snapshots but cannot delay decisions.
+
+Run configuration is immutable after start. The current route version is updated atomically with the
+cancellation of obsolete corridor requests. Database writes are batched where safe, but an applied signal
+event and mission-state transition must not be acknowledged before durable enqueue. On shutdown, the
+system stops accepting commands, terminates or detaches SUMO safely, flushes records, and gives the
+run an explicit terminal state.
+CHAPTER 6. HIGH-LEVEL AND LOW-LEVEL DESIGN                                                           54
+
+
+6.10       Error Handling and Fallback
+
+                                  Table 6.4: Failure handling strategy
+
+
+ Failure                       Immediate behavior                    Recorded/recovery behavior
+
+ SUMO launch/TraCI dis-        Stop decisions and do not present     Mark run failed; retain command,
+ connect                       live state                            stderr, step, and manifest
+ Stale observation             Exclude or use declared               Record staleness and selected
+                               simulator fallback                    fallback source
+ Invalid controller action     Reject through safety filter          Apply fixed/safe continuation
+                                                                     and record intervention
+ RL service unavailable        Switch at valid boundary to           Record fallback interval; exclude
+                               configured baseline                   from clean RL aggregate or
+                                                                     report separately
+ No route                      Do not spawn/activate partial         Mark mission blocked; show
+                               corridor                              cause and graph snapshot ID
+ Lost ambulance/timeout        Cancel future priority and            Mark mission failed/cancelled
+                               recover active intersections          and preserve last position
+ Persistence failure           Buffer within a bounded queue;        Mark run incomplete if durability
+                               stop before unbounded evidence        cannot be restored
+                               loss
+ Dashboard disconnect          Continue experiment unaffected        Reconnect from current snapshot
+                                                                     and event cursor
+
+
+
+6.11       Detailed Module Policies
+
+6.11.1     Controller Policy
+
+All controllers implement a common method accepting a snapshot, intersection configuration, and de-
+cision context, and returning a request plus explanation fields. They cannot write global state or call
+TraCI. Deterministic evaluation disables exploration and seeds all permitted stochastic operations. The
+safety filter verifies phase membership, minimum green, clearance, maximum priority duration, and
+ownership.
+CHAPTER 6. HIGH-LEVEL AND LOW-LEVEL DESIGN                                                            55
+
+
+6.11.2    Routing Policy
+
+The graph builder derives edges from validated SUMO movements. Cost providers are composable but
+must state units and whether link time already includes queue delay. A route plan is immutable. The
+mission points to one current version, and a revision is accepted only through Algorithm 1. Closures
+override cost and invalidate affected routes immediately.
+
+
+6.11.3    Persistence Policy
+
+The store uses migrations and foreign keys for structured data, and checksummed external artifacts
+for large files. Raw high-frequency state may be downsampled for persistence, but the interval and
+aggregation method are recorded. Secrets or local filesystem paths are not exported as research data.
+Database selection will be confirmed by implementation; the domain schema is independent of that
+choice.
+
+
+6.11.4    User-Interface Policy
+
+Colors are supplemented with labels and icons so congestion or failures are not conveyed by color
+alone. Units and source mode appear beside values. Schematic predictions and measured values are
+visually distinct. The UI does not display “time saved” until a valid reference run exists under the same
+comparison manifest.
+
+
+
+6.12      Testing Strategy
+
+Unit tests cover cost functions, route validity, hysteresis, metric calculations, schema validation, and
+corridor transition guards. Property or invariant tests generate action sequences to ensure incompatible
+greens are never produced and that corridor cancellation eventually reaches IDLE through RECOVERY.
+Integration tests run small SUMO networks to validate step ownership, detector-to-state messages, route
+application, and persistence. Scenario tests replay fixed seeds for normal control, closure rerouting,
+no-route, controller failure, stale data, ambulance timeout, and dashboard disconnect.
+
+Research verification is separate from software correctness. Passing unit tests shows that the implemen-
+tation follows its specification; it does not show that the policy improves traffic. Comparative experi-
+ments described in Chapter 5 provide that evidence.
+CHAPTER 6. HIGH-LEVEL AND LOW-LEVEL DESIGN                                                              56
+
+
+6.13     Coding, Build, and Maintainability Policies
+
+Python modules will use static type hints, formatting and linting, bounded dependency versions, struc-
+tured logging, and docstrings for public interfaces. React components will separate data fetching from
+presentation. Configuration is stored as validated files rather than scattered constants. Continuous checks
+should run unit tests and a minimal headless SUMO scenario. Releases used for experiments are tagged
+and their commit ID is written into run manifests.
+
+The intended repository structure separates application services, controllers, routing, perception, sim-
+ulation, dashboard, schemas, scenarios, and experiment artifacts. This is a proposed organization, not
+evidence that those directories already exist. Small interfaces allow a tracker, RL algorithm, database,
+or dashboard transport to change without rewriting the simulation loop.
+
+
+
+6.14     Conclusion
+
+The design assigns one clear owner to every mutable resource and makes source, time, units, route
+version, and applied action explicit. The architecture supports the intended progression from baselines to
+RL and from static routing to a safe moving corridor, while allowing failures and negative experimental
+outcomes to be recorded honestly. It is sufficiently modular for team implementation without requiring
+distributed-system complexity at the prototype stage.
+BIBLIOGRAPHY                                                                                        57
+
+
+
+
+Bibliography
+
+[1] P. A. Lopez, M. Behrisch, L. Bieker-Walz, J. Erdmann, Y.-P. Flötteröd, R. Hilbrich, L. Lücken,
+    J. Rummel, P. Wagner, and E. Wießner, “Microscopic traffic simulation using sumo,” in 2018 21st
+    International Conference on Intelligent Transportation Systems (ITSC), pp. 2575–2582, 2018.
+
+[2] Eclipse Foundation, “Sumo documentation: Traffic lights and traci.” https://sumo.dlr.de/
+    docs/, 2026. Accessed: 6 October 2026.
+
+[3] P. E. Hart, N. J. Nilsson, and B. Raphael, “A formal basis for the heuristic determination of mini-
+    mum cost paths,” IEEE Transactions on Systems Science and Cybernetics, vol. 4, no. 2, pp. 100–
+    107, 1968.
+
+[4] United Nations, “Goal 11: Sustainable cities and communities.” https://sdgs.un.org/goals/
+    goal11, 2025. Accessed: 6 October 2026.
+
+[5] J. Redmon, S. Divvala, R. Girshick, and A. Farhadi, “You only look once: Unified, real-time object
+    detection,” in Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition,
+    pp. 779–788, 2016.
+
+[6] N. Wojke, A. Bewley, and D. Paulus, “Simple online and realtime tracking with a deep association
+    metric,” in 2017 IEEE International Conference on Image Processing, pp. 3645–3649, 2017.
+
+[7] Y. Zhang, P. Sun, Y. Jiang, D. Yu, F. Weng, Z. Yuan, P. Luo, W. Liu, and X. Wang, “Bytetrack:
+    Multi-object tracking by associating every detection box,” in European Conference on Computer
+    Vision, pp. 1–21, 2022.
+
+[8] F. Yu, H. Chen, X. Wang, W. Xian, Y. Chen, F. Liu, V. Madhavan, and T. Darrell, “Bdd100k: A di-
+    verse driving dataset for heterogeneous multitask learning,” in IEEE/CVF Conference on Computer
+    Vision and Pattern Recognition, pp. 2636–2645, 2020.
+
+[9] L. Wen, D. Du, Z. Cai, Z. Lei, M.-C. Chang, H. Qi, J. Lim, M.-H. Yang, and S. Lyu, “Ua-detrac: A
+    new benchmark and protocol for multi-object detection and tracking,” Computer Vision and Image
+    Understanding, vol. 193, p. 102907, 2020.
+BIBLIOGRAPHY                                                                                          58
+
+
+[10] P. Varaiya, “Max pressure control of a network of signalized intersections,” Transportation Re-
+     search Part C: Emerging Technologies, vol. 36, pp. 177–195, 2013.
+
+[11] X. Liang, X. Du, G. Wang, and Z. Han, “A deep reinforcement learning network for traffic light
+     cycle control,” IEEE Transactions on Vehicular Technology, vol. 68, no. 2, pp. 1243–1253, 2019.
+
+[12] H. Wei, C. Chen, G. Zheng, K. Wu, V. Gayah, K. Xu, and Z. Li, “Presslight: Learning max pressure
+     control to coordinate traffic signals in arterial network,” in Proceedings of the 25th ACM SIGKDD
+     International Conference on Knowledge Discovery and Data Mining, pp. 1290–1298, 2019.
+
+[13] G. Zheng, X. Zang, N. Xu, H. Wei, Z. Yu, V. Gayah, K. Xu, and Z. Li, “Learning phase competition
+     for traffic signal control,” in Proceedings of the 28th ACM International Conference on Information
+     and Knowledge Management, pp. 1963–1972, 2019.
+
+[14] H. Wei, N. Xu, H. Zhang, G. Zheng, X. Zang, C. Chen, W. Zhang, Y. Zhu, K. Xu, and Z. Li,
+     “Colight: Learning network-level cooperation for traffic signal control,” in Proceedings of the
+     28th ACM International Conference on Information and Knowledge Management, pp. 1913–1922,
+     2019.
+
+[15] T. Chu, J. Wang, L. Codecà, and Z. Li, “Multi-agent deep reinforcement learning for large-scale
+     traffic signal control,” IEEE Transactions on Intelligent Transportation Systems, vol. 21, no. 3,
+     pp. 1086–1095, 2020.
+
+[16] H. Zhang, S. Feng, C. Liu, Y. Ding, Y. Zhu, Z. Zhou, W. Zhang, Y. Yu, H. Jin, and Z. Li, “Cityflow:
+     A multi-agent reinforcement learning environment for large scale city traffic scenario,” in The
+     World Wide Web Conference, pp. 3620–3624, 2019.
+
+[17] E. W. Dijkstra, “A note on two problems in connexion with graphs,” Numerische Mathematik,
+     vol. 1, pp. 269–271, 1959.
+
+[18] S. Humagain, R. Sinha, E. Lai, and P. Ranjitkar, “A systematic review of route optimisation and
+     pre-emption methods for emergency vehicles,” Transport Reviews, vol. 40, no. 1, pp. 35–53, 2020.
+
+[19] X. Qin and A. M. Khan, “Control strategies of traffic signal timing transition for emergency vehicle
+     preemption,” Transportation Research Part C: Emerging Technologies, vol. 25, pp. 1–17, 2012.
+
+[20] A. Louati, S. Elkosantini, S. Darmoul, and H. Louati, “Multi-agent preemptive longest queue
+     first system to manage the crossing of emergency vehicles at interrupted intersections,” European
+     Transport Research Review, vol. 10, no. 2, p. 52, 2018.
+
+[21] Meta Open Source, “React documentation.” https://react.dev/, 2026. Accessed: 6 October
+     2026.
+BIBLIOGRAPHY                                                                                  59
+
+
+[22] FastAPI, “Fastapi documentation.” https://fastapi.tiangolo.com/, 2026. Accessed: 6 Oc-
+    tober 2026.
+
+[23] OpenStreetMap   Contributors,   “Openstreetmap   copyright   and   license.”   https://www.
+    openstreetmap.org/copyright, 2026. Accessed: 6 October 2026.
+APPENDIX A. DELIVERABLE 2 REQUIREMENTS COVERAGE                                                60
+
+
+Chapter A Deliverable 2 Requirements Coverage
+
+                                Table A.1: Requirements coverage matrix
+
+
+ Deliverable requirement         Primary evidence                 Report location
+
+ Project purpose and vision      Approved proposal and main-      Chapters 1–2
+                                 tained context
+ At least 15 relevant studies    Verified peer-reviewed litera-   Chapter 3 and bibliography
+                                 ture and official papers
+ Software requirements and       Proposal scope and planned       Chapter 4
+ use cases                       operator workflow
+ GUI and data design             Proposed dashboard and per-      Sections 4.7–4.8
+                                 sistence needs
+ Research methodology            Proposal baselines and repro-    Chapter 5
+                                 ducible evaluation plan
+ High- and low-level design      Service responsibilities and     Chapter 6
+                                 control safety constraints
+ Architecture,   UML,     se-    Original TikZ diagrams           Sections 6.2–6.7
+ quences, state model
+ Honest project status           Proposal stage statement and     Throughout; Section 1.3
+                                 repository evidence
+APPENDIX B. OPEN ITEMS FOR TEAM CONFIRMATION                                                            61
+
+
+Chapter B Open Items for Team Confirmation
+
+The report remains usable without resolving the items below, but they must be confirmed before an
+implementation or final-results report makes corresponding claims.
+
+   1. Exact Lahore road area, network size, and imported OpenStreetMap snapshot.
+
+   2. Final detector checkpoint, tracker configuration, annotated video sources, and license records.
+
+   3. Final RL algorithm and hyperparameters after baseline feasibility tests.
+
+   4. Database selection, demonstration hardware, and measured update/latency targets.
+
+   5. Actual application screenshots, once the interfaces exist; all current interface figures are labelled
+      as proposed wireframes.
+
+   6. Any faculty-issued certificate or approval page not present in the supplied FAST template.
+

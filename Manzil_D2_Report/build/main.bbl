@@ -1,0 +1,125 @@
+\begin{thebibliography}{10}
+
+\bibitem{lopez2018sumo}
+P.~A. Lopez, M.~Behrisch, L.~Bieker-Walz, J.~Erdmann, Y.-P. Fl{\"o}tter{\"o}d,
+  R.~Hilbrich, L.~L{\"u}cken, J.~Rummel, P.~Wagner, and E.~Wie{\ss}ner,
+  ``Microscopic traffic simulation using sumo,'' in {\em 2018 21st
+  International Conference on Intelligent Transportation Systems (ITSC)},
+  pp.~2575--2582, 2018.
+
+\bibitem{sumodocs}
+{Eclipse Foundation}, ``Sumo documentation: Traffic lights and traci.''
+  \url{https://sumo.dlr.de/docs/}, 2026.
+\newblock Accessed: 6 October 2026.
+
+\bibitem{hart1968astar}
+P.~E. Hart, N.~J. Nilsson, and B.~Raphael, ``A formal basis for the heuristic
+  determination of minimum cost paths,'' {\em IEEE Transactions on Systems
+  Science and Cybernetics}, vol.~4, no.~2, pp.~100--107, 1968.
+
+\bibitem{un2025sdg}
+{United Nations}, ``Goal 11: Sustainable cities and communities.''
+  \url{https://sdgs.un.org/goals/goal11}, 2025.
+\newblock Accessed: 6 October 2026.
+
+\bibitem{redmon2016yolo}
+J.~Redmon, S.~Divvala, R.~Girshick, and A.~Farhadi, ``You only look once:
+  Unified, real-time object detection,'' in {\em Proceedings of the IEEE
+  Conference on Computer Vision and Pattern Recognition}, pp.~779--788, 2016.
+
+\bibitem{wojke2017deepsort}
+N.~Wojke, A.~Bewley, and D.~Paulus, ``Simple online and realtime tracking with
+  a deep association metric,'' in {\em 2017 IEEE International Conference on
+  Image Processing}, pp.~3645--3649, 2017.
+
+\bibitem{zhang2022bytetrack}
+Y.~Zhang, P.~Sun, Y.~Jiang, D.~Yu, F.~Weng, Z.~Yuan, P.~Luo, W.~Liu, and
+  X.~Wang, ``Bytetrack: Multi-object tracking by associating every detection
+  box,'' in {\em European Conference on Computer Vision}, pp.~1--21, 2022.
+
+\bibitem{yu2020bdd100k}
+F.~Yu, H.~Chen, X.~Wang, W.~Xian, Y.~Chen, F.~Liu, V.~Madhavan, and T.~Darrell,
+  ``Bdd100k: A diverse driving dataset for heterogeneous multitask learning,''
+  in {\em IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pp.~2636--2645, 2020.
+
+\bibitem{wen2020uadetrac}
+L.~Wen, D.~Du, Z.~Cai, Z.~Lei, M.-C. Chang, H.~Qi, J.~Lim, M.-H. Yang, and
+  S.~Lyu, ``Ua-detrac: A new benchmark and protocol for multi-object detection
+  and tracking,'' {\em Computer Vision and Image Understanding}, vol.~193,
+  p.~102907, 2020.
+
+\bibitem{varaiya2013maxpressure}
+P.~Varaiya, ``Max pressure control of a network of signalized intersections,''
+  {\em Transportation Research Part C: Emerging Technologies}, vol.~36,
+  pp.~177--195, 2013.
+
+\bibitem{liang2019dqn}
+X.~Liang, X.~Du, G.~Wang, and Z.~Han, ``A deep reinforcement learning network
+  for traffic light cycle control,'' {\em IEEE Transactions on Vehicular
+  Technology}, vol.~68, no.~2, pp.~1243--1253, 2019.
+
+\bibitem{wei2019presslight}
+H.~Wei, C.~Chen, G.~Zheng, K.~Wu, V.~Gayah, K.~Xu, and Z.~Li, ``Presslight:
+  Learning max pressure control to coordinate traffic signals in arterial
+  network,'' in {\em Proceedings of the 25th ACM SIGKDD International
+  Conference on Knowledge Discovery and Data Mining}, pp.~1290--1298, 2019.
+
+\bibitem{zheng2019frap}
+G.~Zheng, X.~Zang, N.~Xu, H.~Wei, Z.~Yu, V.~Gayah, K.~Xu, and Z.~Li, ``Learning
+  phase competition for traffic signal control,'' in {\em Proceedings of the
+  28th ACM International Conference on Information and Knowledge Management},
+  pp.~1963--1972, 2019.
+
+\bibitem{wei2019colight}
+H.~Wei, N.~Xu, H.~Zhang, G.~Zheng, X.~Zang, C.~Chen, W.~Zhang, Y.~Zhu, K.~Xu,
+  and Z.~Li, ``Colight: Learning network-level cooperation for traffic signal
+  control,'' in {\em Proceedings of the 28th ACM International Conference on
+  Information and Knowledge Management}, pp.~1913--1922, 2019.
+
+\bibitem{chu2020marl}
+T.~Chu, J.~Wang, L.~Codec\`a, and Z.~Li, ``Multi-agent deep reinforcement
+  learning for large-scale traffic signal control,'' {\em IEEE Transactions on
+  Intelligent Transportation Systems}, vol.~21, no.~3, pp.~1086--1095, 2020.
+
+\bibitem{ma2019cityflow}
+H.~Zhang, S.~Feng, C.~Liu, Y.~Ding, Y.~Zhu, Z.~Zhou, W.~Zhang, Y.~Yu, H.~Jin,
+  and Z.~Li, ``Cityflow: A multi-agent reinforcement learning environment for
+  large scale city traffic scenario,'' in {\em The World Wide Web Conference},
+  pp.~3620--3624, 2019.
+
+\bibitem{dijkstra1959}
+E.~W. Dijkstra, ``A note on two problems in connexion with graphs,'' {\em
+  Numerische Mathematik}, vol.~1, pp.~269--271, 1959.
+
+\bibitem{humagain2020review}
+S.~Humagain, R.~Sinha, E.~Lai, and P.~Ranjitkar, ``A systematic review of route
+  optimisation and pre-emption methods for emergency vehicles,'' {\em Transport
+  Reviews}, vol.~40, no.~1, pp.~35--53, 2020.
+
+\bibitem{qin2012preemption}
+X.~Qin and A.~M. Khan, ``Control strategies of traffic signal timing transition
+  for emergency vehicle preemption,'' {\em Transportation Research Part C:
+  Emerging Technologies}, vol.~25, pp.~1--17, 2012.
+
+\bibitem{el2018emergency}
+A.~Louati, S.~Elkosantini, S.~Darmoul, and H.~Louati, ``Multi-agent preemptive
+  longest queue first system to manage the crossing of emergency vehicles at
+  interrupted intersections,'' {\em European Transport Research Review},
+  vol.~10, no.~2, p.~52, 2018.
+
+\bibitem{reactdocs}
+{Meta Open Source}, ``React documentation.'' \url{https://react.dev/}, 2026.
+\newblock Accessed: 6 October 2026.
+
+\bibitem{fastapidocs}
+{FastAPI}, ``Fastapi documentation.'' \url{https://fastapi.tiangolo.com/},
+  2026.
+\newblock Accessed: 6 October 2026.
+
+\bibitem{osmlicense}
+{OpenStreetMap Contributors}, ``Openstreetmap copyright and license.''
+  \url{https://www.openstreetmap.org/copyright}, 2026.
+\newblock Accessed: 6 October 2026.
+
+\end{thebibliography}

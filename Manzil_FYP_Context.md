@@ -1112,3 +1112,52 @@ Unless the user explicitly asks to rethink the project, continue from the curren
 **Computer Vision + Adaptive Traffic Control + RL + SUMO + Dynamic Emergency Routing + Moving Green Corridor + Dashboard + Quantitative Evaluation.**
 
 The next logical stage is implementation planning and execution.
+
+---
+
+# 35. DELIVERABLE 2 REPORT STATUS (6 OCTOBER 2026)
+
+## Completed artifacts
+
+- A complete Deliverable 2 LaTeX workspace has been created in `Manzil_D2_Report/` without modifying the original `FYPFast/` template or sample PDFs.
+- The compiled handoff PDF is `Manzil_Deliverable_2_Report.pdf` at repository root; the build copy is `Manzil_D2_Report/build/main.pdf`.
+- The report contains FAST front matter, Chapters 1--6, bibliography, a requirements-coverage appendix, and an open-items appendix.
+- Final compiled length is 72 A4 pages.
+- The LaTeX build completed with all citations and cross-references resolved.
+- Source organization and reproduction instructions are documented in `Manzil_D2_Report/README.md`; detailed checks are in `Manzil_D2_Report/REVIEW_NOTES.md`.
+
+## Report decisions now established
+
+- The title follows the approved proposal: **Manzil: Intelligent Traffic & Emergency Routing**.
+- `F26-104` is shown as the project/group ID based on the approved proposal filename. This inference still requires team confirmation.
+- The report preserves the two evidence paths: recorded-video perception and SUMO-controlled experiments.
+- The report describes implementation and results only as proposed work because no source code, trained models, experiment logs, or measured results were present.
+- The core emergency evaluation uses one active ambulance and separates the contributions of dynamic routing and corridor control.
+- The selected design uses one owner of SUMO stepping and signal actuation. Controllers return requests that pass through a safety filter.
+- Dynamic route costs are expressed in seconds and must avoid double-counting queue delay already present in measured link travel time.
+- Dijkstra is the reference routing algorithm. A* is permitted only with an admissible free-flow travel-time lower bound.
+- The moving corridor uses requested, safe-transition, active-priority, passage, recovery, and cancellation/failure states.
+- PostgreSQL, ByteTrack, the RL algorithm, exact network size, thresholds, and hardware remain proposed until implementation evidence confirms them.
+
+## Literature and sample-report basis
+
+- Principal sample references: ParkEase for SRS/architecture, JobLens for research depth, and GeoSync for map/routing/fallback presentation.
+- Chapter 3 critically reviews 18 peer-reviewed studies across detection, tracking, datasets, adaptive/RL signal control, simulation, graph routing, and emergency preemption.
+- The complete report cites 23 verified research or official sources. Citation metadata was checked against DOI/publisher/proceedings or official documentation records.
+
+## Visual and specification coverage
+
+- Original figures include project context, use cases, five proposed GUI wireframes, ER model, research workflow, perception pipeline, high-level architecture, domain/class model, three sequences, and corridor state transitions.
+- Current UI figures are wireframes, not screenshots. Replace them only after real interfaces exist.
+- Requirements include FR-01--FR-20, NFR-01--NFR-12, eight substantive use cases, data dictionary, risk register, and traceability matrix.
+- Methodology includes fixed/rule/RL controller definitions, routing and corridor pseudocode, experimental matrix, metric definitions, reproducibility controls, and validity threats.
+
+## Unresolved items
+
+1. Confirm that `F26-104` is the official project/group identifier.
+2. Confirm the exact Lahore network, bounding box, map snapshot, and signalized-intersection count.
+3. Confirm video sources, permissions, annotation plan, detector checkpoint, and tracker configuration.
+4. Select one final RL algorithm after baseline profiling.
+5. Confirm the database engine, development/demonstration hardware, and measurable control/freshness targets.
+6. Insert real UI screenshots only after implementation; do not fabricate them.
+7. Confirm whether a separate faculty certificate/approval page is required beyond the supplied FAST template.

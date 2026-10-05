@@ -1,0 +1,131 @@
+\chapter{Literature Review and Related Work}
+\label{ch:literature}
+
+This chapter examines the research needed to justify Manzil's design rather than treating the use of familiar tools as a contribution. The review is organized around five decisions: how traffic is observed, how normal signals are controlled, how learned policies are evaluated, how emergency routes are selected, and how signal priority is activated and recovered. Reported results are interpreted within their original datasets and environments; values from incompatible benchmarks are not compared as though they were a common test.
+
+\section{Review Method and Terminology}
+
+The approved proposal provided an initial bibliography. Each retained study was checked against a publisher page, proceedings record, DOI, or official open-access paper. Studies were selected for direct relevance to detection and tracking, traffic-signal control, shortest-path routing, emergency routing, preemption, or simulation. Official software documentation is used for interfaces but is not counted among the research studies.
+
+The review distinguishes \emph{detection} from \emph{tracking}. Detection locates and classifies objects in a frame; tracking associates those observations through time. It also distinguishes \emph{priority} from \emph{preemption}. Priority may adjust normal timing within constraints, whereas preemption interrupts normal operation for an emergency request. Manzil uses ``corridor'' for a coordinated sequence of such bounded interventions.
+
+\section{Vision-Based Traffic Observation}
+
+\subsection{One-Stage Object Detection}
+
+Redmon et al. formulated YOLO as a single network that predicts bounding boxes and class probabilities from an image in one evaluation \cite{redmon2016yolo}. The work established the feasibility of real-time one-stage detection and reported strong speed, while also identifying localization errors as a relative weakness. For Manzil, this supports a pretrained one-stage detector as a feasible starting point, not an assumption that all vehicle classes and viewpoints will be accurate. A detector checkpoint must be evaluated on the selected traffic scenes, and confidence thresholds cannot be copied from an unrelated benchmark.
+
+The practical relevance is latency and a simple inference path. The limitation is that frame-level boxes do not provide stable counts by themselves. Repeatedly counting the same vehicle, missed detections under occlusion, and perspective-dependent apparent size require tracking and region rules. Manzil therefore treats the detector as one stage in a measurement pipeline.
+
+\subsection{Multi-Object Association}
+
+Wojke et al. extended a simple online tracker with a learned appearance metric, improving association through longer occlusions \cite{wojke2017deepsort}. The method illustrates a tradeoff: appearance information can reduce identity switches but adds a feature-extraction model and domain sensitivity. It is a useful alternative if traffic identities fragment severely, but its additional cost must be justified by the metrics that Manzil actually needs.
+
+ByteTrack instead associates high-confidence detections first and then attempts to recover objects from lower-confidence detections rather than discarding them \cite{zhang2022bytetrack}. The authors evaluated the approach across multiple tracking benchmarks and reported strong MOT17 accuracy with real-time throughput on their specified hardware. This is relevant because traffic occlusion often lowers confidence. Its benchmark speed cannot be adopted as Manzil's performance target, and an identity-preserving tracker does not by itself determine lane membership or queue state.
+
+Together, these studies motivate an empirical tracker selection. The decision should be based on count error, identity stability where needed, and end-to-end throughput on the team's hardware. If aggregate counts are reliable without expensive appearance features, the simpler configuration may be preferable.
+
+\subsection{Traffic Datasets and Domain Coverage}
+
+BDD100K provides a large and diverse driving dataset with multiple tasks, including detection and tracking, collected across varied locations, weather, and times \cite{yu2020bdd100k}. This diversity is useful for initializing or stress-testing a perception pipeline. The camera perspective is primarily vehicle-mounted, however, whereas Manzil may use roadside or elevated recorded video. The dataset cannot substitute for validation on the intended viewpoint.
+
+UA-DETRAC is a benchmark focused on vehicle detection and tracking in traffic-surveillance video \cite{wen2020uadetrac}. Its fixed-camera scenes are closer to an intersection-observation use case and its protocol makes detector-tracker interactions visible. Its scenes still do not guarantee representation of Lahore traffic composition, motorcycle density, rickshaws, lane discipline, or camera mounting. The strongest plan is therefore to use licensed public material for reproducible comparison and a small, separately documented local sample for domain analysis if collection is feasible and ethically permitted.
+
+These dataset studies also shape data splitting. Adjacent video frames are highly correlated. Random frame splitting can leak nearly identical scenes into training and test sets. Manzil will split by sequence or source and will retain a held-out set that is not used for threshold tuning.
+
+\section{Conventional and Adaptive Signal Control}
+
+\subsection{Fixed-Time Baseline}
+
+A fixed-time controller remains necessary even when it is not expected to dominate every scenario. It supplies a stable reference, exposes whether demand generation itself is biased, and enables exact reproduction. The plan will specify phases, yellow and all-red transitions, cycle length, offsets if any, and demand assumptions. A weak or arbitrarily misconfigured fixed baseline would exaggerate improvements and undermine the comparison.
+
+\subsection{Max-Pressure Control}
+
+Varaiya formalized max-pressure control for networks of signalized intersections \cite{varaiya2013maxpressure}. Pressure is derived from upstream and downstream queue conditions, and selecting phases that reduce network pressure has a stronger theoretical basis than using an unexplained weighted score. The method is decentralized and responsive, which makes it a valuable non-learning reference.
+
+Its assumptions and measurements still matter. Queue observations must be available, movements and saturation behavior must be represented correctly, and phase switching must respect minimum green and clearance. Manzil's first rule-based controller will be deliberately transparent; a max-pressure-inspired score is a stronger candidate than ad hoc percentages if the required downstream queues are reliable. Fairness and maximum-red safeguards remain explicit even when pressure is used.
+
+\section{Reinforcement Learning for Traffic Signals}
+
+\subsection{Cycle-Level Deep Q-Learning}
+
+Liang et al. used deep reinforcement learning to adjust traffic-light cycle behavior from traffic state \cite{liang2019dqn}. The study demonstrates how state observations and action granularity can be connected to a learned controller. It also illustrates a recurring limitation: a policy evaluated in a particular intersection and demand setting may not generalize to unseen networks or demand distributions.
+
+For Manzil, deep Q-learning is feasible only after the action space has been bounded and a stable baseline exists. The report does not commit to reproducing the paper's network or treating its reported improvement as a project expectation. The applicable lesson is to define decision interval, phase legality, and reward terms before training.
+
+\subsection{Pressure-Informed Reward Design}
+
+PressLight connects an RL reward and state representation to max-pressure traffic theory \cite{wei2019presslight}. The paper argues that a transportation-grounded reward reduces dependence on arbitrary handcrafted objectives and evaluates the method against conventional and learning baselines in arterial settings. This is directly relevant to Manzil because a reward based only on total waiting time can obscure spillback or starvation.
+
+PressLight does not remove the need for careful evaluation. Network topology, flows, phase definitions, and training budget influence performance. Manzil can use pressure as a principal reward signal or baseline concept, but it must report the exact state and movement mapping. Emergency priority will be implemented as a safety-constrained supervisory mode rather than silently folded into normal-controller reward during the first comparison.
+
+\subsection{Phase Competition and Network Cooperation}
+
+FRAP represents competition among phases and was designed to exploit invariance across phase configurations \cite{zheng2019frap}. This is valuable where equivalent movements should not require independent learning from scratch. Its structured representation increases implementation complexity and still depends on an accurate phase graph. Manzil may adopt its representational lesson without claiming to reproduce FRAP.
+
+CoLight uses graph-attention mechanisms to support cooperation among intersections \cite{wei2019colight}. The study addresses the limitation of isolated agents by allowing neighboring traffic information to influence decisions. Such coordination is relevant for a multi-intersection corridor, yet attention-based multi-agent training can exceed an undergraduate project's tuning budget and complicate attribution. The initial RL scope should therefore use either a centralized policy for a small network or a clearly defined independent-agent arrangement, with coordination as a measured design choice.
+
+Chu et al. studied multi-agent deep RL for larger signal networks and emphasized scalable coordination \cite{chu2020marl}. Like CoLight, the work supports the importance of communication and local observations. It also reinforces the risk of non-stationarity: when multiple agents update policies, each agent experiences an environment affected by changing peers. Manzil should not claim network-level RL simply because multiple signals exist; the policy ownership and training scheme must be explicit.
+
+\subsection{Simulation Environments}
+
+CityFlow was introduced as a multi-agent RL environment for large-scale city traffic scenarios \cite{ma2019cityflow}. Its contribution is chiefly simulation throughput and support for large networks. SUMO is retained for Manzil because the proposal already depends on its microscopic model, traffic-light control, map toolchain, and TraCI integration \cite{lopez2018sumo}. CityFlow remains an important alternative in the design tradeoff: it may train faster in some large-scale settings, but switching simulators would add model-equivalence work and reduce alignment with the approved proposal.
+
+Lopez et al. describe SUMO's architecture and microscopic simulation capabilities \cite{lopez2018sumo}. Simulation provides repeatability and access to internal state, but a simulator is not a validation of real-world impact. Car-following parameters, route demand, signal programs, and map cleanup can materially affect results. Manzil will version those artifacts and frame its conclusions as performance within declared simulation conditions.
+
+\section{Dynamic Routing}
+
+Dijkstra's shortest-path method finds minimum-cost paths on a graph with nonnegative edge weights \cite{dijkstra1959}. Hart, Nilsson, and Raphael introduced the formal basis of A*, which adds a heuristic estimate to guide the search \cite{hart1968astar}. These algorithms are well established; using them is not Manzil's novelty. The project-specific work is the definition and update of valid edge costs, the treatment of closures, and the interaction between routing and signal priority.
+
+For time-dependent routing, physical distance is insufficient. Manzil proposes expected link travel time plus non-overlapping estimates of queue discharge and residual signal delay. Each term must be expressed in seconds, or normalized with a documented interpretation. If travel time already includes observed queue delay, adding a second congestion penalty would double-count the same effect. Dijkstra is the reference implementation. A* may be used when a lower-bound free-flow travel-time heuristic remains admissible under nonnegative added delays.
+
+Dynamic rerouting can itself be harmful if small fluctuations repeatedly switch the route. The selected path will be changed only when the remaining cost improvement exceeds a threshold and persists for a defined interval, or when the current route becomes infeasible. Route revisions and computation time are part of evaluation, not merely logs.
+
+\section{Emergency Routing and Signal Preemption}
+
+Humagain et al. systematically reviewed emergency-vehicle route optimization and preemption methods \cite{humagain2020review}. The review identifies recurring gaps: limited real-world application, insufficient use of dynamic traffic data, weak treatment of travel time, effects on general traffic, and safety. This supports Manzil's integrated evaluation, but it does not justify a claim that no integrated systems exist. It also motivates measuring ordinary-traffic disruption alongside emergency benefit.
+
+Qin and Khan studied transitions into emergency preemption and recovery to normal timing \cite{qin2012preemption}. Their work explicitly addresses safe clearance, use of otherwise unnecessary green time, and recovery queues. The key design lesson is that preemption is a lifecycle rather than a single ``set green'' command. Manzil therefore models requested, safe-transition, active, passage, and recovery states, and retains timing values as configurable simulation policies rather than certified field parameters.
+
+Louati et al. investigated multi-agent, queue-aware emergency crossing at signalized intersections \cite{el2018emergency}. Queue-aware prioritization is relevant because a green indication alone does not guarantee an unobstructed approach. The method is more ambitious than Manzil's core single-ambulance case, but it motivates look-ahead activation and checking whether downstream storage is available. Manzil will not infer safety merely from the absence of simulated collisions.
+
+\section{Synthesis and Research Gap}
+
+The literature establishes reliable building blocks, but also exposes integration risks. One-stage detection is fast enough to investigate traffic video, yet traffic indicators require tracking, geometry, and local validation. Max-pressure and RL research offers responsive control, yet comparison is sensitive to state, reward, phase constraints, and simulator assumptions. Shortest-path algorithms are mature, yet their usefulness depends on dynamic costs and route-stability rules. Emergency-preemption research stresses transition and recovery, yet ordinary-traffic impact is often a central tradeoff.
+
+Manzil's proposed contribution is therefore not a new detector, shortest-path algorithm, or RL family. It is the design and controlled evaluation of an integrated, traceable prototype in which: (1) perception and simulator evidence are not conflated; (2) normal controllers are compared under matched scenarios; (3) routing and corridor contributions are ablated; and (4) ambulance benefit is reported together with network disruption and recovery. The unresolved research question is whether this integration produces consistent benefit under the selected scenarios and constraints.
+
+\begin{landscape}
+\begin{longtable}{p{3.0cm}p{4.0cm}p{4.4cm}p{4.4cm}p{3.4cm}}
+\caption{Literature review summary}\label{tab:literature-summary}\\
+\toprule
+\textbf{Study} & \textbf{Method/setting} & \textbf{Reported result in context} & \textbf{Limitations for Manzil} & \textbf{Design implication}\\
+\midrule\endfirsthead
+\toprule
+\textbf{Study} & \textbf{Method/setting} & \textbf{Reported result in context} & \textbf{Limitations for Manzil} & \textbf{Design implication}\\
+\midrule\endhead
+Redmon et al. \cite{redmon2016yolo} & Unified one-stage object detector on standard image benchmarks & Demonstrated real-time detection and strong speed/accuracy tradeoff & Original benchmark and classes do not establish roadside traffic accuracy & Evaluate a pretrained descendant on selected traffic video\\
+Wojke et al. \cite{wojke2017deepsort} & Online tracking with learned appearance association & Improved association through occlusion in pedestrian tracking setting & Added compute and domain-dependent appearance model & Consider when identity fragmentation affects counts\\
+Zhang et al. \cite{zhang2022bytetrack} & Two-stage association including low-score boxes & Strong results on several MOT benchmarks; real-time operation on stated hardware & Benchmark speed and identities do not imply calibrated traffic measures & Candidate tracker; measure end-to-end count error\\
+Yu et al. \cite{yu2020bdd100k} & Large, multi-task driving-video dataset & Provides varied conditions and annotations & Mostly vehicle-mounted viewpoint; domain shift to roadside Lahore scenes & Use for pretraining/stress tests, not sole validation\\
+Wen et al. \cite{wen2020uadetrac} & Vehicle detection/tracking benchmark for surveillance scenes & Provides joint detection/tracking evaluation protocol & Limited local vehicle mix and site geometry & Prefer sequence-level split and report local limitations\\
+Varaiya \cite{varaiya2013maxpressure} & Max-pressure network signal control & Establishes theoretical network-control properties under model assumptions & Requires movement queues and lawful phases & Use as transparent adaptive concept/baseline\\
+Liang et al. \cite{liang2019dqn} & Deep Q-learning for cycle control & Showed adaptive learned control in simulated setting & Transfer across demand and topology remains uncertain & Bound actions and evaluate only on held-out scenarios\\
+Wei et al. \cite{wei2019presslight} & RL with max-pressure-grounded state/reward & Outperformed tested conventional and learning baselines & Results depend on tested networks and flows & Prefer grounded reward over arbitrary weighted sum\\
+Zheng et al. \cite{zheng2019frap} & Phase competition representation & Learns relations among competing phases & More complex phase encoding & Preserve phase legality and invariance where feasible\\
+Wei et al. \cite{wei2019colight} & Graph-attention cooperation across signals & Demonstrated network-level cooperation in tested simulations & Training and attribution complexity & Keep first network small; declare coordination model\\
+Chu et al. \cite{chu2020marl} & Multi-agent deep RL for larger networks & Studied scalable decentralized coordination & Multi-agent non-stationarity and tuning cost & Avoid vague ``multi-agent'' claim; record ownership\\
+Ma et al. \cite{ma2019cityflow} & High-throughput city-scale RL simulator & Supports large traffic-RL experiments & Switching simulator complicates proposal alignment & Retain SUMO; note CityFlow as alternative\\
+Lopez et al. \cite{lopez2018sumo} & Microscopic SUMO simulator architecture & Supports detailed and externally controlled experiments & Simulation parameters determine external validity & Version network, demand, and car-following settings\\
+Dijkstra \cite{dijkstra1959} & Nonnegative shortest-path search & Guarantees minimum path cost under assumptions & Static snapshot unless costs are refreshed & Reference route implementation\\
+Hart et al. \cite{hart1968astar} & Heuristic minimum-cost path search & Guides search efficiently with suitable heuristic & Invalid heuristic can lose optimality & Use free-flow time lower bound or retain Dijkstra\\
+Humagain et al. \cite{humagain2020review} & Systematic review of emergency route/preemption work & Identified real-time, safety, deployment, and side-effect gaps & Review does not validate a particular implementation & Measure both EV benefit and ordinary-traffic impact\\
+Qin and Khan \cite{qin2012preemption} & Simulation of entry and recovery strategies & Reported improved transitions over tested conventional approaches & Parameters are not certified for Manzil's network & Implement explicit safe transition and recovery states\\
+Louati et al. \cite{el2018emergency} & Queue-aware multi-agent emergency crossing & Coordinates emergency passage in tested interrupted intersections & Multi-EV/multi-agent scope exceeds core case & Use queue awareness and downstream checks\\
+\bottomrule
+\end{longtable}
+\end{landscape}
+
+\section{Conclusion}
+
+The review supports a conservative technical strategy: start with transparent baselines, define measurements before optimization, select one feasible RL formulation, and model emergency priority as a stateful safety-constrained intervention. It also establishes the need for source-separated video evaluation, matched simulation seeds, ablation of routing and corridor effects, and explicit external-validity limits.
