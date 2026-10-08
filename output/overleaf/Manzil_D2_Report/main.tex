@@ -1,0 +1,136 @@
+\documentclass{../FYPFast/FastFyp}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{booktabs,longtable,tabularx,array,multirow}
+\usepackage{enumitem,float,adjustbox}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,fit,backgrounds,calc,matrix}
+\definecolor{manzilblue}{HTML}{184E77}
+\definecolor{manzilgreen}{HTML}{2A9D8F}
+\definecolor{manzilamber}{HTML}{E9C46A}
+\definecolor{manzilred}{HTML}{D1495B}
+\definecolor{manzilgray}{HTML}{F3F5F7}
+\hypersetup{pdftitle={Manzil: Intelligent Traffic and Emergency Routing},pdfauthor={Muhammad Ali Mahoon, Muzammil Ahmed Bhatti, Mohammad Ibrahim Salman}}
+\setlength{\headheight}{15pt}
+\setcounter{tocdepth}{2}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\newcommand{\supervisor}{Miss Umm-e-Ammarah}
+\newcommand{\university}{National University of Computer and Emerging Sciences, Lahore}
+\newcommand{\fyptitle}{Manzil: Intelligent Traffic \& Emergency Routing}
+\date{7 October 2026}
+\renewcommand{\contentsname}{Table of Contents}
+
+\makeatletter
+\begin{titlepage}
+  \includegraphics[width=0.2\linewidth]{../FYPFast/Figures/nulogo.png}\hfill
+  \includegraphics[width=0.2\linewidth]{../FYPFast/Figures/fast.png}
+  \begin{center}
+    {\large\bfseries \university}\par\vspace{7ex}
+    \includegraphics[width=0.4\linewidth]{../FYPFast/Figures/fastlogo.png}\par\vspace{8ex}
+    {\LARGE\bfseries \fyptitle\par}\vspace{8ex}
+    \begin{tabular}{lll}
+      Muhammad Ali Mahoon & 23L-0531 & BS(CS)\\[0.4ex]
+      Muzammil Ahmed Bhatti & 23L-0688 & BS(CS)\\[0.4ex]
+      Mohammad Ibrahim Salman & 23L-0723 & BS(CS)
+    \end{tabular}
+    \par\vspace{4ex}
+    {Supervisor: \supervisor\par}\vspace{10ex}
+    {Final Year Project\par}\vspace{0.7ex}
+    {\large \@date\par}
+  \end{center}
+\end{titlepage}
+\makeatother
+
+\frontmatter
+\hypersetup{pageanchor=true}
+\cleardoublepage
+\thispagestyle{empty}
+\section*{Anti-Plagiarism Declaration}
+We declare that this report, entitled ``\fyptitle,'' is the original work of the listed authors. Material derived from other work has been identified and cited. No part has been reproduced in a manner that constitutes plagiarism. We accept responsibility for any violation established under the University's academic-integrity policy.
+
+\vspace{1cm}
+\begin{tabularx}{\textwidth}{Y Y}
+Date: \rule{4cm}{0.4pt} & Muhammad Ali Mahoon: \rule{4cm}{0.4pt}\\[1.2cm]
+& Muzammil Ahmed Bhatti: \rule{4cm}{0.4pt}\\[1.2cm]
+& Mohammad Ibrahim Salman: \rule{4cm}{0.4pt}
+\end{tabularx}
+
+\vfill
+\hrule
+\section*{Authors' Declaration}
+We declare that the work presented in this Deliverable 2 report is our own project work and has not been submitted previously, in whole or in part, to another institution for an academic award. This document describes a proposed system and planned evaluation; it does not present unperformed experiments as completed results.
+
+\cleardoublepage
+\section*{Abstract}
+Manzil is a simulation-based research and development prototype for adaptive urban traffic control and emergency routing. It combines video-based vehicle detection and tracking, traffic-state estimation, comparative signal-control policies, congestion-aware ambulance routing, and a moving green corridor within a SUMO test environment. A React dashboard and FastAPI services are proposed to expose system state and experimental records. This report specifies the requirements, research method, architecture, and controlled evaluation protocol; implementation and measured results remain subsequent project work.
+
+\cleardoublepage
+\section*{Executive Summary}
+Traffic congestion affects daily movement, while delays to an ambulance can carry more serious consequences. Conventional signal plans are prepared for expected demand and cannot respond to every short-term imbalance. Route guidance based only on distance can also direct an emergency vehicle toward a road that is short but heavily queued. Manzil addresses these related problems through a controlled research prototype rather than a public-road deployment. It will examine how traffic observations can support responsive signal decisions, how an ambulance route can reflect current network conditions, and how selected intersections can provide temporary priority as the vehicle approaches. The expected value for decision makers is a repeatable environment in which alternative policies can be compared before any investment in roadside equipment or operational integration is considered. The project does not promise citywide improvement at this stage. It establishes a practical basis for determining whether an integrated approach is beneficial, what disruption it causes to ordinary traffic, and which limitations must be resolved before later field-oriented work could be justified.
+
+The proposed prototype combines recorded-video traffic observation with a simulated urban road network. Recorded video will be used to assess whether vehicle detection and tracking can provide useful counts and queue-related indicators. SUMO will provide a safe and repeatable setting for comparing fixed-time, rule-based adaptive, and reinforcement-learning signal control. When an ambulance mission is created, the system will evaluate valid routes using travel-time and delay estimates rather than distance alone. A moving green corridor will prepare only the next relevant intersections, allow safe signal transitions, detect that the ambulance has passed, and return each intersection to normal operation. A web dashboard will present the current network, selected route, traffic conditions, corridor status, warnings, and experiment summaries. These capabilities are deliberately limited to a manageable prototype with one active ambulance. Manzil will not connect to government signals, consume live government CCTV, cover all of Lahore, perform enforcement, or claim the safety certification needed for operational emergency response.
+
+Project success will be judged through transparent comparisons rather than a visually convincing demonstration. Normal-traffic experiments will replay matched demand scenarios under each signal controller and compare waiting time, queue length, travel time, throughput, and fairness between approaches. Emergency experiments will separate the benefit of congestion-aware routing from the additional benefit and disruption of signal priority. The evaluation will retain scenario definitions, random seeds, software versions, controller settings, route revisions, failures, and metric definitions so that a reported outcome can be reproduced. This Deliverable 2 report therefore concentrates on the project vision, research evidence, software requirements, proposed method, and system design. It reports no invented accuracy, travel-time reduction, or completed implementation milestone. Several choices, including the exact Lahore network, final video sources, tracking configuration, reinforcement-learning algorithm, database engine, and hardware targets, remain subject to confirmation through implementation and baseline profiling. The immediate deliverable is a technically bounded plan that the team and evaluators can inspect before development results are presented.
+
+\pagestyle{fancy}
+\tableofcontents
+\cleardoublepage
+\listoffigures
+\addcontentsline{toc}{chapter}{List of Figures}
+\cleardoublepage
+\listoftables
+\addcontentsline{toc}{chapter}{List of Tables}
+
+\mainmatter
+\include{chapters/01_introduction}
+\include{chapters/02_vision}
+\include{chapters/03_literature}
+\include{chapters/04_srs}
+\include{chapters/05_methodology}
+\include{chapters/06_design}
+
+\cleardoublepage
+\bibliographystyle{ieeetr}
+\bibliography{references}
+
+\appendix
+\chapter{Deliverable 2 Requirements Coverage}
+\label{app:coverage}
+Table \ref{tab:coverage} provides a final audit trail from the governing Deliverable 2 plan to the chapters and evidence in this report. It is included for review convenience and does not replace the detailed requirements traceability matrix in Chapter \ref{ch:srs}.
+\begin{longtable}{p{0.27\textwidth}p{0.29\textwidth}p{0.35\textwidth}}
+\caption{Requirements coverage matrix}\label{tab:coverage}\\
+\toprule
+\textbf{Deliverable requirement} & \textbf{Primary evidence} & \textbf{Report location}\\
+\midrule\endfirsthead
+\toprule
+\textbf{Deliverable requirement} & \textbf{Primary evidence} & \textbf{Report location}\\
+\midrule\endhead
+Project purpose and vision & Approved proposal and maintained context & Chapters 1--2\\
+At least 15 relevant studies & Verified peer-reviewed literature and official papers & Chapter 3 and bibliography\\
+Software requirements and use cases & Proposal scope and planned operator workflow & Chapter 4\\
+GUI and data design & Proposed dashboard and persistence needs & Sections \ref{sec:gui}--\ref{sec:data-design}\\
+Research methodology & Proposal baselines and reproducible evaluation plan & Chapter 5\\
+High- and low-level design & Service responsibilities and control safety constraints & Chapter 6\\
+Architecture, UML, sequences, state model & Original TikZ diagrams & Sections \ref{sec:architecture}--\ref{sec:corridor-state}\\
+Honest project status & Proposal stage statement and repository evidence & Throughout; Section \ref{sec:status}\\
+\bottomrule
+\end{longtable}
+
+\chapter{Open Items for Team Confirmation}
+\label{app:open-items}
+The report remains usable without resolving the items below, but they must be confirmed before an implementation or final-results report makes corresponding claims.
+\begin{enumerate}
+  \item Exact Lahore road area, network size, and imported OpenStreetMap snapshot.
+  \item Final detector checkpoint, tracker configuration, annotated video sources, and license records.
+  \item Final RL algorithm and hyperparameters after baseline feasibility tests.
+  \item Database selection, demonstration hardware, and measured update/latency targets.
+  \item Actual application screenshots, once the interfaces exist; all current interface figures are labelled as proposed wireframes.
+  \item Any faculty-issued certificate or approval page not present in the supplied FAST template.
+\end{enumerate}
+
+\end{document}

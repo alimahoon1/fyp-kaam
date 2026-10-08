@@ -3,7 +3,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{booktabs,longtable,tabularx,array,multirow}
-\usepackage{enumitem,float,adjustbox,pdflscape}
+\usepackage{enumitem,float,adjustbox}
 \usepackage{xcolor}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning,shapes.geometric,fit,backgrounds,calc,matrix}
@@ -16,56 +16,42 @@
 \setlength{\headheight}{15pt}
 \setcounter{tocdepth}{2}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
-\newcommand{\status}[1]{\textit{#1}}
-\newcommand{\fr}[1]{\textbf{FR-#1}}
-\newcommand{\nfr}[1]{\textbf{NFR-#1}}
-\newcommand{\todo}[1]{\fcolorbox{manzilred}{manzilgray}{\parbox{0.92\linewidth}{\textbf{TODO:} #1}}}
 
 \begin{document}
+\hypersetup{pageanchor=false}
 \newcommand{\supervisor}{Miss Umm-e-Ammarah}
 \newcommand{\university}{National University of Computer and Emerging Sciences, Lahore}
 \newcommand{\fyptitle}{Manzil: Intelligent Traffic \& Emergency Routing}
-\newcommand{\reporttype}{Deliverable 2 Report}
 \date{7 October 2026}
 \renewcommand{\contentsname}{Table of Contents}
 
 \makeatletter
 \begin{titlepage}
-  \includegraphics[width=0.19\linewidth]{../FYPFast/Figures/nulogo.png}\hfill
-  \includegraphics[width=0.19\linewidth]{../FYPFast/Figures/fast.png}
+  \includegraphics[width=0.2\linewidth]{../FYPFast/Figures/nulogo.png}\hfill
+  \includegraphics[width=0.2\linewidth]{../FYPFast/Figures/fast.png}
   \begin{center}
-    \vspace{1.0cm}
-    {\large\bfseries \university}\par
-    \vspace{1.2cm}
-    \includegraphics[width=0.34\linewidth]{../FYPFast/Figures/fastlogo.png}\par
-    \vspace{1.4cm}
-    {\Huge\bfseries \fyptitle\par}
-    \vspace{0.7cm}
-    {\Large \reporttype\par}
-    \vspace{0.4cm}
-    {\large Project/Group ID: F26-104\par}
-    \vspace{1.1cm}
-    \begin{tabular}{ll}
-      Muhammad Ali Mahoon & 23L-0531\\
-      Muzammil Ahmed Bhatti & 23L-0688\\
-      Mohammad Ibrahim Salman & 23L-0723
+    {\large\bfseries \university}\par\vspace{7ex}
+    \includegraphics[width=0.4\linewidth]{../FYPFast/Figures/fastlogo.png}\par\vspace{8ex}
+    {\LARGE\bfseries \fyptitle\par}\vspace{8ex}
+    \begin{tabular}{lll}
+      Muhammad Ali Mahoon & 23L-0531 & BS(CS)\\[0.4ex]
+      Muzammil Ahmed Bhatti & 23L-0688 & BS(CS)\\[0.4ex]
+      Mohammad Ibrahim Salman & 23L-0723 & BS(CS)
     \end{tabular}
-    \vspace{0.8cm}
-
-    {Supervisor: \supervisor\par}
-    \vfill
-    {Department of Computer Science\par}
-    {Final Year Project\par}
+    \par\vspace{4ex}
+    {Supervisor: \supervisor\par}\vspace{10ex}
+    {Final Year Project\par}\vspace{0.7ex}
     {\large \@date\par}
   \end{center}
 \end{titlepage}
 \makeatother
 
 \frontmatter
+\hypersetup{pageanchor=true}
 \cleardoublepage
 \thispagestyle{empty}
 \section*{Anti-Plagiarism Declaration}
-We declare that this report, entitled \emph{\fyptitle}, is the original work of the listed authors. Material derived from other work has been identified and cited. No part has been reproduced in a manner that constitutes plagiarism. We accept responsibility for any violation established under the University's academic-integrity policy.
+We declare that this report, entitled ``\fyptitle,'' is the original work of the listed authors. Material derived from other work has been identified and cited. No part has been reproduced in a manner that constitutes plagiarism. We accept responsibility for any violation established under the University's academic-integrity policy.
 
 \vspace{1cm}
 \begin{tabularx}{\textwidth}{Y Y}
@@ -85,15 +71,11 @@ Manzil is a simulation-based research and development prototype for adaptive urb
 
 \cleardoublepage
 \section*{Executive Summary}
-Urban road demand changes over time and between approaches, whereas a fixed timing plan cannot respond to every short-term imbalance. Emergency vehicles face a related but stricter problem: a geographically short route can still be slow when queues, signal delay, or an incident obstruct the path. Manzil studies these two problems in one controlled prototype. The system is intended to compare fixed-time, rule-based adaptive, and reinforcement-learning signal control, then determine the contribution of dynamic routing and a moving green corridor to ambulance travel while measuring the disruption imposed on ordinary traffic.
+Traffic congestion affects daily movement, while delays to an ambulance can carry more serious consequences. Conventional signal plans are prepared for expected demand and cannot respond to every short-term imbalance. Route guidance based only on distance can also direct an emergency vehicle toward a road that is short but heavily queued. Manzil addresses these related problems through a controlled research prototype rather than a public-road deployment. It will examine how traffic observations can support responsive signal decisions, how an ambulance route can reflect current network conditions, and how selected intersections can provide temporary priority as the vehicle approaches. The expected value for decision makers is a repeatable environment in which alternative policies can be compared before any investment in roadside equipment or operational integration is considered. The project does not promise citywide improvement at this stage. It establishes a practical basis for determining whether an integrated approach is beneficial, what disruption it causes to ordinary traffic, and which limitations must be resolved before later field-oriented work could be justified.
 
-The project deliberately separates two evidence paths. Recorded traffic video is used to study whether a detector and multi-object tracker can produce observable counts, speeds, and queue proxies. SUMO and TraCI provide exact, repeatable network state for controller and routing experiments. These paths share a versioned traffic-state contract, but this report does not claim that arbitrary camera footage reconstructs a complete road network. Camera calibration, lane mapping, observation freshness, and uncertainty are explicit constraints.
+The proposed prototype combines recorded-video traffic observation with a simulated urban road network. Recorded video will be used to assess whether vehicle detection and tracking can provide useful counts and queue-related indicators. SUMO will provide a safe and repeatable setting for comparing fixed-time, rule-based adaptive, and reinforcement-learning signal control. When an ambulance mission is created, the system will evaluate valid routes using travel-time and delay estimates rather than distance alone. A moving green corridor will prepare only the next relevant intersections, allow safe signal transitions, detect that the ambulance has passed, and return each intersection to normal operation. A web dashboard will present the current network, selected route, traffic conditions, corridor status, warnings, and experiment summaries. These capabilities are deliberately limited to a manageable prototype with one active ambulance. Manzil will not connect to government signals, consume live government CCTV, cover all of Lahore, perform enforcement, or claim the safety certification needed for operational emergency response.
 
-The proposed system uses a React dashboard, FastAPI application services, a background perception worker, a SUMO/TraCI adapter, controller and routing services, and persistent experimental records. PostgreSQL is a proposed persistence choice rather than a confirmed implementation fact. A selected, manageable urban network is to be imported from OpenStreetMap and cleaned in SUMO NetEdit, with a synthetic grid retained as a fallback. The core emergency case contains one active ambulance. Dynamic edge costs combine estimated travel time, queue and signal delay without treating distance alone as the objective. Priority is activated only for the next relevant intersections, uses safe clearance transitions, detects passage, and then restores normal operation.
-
-Evaluation is planned as matched, repeated simulation runs under light, medium, and heavy demand. Normal traffic experiments compare the three controllers using travel time, waiting time, queue length, throughput, and starvation checks. Emergency experiments compare an unassisted reference, congestion-aware routing, and routing with corridor control using ambulance travel time and stops together with normal-traffic delay and recovery time. Training and tuning scenarios will be separated from held-out evaluation scenarios, and all configurations, random seeds, software versions, and failures will be retained. No performance values are reported at this Deliverable 2 stage.
-
-This report covers the project vision, a critical review of relevant research, software requirements, the proposed research method, and high- and low-level design. Its main contribution at this stage is a traceable and reproducible specification for investigating an integrated traffic-control and emergency-priority approach without overstating implementation maturity or real-world deployability.
+Project success will be judged through transparent comparisons rather than a visually convincing demonstration. Normal-traffic experiments will replay matched demand scenarios under each signal controller and compare waiting time, queue length, travel time, throughput, and fairness between approaches. Emergency experiments will separate the benefit of congestion-aware routing from the additional benefit and disruption of signal priority. The evaluation will retain scenario definitions, random seeds, software versions, controller settings, route revisions, failures, and metric definitions so that a reported outcome can be reproduced. This Deliverable 2 report therefore concentrates on the project vision, research evidence, software requirements, proposed method, and system design. It reports no invented accuracy, travel-time reduction, or completed implementation milestone. Several choices, including the exact Lahore network, final video sources, tracking configuration, reinforcement-learning algorithm, database engine, and hardware targets, remain subject to confirmation through implementation and baseline profiling. The immediate deliverable is a technically bounded plan that the team and evaluators can inspect before development results are presented.
 
 \pagestyle{fancy}
 \tableofcontents
@@ -119,6 +101,7 @@ This report covers the project vision, a critical review of relevant research, s
 \appendix
 \chapter{Deliverable 2 Requirements Coverage}
 \label{app:coverage}
+Table \ref{tab:coverage} provides a final audit trail from the governing Deliverable 2 plan to the chapters and evidence in this report. It is included for review convenience and does not replace the detailed requirements traceability matrix in Chapter \ref{ch:srs}.
 \begin{longtable}{p{0.27\textwidth}p{0.29\textwidth}p{0.35\textwidth}}
 \caption{Requirements coverage matrix}\label{tab:coverage}\\
 \toprule

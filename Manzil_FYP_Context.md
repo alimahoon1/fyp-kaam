@@ -1122,14 +1122,14 @@ The next logical stage is implementation planning and execution.
 - A complete Deliverable 2 LaTeX workspace has been created in `Manzil_D2_Report/` without modifying the original `FYPFast/` template or sample PDFs.
 - The compiled handoff PDF is `Manzil_Deliverable_2_Report.pdf` at repository root; the build copy is `Manzil_D2_Report/build/main.pdf`.
 - The report contains FAST front matter, Chapters 1--6, bibliography, a requirements-coverage appendix, and an open-items appendix.
-- Final compiled length is 72 A4 pages.
+- After the strict final review, the compiled report is 87 portrait A4 pages.
 - The LaTeX build completed with all citations and cross-references resolved.
 - Source organization and reproduction instructions are documented in `Manzil_D2_Report/README.md`; detailed checks are in `Manzil_D2_Report/REVIEW_NOTES.md`.
 
 ## Report decisions now established
 
 - The title follows the approved proposal: **Manzil: Intelligent Traffic & Emergency Routing**.
-- `F26-104` is shown as the project/group ID based on the approved proposal filename. This inference still requires team confirmation.
+- `F26-104` is inferred from the approved proposal filename but is not printed on the report title page because it remains unconfirmed.
 - The report preserves the two evidence paths: recorded-video perception and SUMO-controlled experiments.
 - The report describes implementation and results only as proposed work because no source code, trained models, experiment logs, or measured results were present.
 - The core emergency evaluation uses one active ambulance and separates the contributions of dynamic routing and corridor control.
@@ -1161,3 +1161,43 @@ The next logical stage is implementation planning and execution.
 5. Confirm the database engine, development/demonstration hardware, and measurable control/freshness targets.
 6. Insert real UI screenshots only after implementation; do not fabricate them.
 7. Confirm whether a separate faculty certificate/approval page is required beyond the supplied FAST template.
+
+---
+
+# 36. DELIVERABLE 2 STRICT FINAL-REVIEW RULES AND STATUS (8 OCTOBER 2026)
+
+## Permanent report-writing rules
+
+- Use portrait A4 throughout. Wide material must be wrapped, simplified, or divided; do not rotate a report page.
+- Normal explanatory paragraphs should develop one coherent idea in approximately 150--200 words. Retain shorter text only for genuine structural introductions to figures, tables, lists, equations, or algorithms, and do not pad prose.
+- Number every normal chapter heading and subheading. Starred headings are limited to front matter handled by the FAST convention.
+- Keep the Abstract within approximately half a page. The Executive Summary is required by the Deliverable 2 plan and must address nontechnical stakeholders rather than repeat the Abstract.
+- Do not use manual bold, italics, or underline to emphasize ordinary body prose. Table headers, diagram labels, headings, and template-controlled formatting are exempt.
+- Use bullets only where they clarify a real set of items, and write complete statements rather than label-colon notes.
+- Use one caption per figure or table and no subcaptions. Preserve aspect ratio and avoid forcing both width and height.
+- Reference and explain every figure and table in the surrounding text. Captions remain concise and do not replace discussion.
+- Preserve the distinction among implemented, designed, planned, and evaluated work. Do not invent screenshots, measurements, results, datasets, thresholds, hardware, or administrative facts.
+
+## Sample-report findings
+
+- ParkEase, JobLens, and GeoSync are the principal visual and structural references.
+- ParkEase and GeoSync provide the closest title-page convention: NU and FAST logos at the top, centred university name, central university crest, project title, student rows with roll numbers and BS(CS), supervisor, Final Year Project label, and fixed submission date.
+- The reference reports use portrait A4 pages, numbered body headings, restrained captions, conventional margins, and dense but readable text. The Deliverable 2 plan overrides sample weaknesses or later-phase chapter structures.
+
+## Corrections completed in the strict review
+
+- Rebuilt the title page to match the FAST sample hierarchy and removed the extra Deliverable label, department line, and unconfirmed `F26-104` identifier.
+- Removed the `pdflscape` dependency and landscape environment. The 18-study literature summary is now a wrapped portrait long table.
+- Reworked body prose across all six chapters, including a paragraph-length audit and section-level rereading. Short retained passages are structural exceptions recorded in review notes.
+- Removed body emphasis and label-colon feature bullets; confirmed that normal content headings are numbered and that no subcaption package or construct is present.
+- Rechecked every generated diagram against the stated architecture, route-version ownership, safe signal transitions, and moving-corridor lifecycle.
+- Added or strengthened body discussion for every figure and table, including wireframes, algorithms, equations, use cases, contracts, risks, and traceability.
+- Shortened the Abstract and rewrote the Executive Summary for stakeholder and decision-maker concerns.
+- Rendered and inspected every PDF page. Corrected a nearly empty chapter-transition page, an overwide architecture figure, and portrait-table layout.
+- Revalidated all DOI-bearing bibliography entries through DOI publisher redirects or Crossref. All 23 bibliography entries are cited; citations and cross-references resolve.
+
+## Final evidence status
+
+- The report remains a proposed Deliverable 2 design and evaluation plan because no implementation repository, trained model, experiment logs, measured metrics, or application screenshots were supplied.
+- The final build and packaging locations are recorded in `Manzil_D2_Report/REVIEW_NOTES.md` and `Manzil_D2_Report/README.md`.
+- Remaining factual confirmations are the exact network and map snapshot, video and annotation sources, selected tracker and RL algorithm, database and hardware, actual screenshots, faculty certificate requirement, and official status of `F26-104`.

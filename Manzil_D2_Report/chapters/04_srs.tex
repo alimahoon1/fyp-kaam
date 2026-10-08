@@ -1,22 +1,24 @@
 \chapter{Software Requirement Specifications}
 \label{ch:srs}
 
-This chapter specifies the behavior required of the Manzil research prototype. Requirements are testable where current evidence permits; numerical values that require benchmarking are explicitly identified as design targets. The specification avoids account management, enforcement, and other modules not justified by the approved scope.
+This chapter translates the reviewed problem and evidence into a specification for the Manzil research prototype. The requirements describe observable behavior rather than implying that every item has already been implemented. Where the available repository evidence does not support a measured threshold, the text states a design target or requires profiling before a value is fixed. The specification gives particular attention to reproducibility, legal signal transitions, observation freshness, route-version consistency, and visible failure handling because these properties determine whether later experiments can be interpreted. It also separates the video-perception workflow from SUMO-based control experiments so that estimated observations are not silently presented as simulator ground truth. Account management, public dispatch integration, traffic enforcement, clinical response prediction, and physical signal deployment remain outside the approved scope. The resulting requirements provide a contract for the architecture in Chapter \ref{ch:design} and a traceable basis for the evaluation procedures in Chapter \ref{ch:method}.
 
 \section{System Features}
 
-The prototype is divided into six feature groups:
+The prototype is organized into six feature groups that follow the operator's experimental workflow from configuration to evidence export. The grouping prevents a user-interface screen or implementation library from being mistaken for a requirement and clarifies which service owns each outcome. It also shows that emergency operation is not an isolated routing feature: a valid mission depends on scenario state, traffic observations, signal control, monitoring, and durable records. The following statements summarize those groups before the individual functional requirements define testable behavior.
 
 \begin{enumerate}
-\item \textbf{Scenario management}: select a network, demand profile, controller, seed, incident, duration, and emergency mission.
-\item \textbf{Traffic perception}: process licensed recorded video into detections, tracks, lane-region observations, and aggregate measures with timestamps and confidence.
-\item \textbf{Simulation and normal control}: step SUMO through a single owner, read traffic state, apply fixed or adaptive actions, and preserve legal phase transitions.
-\item \textbf{Emergency routing and corridor}: validate origin and destination, compute dynamic paths, apply stable rerouting, activate moving priority, detect passage, and recover.
-\item \textbf{Monitoring}: show map state, signals, traffic indicators, ambulance route, corridor state, warnings, and data-source mode.
-\item \textbf{Experiment records}: persist immutable configuration, run events, aggregate metrics, software versions, seed, and termination state for comparison and export.
+\item The operator can select a network, demand profile, controller, seed, incident, duration, and optional emergency mission before a run begins.
+\item The perception workflow can process licensed recorded video into detections, tracks, road-region observations, and timestamped aggregate measures with confidence information.
+\item The simulation workflow advances SUMO through one owner, reads traffic state, applies fixed or adaptive requests, and preserves legal phase transitions.
+\item The emergency workflow validates endpoints, computes a dynamic path, applies stable rerouting, activates bounded moving priority, detects passage, and recovers normal control.
+\item The monitoring interface presents map state, signals, traffic indicators, ambulance route, corridor state, warnings, and the current data-source mode.
+\item The experiment service retains immutable configuration, events, metrics, software versions, seeds, and termination state for comparison and export.
 \end{enumerate}
 
 \section{Functional Requirements}
+
+Table \ref{tab:functional-requirements} defines the mandatory system behavior using stable identifiers that are reused in the traceability matrix. The requirements distinguish a requested signal action from the action actually applied, require route and observation versions to be retained, and make fallback behavior part of the specification rather than an informal implementation detail. Several entries use the word ``shall'' because they are acceptance conditions for the proposed prototype; they are not claims of completed implementation. Together, FR-01 through FR-08 cover experiment configuration and normal control, FR-09 through FR-14 define the emergency-route and corridor lifecycle, and FR-15 through FR-20 cover monitoring, evidence, comparison, export, and controller failure. This arrangement lets tests target a coherent workflow while preserving individual identifiers for defect tracking. A requirement is satisfied only when its normal and failure paths are demonstrated with retained evidence. For example, returning a path is insufficient for FR-10 if the cost snapshot and graph-validity conditions are not also recorded.
 
 \begin{longtable}{p{0.10\textwidth}p{0.78\textwidth}}
 \caption{Functional requirements}\label{tab:functional-requirements}\\
@@ -51,6 +53,8 @@ FR-20 & On loss of the learned controller or invalid action, the control service
 
 \section{Quality Attributes and Non-Functional Requirements}
 
+Functional behavior alone would permit a demonstration that appears successful but cannot be reproduced or audited. Table \ref{tab:nfr} therefore states the quality attributes that constrain every feature group. Reproducibility and data integrity require a run to preserve the exact scenario, version, seed, and metric definition used to generate a result. Safety requirements apply within simulation and prevent controllers from bypassing clearance or ownership rules. Freshness and isolation ensure that a stale perception result or slow dashboard cannot silently influence a later simulation step. Responsiveness is intentionally expressed as a profiled design target because the repository contains no defensible hardware benchmark from which to invent a deadline. Privacy is limited to the handling of licensed or team-authorized video and does not imply a production governance framework. These non-functional requirements also define how negative outcomes are handled: an unavailable controller, disconnected simulator, or incomplete record must remain visible rather than being removed from the evaluation set without explanation.
+
 \begin{longtable}{p{0.11\textwidth}p{0.22\textwidth}p{0.57\textwidth}}
 \caption{Non-functional requirements and design targets}\label{tab:nfr}\\
 \toprule
@@ -76,11 +80,13 @@ NFR-12 & Availability & The prototype shall fail visibly and recover to a safe s
 
 \section{Assumptions and Dependencies}
 
-SUMO and TraCI are required for controlled traffic experiments \cite{lopez2018sumo,sumodocs}. A selected network has legal lane connections and signal plans after import and cleanup. Video sources have sufficient quality and permission for the selected evaluation. The simulation uses one clock owner. Edge costs are nonnegative. Emergency origin and destination lie on ambulance-accessible edges. The dashboard is an operator tool, not an autonomous public dispatch system.
+SUMO and TraCI are required for controlled traffic experiments \cite{lopez2018sumo,sumodocs}. A selected network must contain legal lane connections and signal plans after import and manual cleanup, and representative routes must be validated before it is used for comparison. Video sources require sufficient visibility, a documented license or team authorization, and annotations appropriate to the selected measure. The simulation assumes one clock owner, nonnegative route costs, and emergency endpoints on ambulance-accessible edges. It also assumes that configured phase transitions reflect the validated simulation network; they are not certified timings for physical signal hardware. The dashboard is an operator and evaluator tool rather than an autonomous public dispatch system, and a displayed route does not constitute operational navigation advice. When an assumption cannot be met, the affected workflow must stop or disclose a bounded fallback. It must not silently substitute a different network, data source, time unit, or observation mode because that would make later comparisons irreproducible.
 
-React and FastAPI are fixed by the approved proposal for the interface and application service boundary \cite{reactdocs,fastapidocs}. Python is implied by the planned perception, RL, and TraCI ecosystem. PostgreSQL, a WebSocket transport, Docker, and specific chart or map libraries are proposed dependencies and remain replaceable until implementation confirms them.
+React and FastAPI are fixed by the approved proposal for the interface and application service boundary \cite{reactdocs,fastapidocs}. Python is implied by the planned perception, reinforcement-learning, and TraCI ecosystem. PostgreSQL, a WebSocket transport, Docker, and specific chart or map libraries are proposed dependencies and remain replaceable until implementation confirms them. These assumptions are deliberately narrower than a production deployment specification. Manzil is evaluated as a controlled prototype on prepared networks, not as an interface to public signal controllers or ambulance dispatch infrastructure. A selected video source must have suitable permission and sufficient visibility for the intended annotation task, while the simulation network must be checked for lane connectivity, valid traffic-light programs, and ambulance-accessible routes. If any assumption fails, the run must be rejected or marked with an explicit limitation instead of substituting an undocumented configuration. This treatment keeps dependencies traceable and prevents a convenient library choice from becoming an unsupported architectural claim.
 
 \section{Hardware and Software Requirements}
+
+Table \ref{tab:environment} separates development and training needs from the smaller set of resources required for a repeatable demonstration. This distinction matters because detector training or reinforcement-learning experiments may benefit from a CUDA-capable GPU, while a prepared SUMO scenario and dashboard may run acceptably on a CPU after models and policies have been produced. Exact memory, storage, and timing values remain unconfirmed until the team profiles the selected network, video, and model; the table therefore states capabilities rather than fabricated minimum specifications. The demonstration environment must use the same versioned configuration and metric schema as the evaluation runs, even when it uses fewer scenarios. A file-backed store is acceptable during early integration, but migration to PostgreSQL remains proposed when cross-run integrity and concurrent access justify it. In either case, the report treats the schema and provenance rules as requirements independent of a particular database engine. Measured resource use will replace these capability statements only after the selected workload is stable.
 
 \begin{table}[H]
 \centering
@@ -101,7 +107,7 @@ Persistence & File-backed prototype acceptable initially; PostgreSQL proposed fo
 
 \section{Use Cases}
 
-The primary actor is a research operator. SUMO, the video source, and the experiment store are supporting systems. Evaluators are read-only consumers of dashboards and exported records. Figure \ref{fig:use-case} presents the coverage; Tables \ref{tab:uc1}--\ref{tab:uc8} define the principal flows.
+The primary actor is a research operator who configures experiments, observes their progress, initiates a simulated emergency mission, and exports evidence. SUMO, recorded video, and the experiment store support those actions but do not independently choose research parameters. Evaluators consume dashboard views and exported records without receiving control privileges. Figure \ref{fig:use-case} presents this boundary and connects the operator to eight goal-oriented interactions. Configuration and simulation appear separately because validation must finish before the single clock owner starts a run. Dispatch, corridor monitoring, and rerouting are also distinct so that a route revision cannot be treated as an invisible side effect. Tables \ref{tab:uc1}--\ref{tab:uc8} then specify preconditions, triggers, normal flows, failures, and postconditions for each interaction. Collectively, they test more than the successful interface path: invalid endpoints, stale streams, no-route cases, controller failure, incompatible comparisons, and termination reasons must all produce observable outcomes. The use cases therefore define acceptance evidence as well as operator interaction.
 
 \begin{figure}[H]
 \centering
@@ -158,7 +164,7 @@ The primary actor is a research operator. SUMO, the video source, and the experi
 \section{Proposed Graphical User Interface}
 \label{sec:gui}
 
-The following figures are proposed wireframes, not screenshots of implemented software. Their purpose is to validate information hierarchy and required operator actions without fabricating progress.
+The following figures are proposed wireframes rather than screenshots of implemented software. They validate information hierarchy, source disclosure, error visibility, and the actions needed for a controlled demonstration without fabricating implementation progress. Figure \ref{fig:wire-overview} gives the operator a network-level view in which the selected run, controller, source mode, ambulance route, corridor lifecycle, and warnings remain visible together. This arrangement helps prevent a plausible map animation from hiding stale data or a fallback controller. Figure \ref{fig:wire-perception} narrows the view to one intersection and pairs a processed-video preview with model provenance, freshness, regional measures, confidence, and invalid-state indicators. The calibration field is explicit because pixel-derived queue proxies must not be mislabeled as physical queue length. Both designs use color only as a supporting cue; labels retain the meaning required for accessibility and for printed evidence. The reader can consequently distinguish authoritative values, estimates, and warnings without relying on animation.
 
 \begin{figure}[H]
 \centering
@@ -208,6 +214,8 @@ The following figures are proposed wireframes, not screenshots of implemented so
 \label{fig:wire-dispatch}
 \end{figure}
 
+Emergency operation and experiment setup require different decisions, so they are separated in Figures \ref{fig:wire-dispatch} and \ref{fig:wire-config}. The dispatch view shows validated endpoints, the current route version, its time-based cost, the reason for a revision, and the state of intersections in the bounded look-ahead corridor. It also permits a candidate route to be shown without implying that every alternative has been activated. The configuration view collects the network, demand, controller, seed, duration, incident, mission, and metric schema before a run begins. Its validation panel exposes unresolved identifiers, illegal phase plans, absent calibration, or checkpoint mismatch, and the start action remains unavailable until mandatory errors are resolved. The two wireframes therefore support auditability at different stages: one explains a live mission decision, while the other preserves the conditions under which that decision can later be compared. Neither view grants direct signal control, bypasses backend validation, or changes an active run's immutable configuration.
+
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[x=1cm,y=1cm,font=\scriptsize]
@@ -237,14 +245,16 @@ The following figures are proposed wireframes, not screenshots of implemented so
 \node at (1.85,.6) {Fixed}; \node at (3.75,.6) {Rule}; \node at (5.65,.6) {RL};
 \draw (9.0,.4) rectangle (13.6,3.85); \node[align=left] at (11.3,2.1) {Configuration differences\\Seed coverage\\Failed runs\\Export data + manifest};
 \end{tikzpicture}
-\caption{Proposed comparative-analytics wireframe; bars are schematic and not results}
+\caption{Proposed comparative-analytics wireframe}
 \label{fig:wire-analytics}
 \end{figure}
+
+Figure \ref{fig:wire-analytics} represents the final evidence-review workflow. Run selection is paired with a comparability warning and metric definition so that two visually adjacent bars are not assumed to represent matched experiments. The chart area is schematic and contains no claimed result; an implemented view would present the chosen distribution, central tendency, variability, and sample count from retained run records. The adjoining panel exposes configuration differences, seed coverage, failed runs, and export controls. This design responds directly to the methodology requirement that failed or incompatible runs must not disappear from a favorable summary. It also keeps measurement units and metric versions close to the visualization, reducing the risk that a screenshot is detached from its experimental meaning. Together, the five wireframes define the minimum information architecture for the prototype while leaving visual polish and specific chart libraries open to implementation. Exported graphics must retain the same metric and run identifiers.
 
 \section{Data Design}
 \label{sec:data-design}
 
-Persistent data is reserved for configuration, observations, decisions, missions, and outcomes that require audit or comparison. The live road graph, current TraCI subscription, and frame buffers are in-memory runtime state. Raw video remains an external file with a content identifier rather than a database blob.
+Persistent data is reserved for configuration, observations, decisions, missions, and outcomes that require audit or comparison. The live road graph, current TraCI subscription, and frame buffers remain in-memory runtime state because they can be reconstructed or are too transient to justify row-level storage. Raw video remains an external file identified by provenance and checksum rather than a database blob. Figure \ref{fig:er} presents the proposed record relationships: a scenario produces multiple runs; a run owns observations, decisions, metrics, and at most one active core mission; and each mission can produce several immutable route versions whose priority events retain the version that justified them. This version link is essential when a reroute cancels obsolete requests. Table \ref{tab:data-dictionary} complements the diagram with key fields and integrity rules, including immutable run configuration, mandatory units and source mode, monotonically increasing route versions, and matching metric versions for comparison. The model describes proposed persistence responsibilities and does not claim that a production database has already been populated.
 
 \begin{figure}[H]
 \centering
@@ -289,8 +299,10 @@ Artifact & run/job\_id, type, URI, checksum, license/provenance & Content is add
 
 \section{Risk Analysis}
 
+Table \ref{tab:risks} records technical and research risks that could invalidate the prototype or its conclusions. Likelihood and impact are qualitative planning judgments rather than measured probabilities. The highest-consequence risks concern invalid signal phases, irreproducible results, unsuitable map imports, and evidence that cannot be legally or reliably used. Each mitigation is paired with a bounded fallback so that the team can preserve an honest deliverable if a preferred component fails. For example, a documented synthetic network is preferable to an unverified real-map extract, and a negative reinforcement-learning result is preferable to tuning on the final test scenarios. The register also treats timing drift, route oscillation, occlusion, and reward imbalance as system-level concerns rather than isolated coding defects. These risks are revisited through invariant tests, scenario checks, provenance records, and the controlled comparisons defined in Chapter \ref{ch:method}; unresolved items must remain visible in the final limitations rather than being converted into unsupported performance claims.
+
 \small
-\begin{longtable}{p{0.20\textwidth}p{0.10\textwidth}p{0.10\textwidth}p{0.28\textwidth}p{0.13\textwidth}}
+\begin{longtable}{p{0.195\textwidth}p{0.105\textwidth}p{0.10\textwidth}p{0.28\textwidth}p{0.13\textwidth}}
 \caption{Risk register}\label{tab:risks}\\
 \toprule
 \textbf{Risk} & \textbf{Likelihood} & \textbf{Impact} & \textbf{Mitigation} & \textbf{Fallback}\\
@@ -310,6 +322,8 @@ Results are not reproducible & Medium & High & Immutable manifests, seeds, versi
 \normalsize
 
 \section{Requirements Traceability}
+
+The traceability matrix in Table \ref{tab:traceability} connects requirement groups to the use cases, design modules, and planned verification evidence that will demonstrate them. Grouping closely related identifiers keeps the table readable while preserving the detailed statements in Tables \ref{tab:functional-requirements} and \ref{tab:nfr}. The matrix reveals several cross-cutting obligations. Reproducibility depends on the experiment service and store rather than on the dashboard alone; legal control depends on both the orchestrator and safety filter; and emergency correctness spans routing, corridor lifecycle, simulation actuation, and event persistence. Verification consequently combines schema checks, unit and invariant tests, small-network integration tests, failure injection, annotated video evaluation, and matched experimental runs. A successful user-interface walkthrough cannot replace these checks. Conversely, an algorithmic metric cannot satisfy usability or failure-visibility requirements. The matrix will be updated with test identifiers during implementation so that incomplete or failed evidence remains traceable to the affected requirement. This update will not alter the stable requirement identifiers.
 
 \begin{longtable}{p{0.15\textwidth}p{0.20\textwidth}p{0.27\textwidth}p{0.20\textwidth}}
 \caption{Requirements traceability matrix}\label{tab:traceability}\\
@@ -332,4 +346,6 @@ NFR-03,05,07--09,12 & All & Cross-cutting contracts and deployment & Log audit, 
 
 \section{Conclusion}
 
-The specification centers on traceability and failure visibility. It requires one simulation-clock owner, legal signal transitions, stable route revision, explicit source freshness, reproducible run records, and comparisons that cannot hide incompatible configurations. These requirements become procedural and architectural choices in the next two chapters.
+\enlargethispage{2\baselineskip}
+
+The specification centers on traceability and failure visibility rather than on a collection of loosely connected features. It requires one simulation-clock owner, legal signal transitions, stable route revision, explicit observation freshness, immutable run configuration, and comparisons that cannot hide incompatible settings or failed trials. Functional requirements define what the operator and services must observe, while non-functional requirements constrain timing, ownership, privacy, auditability, and recovery. The use cases exercise both successful and failed paths, the wireframes show how critical state and provenance remain visible, and the data model preserves the route and decision history needed for later analysis. Risks and traceability link those requirements to bounded fallbacks and planned verification. Chapter \ref{ch:method} now converts the specification into a staged research protocol, and Chapter \ref{ch:design} assigns each mutable resource and interface to a clear architectural owner. Implementation status will continue to be reported separately so that a specified feature is never presented as completed evidence.

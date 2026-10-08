@@ -1,0 +1,211 @@
+\chapter{Proposed Approach and Methodology}
+\label{ch:method}
+
+This chapter defines how Manzil will be constructed and evaluated so that the research questions can be answered with controlled evidence rather than a favorable demonstration run. The method begins by freezing definitions, exclusions, baselines, and data partitions before the final comparison. It then validates the network, observations, controllers, routing, and corridor lifecycle in stages, because a result from an integrated run is not interpretable when an underlying measurement or safety transition is still uncertain. Figure \ref{fig:method-workflow} summarizes this sequence from preparation to reporting. Each stage produces an artifact or acceptance check that is retained with the experiment manifest. The protocol also separates detector evaluation from signal-control evaluation: recorded video supplies annotated evidence for perception, while SUMO supplies controlled vehicle and signal state for the controller, route, and emergency experiments. This separation prevents estimated video quantities from being passed off as exact network state and allows an optional observation-noise study only after both baselines are stable.
+
+\section{Overall Research Workflow}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\small,node distance=7mm,box/.style={draw,rounded corners,fill=manzilgray,minimum width=11.5cm,minimum height=.8cm,align=center},arr/.style={-{Latex},thick}]
+\node[box] (q) {Freeze research questions, metric definitions, baselines, and exclusions};
+\node[box,below=of q] (prep) {Prepare versioned SUMO network/demand and source-separated video data};
+\node[box,below=of prep] (base) {Validate simulator, measurements, fixed controller, and rule-adaptive controller};
+\node[box,below=of base] (models) {Evaluate detector/tracker; train and tune one RL controller on training scenarios};
+\node[box,below=of models] (em) {Validate routing, rerouting, corridor lifecycle, cancellation, and recovery};
+\node[box,below=of em] (eval) {Run matched held-out scenarios with repeated seeds and retain failures};
+\node[box,below=of eval,fill=manzilgreen!12] (report) {Aggregate variability, ablations, validity threats, artifacts, and conclusions};
+\draw[arr] (q)--(prep);\draw[arr] (prep)--(base);\draw[arr] (base)--(models);\draw[arr] (models)--(em);\draw[arr] (em)--(eval);\draw[arr] (eval)--(report);
+\end{tikzpicture}
+\caption{Proposed research and evaluation workflow}
+\label{fig:method-workflow}
+\end{figure}
+
+The workflow in Figure \ref{fig:method-workflow} is ordered to prevent later components from masking earlier faults. Research questions and metric definitions are fixed before data preparation; the network and demand are validated before controllers are compared; and ordinary traffic control is established before emergency routing and priority are enabled. Two input modes are retained throughout this process. In video mode, annotations provide the reference for perception metrics, and no claim is made that a selected clip determines the full state of the simulated network. In simulation mode, SUMO supplies lane, vehicle, signal, and route state for controlled experiments. Both modes use the same typed traffic-state concepts but retain a source field, units, validity interval, and confidence where applicable. A later noise experiment may inject measured perception error into simulation observations, but it will be included only after the baseline protocol is complete and its parameters are fixed in advance. The final stage reports variability, failures, ablations, and validity limits alongside successful runs.
+
+\section{Network and Scenario Preparation}
+
+\subsection{Network Provenance and Validation}
+
+A selected, manageable Lahore road area will be exported from OpenStreetMap under its applicable attribution and license conditions \cite{osmlicense}. The exact bounding box, extraction date, source file checksum, and conversion command will be stored so that a later change in the public map cannot silently alter an experiment. SUMO's import toolchain will convert the graph, after which NetEdit inspection will verify lane counts, legal turns, junction types, traffic-light programs, pedestrian-only edges, disconnected components, and ambulance-accessible routes. Automated checks will then attempt representative routes, enumerate signal phases, and reject movements that conflict with the intended vehicle classes. The initial planning range is approximately 10--20 signalized intersections, but this is not a confirmed network fact or a requirement to retain a defective import. A smaller validated extract is preferable to a larger inaccurate one because route continuity and lawful signal control are prerequisites for every later result. If the chosen map cannot be stabilized within the schedule, a documented synthetic multi-intersection grid becomes the fallback, and all results will be identified as synthetic rather than generalized to Lahore roads.
+
+\subsection{Demand and Incidents}
+
+Demand files will define light, medium, and heavy conditions together with an uneven-approach case that can expose starvation. Vehicle insertion uses explicit random seeds, and a declared warm-up interval allows traffic to populate the network before measurement begins. Incident scenarios close an edge, reduce lane capacity, or introduce a controlled obstruction at a fixed simulation time. A failed insertion caused by a full lane is retained as an outcome rather than retried until the run appears favorable. The same requested demand and seed are replayed across controllers where SUMO semantics permit. When controller behavior changes route choice or insertion feasibility, the manifest distinguishes the original demand request from actual departures so that throughput is not interpreted without its denominator. Scenario families are separated into development, tuning, and held-out evaluation sets before final runs. Origin-destination pairs, incident timing, and emergency dispatch time are also matched within each comparison. These controls make differences attributable to the selected policy while preserving congestion effects that legitimately arise from that policy.
+
+\section{Video Perception Pipeline}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[font=\footnotesize,node distance=5mm and 4mm,box/.style={draw,rounded corners,fill=manzilgray,minimum width=2.25cm,minimum height=.9cm,align=center},arr/.style={-{Latex},thick}]
+\node[box] (v) {Licensed\\video sequence};
+\node[box,right=of v] (d) {Pretrained\\vehicle detector};
+\node[box,right=of d] (t) {Multi-object\\association};
+\node[box,right=of t] (g) {Region/lane\\assignment};
+\node[box,right=of g] (a) {Interval\\aggregation};
+\node[box,below=of g] (m) {Counts, speed proxy,\\occupancy, queue proxy};
+\node[box,below=of d] (e) {Held-out annotations\\and error analysis};
+\draw[arr] (v)--(d);\draw[arr] (d)--(t);\draw[arr] (t)--(g);\draw[arr] (g)--(a);\draw[arr] (a)--(m);\draw[arr] (e)--(d);\draw[arr] (m)--(e);
+\end{tikzpicture}
+\caption{Proposed traffic-video perception pipeline}
+\label{fig:perception}
+\end{figure}
+
+Figure \ref{fig:perception} presents the complete video-observation chain rather than depicting detection as an isolated result. The detector produces a class, confidence, and image-space box; the tracker associates observations through time; and a bottom-center or calibrated road-contact point maps each valid track to a polygonal lane or approach region. Directed line-crossing or region-entry rules use track history to avoid counting the same vehicle in every frame. Interval aggregation then derives counts, image occupancy, a queue proxy, and a speed proxy with source time and confidence. Held-out annotations feed the error-analysis path and are never used to tune the final evaluation sequence. A speed in physical units requires camera calibration or a defensible known scale. Without that evidence, the system reports pixel displacement or a categorical slow or stationary state rather than kilometres per hour. The figure therefore emphasizes where uncertainty enters the pipeline and why an apparently stable box is not yet a validated traffic measure.
+
+For a lane region $l$ over interval $k$, a simple occupancy proxy is
+\begin{equation}
+O_{l,k}=\frac{1}{T_k}\sum_{t\in k}\frac{\sum_{i\in V_{l,t}} A(B_{i,t}\cap R_l)}{A(R_l)},
+\label{eq:occupancy}
+\end{equation}
+where $B_{i,t}$ is a tracked box, $R_l$ is the image region, and $T_k$ is the number of sampled frames. This is image occupancy, not road density. A queue proxy counts stable tracks inside a defined upstream region whose image-motion or calibrated speed is below a threshold for a minimum persistence time.
+
+The detector will be initialized from a documented pretrained checkpoint, consistent with the practical motivation of YOLO-family detection \cite{redmon2016yolo}. ByteTrack is the leading tracker candidate because its association of lower-confidence boxes may reduce fragmentation under temporary occlusion \cite{zhang2022bytetrack}. DeepSORT remains a comparison when appearance information materially improves association in the selected scenes \cite{wojke2017deepsort}. Thresholds are tuned only on development sequences and then frozen for held-out evaluation. Selection considers interval count error, track fragmentation when identity is required, queue-proxy error, processing throughput, and failure by scene condition; benchmark reputation alone is insufficient. Equation (\ref{eq:occupancy}) defines image occupancy when calibration is unavailable, using the fraction of a declared region covered by tracked boxes across sampled frames. Because perspective and occlusion affect that fraction, it is reported as a proxy with its region geometry and sampling interval, not renamed as physical road density. This evaluation keeps the claimed output aligned with what the video can actually support.
+
+\section{Normal Traffic Controllers}
+
+\subsection{Fixed-Time Controller}
+
+The fixed controller will use a declared cycle and phase sequence appropriate to each selected junction. Green, yellow, all-red, cycle, and offset values will be versioned with the scenario, and the same movement definitions and clearance rules will constrain every competing controller. The baseline will not be intentionally starved or assigned unrealistic timing to make adaptation appear superior. Initial green splits will be selected from the declared demand and checked against approximate approach service so that at least the light scenario is feasible and heavier scenarios create interpretable congestion rather than immediate gridlock. Its deterministic schedule makes it useful for validating demand generation, metric collection, ambulance route ablations, and replay before learning is introduced. If a run violates phase invariants or produces implausible counts under fixed control, adaptive and reinforcement-learning comparisons are postponed until the cause is resolved. The baseline therefore serves as both a comparator and a diagnostic reference, not as a weak opponent constructed for a favorable result.
+
+\subsection{Rule-Based Adaptive Controller}
+
+The initial transparent controller evaluates only legal candidate phases. A pressure-inspired score for phase $p$ is
+\begin{equation}
+S_p(t)=\sum_{(l,m)\in p}\left(q_l(t)-\alpha q_m(t)\right)+\beta w_l(t),
+\label{eq:rule-score}
+\end{equation}
+where $q_l$ and $q_m$ are upstream and downstream queues for a served movement, $w_l$ is the maximum accumulated wait among its approaches, and $\alpha,\beta$ are documented configuration values. This follows the motivation of max-pressure control \cite{varaiya2013maxpressure} while retaining a direct anti-starvation term.
+
+Equation \ref{eq:rule-score} assigns a transparent score to each legal candidate phase using upstream demand, downstream congestion, and the longest accumulated approach wait. The downstream term discourages serving a movement whose receiving link lacks space, while the wait term provides a direct safeguard against repeatedly postponing a low-volume approach. Coefficients are configuration values established on development scenarios and retained with the run manifest. At each decision instant, the current green is held until minimum green has elapsed. It may then be extended when it remains the preferred phase and maximum green has not been reached. A phase whose maximum-red limit is approached receives explicit promotion, and every switch inserts the same yellow and all-red sequence used by other controllers. The controller returns a requested phase and its contributing values; it does not actuate SUMO directly. This explanation record permits a reviewer to distinguish an algorithmic request from a safety-filter transformation and to diagnose whether observed performance came from pressure, fairness promotion, or repeated intervention.
+
+\subsection{Proposed RL Formulation}
+
+One reinforcement-learning formulation will be selected only after the fixed and rule-based baselines are stable. A feasible initial choice is a discrete-action value-based policy for a small, fixed phase set; pressure-informed reward design is supported by PressLight \cite{wei2019presslight}. The action space requests one legal phase or a bounded extension, while the safety layer retains authority over minimum green and clearance. If the chosen network requires coordination and the training budget permits it, centralized observations with per-intersection actions are preferable to loosely defined independent learners because ownership and shared information remain explicit. Model architecture, observation normalization, replay settings, exploration schedule, optimizer, training budget, and checkpoint-selection rule will be recorded before held-out evaluation. This design does not assume that reinforcement learning will outperform the transparent baseline. If it fails to converge, violates fairness constraints, or offers no consistent held-out benefit, that outcome remains part of the research evidence and the working rule-based controller remains the operational fallback.
+
+The proposed state for each decision interval includes normalized incoming and outgoing queues, approach waiting time, occupancy, current phase, elapsed phase time, and an emergency-mode flag. An action requests a legal phase or a bounded extension. The safety layer remains authoritative. A candidate reward is
+\begin{equation}
+r_t=-\lambda_p P_t-\lambda_w W_t-\lambda_s X_t-\lambda_c C_t,
+\label{eq:reward}
+\end{equation}
+where $P_t$ is network pressure, $W_t$ normalized waiting, $X_t$ a starvation violation, and $C_t$ an unnecessary-switch penalty. Coefficients and normalization will be fixed on training/tuning scenarios. Emergency performance is evaluated in a separate supervisory experiment so that the first normal-controller comparison is not confounded by rare mission rewards.
+
+Equation \ref{eq:reward} combines network pressure, normalized waiting, starvation violations, and unnecessary switching, with every component logged separately so that one favorable aggregate cannot conceal a harmful term. Coefficients and normalization are chosen on training and tuning scenarios, then frozen. Training records episode seed, demand profile, exploration schedule, optimizer settings, network checksum, reward components, software version, and candidate checkpoints. Checkpoint selection follows a declared tuning criterion rather than the best result on the final scenarios. Evaluation uses deterministic policy settings where applicable and the same safety filter, demand manifests, warm-up, and measurements as the baselines. Training return is a learning diagnostic, not an evaluation result, because it depends on reward scaling and does not directly establish travel time, fairness, or safety. Emergency priority remains a separate supervisory experiment so that rare mission rewards do not confound the first normal-controller comparison. This separation also enables an honest result when a normal controller improves average delay but produces unacceptable maximum-red behavior.
+
+\section{Dynamic Graph Routing}
+
+The routing graph represents legal vehicle movements rather than only geometric road adjacency. Nodes may be junctions or lane and edge transition points, while edges retain length, allowed vehicle class, free-flow time, current travel-time estimate, queue-discharge estimate, residual signal delay, closure state, and observation time. The exact representation must reproduce SUMO route validity, including turn restrictions and internal connections, so that an algorithm cannot return a visually plausible but undrivable path. Every cost field states its unit and source, and stale observations are rejected or replaced by a declared fallback estimate. Equation \ref{eq:edgecost} expresses the primary cost in seconds. Link travel time, signal delay, and queue delay are separated only when their estimators do not overlap; if a measured link time already contains queuing, another queue penalty would double-count congestion. A hard closure receives infinite cost, while temporary slowdowns retain finite nonnegative estimates. The complete cost snapshot is versioned with any accepted route so that a later evaluator can reconstruct why it changed.
+
+The primary edge cost is expressed in seconds:
+\begin{equation}
+c_e(t)=\hat{T}^{\mathrm{link}}_e(t)+\hat{D}^{\mathrm{signal}}_e(t)+\hat{D}^{\mathrm{queue}}_e(t)+M_e(t),
+\label{eq:edgecost}
+\end{equation}
+where $M_e(t)=0$ for an open edge and infinity for a hard closure. Queue delay is included only if it is not already represented in the link travel-time estimate. Every cost snapshot records source and freshness.
+
+Dijkstra's algorithm provides the reference minimum-cost path under nonnegative weights and requires no heuristic assumption \cite{dijkstra1959}. It therefore supplies a clear correctness baseline for route validity and cost even when the selected network is small enough that search speed is not a practical limitation. A* is permitted when its heuristic $h(n)$ is a lower bound formed from straight-line distance divided by the maximum allowed free-flow speed \cite{hart1968astar}. Under nonnegative signal and queue delays, this estimate remains no greater than the true remaining time and can guide the search without losing the optimality guarantee. The implementation will compare the returned cost with Dijkstra on development graphs and will revert to Dijkstra if admissibility or consistent units cannot be demonstrated. Neither algorithm creates dynamic routing by itself: the cost snapshot, refresh interval, closure handling, current-position mapping, and stability rule determine when a path changes. Algorithm \ref{alg:routing} consequently wraps shortest-path search with validation, no-route handling, hysteresis, route versioning, and corridor cancellation.
+
+\begin{algorithm}[H]
+\caption{Congestion-aware route selection and stable rerouting}
+\label{alg:routing}
+\KwData{Current ambulance edge $s$, destination $g$, current route $R$, cost snapshot $C_t$}
+\KwResult{Retained or revised valid remaining route}
+Reject stale or negative costs; apply closures to $C_t$\;
+$R'\leftarrow \mathrm{ShortestPath}(s,g,C_t)$\;
+\If{$R'$ does not exist}{return NO\_ROUTE and cancel future corridor requests\;}
+Compute remaining costs $J(R)$ and $J(R')$ under the same snapshot\;
+\eIf{current route is infeasible}{accept $R'$ immediately\;}
+{accept $R'$ only if $J(R)-J(R')>\delta$ for persistence window $\tau$ and cooldown has elapsed\;}
+Validate route continuity from the current position\;
+Atomically increment route version, cancel obsolete priority, and publish the revision\;
+\end{algorithm}
+
+Algorithm \ref{alg:routing} defines route selection and revision as one auditable transaction. It first rejects stale or negative costs, applies hard closures, and searches from the ambulance's valid current position. Dijkstra provides the reference optimum for nonnegative costs, while A* may be used only with the stated admissible free-flow lower bound. A missing path produces a recorded NO\_ROUTE outcome and cancellation of future corridor requests rather than a partial route. When both current and candidate paths are feasible, their remaining costs are evaluated under the same snapshot. The improvement threshold $\delta$, persistence window $\tau$, and cooldown are configured on development scenarios before held-out tests, preventing small fluctuations from causing oscillation. An infeasible current path bypasses the benefit threshold, but the replacement must still pass continuity and vehicle-class checks. Acceptance increments the route version and atomically cancels priority that is no longer justified. Computation time, revision cause, and rejected candidates are retained so route stability can be evaluated alongside ambulance travel time.
+
+\section{Moving Green Corridor}
+
+The moving corridor operates on a bounded number of intersections ahead of the simulated ambulance instead of setting an entire route green. Activation considers estimated arrival, standing queue clearance, signal state, and downstream capacity rather than distance alone. Each request identifies the mission, immutable route version, approach movement, predicted arrival, expiry, and priority level. Before serving that movement, the coordinator completes the active phase's minimum service and applies the configured yellow and all-red clearance to conflicting movements. Passage is confirmed from the ambulance's simulated edge and lane transition, with a timeout detecting a missing or stalled vehicle. The intersection then enters recovery and either completes a bounded compensation plan or returns control at a safe phase boundary. A revised route cancels obsolete future requests before new look-ahead activation, preventing two route versions from competing for a signal. These choices follow the transition and recovery emphasis in emergency-preemption research \cite{qin2012preemption} while keeping all timing values as simulation policies rather than certified field parameters.
+
+\begin{algorithm}[H]
+\caption{Corridor lifecycle at one intersection}
+\label{alg:corridor}
+\KwData{Priority request, ambulance state, signal state, safety configuration}
+\If{request is stale, route version is obsolete, or movement is invalid}{reject and log reason\;}
+Queue the request and estimate activation time\;
+At activation, finish minimum green and apply legal clearance\;
+Serve the ambulance movement within maximum priority duration\;
+\If{passage is confirmed}{release and enter recovery\;}
+\ElseIf{mission is cancelled, route changes, or timeout occurs}{cancel safely and enter recovery/fallback\;}
+Restore normal controller ownership at a valid phase boundary and record recovery time\;
+\end{algorithm}
+
+Algorithm \ref{alg:corridor} makes the intersection lifecycle explicit. A stale, expired, invalid, or obsolete request is rejected before signal ownership can change. Valid requests wait for their activation condition, complete lawful clearance, and serve the ambulance movement for no longer than the configured maximum priority duration. Confirmed passage, mission cancellation, route revision, or timeout all lead through recovery rather than jumping to an arbitrary normal phase. The core scope permits one active ambulance, avoiding an untested arbitration policy for competing emergencies; multiple emergency vehicles remain future work. Ordinary-traffic harm is bounded through maximum priority duration, downstream occupancy checks, and maximum-red monitoring, and the evaluation records safety-filter interventions and recovery time. Exact limits are selected through development-scenario sensitivity analysis and are reported as simulator settings, not public-road safety values. This lifecycle allows emergency benefit and network disruption to be examined together while ensuring that cancellation is as carefully specified as successful passage.
+
+\section{Integrated Control Loop}
+
+\begin{algorithm}[H]
+\caption{Single-owner simulation and decision loop}
+\label{alg:loop}
+\KwData{Validated run configuration and initialized services}
+\While{run is active and before terminal simulation time}{
+Advance SUMO by exactly one configured step\;
+Read subscribed vehicle, lane, signal, and mission state\;
+Construct a timestamped traffic-state snapshot\;
+Update route costs and evaluate rerouting at its configured interval\;
+Update corridor requests and lifecycle states\;
+\eIf{corridor owns an intersection}{request its safe priority action\;}{request action from the selected normal controller\;}
+Validate every requested action through the phase safety filter\;
+Apply accepted actions through the TraCI adapter only\;
+Record applied actions, events, and metric samples\;
+Publish a non-authoritative dashboard snapshot\;
+}
+Finalize run status, artifacts, and checksums\;
+\end{algorithm}
+
+Algorithm \ref{alg:loop} integrates normal control, route updates, and corridor ownership under one simulation-clock writer. Each iteration advances SUMO once, reads a complete observation set, creates a timestamped snapshot, and then performs routing and corridor updates at their configured intervals. For each intersection, the corridor or the normal controller can request an action, but both pass through the same safety filter and only the TraCI adapter applies the result. Applied actions, metric samples, and mission events are recorded before a dashboard view is published. This ordering prevents a slow client, background video job, or concurrent controller from advancing simulation time or acting on a partially updated state. A snapshot carries its effective step, production time, source, and validity interval so late data is deliberately mapped or rejected. At termination, the manifest and checksums are finalized even for stopped or failed runs. The loop therefore defines both concurrency ownership and the causal order needed to replay an experimental decision.
+
+\section{Experimental Protocol}
+
+\subsection{Comparison Matrix}
+
+Table \ref{tab:experiments} maps each research question to a controlled comparison and the evidence required to answer it. Perception is compared with held-out annotations, normal control uses matched scenarios and seeds, routing holds the signal policy fixed, and corridor evaluation holds the route logic fixed. This staged design prevents a combined emergency result from being credited to the wrong component. The robustness row then stratifies demand, incidents, seeds, and any approved observation-noise conditions, retaining failures and no-route outcomes. Measures are selected to reveal tradeoffs: average delay is accompanied by queue extremes and fairness, ambulance time is paired with ordinary-traffic impact and recovery, and route benefit is paired with revision count and computation cost. The table is a plan rather than a results summary. No numerical improvement, accuracy, sample count, or significance is asserted until the implementation produces traceable run records under this protocol. Final result tables will preserve these question and measure definitions.
+
+\begin{table}[H]
+\centering
+\caption{Planned experiments and primary evidence}
+\label{tab:experiments}
+\begin{tabularx}{\textwidth}{p{0.20\textwidth}p{0.34\textwidth}Y}
+\toprule
+\textbf{Question} & \textbf{Controlled comparison} & \textbf{Primary measures}\\
+\midrule
+RQ1 perception & Detector/tracker output vs. held-out sequence annotations & Precision/recall or mAP where suitable; count MAE; identity metric only when required; queue-proxy error; throughput\\
+RQ2 normal control & Fixed vs. rule-adaptive vs. selected RL under matched scenarios/seeds & Mean travel and waiting time, queue mean/max, throughput, phase changes, max-red/fairness violations\\
+RQ3 routing & Static/reference route vs. dynamic route, holding signal policy fixed & Ambulance travel time, delay, stops, route revisions, computation time\\
+RQ4 corridor & Same routing without vs. with corridor & Ambulance time/stops; ordinary traffic delay/queues; recovery time; safety invariant violations\\
+RQ5 robustness & Demand, incident, seed, and optional observation-noise strata & Effect distributions and sensitivity; failed and no-route runs retained\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Scenario Assignment and Repetition}
+
+The evaluation manifest will define demand levels, origin-destination pairs, incident timing, dispatch time, warm-up, measurement horizon, and repeated seeds before final runs. Every controller receives the same requested set, and actual departures are retained when congestion changes insertion feasibility. The number of repetitions is chosen using pilot variance and available computation, then disclosed rather than retroactively reduced to favorable cases. Results include variability through standard deviation or confidence intervals, with paired differences used when runs share a demand seed. Reinforcement-learning training and hyperparameter selection use only training and tuning scenarios. Held-out demand combinations and at least one unseen seed set remain reserved for final evaluation, while perception data is split by source or continuous sequence to reduce temporal leakage. Failures, timeouts, infeasible routes, and safety-filter interventions remain in the run inventory and are reported separately when aggregation would be misleading. These rules preserve the distinction between incomplete implementation evidence and an evaluated negative result.
+
+\subsection{Metric Definitions}
+
+Metric definitions are shared across controllers and versioned with the run. For $N$ completed vehicles with travel times $T_i$, mean travel time is $\bar{T}=N^{-1}\sum_iT_i$. Queue length is sampled at fixed simulation intervals and reported as both time mean and maximum by approach. Throughput counts vehicles crossing declared network boundaries during the measurement interval, while the demand manifest and actual departures prevent a low completion count from being misread. Fairness includes maximum red time and the approach-level delay distribution because an aggregate mean can conceal starvation. Ambulance delay is actual travel time minus free-flow route time under the same network definition. Ordinary-traffic impact covers non-emergency vehicles during the mission and a declared recovery interval. Route computation time is measured separately from simulated travel time, and revision count identifies unstable routing. For perception counts $y_k$ and estimates $\hat{y}_k$, mean absolute error is
+\begin{equation}
+\mathrm{MAE}=\frac{1}{K}\sum_{k=1}^{K}|y_k-\hat{y}_k|.
+\end{equation}
+
+\subsection{Reproducibility Package}
+
+Each run will retain the source revision, dependency manifest, SUMO version, network and route checksums, controller and model version, full configuration, seed, logs, metric schema, and terminal reason. Applied decisions are stored separately from controller requests, and route revisions identify the cost snapshot and trigger that produced them. Large external video and pretrained weights may be referenced by a license-aware URI and checksum when redistribution is not permitted. A script should recreate a run from its manifest, and every manual NetEdit change must be committed as a versioned network artifact rather than left in an operator's local state. Derived plots and summary tables retain their source run identifiers and analysis-script revision. Failed and cancelled runs keep their partial logs and explicit terminal state. This package does not guarantee identical hardware timing, but it makes scenario semantics, causal events, and analytical transformations inspectable enough for another team member to reproduce the experiment or explain a difference.
+
+\section{Threats to Validity}
+
+Construct validity is threatened when a queue proxy, waiting-time implementation, or reward component does not represent the concept named in the report. Definitions and units are therefore versioned, and image-space proxies are not relabeled as physical quantities without calibration. Internal validity can be weakened by unmatched demand, different warm-up, hidden seed changes, or controller-specific failures; paired manifests, one measurement implementation, and retention of failed runs reduce these risks. External validity remains limited by synthetic demand, map inaccuracies, SUMO car-following assumptions, a small selected network, and domain shift between public video and Lahore traffic. Conclusions will be bounded to the tested network, demand families, software versions, and video sources, with no claim about clinical response time or public-road safety. Conclusion validity can be weakened by too few repetitions, test-set tuning, selective failure removal, or reporting only means. Pilot variance, held-out scenarios, paired comparisons, variability, and sensitivity analysis address those concerns. If statistical tests are used, their assumptions and effect sizes will be reported; significance alone will not establish practical value.
+
+\section{Conclusion}
+
+The methodology specifies a staged progression from validated measurements and baselines to integrated emergency control. Network provenance and demand manifests support repeatable scenarios; source-separated video evaluation prevents perception estimates from being confused with simulator truth; and common safety constraints permit a fair controller comparison. Routing uses time-consistent nonnegative costs, validity checks, and hysteresis, while the corridor lifecycle makes request, clearance, active priority, passage, cancellation, and recovery observable. The comparison matrix separates perception, normal control, routing, corridor effect, and robustness so the cause of a result can be explained. Held-out scenarios, repeated seeds, explicit metrics, retained failures, and reproducibility artifacts protect the final evaluation from undocumented tuning. Most importantly, the procedure allows a learned controller, tracker, rerouting policy, or corridor configuration to produce a negative or mixed finding without prompting selective changes to the test protocol. The next chapter maps these methodological responsibilities to components, interfaces, state ownership, and failure handling.

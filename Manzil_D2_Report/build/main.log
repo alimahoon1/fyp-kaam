@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.9.27)  6 OCT 2026 03:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.9.27)  8 OCT 2026 20:01
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -745,22 +745,7 @@ Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
 \@vwid@roff=\dimen289
 )
 ==> First Aid for varwidth.sty applied!
-)
-(C:\Users\X1 Carbon\AppData\Local\Programs\MiKTeX\tex/latex/pdflscape\pdflscape
-.sty
-Package: pdflscape 2022-10-27 v0.13 Display of landscape pages in PDF
-
-(C:\Users\X1 Carbon\AppData\Local\Programs\MiKTeX\tex/latex/pdflscape\pdflscape
--nometadata.sty
-Package: pdflscape-nometadata 2022-10-28 v0.13 Display of landscape pages in PD
-F (HO)
-
-(C:\Users\X1 Carbon\AppData\Local\Programs\MiKTeX\tex/latex/graphics\lscape.sty
-Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
-)
-Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
-))
-(C:\Users\X1 Carbon\AppData\Local\Programs\MiKTeX\tex/latex/xcolor\xcolor.sty
+) (C:\Users\X1 Carbon\AppData\Local\Programs\MiKTeX\tex/latex/xcolor\xcolor.sty
 Package: xcolor 2024/09/29 v3.02 LaTeX color extensions (UK)
 
 (C:\Users\X1 Carbon\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color.
@@ -1146,24 +1131,24 @@ apters/05_methodology.aux)
 apters/06_design.aux))
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
 
 (C:\Users\X1 Carbon\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pd
 f.mkii
@@ -1190,7 +1175,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 ys.cfg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-Package hyperref Info: Link coloring ON on input line 24.
+Package hyperref Info: Link coloring ON on input line 20.
 
 (C:\Users\X1 Carbon\Desktop\7th Semester\FYP\fyp-kaam\Manzil_D2_Report\build\ma
 in.out)
@@ -1244,53 +1229,54 @@ Package caption Info: End \AtBeginDocument code.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
+Package hyperref Info: Option `pageanchor' set `false' on input line 21.
 <../FYPFast/Figures/nulogo.png, id=389, 68.255pt x 43.16125pt>
 File: ../FYPFast/Figures/nulogo.png Graphic file (type png)
 <use ../FYPFast/Figures/nulogo.png>
-Package pdftex.def Info: ../FYPFast/Figures/nulogo.png  used on input line 34.
-(pdftex.def)             Requested size: 86.065pt x 54.42691pt.
+Package pdftex.def Info: ../FYPFast/Figures/nulogo.png  used on input line 30.
+(pdftex.def)             Requested size: 90.5922pt x 57.28978pt.
 <../FYPFast/Figures/fast.png, id=390, 88.33pt x 37.13875pt>
 File: ../FYPFast/Figures/fast.png Graphic file (type png)
 <use ../FYPFast/Figures/fast.png>
-Package pdftex.def Info: ../FYPFast/Figures/fast.png  used on input line 35.
-(pdftex.def)             Requested size: 86.065pt x 36.18661pt.
+Package pdftex.def Info: ../FYPFast/Figures/fast.png  used on input line 31.
+(pdftex.def)             Requested size: 90.5922pt x 38.09012pt.
 <../FYPFast/Figures/fastlogo.png, id=391, 1354.05875pt x 1356.06625pt>
 File: ../FYPFast/Figures/fastlogo.png Graphic file (type png)
 <use ../FYPFast/Figures/fastlogo.png>
-Package pdftex.def Info: ../FYPFast/Figures/fastlogo.png  used on input line 40
+Package pdftex.def Info: ../FYPFast/Figures/fastlogo.png  used on input line 34
 .
-(pdftex.def)             Requested size: 154.00742pt x 154.21657pt.
+(pdftex.def)             Requested size: 181.18439pt x 181.44707pt.
 LaTeX Font Info:    Trying to load font information for OT1+ztmcm on input line
- 48.
+ 36.
 (C:\Users\X1 Carbon\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1ztmcm.fd
 File: ot1ztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ztmcm.
 )
 LaTeX Font Info:    Trying to load font information for OML+ztmcm on input line
- 48.
+ 36.
 (C:\Users\X1 Carbon\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\omlztmcm.fd
 File: omlztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ztmcm.
 )
 LaTeX Font Info:    Trying to load font information for OMS+ztmcm on input line
- 48.
+ 36.
 (C:\Users\X1 Carbon\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\omsztmcm.fd
 File: omsztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/ztmcm.
 )
 LaTeX Font Info:    Trying to load font information for OMX+ztmcm on input line
- 48.
+ 36.
 (C:\Users\X1 Carbon\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\omxztmcm.fd
 File: omxztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/ztmcm.
 )
-LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 4
-8.
+LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 3
+6.
 (C:\Users\X1 Carbon\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 48.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 36.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 48.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 36.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 48.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 36.
 
 [1
 
@@ -1298,18 +1284,14 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
 {C:/Users/X1 Carbon/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/
 X1 Carbon/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc} <../FYPFas
 t/Figures/nulogo.png> <../FYPFast/Figures/fast.png> <../FYPFast/Figures/fastlog
-o.png>] [2] [1
+o.png>]
+Package hyperref Info: Option `pageanchor' set `true' on input line 50.
+ [1
 
 
 ] [2
 
-]
-Overfull \hbox (1.71513pt too wide) in paragraph at lines 94--95
-\T1/ptm/m/n/10.95 through-put, and star-va-tion checks. Emer-gency ex-per-i-men
-ts com-pare an unas-sisted ref-er-ence, congestion-
- []
-
-[3
+] [3
 
 ]
 (C:\Users\X1 Carbon\Desktop\7th Semester\FYP\fyp-kaam\Manzil_D2_Report\build\ma
@@ -1338,408 +1320,351 @@ in.lot)
 
  (chapters/01_introduction.tex
 Chapter 1.
-
-pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
-been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.17 
-      [1
+[1
 
 
 
-]
-Underfull \hbox (badness 10000) in paragraph at lines 61--61
+] [2]
+Underfull \hbox (badness 10000) in paragraph at lines 59--59
 []|\T1/ptm/m/n/10.95 Traffic-state con-
  []
 
-chapters/01_introduction.tex:65: ignored error: Infinite glue shrinkage found i
-n box being split
-pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has 
-been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.65 \end{longtable}
-                     [2] [3]) [4]
+[3] [4]) [5] [6]
 \openout2 = `chapters/02_vision.aux'.
 
  (chapters/02_vision.tex
 Chapter 2.
-[5
+[7
 
 
 
 
-] [6] [7] [8]
-Underfull \hbox (badness 1609) in paragraph at lines 125--125
+] [8] [9] [10] [11] [12]
+Underfull \hbox (badness 1609) in paragraph at lines 121--121
 []|\T1/ptm/m/n/10.95 Supervisor and eval-u-a-
  []
 
 
-Underfull \hbox (badness 5802) in paragraph at lines 125--125
+Underfull \hbox (badness 5802) in paragraph at lines 121--121
 []|\T1/ptm/m/n/10.95 Prospective traf-fic au-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 125--125
+Underfull \hbox (badness 10000) in paragraph at lines 121--121
 []|\T1/ptm/m/n/10.95 Prospective emer-gency
  []
 
-[9]) [10]
+[13]) [14] [15]
 \openout2 = `chapters/03_literature.aux'.
 
  (chapters/03_literature.tex
 Chapter 3.
-[11
+[16
 
 
 
 
-] [12] [13] [14] [15] [16]
-Underfull \hbox (badness 10000) in paragraph at lines 107--107
-[]|\T1/ptm/m/n/10.95 Demonstrated real-time
+] [17] [18] [19] [20] [21] [22]
+Underfull \hbox (badness 6575) in paragraph at lines 76--76
+[]|\T1/ptm/m/n/10 Redmon et al.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 107--107
-\T1/ptm/m/n/10.95 de-tec-tion and strong
+Underfull \hbox (badness 10000) in paragraph at lines 76--76
+[]|\T1/ptm/m/n/10 Unified one-stage de-tec-tion;
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 107--107
-[]|\T1/ptm/m/n/10.95 Original bench-mark and
+Underfull \hbox (badness 4713) in paragraph at lines 76--76
+\T1/ptm/m/n/10 demon-strated real-time op-er-a-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 107--107
-\T1/ptm/m/n/10.95 classes do not es-tab-lish
+Underfull \hbox (badness 10000) in paragraph at lines 76--76
+\T1/ptm/m/n/10 trade-off on stan-dard bench-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 107--108
-[]|\T1/ptm/m/n/10.95 Evaluate a pre-
+Underfull \hbox (badness 7504) in paragraph at lines 76--76
+\T1/ptm/m/n/10 marks do not es-tab-lish
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 108--108
-[]|\T1/ptm/m/n/10.95 Online track-ing with
+Underfull \hbox (badness 10000) in paragraph at lines 76--77
+[]|\T1/ptm/m/n/10 Evaluate a pre-trained
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 108--108
-\T1/ptm/m/n/10.95 learned ap-pear-ance
+Underfull \hbox (badness 1902) in paragraph at lines 76--77
+\T1/ptm/m/n/10 de-scen-dant on se-lected
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 108--108
-[]|\T1/ptm/m/n/10.95 Improved as-so-ci-a-tion
+Underfull \hbox (badness 1546) in paragraph at lines 77--77
+[]|\T1/ptm/m/n/10 Adds com-pu-ta-tion and a
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 108--108
-[]|\T1/ptm/m/n/10.95 Added com-pute and
+Underfull \hbox (badness 1895) in paragraph at lines 78--78
+[]|\T1/ptm/m/n/10 Two-stage as-so-ci-a-tion that re-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 108--108
-\T1/ptm/m/n/10.95 domain-dependent ap-
+Underfull \hbox (badness 1019) in paragraph at lines 78--78
+[]|\T1/ptm/m/n/10 Benchmark iden-ti-ties and
  []
 
 
-Underfull \hbox (badness 4595) in paragraph at lines 109--109
-[]|\T1/ptm/m/n/10.95 Strong re-sults on sev-eral
+Underfull \hbox (badness 10000) in paragraph at lines 78--79
+[]|\T1/ptm/m/n/10 Measure end-to-end
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 109--110
-[]|\T1/ptm/m/n/10.95 Candidate tracker;
+Underfull \hbox (badness 10000) in paragraph at lines 78--79
+\T1/ptm/m/n/10 count er-ror be-fore
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 109--110
-\T1/ptm/m/n/10.95 mea-sure end-to-end
+Underfull \hbox (badness 2245) in paragraph at lines 79--79
+[]|\T1/ptm/m/n/10 Large multi-task driving-video
  []
 
 
-Underfull \hbox (badness 1946) in paragraph at lines 110--110
-[]|\T1/ptm/m/n/10.95 Provides var-ied con-di-tions
+Underfull \hbox (badness 1845) in paragraph at lines 79--79
+\T1/ptm/m/n/10 dataset with var-ied con-di-tions
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 110--110
-[]|\T1/ptm/m/n/10.95 Mostly vehicle-mounted
+Underfull \hbox (badness 10000) in paragraph at lines 79--79
+[]|\T1/ptm/m/n/10 Mostly vehicle-mounted
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 110--111
-[]|\T1/ptm/m/n/10.95 Use for pre-train-
+Underfull \hbox (badness 10000) in paragraph at lines 79--79
+\T1/ptm/m/n/10 view-points dif-fer from
  []
 
 
-Underfull \hbox (badness 5077) in paragraph at lines 110--111
-\T1/ptm/m/n/10.95 ing/stress tests, not
+Underfull \hbox (badness 8056) in paragraph at lines 80--80
+[]|\T1/ptm/m/n/10 Vehicle de-tec-tion and track-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 111--111
-[]|\T1/ptm/m/n/10.95 Vehicle de-tec-
+Underfull \hbox (badness 1147) in paragraph at lines 80--80
+\T1/ptm/m/n/10 scenes with a joint eval-u-a-tion
  []
 
 
-Underfull \hbox (badness 6063) in paragraph at lines 111--111
-\T1/ptm/m/n/10.95 tion/tracking bench-mark
+Underfull \hbox (badness 10000) in paragraph at lines 81--81
+[]|\T1/ptm/m/n/10 Max-pressure net-work sig-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 111--111
-[]|\T1/ptm/m/n/10.95 Provides joint de-tec-
+Underfull \hbox (badness 10000) in paragraph at lines 81--81
+\T1/ptm/m/n/10 nal con-trol with the-o-ret-i-cal
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 111--111
-\T1/ptm/m/n/10.95 tion/tracking eval-u-a-tion
+Underfull \hbox (badness 2277) in paragraph at lines 81--81
+\T1/ptm/m/n/10 prop-er-ties un-der stated model
  []
 
 
-Underfull \hbox (badness 1635) in paragraph at lines 111--111
-[]|\T1/ptm/m/n/10.95 Limited lo-cal ve-hi-cle mix
+Underfull \hbox (badness 1014) in paragraph at lines 81--81
+[]|\T1/ptm/m/n/10 Requires valid move-ment
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 112--112
-[]|\T1/ptm/m/n/10.95 Max-pressure net-work
+Underfull \hbox (badness 10000) in paragraph at lines 81--82
+[]|\T1/ptm/m/n/10 Use pres-sure as a
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 112--112
-[]|\T1/ptm/m/n/10.95 Establishes the-o-ret-i-cal
+Underfull \hbox (badness 10000) in paragraph at lines 81--82
+\T1/ptm/m/n/10 trans-par-ent adap-tive
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 112--112
-\T1/ptm/m/n/10.95 network-control prop-er-ties
+Underfull \hbox (badness 10000) in paragraph at lines 82--82
+[]|\T1/ptm/m/n/10 Transfer across de-mand
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 112--113
-[]|\T1/ptm/m/n/10.95 Use as trans-par-
+Underfull \hbox (badness 10000) in paragraph at lines 82--82
+\T1/ptm/m/n/10 pat-terns and topol-ogy
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 112--113
-\T1/ptm/m/n/10.95 ent adap-tive con-
+Underfull \hbox (badness 10000) in paragraph at lines 83--83
+[]|\T1/ptm/m/n/10 Reinforcement learn-ing with
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 113--113
-[]|\T1/ptm/m/n/10.95 Showed adap-tive learned
+Underfull \hbox (badness 3769) in paragraph at lines 83--83
+[]|\T1/ptm/m/n/10 Findings de-pend on the
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 113--114
-[]|\T1/ptm/m/n/10.95 Bound ac-tions and
+Underfull \hbox (badness 1057) in paragraph at lines 83--83
+\T1/ptm/m/n/10 re-ported net-works, flows,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 113--114
-\T1/ptm/m/n/10.95 eval-u-ate only on
+Underfull \hbox (badness 3281) in paragraph at lines 83--84
+[]|\T1/ptm/m/n/10 Prefer a grounded re-
  []
 
 
-Underfull \hbox (badness 5175) in paragraph at lines 114--114
-[]|\T1/ptm/m/n/10.95 RL with max-pressure-
+Underfull \hbox (badness 10000) in paragraph at lines 83--84
+\T1/ptm/m/n/10 ward to an ar-bi-trary
  []
 
 
-Underfull \hbox (badness 5741) in paragraph at lines 114--114
-[]|\T1/ptm/m/n/10.95 Outperformed tested con-
+Underfull \hbox (badness 10000) in paragraph at lines 84--84
+[]|\T1/ptm/m/n/10 Phase-competition rep-re-sen-ta-
  []
 
 
-Underfull \hbox (badness 3826) in paragraph at lines 114--114
-[]|\T1/ptm/m/n/10.95 Results de-pend on tested
+Underfull \hbox (badness 6725) in paragraph at lines 84--84
+\T1/ptm/m/n/10 tion that learns re-la-tion-ships
  []
 
 
-Underfull \hbox (badness 3746) in paragraph at lines 114--115
-[]|\T1/ptm/m/n/10.95 Prefer grounded re-
+Underfull \hbox (badness 1755) in paragraph at lines 84--85
+[]|\T1/ptm/m/n/10 Preserve phase le-gal-ity
  []
 
 
-Underfull \hbox (badness 5711) in paragraph at lines 114--115
-\T1/ptm/m/n/10.95 ward over ar-bi-trary
+Underfull \hbox (badness 10000) in paragraph at lines 85--85
+[]|\T1/ptm/m/n/10 Graph-attention co-op-er-a-tion
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 115--115
-[]|\T1/ptm/m/n/10.95 Learns re-la-tions among
+Underfull \hbox (badness 1400) in paragraph at lines 85--86
+[]|\T1/ptm/m/n/10 Keep the first net-work
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 115--116
-[]|\T1/ptm/m/n/10.95 Preserve phase le-
+Underfull \hbox (badness 1629) in paragraph at lines 86--86
+[]|\T1/ptm/m/n/10 Non-stationarity and tun-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 116--116
-[]|\T1/ptm/m/n/10.95 Training and at-tri-bu-tion
+Underfull \hbox (badness 10000) in paragraph at lines 86--87
+[]|\T1/ptm/m/n/10 State own-er-ship and
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 116--117
-[]|\T1/ptm/m/n/10.95 Keep first net-work
+Underfull \hbox (badness 10000) in paragraph at lines 86--87
+\T1/ptm/m/n/10 com-mu-ni-ca-tion ex-plic-
  []
 
 
-Underfull \hbox (badness 1052) in paragraph at lines 117--117
-[]|\T1/ptm/m/n/10.95 Studied scal-able de-cen-tral-
+Underfull \hbox (badness 10000) in paragraph at lines 87--87
+[]|\T1/ptm/m/n/10 High-throughput city-scale
  []
 
 
-Underfull \hbox (badness 1142) in paragraph at lines 117--118
-[]|\T1/ptm/m/n/10.95 Avoid vague ``multi-
+Underfull \hbox (badness 10000) in paragraph at lines 87--87
+\T1/ptm/m/n/10 traffic-learning sim-u-la-tor in-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 118--118
-[]|\T1/ptm/m/n/10.95 High-throughput city-
+Underfull \hbox (badness 1688) in paragraph at lines 87--87
+[]|\T1/ptm/m/n/10 Migration would com-pli-
  []
 
 
-Underfull \hbox (badness 2150) in paragraph at lines 118--119
-[]|\T1/ptm/m/n/10.95 Retain SUMO; note
+Underfull \hbox (badness 2591) in paragraph at lines 88--88
+\T1/ptm/m/n/10 pa-ram-e-ters limit ex-ter-nal
  []
 
 
-Underfull \hbox (badness 1231) in paragraph at lines 118--119
-\T1/ptm/m/n/10.95 CityFlow as al-ter-na-
+Underfull \hbox (badness 10000) in paragraph at lines 89--89
+[]|\T1/ptm/m/n/10 Nonnegative shortest-path
  []
 
 
-Underfull \hbox (badness 2512) in paragraph at lines 119--119
-[]|\T1/ptm/m/n/10.95 Simulation pa-ram-e-ters de-
+Underfull \hbox (badness 6141) in paragraph at lines 89--89
+\T1/ptm/m/n/10 search with a minimum-cost
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 119--120
-[]|\T1/ptm/m/n/10.95 Version net-work,
+Underfull \hbox (badness 1137) in paragraph at lines 89--89
+[]|\T1/ptm/m/n/10 Represents a static snap-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 119--120
-\T1/ptm/m/n/10.95 de-mand, and car-
+Underfull \hbox (badness 1194) in paragraph at lines 89--89
+\T1/ptm/m/n/10 shot un-less costs are re-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 120--120
-[]|\T1/ptm/m/n/10.95 Nonnegative shortest-
+Underfull \hbox (badness 7362) in paragraph at lines 89--90
+[]|\T1/ptm/m/n/10 Use as the ref-er-ence
  []
 
 
-Underfull \hbox (badness 2057) in paragraph at lines 120--120
-[]|\T1/ptm/m/n/10.95 Guarantees min-i-mum path
+Underfull \hbox (badness 1014) in paragraph at lines 90--90
+[]|\T1/ptm/m/n/10 An in-ad-mis-si-ble heuris-tic
  []
 
 
-Underfull \hbox (badness 2173) in paragraph at lines 120--121
-[]|\T1/ptm/m/n/10.95 Reference route im-
+Underfull \hbox (badness 6268) in paragraph at lines 90--90
+\T1/ptm/m/n/10 can lose the op-ti-mal-ity
  []
 
 
-Underfull \hbox (badness 7888) in paragraph at lines 121--121
-[]|\T1/ptm/m/n/10.95 Heuristic minimum-cost
+Underfull \hbox (badness 10000) in paragraph at lines 90--91
+[]|\T1/ptm/m/n/10 Use a free-flow-time
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 121--121
-[]|\T1/ptm/m/n/10.95 Guides search ef-fi-ciently
+Underfull \hbox (badness 2717) in paragraph at lines 90--91
+\T1/ptm/m/n/10 lower bound or re-tain
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 121--122
-[]|\T1/ptm/m/n/10.95 Use free-flow time
+Underfull \hbox (badness 1057) in paragraph at lines 91--92
+\T1/ptm/m/n/10 e-fit and ordinary-traffic
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 122--122
-[]|\T1/ptm/m/n/10.95 Humagain et al.
+Underfull \hbox (badness 6141) in paragraph at lines 92--92
+[]|\T1/ptm/m/n/10 Qin and Khan
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 122--122
-[]|\T1/ptm/m/n/10.95 Systematic re-
+Underfull \hbox (badness 4886) in paragraph at lines 92--92
+[]|\T1/ptm/m/n/10 Reported pa-ram-e-ters are
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 122--122
-\T1/ptm/m/n/10.95 view of emer-gency
+Underfull \hbox (badness 1721) in paragraph at lines 92--93
+\T1/ptm/m/n/10 transition and re-cov-ery
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 122--123
-[]|\T1/ptm/m/n/10.95 Measure both EV
+Underfull \hbox (badness 2443) in paragraph at lines 93--93
+\T1/ptm/m/n/10 agent scope ex-ceeds the
  []
 
-
-Underfull \hbox (badness 2781) in paragraph at lines 123--123
-[]|\T1/ptm/m/n/10.95 Reported im-proved tran-si-
- []
-
-
-Underfull \hbox (badness 3635) in paragraph at lines 123--123
-\T1/ptm/m/n/10.95 tions over tested con-ven-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 123--124
-[]|\T1/ptm/m/n/10.95 Implement ex-plicit
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 123--124
-\T1/ptm/m/n/10.95 safe tran-si-tion and
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 124--125
-\T1/ptm/m/n/10.95 and down-stream
- []
-
-[17
-
-] [18] [19]) [20
-
-]
+chapters/03_literature.tex:95: ignored error: Infinite glue shrinkage found in 
+box being split [23]) [24] [25]
 \openout2 = `chapters/04_srs.aux'.
 
  (chapters/04_srs.tex
 Chapter 4.
-chapters/04_srs.tex:50: ignored error: Infinite glue shrinkage found in box bei
-ng split [21
+[26
 
 
 
 
 ]
-chapters/04_srs.tex:50: ignored error: Infinite glue shrinkage found in box bei
-ng split [22]
-chapters/04_srs.tex:75: ignored error: Infinite glue shrinkage found in box bei
-ng split [23] [24] [25]
-Underfull \hbox (badness 10000) in paragraph at lines 142--142
-[]|\T1/ptm/b/n/10.95 Alternative/failure
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 144--144
-[]|\T1/ptm/b/n/10.95 Alternative/failure
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 146--146
-[]|\T1/ptm/b/n/10.95 Alternative/failure
- []
-
-[26]
+chapters/04_srs.tex:52: ignored error: Infinite glue shrinkage found in box bei
+ng split [27] [28]
+chapters/04_srs.tex:79: ignored error: Infinite glue shrinkage found in box bei
+ng split [29] [30] [31] [32]
 Underfull \hbox (badness 10000) in paragraph at lines 148--148
 []|\T1/ptm/b/n/10.95 Alternative/failure
  []
@@ -1754,7 +1679,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 152--152
 []|\T1/ptm/b/n/10.95 Alternative/failure
  []
 
-[27]
+[33]
 Underfull \hbox (badness 10000) in paragraph at lines 154--154
 []|\T1/ptm/b/n/10.95 Alternative/failure
  []
@@ -1764,402 +1689,409 @@ Underfull \hbox (badness 10000) in paragraph at lines 156--156
 []|\T1/ptm/b/n/10.95 Alternative/failure
  []
 
-[28] [29]
+
+Underfull \hbox (badness 10000) in paragraph at lines 158--158
+[]|\T1/ptm/b/n/10.95 Alternative/failure
+ []
+
+[34]
+Underfull \hbox (badness 10000) in paragraph at lines 160--160
+[]|\T1/ptm/b/n/10.95 Alternative/failure
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 162--162
+[]|\T1/ptm/b/n/10.95 Alternative/failure
+ []
+
+[35] [36]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 221.
- [30]
-Underfull \hbox (badness 10000) in paragraph at lines 278--278
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 229.
+ [37] [38]
+Underfull \hbox (badness 10000) in paragraph at lines 288--288
 []|\T1/ptm/m/n/10.95 scenario_id, net-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 278--278
+Underfull \hbox (badness 10000) in paragraph at lines 288--288
 \T1/ptm/m/n/10.95 work_version, de-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 279--279
+Underfull \hbox (badness 10000) in paragraph at lines 289--289
 []|\T1/ptm/m/n/10.95 run_id, sce-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 279--279
+Underfull \hbox (badness 10000) in paragraph at lines 289--289
 \T1/ptm/m/n/10.95 nario_id, seed,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 279--279
+Underfull \hbox (badness 10000) in paragraph at lines 289--289
 \T1/ptm/m/n/10.95 con-troller_version,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 280--280
+Underfull \hbox (badness 10000) in paragraph at lines 290--290
 []|\T1/ptm/m/n/10.95 run_id/job_id,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 280--280
+Underfull \hbox (badness 10000) in paragraph at lines 290--290
 \T1/ptm/m/n/10.95 source_mode, en-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 280--280
+Underfull \hbox (badness 10000) in paragraph at lines 290--290
 \T1/ptm/m/n/10.95 tity_id, ob-served_at,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 280--280
+Underfull \hbox (badness 10000) in paragraph at lines 290--290
 \T1/ptm/m/n/10.95 valid_until, val-ues,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 281--281
+Underfull \hbox (badness 10000) in paragraph at lines 291--291
 []|\T1/ptm/m/n/10.95 run_id, in-ter-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 281--281
+Underfull \hbox (badness 10000) in paragraph at lines 291--291
 \T1/ptm/m/n/10.95 sec-tion_id, re-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 281--281
+Underfull \hbox (badness 10000) in paragraph at lines 291--291
 \T1/ptm/m/n/10.95 quested_phase,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 281--281
+Underfull \hbox (badness 10000) in paragraph at lines 291--291
 \T1/ptm/m/n/10.95 ap-plied_phase, ef-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 282--282
+Underfull \hbox (badness 10000) in paragraph at lines 292--292
 []|\T1/ptm/m/n/10.95 mission_id, run_id,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 282--282
+Underfull \hbox (badness 10000) in paragraph at lines 292--292
 \T1/ptm/m/n/10.95 ve-hi-cle_id, ori-gin,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 283--283
+Underfull \hbox (badness 10000) in paragraph at lines 293--293
 []|\T1/ptm/m/n/10.95 mission_id, ver-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 283--283
+Underfull \hbox (badness 10000) in paragraph at lines 293--293
 \T1/ptm/m/n/10.95 sion, edge_list,
  []
 
 
-Underfull \hbox (badness 1360) in paragraph at lines 283--283
+Underfull \hbox (badness 1360) in paragraph at lines 293--293
 \T1/ptm/m/n/10.95 cost_seconds, trig-ger,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 284--284
+Underfull \hbox (badness 10000) in paragraph at lines 294--294
 []|\T1/ptm/m/n/10.95 mission_id,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 284--284
+Underfull \hbox (badness 10000) in paragraph at lines 294--294
 \T1/ptm/m/n/10.95 route_version, in-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 284--284
+Underfull \hbox (badness 10000) in paragraph at lines 294--294
 \T1/ptm/m/n/10.95 ter-sec-tion_id, state,
  []
 
 
-Underfull \hbox (badness 2111) in paragraph at lines 285--285
+Underfull \hbox (badness 2111) in paragraph at lines 295--295
 []|\T1/ptm/m/n/10.95 run_id, met-ric_name,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 286--286
+Underfull \hbox (badness 10000) in paragraph at lines 296--296
 []|\T1/ptm/m/n/10.95 run/job_id, type,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 286--286
+Underfull \hbox (badness 10000) in paragraph at lines 296--296
 \T1/ptm/m/n/10.95 URI, check-sum,
  []
 
-chapters/04_srs.tex:288: ignored error: Infinite glue shrinkage found in box be
-ing split [31]
-Overfull \hbox (0.72981pt too wide) in paragraph at lines 296--296
-[]|\T1/ptm/b/n/10 Likelihood| 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 298--298
+chapters/04_srs.tex:298: ignored error: Infinite glue shrinkage found in box be
+ing split [39] [40]
+Underfull \hbox (badness 10000) in paragraph at lines 310--310
 []|\T1/ptm/m/n/10 Map im-port lacks
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 298--299
+Underfull \hbox (badness 10000) in paragraph at lines 310--311
 []|\T1/ptm/m/n/10 Use a doc-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 298--299
+Underfull \hbox (badness 10000) in paragraph at lines 310--311
 \T1/ptm/m/n/10 u-mented
  []
 
 
-Underfull \hbox (badness 1082) in paragraph at lines 299--300
+Underfull \hbox (badness 1082) in paragraph at lines 311--312
 []|\T1/ptm/m/n/10 Evaluate pub-
  []
 
 
-Underfull \hbox (badness 1097) in paragraph at lines 299--300
+Underfull \hbox (badness 1097) in paragraph at lines 311--312
 \T1/ptm/m/n/10 lic data only;
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 299--300
+Underfull \hbox (badness 10000) in paragraph at lines 311--312
 \T1/ptm/m/n/10 state do-main
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 300--301
+Underfull \hbox (badness 10000) in paragraph at lines 312--313
 []|\T1/ptm/m/n/10 Limit claims
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 300--301
+Underfull \hbox (badness 10000) in paragraph at lines 312--313
 \T1/ptm/m/n/10 to la-belled
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 301--302
+Underfull \hbox (badness 10000) in paragraph at lines 313--314
 []|\T1/ptm/m/n/10 Report base-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 301--302
+Underfull \hbox (badness 10000) in paragraph at lines 313--314
 \T1/ptm/m/n/10 line com-par-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 301--302
+Underfull \hbox (badness 10000) in paragraph at lines 313--314
 \T1/ptm/m/n/10 i-son; treat
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 301--302
+Underfull \hbox (badness 10000) in paragraph at lines 313--314
 \T1/ptm/m/n/10 RL as neg-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 301--302
+Underfull \hbox (badness 10000) in paragraph at lines 313--314
 \T1/ptm/m/n/10 a-tive/partial
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 302--302
+Underfull \hbox (badness 10000) in paragraph at lines 314--314
 []|\T1/ptm/m/n/10 Multi-metric eval-u-a-tion and
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 302--303
+Underfull \hbox (badness 10000) in paragraph at lines 314--315
 []|\T1/ptm/m/n/10 Reject pol-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 302--303
+Underfull \hbox (badness 10000) in paragraph at lines 314--315
 \T1/ptm/m/n/10 icy vi-o-lat-ing
  []
 
 
-Underfull \hbox (badness 3713) in paragraph at lines 304--305
+Underfull \hbox (badness 3713) in paragraph at lines 316--317
 \T1/ptm/m/n/10 and use safe
  []
 
 
-Underfull \hbox (badness 3148) in paragraph at lines 304--305
+Underfull \hbox (badness 3148) in paragraph at lines 316--317
 \T1/ptm/m/n/10 base-line tran-
  []
 
 
-Underfull \hbox (badness 2165) in paragraph at lines 305--305
-[]|\T1/ptm/m/n/10 Service tim-ing drifts
- []
-
-
-Underfull \hbox (badness 4608) in paragraph at lines 305--305
+Underfull \hbox (badness 4608) in paragraph at lines 317--317
 []|\T1/ptm/m/n/10 One step owner, sim-u-la-tion
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 305--306
+Underfull \hbox (badness 10000) in paragraph at lines 317--318
 []|\T1/ptm/m/n/10 Run syn-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 305--306
+Underfull \hbox (badness 10000) in paragraph at lines 317--318
 \T1/ptm/m/n/10 chronously
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 305--306
+Underfull \hbox (badness 10000) in paragraph at lines 317--318
 \T1/ptm/m/n/10 with-out live
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 306--306
+Underfull \hbox (badness 10000) in paragraph at lines 318--318
 []|\T1/ptm/m/n/10 Profile early; smaller net-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 306--307
+Underfull \hbox (badness 10000) in paragraph at lines 318--319
 []|\T1/ptm/m/n/10 Demonstrate
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 306--307
+Underfull \hbox (badness 10000) in paragraph at lines 318--319
 \T1/ptm/m/n/10 recorded
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 306--307
+Underfull \hbox (badness 10000) in paragraph at lines 318--319
 \T1/ptm/m/n/10 in-fer-ence
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 306--307
+Underfull \hbox (badness 10000) in paragraph at lines 318--319
 \T1/ptm/m/n/10 and com-pact
  []
 
 
-Underfull \hbox (badness 6412) in paragraph at lines 307--307
+Underfull \hbox (badness 6412) in paragraph at lines 319--319
 []|\T1/ptm/m/n/10 Immutable man-i-fests, seeds,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 307--308
+Underfull \hbox (badness 10000) in paragraph at lines 319--320
 []|\T1/ptm/m/n/10 Exclude un-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 307--308
+Underfull \hbox (badness 10000) in paragraph at lines 319--320
 \T1/ptm/m/n/10 trace-able
  []
 
-chapters/04_srs.tex:309: ignored error: Infinite glue shrinkage found in box be
-ing split [32]
-Underfull \hbox (badness 10000) in paragraph at lines 317--318
+chapters/04_srs.tex:321: ignored error: Infinite glue shrinkage found in box be
+ing split [41]
+Underfull \hbox (badness 10000) in paragraph at lines 331--332
 []|\T1/ptm/b/n/10.95 Planned ver-i-fi-ca-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 320--321
+Underfull \hbox (badness 10000) in paragraph at lines 334--335
 []|\T1/ptm/b/n/10.95 Planned ver-i-fi-ca-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 323--323
+Underfull \hbox (badness 10000) in paragraph at lines 337--337
 []|\T1/ptm/m/n/10.95 FR-02,03,07;
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 323--324
+Underfull \hbox (badness 10000) in paragraph at lines 337--338
 []|\T1/ptm/m/n/10.95 Single-owner and
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 324--324
+Underfull \hbox (badness 10000) in paragraph at lines 338--338
 []|\T1/ptm/m/n/10.95 FR-04,05;
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 325--326
+Underfull \hbox (badness 10000) in paragraph at lines 339--340
 []|\T1/ptm/m/n/10.95 Fixed sce-nar-ios,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 325--326
+Underfull \hbox (badness 10000) in paragraph at lines 339--340
 \T1/ptm/m/n/10.95 illegal-action and
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 326--327
+Underfull \hbox (badness 10000) in paragraph at lines 340--341
 \T1/ptm/m/n/10.95 clo-sure, hys-tere-sis
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 326--327
+Underfull \hbox (badness 10000) in paragraph at lines 340--341
 \T1/ptm/m/n/10.95 and path-validity
  []
 
 
-Underfull \hbox (badness 5331) in paragraph at lines 327--328
+Underfull \hbox (badness 5331) in paragraph at lines 341--342
 []|\T1/ptm/m/n/10.95 Lifecycle, time-out,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 329--329
+Underfull \hbox (badness 10000) in paragraph at lines 343--343
 []|\T1/ptm/m/n/10.95 NFR-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 329--329
+Underfull \hbox (badness 10000) in paragraph at lines 343--343
 \T1/ptm/m/n/10.95 03,05,07--
  []
 
 
-Underfull \hbox (badness 7308) in paragraph at lines 329--330
+Underfull \hbox (badness 7308) in paragraph at lines 343--344
 []|\T1/ptm/m/n/10.95 Log au-dit, pro-fil-
  []
 
-[33]) [34] [35]
+chapters/04_srs.tex:345: ignored error: Infinite glue shrinkage found in box be
+ing split [42]) [43] [44]
 \openout2 = `chapters/05_methodology.aux'.
 
  (chapters/05_methodology.tex
 Chapter 5.
-[36
+[45
 
 
 
 
-] [37] [38] [39] [40] [41] [42] [43] [44]) [45]
+] [46] [47] [48] [49] [50] [51] [52] [53] [54] [55] [56]) [57]
 \openout2 = `chapters/06_design.aux'.
 
- (chapters/06_design.tex
-Chapter 6.
 
-Underfull \hbox (badness 10000) in paragraph at lines 59--59
+(chapters/06_design.tex
+Chapter 6.
+[58
+
+
+
+
+] [59]
+Underfull \hbox (badness 10000) in paragraph at lines 57--57
 []|\T1/ptm/m/n/10.95 HTTP/stream com-mands,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 59--59
+Underfull \hbox (badness 10000) in paragraph at lines 57--57
 \T1/ptm/m/n/10.95 identity-free lo-cal op-er-a-tor
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 60--60
+Underfull \hbox (badness 10000) in paragraph at lines 58--58
 []|\T1/ptm/m/n/10.95 Valid con-fig-u-ra-tion, met-
  []
 
 
-Underfull \hbox (badness 6268) in paragraph at lines 66--67
+Underfull \hbox (badness 6268) in paragraph at lines 64--65
 []|\T1/ptm/m/n/10.95 Route ver-sions, no-route rea-son,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 67--67
+Underfull \hbox (badness 10000) in paragraph at lines 65--65
 []|\T1/ptm/m/n/10.95 Route ver-sion, am-bu-lance
  []
 
-[46
-
-
-
-
-]
+[60]
 Underfull \hbox (badness 2717) in paragraph at lines 77--77
 []|\T1/ptm/b/n/10.95 Alternative and rea-
  []
@@ -2354,170 +2286,168 @@ Underfull \hbox (badness 2662) in paragraph at lines 89--90
 []|\T1/ptm/m/n/10.95 Adds job state
  []
 
-[47]
 chapters/06_design.tex:91: ignored error: Infinite glue shrinkage found in box 
-being split [48] [49] [50]
-Underfull \hbox (badness 10000) in paragraph at lines 213--213
+being split [61] [62] [63] [64] [65]
+Underfull \hbox (badness 10000) in paragraph at lines 219--219
 []|\T1/ptm/m/n/10.95 schemaVersion,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 213--213
+Underfull \hbox (badness 10000) in paragraph at lines 219--219
 \T1/ptm/m/n/10.95 source-Mode, pro-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 213--213
+Underfull \hbox (badness 10000) in paragraph at lines 219--219
 \T1/ptm/m/n/10.95 duce-dAt, ef-fec-
  []
 
 
-Underfull \hbox (badness 4518) in paragraph at lines 213--213
+Underfull \hbox (badness 4518) in paragraph at lines 219--219
 \T1/ptm/m/n/10.95 tiveStep, validUn-til,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 214--214
+Underfull \hbox (badness 10000) in paragraph at lines 220--220
 []|\T1/ptm/m/n/10.95 intersectionId, ap-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 214--214
+Underfull \hbox (badness 10000) in paragraph at lines 220--220
 \T1/ptm/m/n/10.95 proachId, count,
  []
 
 
-Underfull \hbox (badness 2253) in paragraph at lines 214--214
+Underfull \hbox (badness 2253) in paragraph at lines 220--220
 \T1/ptm/m/n/10.95 queue, wait, speed,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 214--214
+Underfull \hbox (badness 10000) in paragraph at lines 220--220
 \T1/ptm/m/n/10.95 oc-cu-pancy, units,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 215--215
+Underfull \hbox (badness 10000) in paragraph at lines 221--221
 []|\T1/ptm/m/n/10.95 intersectionId, pro-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 215--215
+Underfull \hbox (badness 10000) in paragraph at lines 221--221
 \T1/ptm/m/n/10.95 gramId, pha-seId,
  []
 
 
-Underfull \hbox (badness 1755) in paragraph at lines 215--215
+Underfull \hbox (badness 1755) in paragraph at lines 221--221
 \T1/ptm/m/n/10.95 phaseE-lapsed, legal-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 216--216
+Underfull \hbox (badness 10000) in paragraph at lines 222--222
 []|\T1/ptm/m/n/10.95 controllerId, in-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 216--216
+Underfull \hbox (badness 10000) in paragraph at lines 222--222
 \T1/ptm/m/n/10.95 ter-sec-tionId, re-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 216--216
+Underfull \hbox (badness 10000) in paragraph at lines 222--222
 \T1/ptm/m/n/10.95 quest-ed-Phase, du-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 216--216
+Underfull \hbox (badness 10000) in paragraph at lines 222--222
 \T1/ptm/m/n/10.95 ra-tion/extension,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 217--217
+Underfull \hbox (badness 10000) in paragraph at lines 223--223
 []|\T1/ptm/m/n/10.95 requestId, ap-plied-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 217--217
+Underfull \hbox (badness 10000) in paragraph at lines 223--223
 \T1/ptm/m/n/10.95 safe-ty-In-ter-ven-tion,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 218--218
+Underfull \hbox (badness 10000) in paragraph at lines 224--224
 []|\T1/ptm/m/n/10.95 missionId, routeV-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 218--218
+Underfull \hbox (badness 10000) in paragraph at lines 224--224
 \T1/ptm/m/n/10.95 er-sion, edgeIds,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 218--218
+Underfull \hbox (badness 10000) in paragraph at lines 224--224
 \T1/ptm/m/n/10.95 cost-Sec-onds, snap-
  []
 
 
-Underfull \hbox (badness 1742) in paragraph at lines 219--219
+Underfull \hbox (badness 1742) in paragraph at lines 225--225
 []|\T1/ptm/m/n/10.95 missionId, routeV-er-
  []
 
 
-Underfull \hbox (badness 6944) in paragraph at lines 219--219
+Underfull \hbox (badness 6944) in paragraph at lines 225--225
 \T1/ptm/m/n/10.95 sion, in-ter-sec-tionId,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 219--219
+Underfull \hbox (badness 10000) in paragraph at lines 225--225
 \T1/ptm/m/n/10.95 move-men-tId, ETA,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 220--220
+Underfull \hbox (badness 10000) in paragraph at lines 226--226
 []|\T1/ptm/m/n/10.95 runId, met-ric-Name,
  []
 
 
-Underfull \hbox (badness 1215) in paragraph at lines 220--220
+Underfull \hbox (badness 1215) in paragraph at lines 226--226
 \T1/ptm/m/n/10.95 met-ricVer-sion, in-ter-
  []
 
-[51]
-chapters/06_design.tex:222: ignored error: Infinite glue shrinkage found in box
- being split [52]
-Underfull \hbox (badness 3525) in paragraph at lines 251--251
+chapters/06_design.tex:228: ignored error: Infinite glue shrinkage found in box
+ being split [66] [67]
+Underfull \hbox (badness 3525) in paragraph at lines 257--257
 []|\T1/ptm/m/n/10.95 SUMO launch/TraCI dis-
  []
 
-[53] [54] [55]) [56]
+[68] [69] [70] [71]) [72]
 (C:\Users\X1 Carbon\Desktop\7th Semester\FYP\fyp-kaam\Manzil_D2_Report\build\ma
-in.bbl [57
+in.bbl [73
 
 
 
 
-] [58]
+] [74]
 Underfull \hbox (badness 10000) in paragraph at lines 121--124
 []\T1/ptm/m/n/10.95 OpenStreetMap Con-trib-u-tors, ``Open-streetmap copy-right 
 and li-cense.'' [][]$\T1/cmtt/m/n/10.95 https : / / www .
  []
 
-) [59]
+) [75]
 Appendix A.
 
-Underfull \hbox (badness 3668) in paragraph at lines 135--135
+Underfull \hbox (badness 3668) in paragraph at lines 118--118
 []|\T1/ptm/m/n/10.95 Service re-spon-si-bil-i-ties and
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 136--136
+Underfull \hbox (badness 10000) in paragraph at lines 119--119
 []|\T1/ptm/m/n/10.95 Architecture, UML, se-
  []
 
-[60
+[76
 
 ]
 Appendix B.
-[61
+[77
 
 ]
 (C:\Users\X1 Carbon\Desktop\7th Semester\FYP\fyp-kaam\Manzil_D2_Report\build\ma
@@ -2542,13 +2472,13 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 5961408068FF905F5D3EBC67E9758A89;17951.
  ) 
 Here is how much of TeX's memory you used:
- 30770 strings out of 467871
- 571141 string characters out of 5416404
- 981893 words of memory out of 5000000
- 58789 multiletter control sequences out of 15000+600000
- 685487 words of font info for 119 fonts, out of 8000000 for 9000
+ 30721 strings out of 467871
+ 569283 string characters out of 5416404
+ 978157 words of memory out of 5000000
+ 58734 multiletter control sequences out of 15000+600000
+ 688856 words of font info for 121 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 90i,12n,94p,1195b,908s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,12n,94p,1473b,903s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\X1 Carbon\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\
 ectt1095.pk><C:/Users/X1 Carbon/AppData/Local/Programs/MiKTeX/fonts/type1/publi
 c/amsfonts/cm/cmmi10.pfb><C:/Users/X1 Carbon/AppData/Local/Programs/MiKTeX/font
@@ -2562,9 +2492,9 @@ C:/Users/X1 Carbon/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.p
 fb><C:/Users/X1 Carbon/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr
 i8a.pfb>
 Output written on "C:\Users\X1 Carbon\Desktop\7th Semester\FYP\fyp-kaam\Manzil_
-D2_Report\build\main.pdf" (72 pages, 504695 bytes).
+D2_Report\build\main.pdf" (87 pages, 577344 bytes).
 PDF statistics:
- 1142 PDF objects out of 1200 (max. 8388607)
- 261 named destinations out of 1000 (max. 500000)
+ 1261 PDF objects out of 1440 (max. 8388607)
+ 277 named destinations out of 1000 (max. 500000)
  796 words of extra memory for PDF output out of 10000 (max. 10000000)
 
