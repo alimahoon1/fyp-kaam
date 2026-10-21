@@ -3,34 +3,35 @@
 
 This chapter maps the requirements and methodology to a service-oriented prototype design that can be implemented incrementally on the team's available machines. The decomposition protects experimental determinism by assigning the simulation clock and all signal actuation to one adapter. The API, dashboard, perception worker, controllers, routing logic, and experiment store exchange typed messages without competing for that authority. The design also separates a requested decision from the action applied after safety checks, preserves the source and effective time of every traffic snapshot, and binds corridor requests to an immutable route version. These choices support replay and fault diagnosis without requiring a prematurely distributed deployment. Interfaces may initially be implemented as in-process modules, provided that they retain the same ownership boundaries and contracts. The chapter moves from architecture and domain objects to interaction sequences, state transitions, data contracts, synchronization, failure handling, module policies, and testing so each important requirement has a visible design consequence.
 
-\section{System Overview and Design Goals}
+\section{System Overview}
 
 The system must support repeatable research runs, an interactive demonstration, and post-run analysis without allowing presentation concerns to alter experimental state. Its main design goals are deterministic ownership of state changes, replaceable controller and perception implementations, explicit time and units, safe corridor transitions, immutable run configuration, and visible failure. Performance is optimized only after these properties are preserved because a faster result is not useful when its source, phase legality, or causal order is uncertain. The design assumes one machine or a small development deployment for Deliverable 2 and FYP-I. Logical separation therefore does not imply a network service for every box in the diagrams. The orchestrator, controllers, routing logic, and repositories may begin as in-process modules behind typed interfaces, while video inference can move to a bounded worker when profiling shows it would block the control loop. This approach keeps deployment manageable but preserves a path to isolate resource-heavy components without changing experimental semantics.
 
-\section{High-Level Architecture}
+\subsection{High-Level Architecture}
 \label{sec:architecture}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
-\begin{tikzpicture}[scale=.82,transform shape,font=\scriptsize,node distance=7mm and 8mm,
-comp/.style={draw,rounded corners,fill=manzilgray,minimum width=3.1cm,minimum height=1.0cm,align=center},
-ext/.style={draw,rounded corners,fill=manzilblue!12,minimum width=3.1cm,minimum height=1cm,align=center},
+\begin{tikzpicture}[font=\footnotesize,node distance=7mm and 11mm,
+comp/.style={draw,rounded corners,fill=manzilgray,minimum width=3.35cm,minimum height=1.0cm,align=center},
+ext/.style={draw,rounded corners,fill=manzilblue!12,minimum width=3.35cm,minimum height=1cm,align=center},
 arr/.style={-{Latex},thick}]
 \node[ext] (ui) {React dashboard\\operator and evaluator};
 \node[comp,below=of ui] (api) {FastAPI boundary\\validation and queries};
-\node[comp,below left=of api] (exp) {Experiment service\\config, lifecycle, metrics};
 \node[comp,below=of api] (orch) {Control orchestrator\\ordering and ownership};
-\node[comp,below right=of api] (state) {Traffic-state service\\typed snapshots};
+\node[comp,left=of orch] (exp) {Experiment service\\config, lifecycle, metrics};
+\node[comp,right=of orch] (state) {Traffic-state service\\typed snapshots};
+\node[comp,below=of exp] (store) {Experiment store\\repository interface};
 \node[comp,below left=of orch] (controller) {Controller registry\\fixed / rule / RL};
-\node[comp,below=of orch,fill=manzilgreen!12] (sumoad) {SUMO/TraCI adapter\\sole step and actuation owner};
+\node[comp,below=of orch,fill=manzilgreen!12] (safety) {Safety filter\\legal phase transitions};
 \node[comp,below right=of orch] (route) {Routing and corridor\\mission lifecycle};
+\node[comp,below=of safety,fill=manzilgreen!12] (sumoad) {SUMO/TraCI adapter\\sole step and actuation owner};
 \node[ext,below=of sumoad] (sumo) {SUMO process};
-\node[comp,right=8mm of state] (per) {Perception worker\\detector / tracker};
-\node[ext,above=of per] (video) {Recorded video};
-\node[comp,left=8mm of exp] (store) {Experiment store\\proposed PostgreSQL};
+\node[comp,below=of state] (per) {Perception worker\\detector / tracker};
+\node[ext,below=of per] (video) {Recorded video};
 \draw[arr,<->] (ui)--node[right]{REST / stream}(api);
 \draw[arr] (api)--(exp);\draw[arr] (api)--(orch);\draw[arr] (state)--(api);
-\draw[arr,<->] (orch)--(controller);\draw[arr,<->] (orch)--(route);\draw[arr,<->] (orch)--(sumoad);
+\draw[arr,<->] (orch)--(controller);\draw[arr,<->] (orch)--(route);\draw[arr] (orch)--(safety);\draw[arr] (safety)--(sumoad);
 \draw[arr,<->] (sumoad)--(sumo);\draw[arr] (sumoad)--(state);
 \draw[arr] (video)--(per);\draw[arr] (per)--(state);
 \draw[arr,<->] (exp)--(store);\draw[arr] (orch)--(exp);\draw[arr] (state)--(exp);
@@ -41,7 +42,7 @@ arr/.style={-{Latex},thick}]
 
 Figure \ref{fig:architecture} shows the command and evidence paths around the single-owner simulation core. The React dashboard sends configuration or mission commands through FastAPI and receives non-authoritative views; it never calls TraCI. The orchestrator follows Algorithm \ref{alg:loop}, requests decisions from the selected normal controller or corridor coordinator, and sends validated actions to the adapter. Only that adapter advances SUMO and applies signal changes. The traffic-state service constructs source-specific snapshots from simulator observations or perception messages while preserving effective time, units, confidence, and validity. Routing maintains mission and route versions, and the corridor coordinator owns intersection-level priority lifecycles. The experiment service validates run configuration, records events and metrics, and persists them through a repository interface whose proposed implementation is PostgreSQL. Directional arrows in the figure distinguish state flow from command ownership, making clear that perception can inform a snapshot without acquiring authority over simulation time. This separation also keeps dashboard latency outside the control path.
 
-\section{Component Responsibilities and Interfaces}
+\subsection{Component Responsibilities and Interfaces}
 
 Table \ref{tab:components} assigns each component the data it consumes and the state or evidence it is permitted to produce. This allocation prevents shared mutable state from becoming an undocumented integration mechanism. The dashboard owns only presentation state, controllers own only proposed actions and explanations, and the SUMO adapter owns the external process, subscriptions, clock, and applied actuation. The orchestrator orders these modules but does not replace their domain logic. Routing and corridor responsibilities are listed separately because a shortest path does not imply authority to change a signal, and a corridor request must retain the route version that justified it. The traffic-state service can normalize observations from two source modes but may not silently combine missing video measures with exact simulator values. Finally, the experiment store receives validated records and artifacts rather than arbitrary objects from every module. These boundaries give each requirement a testable owner and permit an implementation to remain modular even when several components share one process.
 
@@ -67,60 +68,73 @@ Experiment store & Validated records and artifacts & Durable configuration, even
 \bottomrule
 \end{longtable}
 
-\section{Architectural Decisions and Tradeoffs}
+\section{Design Considerations}
 
 Table \ref{tab:decisions} records the main alternatives considered and the consequence of each selected approach. The choices favor traceability and feasible integration over maximum distribution or algorithmic novelty. SUMO remains the simulator because it aligns with the approved proposal and provides detailed route and signal inspection, although CityFlow could offer greater training throughput for a different scope. A common controller interface and safety filter make fixed, rule-based, and learned policies comparable, while supervisory emergency control permits a separate corridor ablation. Dijkstra remains the routing reference and A* is conditional on an admissible time lower bound. Structured persistence is proposed because flat files make cross-run relationships difficult to enforce, but the repository boundary keeps the engine replaceable. The decision record is not evidence that every selected technology has been completed; it explains why the design adopts these constraints and what cost each creates, including additional message schemas, job states, and performance profiling.
 
-\begin{longtable}{p{0.20\textwidth}p{0.23\textwidth}p{0.23\textwidth}p{0.16\textwidth}}
+\begin{longtable}{P{0.20\textwidth}P{0.34\textwidth}P{0.35\textwidth}}
 \caption{Architectural decision record}\label{tab:decisions}\\
 \toprule
-\textbf{Decision} & \textbf{Selected approach} & \textbf{Alternative and reason not selected initially} & \textbf{Consequence}\\
+\textbf{Decision} & \textbf{Selected approach and consequence} & \textbf{Alternative considered}\\
 \midrule\endfirsthead
 \toprule
-\textbf{Decision} & \textbf{Selected approach} & \textbf{Alternative and reason not selected initially} & \textbf{Consequence}\\
+\textbf{Decision} & \textbf{Selected approach and consequence} & \textbf{Alternative considered}\\
 \midrule\endhead
-Simulation ownership & One orchestrator/TraCI adapter controls stepping and signals & Multiple services calling TraCI risks non-deterministic order & Simple replay and concurrency model\\
-Simulator & SUMO, as approved and supported by detailed road/signal tooling & CityFlow offers training throughput but changes the approved environment & Lower migration risk; performance profiled later\\
-API/UI & FastAPI plus React, fixed by proposal & Server-rendered monolith would simplify deployment but reduce clear service contracts & Typed API and independent UI iteration\\
-Controller integration & Common request interface plus safety filter & Direct controller access to TraCI couples research code to simulation & Comparable controllers; applied action may differ from request\\
-Emergency control & Supervisory corridor state machine & Adding emergency reward directly to normal RL confounds attribution & Clear ablation and safety ownership\\
-Routing & Dijkstra reference; A* only with admissible lower bound & Distance-only route is simpler but ignores the research question & Time-based, auditable costs\\
-Persistence & Structured experiment schema; PostgreSQL proposed & Flat files are quick but weak for cross-run integrity & Engine remains replaceable behind repository interface\\
-Perception execution & Background worker with bounded messages & In-request inference blocks API and control loop & Adds job state and queue management\\
+Simulation ownership & One orchestrator and adapter control stepping and signals, giving a deterministic replay and concurrency model. & Multiple services calling TraCI risk non-deterministic order.\\
+Simulator & SUMO aligns with the proposal and supplies detailed road and signal tooling; performance is profiled later. & CityFlow offers training throughput but changes the approved environment.\\
+API and interface & FastAPI and React provide a typed boundary and independent interface iteration. & A server-rendered monolith is simpler to deploy but weakens service contracts.\\
+Controller integration & A common request interface and safety filter make controllers comparable and preserve applied-action evidence. & Direct TraCI access couples research policies to actuation.\\
+Emergency control & A supervisory corridor state machine supports a clear ablation and one safety owner. & Folding emergency reward into normal RL confounds attribution.\\
+Routing & Dijkstra is the reference; A* is permitted only with an admissible time lower bound. & Distance-only routing does not satisfy the congestion-aware evaluation objective.\\
+Persistence & A structured experiment schema remains portable behind a repository interface. & Flat files are quick but weak for cross-run integrity.\\
+Perception execution & A bounded background worker prevents inference from blocking control while exposing job state. & In-request inference couples API latency to model runtime.\\
 \bottomrule
 \end{longtable}
 
-\section{Domain Model and Class Diagram}
+\section{System Architecture}
 
-\begin{figure}[H]
+The Manzil architecture follows the component boundaries introduced in Section \ref{sec:architecture} and refines them into objects that can be implemented and tested independently. The dashboard and API form the presentation boundary, while the orchestrator, traffic-state service, controller registry, routing service, corridor coordinator, safety filter, simulation adapter, and experiment store form the application core. This partition keeps visualization outside the authoritative control path and assigns every mutable resource to one owner. Communication may initially use in-process calls, but each interaction retains a typed request or event contract so that later separation does not change experimental meaning. The architecture also distinguishes a proposed action from an applied action, a traffic observation from its source, and a route from the version that authorized corridor activity. These distinctions make replay and fault diagnosis possible because each state change can be connected to its input snapshot, policy, safety decision, and effective simulation step. The following domain diagram records these relationships without committing the implementation to one framework or database library.
+
+\section{Architectural Strategies}
+
+The principal architectural strategies are single-writer simulation control, contract-based integration, guarded actuation, immutable experiment configuration, and versioned emergency routing. Only the SUMO adapter advances simulation time or changes a signal, while controllers and the corridor coordinator return requests that must pass through the safety filter. Snapshots contain source, effective step, units, confidence, and validity so simulator truth and video-derived estimates cannot be mixed silently. Route plans are immutable; accepting a reroute creates a new version and cancels obsolete priority requests before new look-ahead activation. Persistence records requested and applied actions separately, retains failed runs, and binds metrics to definitions and software versions. Bounded worker queues prevent perception or dashboard delays from blocking the simulation indefinitely, and declared fallback policies replace silent recovery. These strategies are reflected in the domain model, sequence diagrams, corridor state machine, interface contracts, error handling, and tests that follow. They allow the prototype to remain deployable on one machine while preserving boundaries that can support later distribution if profiling justifies it.
+
+\section{Domain Model/Class Diagram}
+
+\begin{figure}[htbp]
 \centering
-\begin{tikzpicture}[font=\scriptsize,node distance=7mm and 7mm,cls/.style={draw,rounded corners,fill=manzilgray,minimum width=3.0cm,minimum height=1.15cm,align=left},assoc/.style={-{Latex},thin}]
-\node[cls] (run) {\textbf{ExperimentRun}\\id, seed, status\\start(), finalize()};
-\node[cls,right=of run] (scenario) {\textbf{Scenario}\\network, demand\\validate()};
-\node[cls,right=of scenario] (snap) {\textbf{TrafficSnapshot}\\source, time, validity\\isFresh()};
-\node[cls,below=of run] (ctrl) {\textbf{Controller}\\version\\requestAction()};
-\node[cls,below=of scenario] (adapter) {\textbf{SimulationAdapter}\\step, subscriptions\\advance(), apply()};
-\node[cls,below=of snap] (decision) {\textbf{ControlDecision}\\requested, applied\\reason, effectiveStep};
-\node[cls,below=of ctrl] (mission) {\textbf{EmergencyMission}\\origin, destination, status\\cancel()};
-\node[cls,below=of adapter] (route) {\textbf{RouteVersion}\\edges, cost, trigger\\isValid()};
-\node[cls,below=of decision] (corr) {\textbf{CorridorState}\\intersection, state\\transition()};
-\draw[assoc] (run)--node[above]{1}(scenario);\draw[assoc] (run)--node[left]{uses}(ctrl);\draw[assoc] (run)--(adapter);\draw[assoc] (adapter)--(snap);\draw[assoc] (ctrl)--(decision);\draw[assoc] (snap)--(decision);
-\draw[assoc] (run)--node[left]{0..1}(mission);\draw[assoc] (mission)--node[above]{1..*}(route);\draw[assoc] (route)--node[above]{0..*}(corr);\draw[assoc] (corr)--(decision);
+\begin{tikzpicture}[font=\footnotesize,node distance=8mm and 8mm,cls/.style={draw,rounded corners,fill=manzilgray,minimum width=3.15cm,minimum height=1.05cm,align=left},assoc/.style={-{Latex},thin}]
+\node[cls] (scenario) {\textbf{Scenario}\\network, demand};
+\node[cls,right=of scenario] (run) {\textbf{ExperimentRun}\\id, seed, status};
+\node[cls,right=of run] (snap) {\textbf{TrafficSnapshot}\\source, step, validity};
+\node[cls,below=of scenario] (mission) {\textbf{EmergencyMission}\\origin, destination, status};
+\node[cls,below=of run] (orch) {\textbf{Orchestrator}\\step(), schedule()};
+\node[cls,below=of snap] (decision) {\textbf{ControlDecision}\\requested, applied, reason};
+\node[cls,below=of mission] (route) {\textbf{RouteVersion}\\edges, cost, trigger};
+\node[cls,below=of orch] (ctrl) {\textbf{Controller}\\requestAction()};
+\node[cls,below=of decision] (safety) {\textbf{SafetyFilter}\\validate(), transform()};
+\node[cls,below=of route] (corr) {\textbf{CorridorState}\\intersection, state};
+\node[cls,below=of safety] (adapter) {\textbf{SimulationAdapter}\\advance(), apply()};
+\draw[assoc] (scenario)--node[midway,above=2mm,font=\scriptsize]{1:N}(run);
+\draw[assoc] (run)--node[right,font=\scriptsize]{1}(orch); \draw[assoc] (orch)--(ctrl);
+\draw[assoc] (run)--node[midway,above,sloped,font=\scriptsize]{0..1 active}(mission);
+\draw[assoc] (mission)--node[left,font=\scriptsize]{1:N}(route); \draw[assoc] (route)--node[left,font=\scriptsize]{0:N}(corr);
+\draw[assoc] (snap)--(decision); \draw[assoc] (ctrl)--(decision); \draw[assoc] (decision)--(safety); \draw[assoc] (corr)--(safety); \draw[assoc] (safety)--(adapter);
 \end{tikzpicture}
 \caption{Proposed domain model/class diagram}
 \label{fig:class}
 \end{figure}
 
-Figure \ref{fig:class} presents the core domain objects and their relationships independently of a particular web or database framework. An ExperimentRun binds one validated Scenario to a controller, simulation adapter, generated snapshots, decisions, and an optional emergency mission. The model deliberately separates a ControlDecision's requested phase from its applied phase. A controller can request an early or otherwise invalid switch, but the safety filter and adapter determine what actually reaches SUMO and record the intervention reason. TrafficSnapshot also carries source, simulation time, and validity so a decision can be traced to the observation it used. EmergencyMission refers to one current immutable RouteVersion, while previous versions remain available for analysis. CorridorState objects refer to the version that justified their request, enabling the coordinator to reject or cancel obsolete priority after rerouting. The diagram represents proposed classes and responsibilities; exact method signatures may change during implementation without weakening these invariants.
+Figure \ref{fig:class} presents the core domain objects and their relationships independently of a particular web or database framework. A Scenario can produce many ExperimentRun records, while each run has one orchestrator that schedules controllers and the sole simulation adapter. The model deliberately separates a ControlDecision's requested phase from its applied phase. A controller can request an early or otherwise invalid switch, but the SafetyFilter validates or transforms that request before the adapter can reach SUMO. TrafficSnapshot carries source, simulation step, and validity so a decision can be traced to the observation it used. A run has at most one active EmergencyMission in the core scope. That mission owns immutable RouteVersion objects, and each version can justify several CorridorState records. Connecting the corridor to the same SafetyFilter makes clear that normal and emergency actions share legal-transition enforcement. Exact method signatures may change during implementation, but the cardinalities, single-writer path, route versioning, and requested-versus-applied distinction must remain intact.
 
-\section{Interaction Sequences}
+\section{Sequence Diagrams}
 
 \subsection{Normal Control Update}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
-\begin{tikzpicture}[font=\scriptsize,x=2.55cm,y=.58cm]
-\foreach \x/\n in {0/Orchestrator,1/Adapter,2/State,3/Controller,4/Store}{\node at (\x,0) {\n};\draw[dashed] (\x,-.3)--(\x,-7.7);}
+\begin{tikzpicture}[font=\footnotesize,x=2.2cm,y=.62cm]
+\foreach \x/\n in {0/Orchestrator,1/Adapter,2/State,3/Controller,4/Experiment,5/Store}{\node at (\x,0) {\n};\draw[dashed] (\x,-.3)--(\x,-8.2);}
 \draw[-{Latex}] (0,-1)--node[above]{advance(step)}(1,-1);
 \draw[-{Latex}] (1,-2)--node[above]{raw observations}(2,-2);
 \draw[-{Latex}] (2,-3)--node[above]{snapshot(t)}(0,-3);
@@ -128,19 +142,20 @@ Figure \ref{fig:class} presents the core domain objects and their relationships 
 \draw[-{Latex}] (3,-5)--node[above]{phase request}(0,-5);
 \draw[-{Latex}] (0,-6)--node[above]{validated action}(1,-6);
 \draw[-{Latex}] (1,-7)--node[above]{applied event}(4,-7);
+\draw[-{Latex}] (4,-8)--node[above]{validated record}(5,-8);
 \end{tikzpicture}
 \caption{Sequence for a normal signal-control update}
 \label{fig:seq-normal}
 \end{figure}
 
-Figure \ref{fig:seq-normal} shows the causal order for one normal-control decision. The orchestrator first asks the adapter to advance one simulation step, after which raw subscriptions are normalized into a complete snapshot. Only then does the selected controller receive state and return a phase request. The orchestrator validates that request against phase membership, elapsed minimum green, clearance, and ownership before the adapter applies it, and the resulting event is sent to the store. A controller therefore never observes a partial update and cannot actuate SUMO as a side effect. When a controller decision interval spans several simulation steps, the last applied action remains in force while state and metrics continue to be sampled at their declared intervals. The stored event includes both requested and applied action, effective step, snapshot step, and intervention reason. This sequence allows a replay to distinguish a controller choice from a safety transformation and prevents dashboard timing from entering the decision path.
+Figure \ref{fig:seq-normal} shows the causal order for one normal-control decision. The orchestrator first asks the adapter to advance one simulation step, after which raw subscriptions are normalized into a complete snapshot. Only then does the selected controller receive state and return a phase request. The orchestrator validates that request against phase membership, elapsed minimum green, clearance, and ownership before the adapter applies it. The resulting event passes through the experiment service for schema validation and run association before the repository stores it. A controller therefore never observes a partial update, cannot actuate SUMO as a side effect, and cannot write an unvalidated evidence record. When a controller decision interval spans several simulation steps, the last applied action remains in force while state and metrics continue to be sampled at their declared intervals. The stored event includes requested and applied action, effective step, snapshot step, and intervention reason, allowing replay to distinguish a policy choice from a safety transformation.
 
 \subsection{Ambulance Dispatch and Corridor Activation}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
-\begin{tikzpicture}[font=\scriptsize,x=2.35cm,y=.55cm]
-\foreach \x/\n in {0/Dashboard,1/API,2/Routing,3/Corridor,4/Adapter,5/Store}{\node at (\x,0) {\n};\draw[dashed] (\x,-.3)--(\x,-8.7);}
+\begin{tikzpicture}[font=\footnotesize,x=1.9cm,y=.60cm]
+\foreach \x/\n in {0/Dashboard,1/API,2/Routing,3/Corridor,4/Adapter,5/Experiment,6/Store}{\node at (\x,0) {\n};\draw[dashed] (\x,-.3)--(\x,-9.2);}
 \draw[-{Latex}] (0,-1)--node[above]{dispatch(o,d)}(1,-1);
 \draw[-{Latex}] (1,-2)--node[above]{validate + compute}(2,-2);
 \draw[-{Latex}] (2,-3)--node[above]{route v1}(1,-3);
@@ -148,20 +163,21 @@ Figure \ref{fig:seq-normal} shows the causal order for one normal-control decisi
 \draw[-{Latex}] (3,-5)--node[above]{safe transition request}(4,-5);
 \draw[-{Latex}] (4,-6)--node[above]{applied state}(3,-6);
 \draw[-{Latex}] (3,-7)--node[above]{priority events}(5,-7);
-\draw[-{Latex}] (1,-8)--node[above]{mission view}(0,-8);
+\draw[-{Latex}] (5,-8)--node[above]{validated records}(6,-8);
+\draw[-{Latex}] (1,-9)--node[above]{mission view}(0,-9);
 \end{tikzpicture}
 \caption{Sequence for ambulance dispatch and corridor activation}
 \label{fig:seq-dispatch}
 \end{figure}
 
-Figure \ref{fig:seq-dispatch} begins when the operator submits an origin and destination through the dashboard. FastAPI validates the command and asks the routing service to resolve accessible edges and compute the first immutable route version. A successful route is returned for the mission view and supplied to the corridor coordinator, which creates bounded look-ahead requests rather than activating the whole path. Each due request passes through safe transition before the adapter applies priority, and the corridor writes state changes and passage evidence to the experiment store. Invalid endpoints or a disconnected graph stop the sequence before an ambulance or partial corridor is activated. The dashboard receives a derived mission view after the authoritative state has changed, so disconnecting the client cannot cancel or delay the mission. This sequence separates route computation, signal ownership, and presentation while retaining the identifiers required to trace an active priority state back to the operator command and route version.
+Figure \ref{fig:seq-dispatch} begins when the operator submits an origin and destination through the dashboard. FastAPI validates the command and asks the routing service to resolve accessible edges and compute the first immutable route version. A successful route is returned for the mission view and supplied to the corridor coordinator, which creates bounded look-ahead requests rather than activating the whole path. Each due request passes through safe transition before the adapter applies priority. The corridor sends mission and priority events to the experiment service, which validates their identifiers and route versions before persistence. Invalid endpoints or a disconnected graph stop the sequence before an ambulance or partial corridor is activated. The dashboard receives a derived mission view after authoritative state has changed, so disconnecting the client cannot cancel or delay the mission. The sequence separates route computation, signal ownership, evidence validation, and presentation while retaining the identifiers required to trace an active priority state back to the command and route version.
 
 \subsection{Rerouting and Recovery}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
-\begin{tikzpicture}[font=\scriptsize,x=2.45cm,y=.55cm]
-\foreach \x/\n in {0/State,1/Routing,2/Corridor,3/Adapter,4/Store}{\node at (\x,0) {\n};\draw[dashed] (\x,-.3)--(\x,-8.7);}
+\begin{tikzpicture}[font=\footnotesize,x=2.2cm,y=.60cm]
+\foreach \x/\n in {0/State,1/Routing,2/Corridor,3/Adapter,4/Experiment,5/Store}{\node at (\x,0) {\n};\draw[dashed] (\x,-.3)--(\x,-9.0);}
 \draw[-{Latex}] (0,-1)--node[above]{cost/closure change}(1,-1);
 \draw[-{Latex}] (1,-2)--node[above]{candidate + threshold}(1,-2.8);
 \draw[-{Latex}] (1,-3.5)--node[above]{route v2}(2,-3.5);
@@ -170,6 +186,7 @@ Figure \ref{fig:seq-dispatch} begins when the operator submits an origin and des
 \draw[-{Latex}] (0,-6.5)--node[above]{passage confirmed}(2,-6.5);
 \draw[-{Latex}] (2,-7.5)--node[above]{recovery action}(3,-7.5);
 \draw[-{Latex}] (2,-8.3)--node[above]{revision/events}(4,-8.3);
+\draw[-{Latex}] (4,-8.9)--node[above]{validated records}(5,-8.9);
 \end{tikzpicture}
 \caption{Sequence for route revision, obsolete-priority cancellation, and recovery}
 \label{fig:seq-reroute}
@@ -177,34 +194,38 @@ Figure \ref{fig:seq-dispatch} begins when the operator submits an origin and des
 
 Figure \ref{fig:seq-reroute} shows how a closure or sustained cost change is handled after dispatch. The routing service evaluates a candidate from the ambulance's valid current position and applies the configured feasibility, benefit, persistence, and cooldown rules. If accepted, a new immutable route version is published to the corridor coordinator. Requests associated with the old remaining path are cancelled before the new look-ahead set is activated, preventing simultaneous priority for incompatible route versions. Passage confirmation still originates from traffic state and moves the relevant intersection into recovery, while route revisions, cancellations, requests, and recovery events are stored in causal order. When no feasible replacement exists, the mission becomes blocked and upcoming priority is cancelled rather than preserving a corridor that no longer reaches the destination. This interaction makes rerouting an auditable state transition, not merely a line redrawn on the dashboard. Rejected candidates also remain available for diagnosis.
 
-\section{Corridor State Model}
+\section{Policies and Tactics}
+
+\subsection{Corridor State Model}
 \label{sec:corridor-state}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
-\begin{tikzpicture}[font=\scriptsize,node distance=12mm and 10mm,st/.style={draw,rounded corners,minimum width=2.5cm,minimum height=.85cm,align=center,fill=manzilgray},arr/.style={-{Latex},thick}]
+\begin{tikzpicture}[font=\footnotesize,node distance=14mm and 12mm,st/.style={draw,rounded corners,minimum width=2.45cm,minimum height=.85cm,align=center,fill=manzilgray},arr/.style={-{Latex},thick}]
 \node[st] (idle) {IDLE};
 \node[st,right=of idle] (req) {REQUESTED};
 \node[st,right=of req,fill=manzilamber!25] (trans) {SAFE TRANSITION};
-\node[st,below=of trans,fill=manzilgreen!20] (active) {ACTIVE PRIORITY};
-\node[st,left=of active] (passed) {PASSAGE};
+\node[st,right=of trans,fill=manzilgreen!20] (active) {ACTIVE PRIORITY};
+\node[st,below=of active] (passed) {PASSAGE};
 \node[st,left=of passed] (recover) {RECOVERY};
-\node[st,below=of req,fill=manzilred!12] (cancel) {CANCEL/FAILURE};
-\draw[arr] (idle)--node[above]{valid request}(req);
-\draw[arr] (req)--node[above]{activation due}(trans);
-\draw[arr] (trans)--node[right]{clearance complete}(active);
-\draw[arr] (active)--node[above]{vehicle clears}(passed);
-\draw[arr] (passed)--(recover);\draw[arr] (recover)--node[above]{normal boundary}(idle);
-\draw[arr] (req)--(cancel);\draw[arr] (trans)--(cancel);\draw[arr] (active)--(cancel);
-\draw[arr] (cancel)--node[below]{safe fallback}(recover);
+\node[st,left=of recover,fill=manzilred!12] (cancel) {CANCEL/FAILURE};
+\draw[arr] (idle)--node[above,font=\scriptsize]{valid}(req);
+\draw[arr] (req)--node[above,font=\scriptsize]{due}(trans);
+\draw[arr] (trans)--node[above,font=\scriptsize]{cleared}(active);
+\draw[arr] (active)--node[right,font=\scriptsize]{passes}(passed);
+\draw[arr] (passed)--(recover);\draw[arr] (recover.south) -- ++(0,-6mm) -| node[pos=.45,below,font=\scriptsize]{normal boundary} (idle.south);
+\draw[arr] (req) to[bend right=42] (idle);
+\draw[arr] (trans.south) -- node[right,font=\scriptsize]{cancel/fail} (cancel.north);
+\draw[arr] (active.west) -| (cancel.east);
+\draw[arr] (cancel)--node[below,font=\scriptsize]{safe fallback}(recover);
 \end{tikzpicture}
 \caption{Intersection-level moving-corridor state transitions}
 \label{fig:corridor-state}
 \end{figure}
 
-Figure \ref{fig:corridor-state} defines the lifecycle owned by each affected intersection. IDLE accepts a valid route-versioned request but REQUESTED does not yet imply signal ownership. When activation becomes due, SAFE TRANSITION waits for the current phase's minimum service and completes the configured yellow and all-red clearance. ACTIVE PRIORITY serves only the ambulance movement and is bounded by a maximum duration. Confirmed vehicle clearance creates a PASSAGE event, after which RECOVERY restores a safe normal boundary before the ordinary controller regains direct ownership. Cancellation, timeout, invalidation, or route revision can occur while a request is queued, transitioning, or active, but none of these paths jumps directly to an arbitrary phase. Instead, the failure branch enters the same guarded recovery process. This state model makes both successful passage and interrupted missions testable through transition guards, event records, ownership assertions, and eventual return to IDLE. Every transition records its trigger and effective step.
+Figure \ref{fig:corridor-state} defines the lifecycle owned by each affected intersection. IDLE accepts a valid route-versioned request, but REQUESTED does not imply signal ownership. A request that expires or becomes invalid at this stage returns directly to IDLE because no signal state has changed and recovery would be misleading. When activation becomes due, SAFE TRANSITION waits for the current phase's minimum service and completes the configured yellow and all-red clearance. ACTIVE PRIORITY serves only the ambulance movement and is bounded by a maximum duration. Confirmed clearance creates a PASSAGE event, after which RECOVERY restores a valid normal boundary before ordinary control resumes. Cancellation, timeout, or route revision during SAFE TRANSITION or ACTIVE PRIORITY enters the guarded failure and recovery path because signal ownership may already have changed. The distinction prevents an unowned queued request from triggering unnecessary compensation while ensuring that every applied intervention returns safely to IDLE. Each transition records its trigger, route version, and effective step.
 
-\section{Traffic-State and Event Contracts}
+\subsection{Traffic-State and Event Contracts}
 
 Table \ref{tab:contracts} lists the minimum fields carried across important module boundaries. Version and time fields prevent a consumer from accepting an unknown schema or treating an old snapshot as current. Source mode, units, confidence, and validity distinguish simulator values from calibrated or proxy video observations. SignalState identifies both the legal successors and current owner, while ControlRequest has no direct side effect and can be transformed into an authoritative AppliedControl record by the safety path. RoutePlan and PriorityRequest carry the mission and route version needed to reject obsolete corridor work. MetricSample retains its definition version and interval so summaries cannot combine measurements whose meaning changed during development. Field names are conceptual and may be mapped to Python or JSON naming conventions, but their semantics remain stable. This contract-first approach also makes integration tests possible before every research component is complete, because a stub can produce valid messages without bypassing ownership rules.
 
@@ -227,17 +248,17 @@ MetricSample & runId, metricName, metricVersion, interval, value, unit & Aggrega
 \bottomrule
 \end{longtable}
 
-Event ordering is based on simulation step within a run and a monotonic sequence number assigned by the orchestrator. Wall-clock timestamps support diagnostics but do not determine traffic causality because inference, rendering, and storage latency can vary independently of simulated time. A snapshot identifies the step at which its values became effective, and an applied signal event records the step at which the adapter enacted it. Route revisions and priority events are enqueued in an order that prevents an old request from being interpreted as current. Missing values remain missing rather than being converted to zero, and unknown schema versions are rejected rather than partially decoded. These rules give the fields in Table \ref{tab:contracts} operational meaning and support replay, stale-data handling, and comparison across runs without assuming perfectly synchronized wall clocks. They also allow a delayed write to be distinguished from a delayed decision.
+Event ordering is based on simulation step within a run and a monotonic sequence number assigned by the orchestrator. Wall-clock timestamps support diagnostics but do not determine traffic causality because inference, rendering, and storage latency can vary independently of simulated time. A snapshot identifies the step at which its values became effective, and an applied signal event records the step at which the adapter enacted it. Route revisions and priority events are enqueued in an order that prevents an old request from being interpreted as current. Missing values remain missing rather than being converted to zero, and unknown schema versions are rejected rather than partially decoded. These rules give the fields in Table \ref{tab:contracts} operational meaning and support replay, stale-data handling, and comparison across runs without assuming perfectly synchronized wall clocks. They also allow a delayed write to be distinguished from a delayed decision during failure analysis and experimental replay.
 
-\section{Concurrency, Synchronization, and Resource Ownership}
+\subsection{Concurrency, Synchronization, and Resource Ownership}
 
 The orchestrator is the only writer to simulation time, and TraCI access is serialized behind the adapter. Controller computation receives an immutable snapshot and returns a request rather than holding a reference to mutable global state. Perception uses a bounded work queue; if inference falls behind, the worker marks observations late or drops work according to a recorded policy instead of blocking control indefinitely. Dashboard streams are lossy views, so a slow client may skip intermediate snapshots but cannot delay decisions. Run configuration becomes immutable after start. The current route version is updated atomically with cancellation of obsolete corridor requests, preventing new and old paths from owning priority concurrently. Database writes may be batched where safe, but an applied signal event or mission transition is not acknowledged until it has entered a durable bounded queue. During shutdown, the API stops accepting new commands, the orchestrator ends or detaches SUMO safely, queued records are flushed, and the run receives an explicit completed, stopped, failed, or incomplete terminal state.
 
-\section{Error Handling and Fallback}
+\subsection{Error Handling and Fallback}
 
 Table \ref{tab:errors} defines immediate containment and retained evidence for failures at each major boundary. A SUMO or TraCI failure stops decision-making because continuing to show live state would be misleading, whereas a dashboard disconnect leaves the authoritative experiment unaffected. Stale observations and invalid controller requests are rejected or handled through a declared simulator or fixed-control fallback, and every interval using that fallback is marked so it cannot be included silently in a clean learned-controller aggregate. A missing route prevents partial corridor activation, while a lost ambulance or timeout cancels future priority and moves active intersections through recovery. Persistence uses a bounded buffer only long enough to tolerate a transient issue; the run stops before evidence loss grows without limit and is marked incomplete if durability cannot be restored. These policies favor an explicit failed run over an apparently successful record whose causal events are missing. Fault-injection and small-network integration tests will verify both the immediate behavior and the final recorded state.
 
-\begin{table}[H]
+\begin{table}[htbp]
 \centering
 \caption{Failure handling strategy}
 \label{tab:errors}
@@ -257,29 +278,29 @@ Dashboard disconnect & Continue experiment unaffected & Reconnect from current s
 \end{tabularx}
 \end{table}
 
-\section{Detailed Module Policies}
+\subsection{Detailed Module Policies}
 
-\subsection{Controller Policy}
+\subsubsection{Controller Policy}
 
 All controllers implement a common method that accepts an immutable traffic snapshot, intersection configuration, and decision context, then returns a request with explanation fields. They cannot write global state, call TraCI, or suppress the record of a rejected action. The fixed controller, pressure-inspired controller, and learned policy therefore differ in decision logic while sharing phase identifiers, decision intervals, safety constraints, and applied-event recording. Deterministic evaluation disables exploration and seeds every permitted stochastic operation. The safety filter verifies phase membership, minimum green, required clearance, maximum priority duration, and current ownership before an action reaches the adapter. If a policy is unavailable or repeatedly invalid, control transfers at a legal boundary to the configured baseline and the affected interval is marked. This common interface is central to a fair comparison because it prevents one controller from receiving more permissive movements or direct simulator privileges. Explanation fields are retained for later error analysis.
 
-\subsection{Routing Policy}
+\subsubsection{Routing Policy}
 
 The graph builder derives nodes and edges from validated SUMO vehicle movements, including allowed classes and turn continuity. Cost providers are composable but must state units, observation time, fallback behavior, and whether link travel time already includes queue delay. This metadata prevents the routing service from adding overlapping estimates or comparing seconds with an unnormalized congestion score. A published route plan is immutable, and the mission points to exactly one current version. Revisions are accepted only through Algorithm \ref{alg:routing}, which compares paths under one cost snapshot and applies feasibility, hysteresis, persistence, and cooldown rules. A hard closure overrides ordinary cost and invalidates an affected remaining path immediately. Before publication, the route is checked from the ambulance's current edge to the destination and given a revision cause. The routing service never actuates signals; it supplies versioned plans to the corridor coordinator, which can then cancel or create priority requests consistently.
 
-\subsection{Persistence Policy}
+\subsubsection{Persistence Policy}
 
 The store uses schema migrations and referential constraints for structured configuration, events, missions, routes, and metrics, while large videos, model files, and logs may remain checksummed external artifacts with provenance. Raw high-frequency state can be downsampled for persistence only when the sampling interval and aggregation rule are recorded in the metric definition. Completed run configuration is immutable, and derived summaries retain their source run identifiers and analysis version. Secrets, machine-specific credentials, and unportable local paths are excluded from research exports; licensed artifacts are referenced rather than redistributed when necessary. PostgreSQL is proposed for structured records, but implementation may begin with a file-backed engine behind the same repository interface. The domain schema and integrity rules remain independent of that choice so a storage migration cannot change the meaning of an experiment. A persistence failure follows the bounded behavior in Table \ref{tab:errors} rather than silently discarding events. Recovery records state whether buffered evidence was restored.
 
-\subsection{User-Interface Policy}
+\subsubsection{User-Interface Policy}
 
 The user interface is a view and command boundary, not a second control plane. Colors are supplemented with text and symbols so congestion, corridor state, or failure is not conveyed by color alone. Values display their units, source mode, freshness, and invalid state where applicable. Schematic predictions remain visually distinct from measured results, and an uncalibrated video proxy is not labeled as a physical queue or speed. The interface does not display ``time saved'' until a valid reference run exists under the same comparison manifest, and it exposes configuration differences when direct comparison is unsafe. Commands receive validation errors tied to fields, while connection loss leaves the experiment running and allows a client to reconnect from the current event cursor. These policies implement the wireframe intentions in Section \ref{sec:gui} and ensure that a polished display cannot conceal stale data, fallback intervals, missing runs, or incomplete evidence.
 
-\section{Testing Strategy}
+\subsection{Testing Strategy}
 
 Unit tests cover cost functions, route continuity, hysteresis, metric calculations, schema validation, freshness rules, and corridor transition guards. Property or invariant tests generate action sequences to ensure incompatible greens are never requested for application, one component owns each intersection, obsolete route versions cannot activate priority, and cancellation eventually reaches IDLE through RECOVERY. Integration tests use small SUMO networks to validate single-step ownership, detector-to-state messages, route application, fallback, and persistence ordering. Scenario tests replay fixed seeds for normal control, closure rerouting, no-route, invalid actions, stale data, controller loss, ambulance timeout, persistence failure, and dashboard disconnect. Contract fixtures allow components to be replaced by stubs without weakening field validation. Research verification remains separate from software correctness: passing these tests shows that the implementation follows its specification, but it does not establish that a policy improves traffic or emergency travel. The matched experiments in Chapter \ref{ch:method} provide that evidence, while test results explain whether a failed experiment reflects the policy or a software defect.
 
-\section{Coding, Build, and Maintainability Policies}
+\subsection{Coding, Build, and Maintainability Policies}
 
 Python modules will use static type hints, consistent formatting and linting, bounded dependency versions, structured logging, and documentation for public interfaces. React components separate data acquisition from presentation so a visual revision cannot change experiment ownership. Configuration is stored in validated versioned files rather than scattered constants, and secrets remain outside exported manifests. Continuous checks should run unit tests, schema validation, and a minimal headless SUMO scenario before a revision is used for evidence. Experiment releases are tagged and their commit identifier is written into each run manifest. The intended repository structure separates application services, controllers, routing, perception, simulation, dashboard, contracts, scenarios, and experiment artifacts. This is a proposed organization, not evidence that all directories or services already exist. Small interfaces allow a tracker, learned policy, database engine, or dashboard transport to change without rewriting the central loop, while versioned contracts force such changes to declare any effect on recorded evidence.
 

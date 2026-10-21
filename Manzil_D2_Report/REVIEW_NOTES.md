@@ -2,44 +2,43 @@
 
 ## Governing scope
 
-- `Manzil_Deliverable_2_Report_Plan.md` is the content authority; the approved proposal is the authority for project facts.
-- `FastFyp.cls` and the supplied FAST/NUCES assets remain the formatting foundation.
-- The report contains the six Deliverable 2 chapters, bibliography, coverage appendix, and open-items appendix. It does not add implementation, test-result, or final-outcome chapters that the plan excludes.
-- Planned work, design targets, and proposed technologies are distinguished from implemented or measured evidence.
+- `Manzil_Deliverable_2_Report_Plan.md` is the content authority, the approved proposal is the authority for project facts, and `FastFyp.cls` remains the formatting foundation.
+- The submission contains the required front matter, Chapters 1--6, and bibliography. Internal coverage and open-item appendices were removed from the report and retained in `Manzil_FYP_Context.md`.
+- Planned work, design choices, and future measurements remain distinct from implementation or experimental evidence.
 
 ## Sample comparison
 
-ParkEase, JobLens, and GeoSync were reopened and visually checked at their title, preliminary, body, figure, table, and reference pages. ParkEase and GeoSync provided the strongest title-page match: paired university logos, centred university name and crest, project title, three student rows, supervisor, Final Year Project label, and fixed date. The revised Manzil title page follows this hierarchy and omits the unconfirmed group ID and extra department/deliverable labels. All three reference reports use portrait A4 pages and numbered body headings.
+ParkEase, JobLens, GeoSync, F26-098-1, and the later supplied `main.pdf` report were checked at their title pages, preliminary pages, chapter openings, ordinary body pages, figures, tables, and references. The Manzil cover follows the FAST hierarchy used by the closest samples: paired institutional logos, centred university identity and crest, project title, three student rows, supervisor, Final Year Project label, and fixed submission date. The intentional blank verso after the title is retained. The body uses the template's portrait A4 dimensions, margins, numbered hierarchy, headers, captions, and Times-style typography. Unconfirmed group and certificate information was not invented.
 
-## Iterative review passes
+## Corrective passes completed
 
-1. Rebuilt the title page against the sample PDFs and inspected the rendered comparison.
-2. Audited chapter structure, removed body starred headings, shortened the Abstract, separated the stakeholder-oriented Executive Summary, and revised explanatory prose toward 150--200 words.
-3. Removed `pdflscape` and the landscape environment. Rebuilt the 18-study literature table as a wrapped portrait long table. Removed body emphasis and label-colon feature bullets. Confirmed one caption per figure/table and no subcaptions.
-4. Rendered all pages into contact sheets and inspected the PDF page by page. Corrected a nearly empty chapter-transition page, narrowed an overwide architecture figure, and checked figure/table placement and page density.
-5. Rechecked technical boundaries, implementation-status language, matched comparisons, diagram flows, citation use, and bibliography metadata. All 17 DOI-bearing research entries resolve through DOI publishers or Crossref; the remaining research dataset paper and official documentation entries have their cited official records.
-6. Recompiled with BibTeX and repeated LaTeX passes, then repeated orientation, warning, reference, citation, and visual checks.
+1. Rebuilt and visually checked the cover and front matter. The Abstract is a single 76-word paragraph and occupies less than half a page. The Executive Summary is stakeholder-oriented and distinct from the Abstract.
+2. Forced the Table of Contents to start on its own page, corrected list entries, and fitted the List of Tables on one portrait page. Chapter 1 now follows the sample's exact four-section pattern: Purpose, Intended Audience, Definitions, and Conclusion. Sections 1.3 and 3.1 use the inline definition-list style demonstrated in the supplied reports.
+3. Audited numbered headings, paragraph length, body emphasis, bullets, captions, labels, references, and float placement. Normal prose is generally 150--200 words; shorter retained passages introduce equations, algorithms, figures, tables, or lists.
+4. Replaced forced body floats with flexible portrait placement. No landscape environment, subcaption construct, distorted image, or forced width-and-height combination remains.
+5. Reorganized Chapter 3 to match `main.pdf`: Definitions; Detailed Literature Review; Literature Review Summary Table; and Conclusion. Each technical theme uses numbered Research Overview, Critical Assessment, and Relevance to Manzil subheadings. The 18-study evidence is presented as one continuing portrait longtable with author/year, evaluation setting, reported evidence, and Manzil implications.
+6. Corrected technical inconsistencies in occupancy, routing cost, route acceptance, RL state/reward, ambulance-delay definitions, repetition rules, ER ownership, sequence persistence, and corridor recovery.
+7. Rendered the complete PDF and inspected every page, then rechecked the cover, contents, text pages, literature tables, wireframes, methodology figures, architecture, class/state diagrams, and bibliography at higher resolution.
+8. Reworked Chapter 4 use cases into the supplied FAST tabular format, renamed Section 4.7 to Graphical User Interface, removed the former Requirements Traceability section, and redrew the ER model with explicit keys, ownership, and cardinality.
+9. Reorganized Chapter 6 under the requested eight main headings while preserving detailed material in numbered subsections: System Overview, Design Considerations, System Architecture, Architectural Strategies, Domain Model/Class Diagram, Sequence Diagrams, Policies and Tactics, and Conclusion.
+10. Set the title and declaration date to 10 October 2026. Added the three supplied signatures as transparent, tightly cropped PNG assets and reformatted the anti-plagiarism page to the supplied reference layout, including an explicitly centered heading, stacked right-aligned Name/Signature pairs, and the lower Authors' Declaration. The completed page was visually verified.
 
-The final verified PDF is 87 portrait A4 pages. The LaTeX log contains no overfull boxes, unresolved citations or references, duplicate-label warnings, or duplicate page destinations. The handoff PDF copies share SHA-256 `C320545BB4AD49DD854DEFC4967AA1A56A9F9B48DAEDBA01FC91887D9A60F957`.
+## Validation status
 
-## Paragraph audit
+- Final PDF: 81 A4 portrait pages, including the intentional blank title-page verso created by the FAST book layout.
+- Final build SHA-256: `D17EB542B7E64A87600C5B01823FDB0FAED7ADDC58CF9D177C8526C3EE8BB8F2`.
+- No overfull boxes, unresolved citations, unresolved references, duplicate labels, duplicate page destinations, landscape pages, or subcaptions.
+- All report figures and tables have one caption, a label, a body reference, and surrounding explanation.
+- All 23 bibliography entries are cited. Citation metadata was previously checked through DOI/publisher, proceedings, or official documentation records.
+- The MiKTeX log retains narrow-column underfull-box notices and longtable page-splitting diagnostics. Visual inspection confirmed that these do not cross margins or hide content. They are recorded rather than concealed.
+- The MiKTeX installation reports that distribution updates have not been checked; this is an environment notice, not a document defect.
 
-Normal explanatory paragraphs were individually reviewed and developed around one coherent idea, generally within 150--200 words. Short text is retained only where it structurally introduces a list, table, figure, equation, algorithm, or appendix and expanding it would duplicate the adjacent explanation. Table cells, use-case rows, captions, declarations, Abstract, equations, algorithms, and lists are not treated as body paragraphs. Later revisions were re-audited to avoid creating new fragments.
+## Items requiring team confirmation
 
-## Coverage and integrity
-
-- Chapter 3 critically reviews 18 peer-reviewed studies; all 23 bibliography entries are cited and no unused entries remain.
-- Chapter 4 contains FR-01--FR-20, NFR-01--NFR-12, eight use cases, five explicitly proposed wireframes, an ER model, data dictionary, risk register, and traceability matrix.
-- Chapters 5--6 contain the research workflow, perception pipeline, controller/routing/corridor methods, experiment matrix, architecture, domain model, three sequences, corridor states, contracts, ownership, fallback, and testing design.
-- Every figure and table has one caption, a label, and surrounding discussion; generated diagrams were checked against the stated one-clock-owner, route-version, safety-filter, and corridor-lifecycle design.
-- No results, accuracy values, travel-time improvements, screenshots, deployments, or completed features were fabricated.
-
-## Items for team confirmation
-
-1. Exact Lahore road area, map snapshot, network size, and signal count.
-2. Final video sources, permissions, annotation volume, detector checkpoint, and tracker.
-3. Final reinforcement-learning algorithm, training budget, and hyperparameters.
-4. Final persistence engine, hardware, and measured latency/freshness thresholds.
-5. Actual interface screenshots after implementation.
-6. Whether a faculty certificate or approval page is required beyond the supplied template.
-7. Whether `F26-104` is the official group identifier; it is inferred from a filename and is intentionally not printed on the title page.
+1. Whether `F26-104` is the official group identifier.
+2. Whether BS(CS) is the correct degree label for all three students.
+3. Whether a faculty certificate or approval page is required beyond the supplied template.
+4. Exact Lahore road area, map snapshot, network size, and signal count.
+5. Final video sources, permissions, annotation volume, detector checkpoint, and tracker configuration.
+6. Final DQN architecture, training budget, hyperparameters, selected database, hardware, and measured timing targets.
+7. Actual interface screenshots after implementation; the present figures are explicitly proposed wireframes.

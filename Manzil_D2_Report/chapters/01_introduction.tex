@@ -1,73 +1,34 @@
 \chapter{Introduction}
 \label{ch:introduction}
 
-Urban traffic control is a networked decision problem. Demand can change by approach, queue spillback at one junction can obstruct another, and a timing plan that is adequate in one period may waste capacity in another. Emergency travel adds a stricter timing objective. An ambulance does not benefit merely from a short geometric path if that path contains slow links, long queues, or signals that repeatedly stop it. These observations motivate Manzil, a research and development prototype that studies traffic perception, adaptive signal control, congestion-aware emergency routing, and coordinated signal priority in one simulation-based environment. Manzil is not presented as a deployable municipal controller. It is a controlled experimental platform based on the microscopic traffic simulator SUMO and its TraCI interface \cite{lopez2018sumo,sumodocs}. The platform is intended to make policies repeatable, observable, and comparable before any real-world actuation is considered. Recorded video supplies a second, deliberately bounded input mode for studying whether vehicle detection and tracking can produce useful traffic indicators. The simulator remains the authoritative source of network state in routing and signal-control experiments, which prevents uncertain camera observations from being treated as exact network measurements.
-
 \section{Purpose of this Document}
 
-This Deliverable 2 report translates the approved proposal into a traceable research and software design. It defines the questions to be investigated, reviews the evidence behind major design choices, specifies externally visible requirements, and describes the methodology and architecture needed to conduct fair experiments. It also records the distinction between confirmed project scope, proposed technical choices, and future implementation work. The report does not claim experimental improvements, real-time performance, model accuracy, or deployment readiness. At the proposal stage, the problem definition, major functions, and conceptual architecture were established, while dataset preparation, implementation, tuning, and evaluation remained planned work. The methodology therefore defines how later claims must be produced rather than anticipating their outcome. This distinction is important because a successful simulation run or a plausible interface design does not demonstrate a measurable improvement. Any later performance statement must be tied to a recorded configuration, matched baseline, stated metric, and repeatable set of runs. In this way, the document serves both as the academic basis for assessment and as an implementation agreement that the team can use to prevent scope drift.
+This Deliverable 2 report translates the approved proposal into a traceable research and software design. It defines the questions to be investigated, reviews the evidence behind major design choices, specifies externally visible requirements, and describes the methodology and architecture needed to conduct fair experiments. It also records the distinction between confirmed project scope, proposed technical choices, and future implementation work. The report does not claim experimental improvements, real-time performance, model accuracy, or deployment readiness. At the proposal stage, the problem definition, major functions, and conceptual architecture were established, while dataset preparation, implementation, tuning, and evaluation remained planned work. The methodology therefore defines how later claims must be produced rather than anticipating their outcome. This distinction is important because a successful simulation run or a plausible interface design does not demonstrate a measurable improvement. Any later performance statement must be tied to a recorded configuration, matched baseline, stated metric, and repeatable set of runs.
 
 \section{Intended Audience}
 
-The primary audience is the FAST--NUCES FYP supervisor and evaluation panel. They require enough detail to judge the relevance of the research questions, the feasibility of the proposed software, and the validity of the evaluation plan. The report is also an engineering reference for the student implementation team. Team members should be able to derive component responsibilities, interface fields, scenario configurations, fallback behavior, and planned verification from the chapters that follow. A secondary audience consists of prospective traffic-management and emergency-service stakeholders who may wish to understand the problem, operational assumptions, and limits of the prototype. These stakeholders are not represented as current clients, project partners, or approving authorities. The writing therefore explains domain terms when they first become important, but it retains the precision needed for implementation and academic review. Business-level implications are kept separate from technical evidence, and proposed functions are not described as operational capabilities. This combination allows different readers to locate the information relevant to them without weakening the distinction between an undergraduate research prototype and a real traffic-control system.
-
-\section{Project Status and Evidence Boundaries}
-\label{sec:status}
-
-Table \ref{tab:status} prevents proposed components from being read as completed ones. A choice is described as ``proposed'' where the repository contains a design decision but no implementation artifact or measured evidence. This convention is used throughout the report.
-
-\begin{table}[H]
-\centering
-\caption{Project status at Deliverable 2}
-\label{tab:status}
-\begin{tabularx}{\textwidth}{p{0.25\textwidth}YY}
-\toprule
-\textbf{Area} & \textbf{Confirmed evidence} & \textbf{Not yet evidenced}\\
-\midrule
-Problem and scope & Approved proposal, objectives, exclusions, and simulation basis & Field deployment or agency integration\\
-Architecture & Conceptual React/FastAPI/SUMO and perception decomposition & Deployed services and measured capacity\\
-Traffic control & Fixed, rule-adaptive, and RL comparison plan & Final RL policy and comparative results\\
-Emergency operation & Dynamic route and moving-corridor design & Validated timing parameters and achieved savings\\
-Perception & YOLO-based detector and tracker direction & Final checkpoint, annotated split, and measured accuracy\\
-Data persistence & Experiment records and candidate entities & Confirmed database engine and schema migrations\\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-Table \ref{tab:status} summarizes the evidence boundary applied throughout this report. The approved proposal confirms the problem, intended features, simulation basis, and broad technology direction, but the repository does not contain an implemented traffic controller, trained perception model, prepared road network, or experimental result set. Architecture diagrams therefore describe the system that is to be built, while performance requirements are stated as targets that must be measured later. The table also prevents a proposed database, tracker, or reinforcement-learning policy from becoming an accidental commitment merely because it is technically plausible. This status discipline affects the language used in every chapter. Requirements use ``shall'' to specify intended behavior, methodology sections use future-oriented descriptions for procedures, and the literature review reports findings only from cited studies. A later project report can update an item from proposed to implemented only when the corresponding code, configuration, test evidence, or experimental record is available. This approach preserves the credibility of Deliverable 2 and gives reviewers a clear basis for judging subsequent progress.
+The primary audience is the FAST--NUCES FYP supervisor and evaluation panel. They require enough detail to judge the relevance of the evaluation objectives, the feasibility of the proposed software, and the validity of the experimental plan. The report is also an engineering reference for the student implementation team. Team members should be able to derive component responsibilities, interface fields, scenario configurations, fallback behavior, and planned verification from the chapters that follow. A secondary audience consists of prospective traffic-management and emergency-service stakeholders who may wish to understand the problem, operational assumptions, and limits of the prototype. These stakeholders are not represented as current clients, project partners, or approving authorities. The writing therefore explains domain terms when they first become important, but it retains the precision needed for implementation and academic review. Business-level implications are kept separate from technical evidence, and proposed functions are not described as operational capabilities. This distinction helps each audience find relevant information without confusing a research prototype with an operational traffic-control system.
 
 \section{Definitions, Acronyms, and Abbreviations}
 
-\begin{longtable}{p{0.19\textwidth}p{0.72\textwidth}}
-\caption{Key terminology}\label{tab:terms}\\
-\toprule
-\textbf{Term} & \textbf{Definition in this report}\\
-\midrule\endfirsthead
-\toprule
-\textbf{Term} & \textbf{Definition in this report}\\
-\midrule\endhead
-A* & A shortest-path search that ranks candidates using accumulated cost plus an admissible lower-bound heuristic \cite{hart1968astar}.\\
-API & Application Programming Interface.\\
-CV & Computer vision; here, processing traffic video into observable vehicle-level and aggregate indicators.\\
-Green corridor & A sequence of bounded, moving signal-priority interventions ahead of an ambulance; not permanent green on the whole route.\\
-MOT & Multi-object tracking, which associates detections into identities across frames.\\
-Queue proxy & An operational estimate based on tracked, slow or stationary vehicles in a defined lane region; not a direct physical queue measurement unless calibrated.\\
-RL & Reinforcement learning, in which a policy is optimized using state, actions, and cumulative reward.\\
-Signal preemption & Interruption or modification of normal signal operation to serve an emergency request, including transition and recovery.\\
-SUMO & Simulation of Urban MObility, a microscopic road-traffic simulator.\\
-TraCI & Traffic Control Interface, used by an external process to read and change a running SUMO simulation.\\
-Traffic-state contract & Versioned representation of approach observations, signal state, source mode, timestamps, units, confidence, and validity.\\
-Throughput & Vehicles completing a defined movement or leaving a measured network region per unit time.\\
-Waiting time & Time accumulated under the explicitly configured low-speed threshold; the exact SUMO definition and threshold will be recorded with each experiment.\\
-\bottomrule
-\end{longtable}
+Key terms and abbreviations used throughout the report are defined below.
 
-Table \ref{tab:terms} fixes the meaning of terms that could otherwise be interpreted differently across perception, simulation, and transportation research. In particular, a queue proxy derived from image regions is not presented as a calibrated physical queue unless the camera geometry and scale support that interpretation. Waiting time and throughput must also be connected to the exact simulator definition, sampling boundary, and configured threshold used in an experiment. The distinction between signal priority and preemption matters because the corridor may interrupt normal control, while the term green corridor does not mean that every signal on a route remains green simultaneously. The traffic-state contract provides the common representation through which modules exchange observations, but it preserves source, time, unit, confidence, and validity information. These definitions are more than editorial conventions. They prevent measurement drift, constrain interface design, and determine which comparisons remain legitimate. Later chapters extend the same vocabulary rather than introducing competing names for the same road, movement, phase, route, or observation.
-
-\section{Report Organization}
-
-The remainder of the report follows the six-chapter structure required for Deliverable 2. Chapter \ref{ch:vision} defines the problem domain, research questions, measurable objectives, scope boundaries, stakeholders, constraints, and criteria by which the project should be judged. Chapter \ref{ch:literature} reviews research on vehicle perception, conventional and reinforcement-learning signal control, simulation, routing, and emergency preemption, then derives specific implications for Manzil. Chapter \ref{ch:srs} expresses system behavior through functional and non-functional requirements, use cases, proposed interface wireframes, persistent data, risks, and traceability. Chapter \ref{ch:method} explains the two input modes, network preparation, perception pipeline, controller baselines, reinforcement-learning formulation, route costs, corridor policy, experimental comparisons, metrics, and threats to validity. Chapter \ref{ch:design} maps those decisions to a component architecture, domain model, interaction sequences, state transitions, data contracts, concurrency rules, fallback behavior, testing strategy, and maintainability policies. The appendices provide a requirement-coverage check and list information that must be confirmed before later reports make implementation or performance claims.
+\begin{description}[leftmargin=0pt,labelindent=0pt,itemindent=0pt,labelsep=0.45em,itemsep=0pt,parsep=0pt,topsep=0.25\baselineskip]
+\item[A*:] A shortest-path search using accumulated cost and an admissible lower-bound heuristic \cite{hart1968astar}.
+\item[API:] Application Programming Interface.
+\item[CV:] Computer vision used to derive observable traffic indicators from video.
+\item[Green corridor:] A moving sequence of bounded signal-priority interventions ahead of an ambulance.
+\item[MOT:] Multi-object tracking, which associates detections into identities across video frames.
+\item[Queue proxy:] An estimate of tracked slow or stationary vehicles in a defined lane region.
+\item[RL:] Reinforcement learning, in which a policy is optimized using states, actions, and cumulative reward.
+\item[Signal preemption:] A controlled signal change for an emergency request, including transition and recovery.
+\item[SUMO:] Simulation of Urban MObility, a microscopic road-traffic simulator.
+\item[TraCI:] Traffic Control Interface for reading and changing a running SUMO simulation.
+\item[Traffic-state contract:] A versioned observation structure with source, time, units, confidence, and validity.
+\item[Throughput:] Vehicles leaving a measured movement or network region per unit time.
+\item[Waiting time:] Time accumulated below the configured SUMO speed threshold.
+\end{description}
 
 \section{Conclusion}
 
-This chapter has established Manzil as a reproducible investigation of interacting traffic decisions rather than a collection of unrelated artificial-intelligence features. The system will study how observable traffic conditions can inform signal control, how a dynamic route can respond to network delay, and how an ambulance can receive temporary priority without ignoring the effect on ordinary traffic. It has also established the evidence boundary for the present deliverable. The proposal supports the intended scope and architecture, while implementation performance, accuracy, and deployment readiness remain unverified. The report is consequently written as a design and research plan whose later claims must be supported by recorded scenarios, baselines, configurations, and measurements. Defined terminology ensures that video-derived proxies are not confused with exact simulator state and that a moving corridor is not reduced to an unsafe instruction to turn every signal green. These principles provide the basis for the project vision in Chapter \ref{ch:vision}, where the objectives, boundaries, stakeholders, and evaluation questions are developed in greater detail.
+This chapter has established Manzil as a reproducible investigation of interacting traffic decisions rather than a collection of unrelated artificial-intelligence features. The system will study how observable traffic conditions can inform signal control, how dynamic routing can respond to network delay, and how an ambulance can receive temporary priority without ignoring ordinary traffic. It has also fixed the evidence boundary for this deliverable. The approved proposal confirms the problem, intended functions, simulation basis, and broad technology direction, while the repository does not yet provide an implemented controller, trained perception model, prepared road network, or experimental results. Architecture diagrams therefore describe the system to be built, and performance requirements remain targets for later measurement. The defined terminology prevents video-derived proxies from being confused with exact simulator state and distinguishes a moving corridor from an unsafe instruction to turn every signal green. A proposed choice may be described as implemented only after its code, configuration, test evidence, or experimental record exists.

@@ -1121,8 +1121,8 @@ The next logical stage is implementation planning and execution.
 
 - A complete Deliverable 2 LaTeX workspace has been created in `Manzil_D2_Report/` without modifying the original `FYPFast/` template or sample PDFs.
 - The compiled handoff PDF is `Manzil_Deliverable_2_Report.pdf` at repository root; the build copy is `Manzil_D2_Report/build/main.pdf`.
-- The report contains FAST front matter, Chapters 1--6, bibliography, a requirements-coverage appendix, and an open-items appendix.
-- After the strict final review, the compiled report is 87 portrait A4 pages.
+- The report contains FAST front matter, Chapters 1--6, and the bibliography. Internal coverage and open-item appendices were removed from the submission document; unresolved work remains in this context file.
+- After the October 10 corrective review and the subsequent SRS/design alignment, the compiled report is 81 portrait A4 pages, including the intentional blank title-page verso created by the FAST book layout.
 - The LaTeX build completed with all citations and cross-references resolved.
 - Source organization and reproduction instructions are documented in `Manzil_D2_Report/README.md`; detailed checks are in `Manzil_D2_Report/REVIEW_NOTES.md`.
 
@@ -1137,7 +1137,7 @@ The next logical stage is implementation planning and execution.
 - Dynamic route costs are expressed in seconds and must avoid double-counting queue delay already present in measured link travel time.
 - Dijkstra is the reference routing algorithm. A* is permitted only with an admissible free-flow travel-time lower bound.
 - The moving corridor uses requested, safe-transition, active-priority, passage, recovery, and cancellation/failure states.
-- PostgreSQL, ByteTrack, the RL algorithm, exact network size, thresholds, and hardware remain proposed until implementation evidence confirms them.
+- PostgreSQL, ByteTrack, the exact network size, thresholds, and hardware remain proposed until implementation evidence confirms them. A parameter-sharing discrete-action Deep Q-Network is now the initial RL experiment design, subject to the stated baseline and held-out evaluation rules.
 
 ## Literature and sample-report basis
 
@@ -1149,7 +1149,7 @@ The next logical stage is implementation planning and execution.
 
 - Original figures include project context, use cases, five proposed GUI wireframes, ER model, research workflow, perception pipeline, high-level architecture, domain/class model, three sequences, and corridor state transitions.
 - Current UI figures are wireframes, not screenshots. Replace them only after real interfaces exist.
-- Requirements include FR-01--FR-20, NFR-01--NFR-12, eight substantive use cases, data dictionary, risk register, and traceability matrix.
+- Requirements include FR-01--FR-20, NFR-01--NFR-12, eight substantive use cases, a data dictionary, and a risk register. The standalone requirements-traceability section was removed at the supervisor's direction.
 - Methodology includes fixed/rule/RL controller definitions, routing and corridor pseudocode, experimental matrix, metric definitions, reproducibility controls, and validity threats.
 
 ## Unresolved items
@@ -1157,7 +1157,7 @@ The next logical stage is implementation planning and execution.
 1. Confirm that `F26-104` is the official project/group identifier.
 2. Confirm the exact Lahore network, bounding box, map snapshot, and signalized-intersection count.
 3. Confirm video sources, permissions, annotation plan, detector checkpoint, and tracker configuration.
-4. Select one final RL algorithm after baseline profiling.
+4. Confirm the proposed parameter-sharing discrete-action Deep Q-Network after baseline profiling, and record its architecture, training budget, and hyperparameters.
 5. Confirm the database engine, development/demonstration hardware, and measurable control/freshness targets.
 6. Insert real UI screenshots only after implementation; do not fabricate them.
 7. Confirm whether a separate faculty certificate/approval page is required beyond the supplied FAST template.
@@ -1187,17 +1187,56 @@ The next logical stage is implementation planning and execution.
 ## Corrections completed in the strict review
 
 - Rebuilt the title page to match the FAST sample hierarchy and removed the extra Deliverable label, department line, and unconfirmed `F26-104` identifier.
-- Removed the `pdflscape` dependency and landscape environment. The 18-study literature summary is now a wrapped portrait long table.
+- Forced the Table of Contents to begin on its own page, corrected List of Figures/List of Tables contents entries, and condensed the List of Tables to one portrait page.
+- Removed the `pdflscape` dependency and landscape environment. The 18-study summary uses one continuing portrait longtable with author/year, setting, reported evidence, and project implications.
 - Reworked body prose across all six chapters, including a paragraph-length audit and section-level rereading. Short retained passages are structural exceptions recorded in review notes.
 - Removed body emphasis and label-colon feature bullets; confirmed that normal content headings are numbered and that no subcaption package or construct is present.
-- Rechecked every generated diagram against the stated architecture, route-version ownership, safe signal transitions, and moving-corridor lifecycle.
+- Rechecked every generated diagram against the stated architecture, route-version ownership, safe signal transitions, and moving-corridor lifecycle. The architecture now shows the safety filter, sequence diagrams persist through the experiment service, the corridor distinguishes pre-ownership invalidation from guarded recovery, and the ER model separates video jobs from simulation runs.
 - Added or strengthened body discussion for every figure and table, including wireframes, algorithms, equations, use cases, contracts, risks, and traceability.
 - Shortened the Abstract and rewrote the Executive Summary for stakeholder and decision-maker concerns.
-- Rendered and inspected every PDF page. Corrected a nearly empty chapter-transition page, an overwide architecture figure, and portrait-table layout.
+- Rendered and inspected every PDF page. Removed forced floats, corrected sparse list and chapter-transition pages, eliminated all overfull boxes, enlarged technical diagrams, and retained portrait layout throughout.
 - Revalidated all DOI-bearing bibliography entries through DOI publisher redirects or Crossref. All 23 bibliography entries are cited; citations and cross-references resolve.
 
 ## Final evidence status
 
 - The report remains a proposed Deliverable 2 design and evaluation plan because no implementation repository, trained model, experiment logs, measured metrics, or application screenshots were supplied.
 - The final build and packaging locations are recorded in `Manzil_D2_Report/REVIEW_NOTES.md` and `Manzil_D2_Report/README.md`.
-- Remaining factual confirmations are the exact network and map snapshot, video and annotation sources, selected tracker and RL algorithm, database and hardware, actual screenshots, faculty certificate requirement, and official status of `F26-104`.
+- Remaining factual confirmations are the exact network and map snapshot, video and annotation sources, selected tracker and final RL configuration, database and hardware, actual screenshots, faculty certificate requirement, official status of `F26-104`, and confirmation of the printed BS(CS) degree labels.
+
+---
+
+# 37. OCTOBER 10 CORRECTIVE REVIEW
+
+- The additional F26-098-1 report was inspected as a formatting reference. Its Chapter 1 and Chapter 3 terminology sections use inline definition lists rather than tables, so Manzil sections 1.3 and 3.1 now follow the same presentation without copying project content.
+- The intentional blank verso after the title page was restored to match the supplied FAST template and F26-098-1 preliminary-page sequence.
+- The routing cost now distinguishes running time from signal and queue delay and replaces those components when a measured total link time is used, preventing double counting.
+- Image occupancy uses the union of overlapping tracked boxes within the region, keeping the proxy in the interval from zero to one.
+- The routing algorithm validates a candidate before acceptance, returns the current route explicitly when the threshold is not met, and publishes a new version only for an accepted route.
+- The initial simulation protocol specifies a 900-second warm-up, a 3,600-second measurement interval, and ten matched seeds. A pilot may increase but not reduce the predeclared repetitions.
+- Ambulance travel time is primary; excess delay uses the free-flow time of the same realized edge sequence, while routing benefit is evaluated through matched policy comparisons.
+- GUI figures are explicitly schematic and contain no invented live measurements or comparative results.
+- The final submission excludes internal coverage and unresolved-item appendices. These notes remain the authoritative record of unresolved implementation and administrative facts.
+
+---
+
+# 38. MAIN.PDF STRUCTURAL ALIGNMENT (10 OCTOBER 2026)
+
+- The supplied sample `FYP Sample Reports/.../main.pdf` was reopened and used as the direct structural reference for Chapters 1--3.
+- Chapter 1 now contains exactly four numbered sections: 1.1 Purpose of this Document, 1.2 Intended Audience, 1.3 Definitions, Acronyms, and Abbreviations, and 1.4 Conclusion. The former Project Status and Report Organization headings were removed; the necessary evidence boundary remains in the conclusion.
+- Chapter 2 no longer contains the former Research Questions or Success Criteria sections. It now follows the sample sequence and ends with Section 2.10 Conclusion. RQ labels and dangling research-question references were removed from methodology and design material while preserving the controlled comparisons as evaluation objectives.
+- Chapter 3 now follows the sample hierarchy: 3.1 Definitions, 3.2 Detailed Literature Review, 3.3 Literature Review Summary Table, and 3.4 Conclusion. Four Manzil-specific themes each contain numbered Research Overview, Critical Assessment, and Relevance to Manzil subheadings.
+- The literature evidence remains technically specific to Manzil and retains all 18 verified studies. It is consolidated into one multi-page portrait longtable rather than using landscape pages or unreadably small text.
+- A final paragraph audit found all normal prose within the established range. Retained shorter passages introduce lists or grouped requirements and are structural exceptions rather than body-paragraph substitutes.
+- The build reviewed at this stage contained 79 A4 portrait pages. Later SRS and Chapter 6 revisions are recorded in Section 39.
+
+---
+
+# 39. SRS AND DESIGN ALIGNMENT (10 OCTOBER 2026)
+
+- Section 4.7 is titled `Graphical User Interface`. Its five figures remain explicitly identified as proposed wireframes because no implemented interface screenshots were supplied. Each wireframe presents a distinct operator task and is referenced and explained in the surrounding prose.
+- The former Section 4.10, Requirements Traceability, and its matrix were removed. Chapter 4 now ends with Risk Analysis and Conclusion; no prose retains a dangling reference to the deleted matrix.
+- All eight use cases were reformatted to follow the supplied FAST sample: Name, Actors, Summary, Pre-Conditions, Post-Conditions, Special Requirements, Basic Flow with Actor Action and System Response, and Alternative Flow. The tables remain portrait, use one caption each, and cover failure behavior without inventing implementation results.
+- The ER model was redrawn as a readable ownership and cardinality diagram. It separates simulation-run observations from video-job observations, links decisions and metrics to their experiment run, and preserves the mission-to-route-version-to-priority-event chain. The figure is anchored beside its explanation and no longer floats to a mostly empty page.
+- Chapter 6 now has exactly eight main sections: System Overview, Design Considerations, System Architecture, Architectural Strategies, Domain Model/Class Diagram, Sequence Diagrams, Policies and Tactics, and Conclusion. Existing detailed material was retained under meaningful numbered subsections rather than deleted.
+- Final validation confirmed an 81-page A4 portrait PDF, no landscape or rotated pages, no unnumbered body headings, no subcaptions, and no unresolved citations, cross-references, duplicate labels, overfull boxes, or LaTeX errors. Remaining underfull notices arise from narrow table cells and do not cross the page margins.
+- The report date is now 10 October 2026 on both the title page and anti-plagiarism declaration. The three supplied handwritten signatures were background-extracted as transparent PNG assets and mapped, in supplied order, to Muhammad Ali Mahoon, Muzammil Ahmed Bhatti, and Mohammad Ibrahim Salman. The declaration was then reformatted to the supplied reference: centered heading, publication title and declaration text, left-aligned date, right-aligned stacked Name/Signature pairs, divider, and a short Authors' Declaration. The compiled page was visually inspected.

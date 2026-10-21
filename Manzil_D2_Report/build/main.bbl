@@ -1,17 +1,5 @@
 \begin{thebibliography}{10}
 
-\bibitem{lopez2018sumo}
-P.~A. Lopez, M.~Behrisch, L.~Bieker-Walz, J.~Erdmann, Y.-P. Fl{\"o}tter{\"o}d,
-  R.~Hilbrich, L.~L{\"u}cken, J.~Rummel, P.~Wagner, and E.~Wie{\ss}ner,
-  ``Microscopic traffic simulation using sumo,'' in {\em 2018 21st
-  International Conference on Intelligent Transportation Systems (ITSC)},
-  pp.~2575--2582, 2018.
-
-\bibitem{sumodocs}
-{Eclipse Foundation}, ``Sumo documentation: Traffic lights and traci.''
-  \url{https://sumo.dlr.de/docs/}, 2026.
-\newblock Accessed: 6 October 2026.
-
 \bibitem{hart1968astar}
 P.~E. Hart, N.~J. Nilsson, and B.~Raphael, ``A formal basis for the heuristic
   determination of minimum cost paths,'' {\em IEEE Transactions on Systems
@@ -88,6 +76,13 @@ H.~Zhang, S.~Feng, C.~Liu, Y.~Ding, Y.~Zhu, Z.~Zhou, W.~Zhang, Y.~Yu, H.~Jin,
   large scale city traffic scenario,'' in {\em The World Wide Web Conference},
   pp.~3620--3624, 2019.
 
+\bibitem{lopez2018sumo}
+P.~A. Lopez, M.~Behrisch, L.~Bieker-Walz, J.~Erdmann, Y.-P. Fl{\"o}tter{\"o}d,
+  R.~Hilbrich, L.~L{\"u}cken, J.~Rummel, P.~Wagner, and E.~Wie{\ss}ner,
+  ``Microscopic traffic simulation using sumo,'' in {\em 2018 21st
+  International Conference on Intelligent Transportation Systems (ITSC)},
+  pp.~2575--2582, 2018.
+
 \bibitem{dijkstra1959}
 E.~W. Dijkstra, ``A note on two problems in connexion with graphs,'' {\em
   Numerische Mathematik}, vol.~1, pp.~269--271, 1959.
@@ -107,6 +102,11 @@ A.~Louati, S.~Elkosantini, S.~Darmoul, and H.~Louati, ``Multi-agent preemptive
   longest queue first system to manage the crossing of emergency vehicles at
   interrupted intersections,'' {\em European Transport Research Review},
   vol.~10, no.~2, p.~52, 2018.
+
+\bibitem{sumodocs}
+{Eclipse Foundation}, ``Sumo documentation: Traffic lights and traci.''
+  \url{https://sumo.dlr.de/docs/}, 2026.
+\newblock Accessed: 6 October 2026.
 
 \bibitem{reactdocs}
 {Meta Open Source}, ``React documentation.'' \url{https://react.dev/}, 2026.

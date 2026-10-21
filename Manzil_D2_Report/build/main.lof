@@ -1,24 +1,22 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces Manzil project context and the separation of evidence paths}}{8}{figure.caption.2}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Manzil project context and the separation of evidence paths}}{4}{figure.caption.3}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Proposed operator use-case diagram}}{33}{figure.caption.6}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Proposed traffic overview wireframe}}{36}{figure.caption.15}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Proposed perception and intersection-detail wireframe}}{37}{figure.caption.16}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Proposed emergency dispatch and route wireframe}}{37}{figure.caption.17}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Proposed experiment-configuration wireframe}}{38}{figure.caption.18}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Proposed comparative-analytics wireframe}}{38}{figure.caption.19}%
-\contentsline {figure}{\numberline {4.7}{\ignorespaces Proposed experiment-record entity relationship model}}{39}{figure.caption.20}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Proposed operator use-case diagram}}{29}{figure.caption.7}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Proposed traffic overview wireframe}}{34}{figure.caption.16}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Proposed perception and intersection-detail wireframe}}{34}{figure.caption.17}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Proposed emergency dispatch and route wireframe}}{35}{figure.caption.18}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Proposed experiment-configuration wireframe}}{35}{figure.caption.19}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Proposed comparative-analytics wireframe}}{36}{figure.caption.20}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Proposed entity relationship diagram with ownership and cardinality}}{37}{figure.caption.21}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Proposed research and evaluation workflow}}{45}{figure.caption.21}%
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Proposed traffic-video perception pipeline}}{47}{figure.caption.22}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Proposed research and evaluation workflow}}{41}{figure.caption.22}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Proposed traffic-video perception pipeline}}{43}{figure.caption.23}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {6.1}{\ignorespaces Proposed high-level architecture}}{59}{figure.caption.24}%
-\contentsline {figure}{\numberline {6.2}{\ignorespaces Proposed domain model/class diagram}}{62}{figure.caption.25}%
-\contentsline {figure}{\numberline {6.3}{\ignorespaces Sequence for a normal signal-control update}}{63}{figure.caption.26}%
-\contentsline {figure}{\numberline {6.4}{\ignorespaces Sequence for ambulance dispatch and corridor activation}}{64}{figure.caption.27}%
-\contentsline {figure}{\numberline {6.5}{\ignorespaces Sequence for route revision, obsolete-priority cancellation, and recovery}}{64}{figure.caption.28}%
-\contentsline {figure}{\numberline {6.6}{\ignorespaces Intersection-level moving-corridor state transitions}}{65}{figure.caption.29}%
-\addvspace {10\p@ }
-\addvspace {10\p@ }
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Proposed high-level architecture}}{55}{figure.caption.25}%
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Proposed domain model/class diagram}}{59}{figure.caption.26}%
+\contentsline {figure}{\numberline {6.3}{\ignorespaces Sequence for a normal signal-control update}}{60}{figure.caption.27}%
+\contentsline {figure}{\numberline {6.4}{\ignorespaces Sequence for ambulance dispatch and corridor activation}}{61}{figure.caption.28}%
+\contentsline {figure}{\numberline {6.5}{\ignorespaces Sequence for route revision, obsolete-priority cancellation, and recovery}}{61}{figure.caption.29}%
+\contentsline {figure}{\numberline {6.6}{\ignorespaces Intersection-level moving-corridor state transitions}}{62}{figure.caption.30}%
