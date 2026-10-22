@@ -1,0 +1,8 @@
+# Prototype dependencies and generated output
+prototype/frontend/node_modules/
+prototype/frontend/dist/
+prototype/frontend/*.tsbuildinfo
+prototype/backend/.venv/
+prototype/backend/.pytest_cache/
+prototype/backend/**/__pycache__/
+.DS_Store
