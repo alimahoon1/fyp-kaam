@@ -6,22 +6,24 @@
 \contentsline {table}{\numberline {3.1}{\ignorespaces Summary of literature review}}{18}{table.3.1}%
 \addvspace {10\p@ }
 \contentsline {table}{\numberline {4.1}{\ignorespaces Functional requirements}}{24}{table.4.1}%
-\contentsline {table}{\numberline {4.2}{\ignorespaces Non-functional requirements and design targets}}{26}{table.4.2}%
-\contentsline {table}{\numberline {4.3}{\ignorespaces Development and demonstration environment}}{29}{table.caption.6}%
-\contentsline {table}{\numberline {4.4}{\ignorespaces UC-01: Configure a Scenario}}{30}{table.caption.8}%
-\contentsline {table}{\numberline {4.5}{\ignorespaces UC-02: Run and Control a Simulation}}{30}{table.caption.9}%
-\contentsline {table}{\numberline {4.6}{\ignorespaces UC-03: Process Traffic Video}}{31}{table.caption.10}%
-\contentsline {table}{\numberline {4.7}{\ignorespaces UC-04: Inspect Traffic State}}{31}{table.caption.11}%
-\contentsline {table}{\numberline {4.8}{\ignorespaces UC-05: Dispatch an Ambulance}}{32}{table.caption.12}%
-\contentsline {table}{\numberline {4.9}{\ignorespaces UC-06: Monitor Route and Corridor}}{32}{table.caption.13}%
-\contentsline {table}{\numberline {4.10}{\ignorespaces UC-07: Handle a Blockage or Route Change}}{33}{table.caption.14}%
-\contentsline {table}{\numberline {4.11}{\ignorespaces UC-08: Compare and Export Runs}}{33}{table.caption.15}%
-\contentsline {table}{\numberline {4.12}{\ignorespaces Data dictionary}}{37}{table.4.12}%
-\contentsline {table}{\numberline {4.13}{\ignorespaces Risk register}}{39}{table.4.13}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Non-functional requirements and design targets}}{29}{table.4.2}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces UC-01: Configure a Scenario}}{31}{table.caption.7}%
+\contentsline {table}{\numberline {4.4}{\ignorespaces UC-02: Run and Control a Simulation}}{33}{table.caption.8}%
+\contentsline {table}{\numberline {4.5}{\ignorespaces UC-03: Process Traffic Video}}{33}{table.caption.9}%
+\contentsline {table}{\numberline {4.6}{\ignorespaces UC-04: Inspect Traffic State}}{34}{table.caption.10}%
+\contentsline {table}{\numberline {4.7}{\ignorespaces UC-05: Dispatch an Ambulance}}{34}{table.caption.11}%
+\contentsline {table}{\numberline {4.8}{\ignorespaces UC-06: Monitor Route and Corridor}}{35}{table.caption.12}%
+\contentsline {table}{\numberline {4.9}{\ignorespaces UC-07: Handle a Blockage or Route Change}}{35}{table.caption.13}%
+\contentsline {table}{\numberline {4.10}{\ignorespaces UC-08: Compare and Export Runs}}{36}{table.caption.14}%
+\contentsline {table}{\numberline {4.11}{\ignorespaces Hardware resources for development and demonstration}}{37}{table.caption.15}%
+\contentsline {table}{\numberline {4.12}{\ignorespaces Software technologies and configuration responsibilities}}{38}{table.caption.16}%
+\contentsline {table}{\numberline {4.13}{\ignorespaces Proposed graphical user interface screen inventory}}{39}{table.caption.17}%
+\contentsline {table}{\numberline {4.14}{\ignorespaces Data dictionary}}{45}{table.4.14}%
+\contentsline {table}{\numberline {4.15}{\ignorespaces Risk register}}{47}{table.4.15}%
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {5.1}{\ignorespaces Planned experiments and primary evidence}}{51}{table.caption.24}%
+\contentsline {table}{\numberline {5.1}{\ignorespaces Planned experiments and primary evidence}}{59}{table.caption.30}%
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {6.1}{\ignorespaces Component responsibility allocation}}{56}{table.6.1}%
-\contentsline {table}{\numberline {6.2}{\ignorespaces Architectural decision record}}{57}{table.6.2}%
-\contentsline {table}{\numberline {6.3}{\ignorespaces Core interface and data-contract fields}}{63}{table.6.3}%
-\contentsline {table}{\numberline {6.4}{\ignorespaces Failure handling strategy}}{65}{table.caption.31}%
+\contentsline {table}{\numberline {6.1}{\ignorespaces Component responsibility allocation}}{65}{table.6.1}%
+\contentsline {table}{\numberline {6.2}{\ignorespaces Architectural decision record}}{67}{table.6.2}%
+\contentsline {table}{\numberline {6.3}{\ignorespaces Core interface and data-contract fields}}{78}{table.6.3}%
+\contentsline {table}{\numberline {6.4}{\ignorespaces Failure handling strategy}}{80}{table.caption.37}%

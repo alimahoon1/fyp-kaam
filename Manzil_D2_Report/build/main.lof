@@ -3,20 +3,24 @@
 \contentsline {figure}{\numberline {2.1}{\ignorespaces Manzil project context and the separation of evidence paths}}{4}{figure.caption.3}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Proposed operator use-case diagram}}{29}{figure.caption.7}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Proposed traffic overview wireframe}}{34}{figure.caption.16}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Proposed perception and intersection-detail wireframe}}{34}{figure.caption.17}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Proposed emergency dispatch and route wireframe}}{35}{figure.caption.18}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Proposed experiment-configuration wireframe}}{35}{figure.caption.19}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Proposed comparative-analytics wireframe}}{36}{figure.caption.20}%
-\contentsline {figure}{\numberline {4.7}{\ignorespaces Proposed entity relationship diagram with ownership and cardinality}}{37}{figure.caption.21}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Proposed operator use-case diagram}}{32}{figure.caption.6}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Proposed primary navigation flow between Manzil screens}}{38}{figure.caption.18}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces G02 traffic-overview screen wireframe}}{39}{figure.caption.19}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces G03 perception and intersection-detail screen wireframe}}{40}{figure.caption.20}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces G04 emergency-dispatch and route screen wireframe}}{40}{figure.caption.21}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces G01 experiment-configuration screen wireframe}}{41}{figure.caption.22}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces G05 comparative-analytics screen wireframe}}{41}{figure.caption.23}%
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Complete grouped conceptual ER model using entity, attribute, and relationship symbols}}{43}{figure.caption.24}%
+\contentsline {figure}{\numberline {4.9}{\ignorespaces Experiment scenarios, runs, metrics, and artifacts with conceptual attributes}}{43}{figure.caption.25}%
+\contentsline {figure}{\numberline {4.10}{\ignorespaces Observation ownership and control-decision evidence with conceptual attributes}}{44}{figure.caption.26}%
+\contentsline {figure}{\numberline {4.11}{\ignorespaces Emergency missions, route versions, and priority events with conceptual attributes}}{45}{figure.caption.27}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Proposed research and evaluation workflow}}{41}{figure.caption.22}%
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Proposed traffic-video perception pipeline}}{43}{figure.caption.23}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Proposed research and evaluation workflow}}{49}{figure.caption.28}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Proposed traffic-video perception pipeline}}{51}{figure.caption.29}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {6.1}{\ignorespaces Proposed high-level architecture}}{55}{figure.caption.25}%
-\contentsline {figure}{\numberline {6.2}{\ignorespaces Proposed domain model/class diagram}}{59}{figure.caption.26}%
-\contentsline {figure}{\numberline {6.3}{\ignorespaces Sequence for a normal signal-control update}}{60}{figure.caption.27}%
-\contentsline {figure}{\numberline {6.4}{\ignorespaces Sequence for ambulance dispatch and corridor activation}}{61}{figure.caption.28}%
-\contentsline {figure}{\numberline {6.5}{\ignorespaces Sequence for route revision, obsolete-priority cancellation, and recovery}}{61}{figure.caption.29}%
-\contentsline {figure}{\numberline {6.6}{\ignorespaces Intersection-level moving-corridor state transitions}}{62}{figure.caption.30}%
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Proposed high-level architecture}}{64}{figure.caption.31}%
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Proposed domain model/class diagram}}{74}{figure.caption.32}%
+\contentsline {figure}{\numberline {6.3}{\ignorespaces Sequence for a normal signal-control update}}{75}{figure.caption.33}%
+\contentsline {figure}{\numberline {6.4}{\ignorespaces Sequence for ambulance dispatch and corridor activation}}{75}{figure.caption.34}%
+\contentsline {figure}{\numberline {6.5}{\ignorespaces Sequence for route revision, obsolete-priority cancellation, and recovery}}{76}{figure.caption.35}%
+\contentsline {figure}{\numberline {6.6}{\ignorespaces Intersection-level moving-corridor state transitions}}{77}{figure.caption.36}%

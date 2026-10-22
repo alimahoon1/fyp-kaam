@@ -1240,3 +1240,37 @@ The next logical stage is implementation planning and execution.
 - Chapter 6 now has exactly eight main sections: System Overview, Design Considerations, System Architecture, Architectural Strategies, Domain Model/Class Diagram, Sequence Diagrams, Policies and Tactics, and Conclusion. Existing detailed material was retained under meaningful numbered subsections rather than deleted.
 - Final validation confirmed an 81-page A4 portrait PDF, no landscape or rotated pages, no unnumbered body headings, no subcaptions, and no unresolved citations, cross-references, duplicate labels, overfull boxes, or LaTeX errors. Remaining underfull notices arise from narrow table cells and do not cross the page margins.
 - The report date is now 10 October 2026 on both the title page and anti-plagiarism declaration. The three supplied handwritten signatures were background-extracted as transparent PNG assets and mapped, in supplied order, to Muhammad Ali Mahoon, Muzammil Ahmed Bhatti, and Mohammad Ibrahim Salman. The declaration was then reformatted to the supplied reference: centered heading, publication title and declaration text, left-aligned date, right-aligned stacked Name/Signature pairs, divider, and a short Authors' Declaration. The compiled page was visually inspected.
+
+---
+
+# 40. MAIN.PDF SECTION 4 AND CHAPTER 6 REVIEW (21 OCTOBER 2026)
+
+- The supplied `FYP Sample Reports/.../main.pdf` was reopened at its SRS, graphical-interface, database, risk, and high/low-level design pages. Its Section 4 order, screen-inventory presentation, navigation flow, grouped ER views, data dictionary, and detailed Chapter 6 hierarchy were used as presentation references without copying project content or unsupported implementation claims.
+- Chapter 4 now follows the sample-compatible order: List of Features; Functional Requirements; Quality Attributes; Non-Functional Requirements; Assumptions; Use Cases; Hardware and Software Requirements; Graphical User Interface; Database Design; Risk Analysis; and Conclusion.
+- Section 4.8 now contains a five-screen inventory, a primary navigation-flow diagram, and five individually numbered proposed wireframes for experiment configuration, traffic overview, perception detail, emergency dispatch, and comparative analytics. They remain explicitly proposed screens because no implemented application screenshots were supplied.
+- Section 4.9 now contains one complete ER overview, an enlarged experiment-evidence relationship diagram, an enlarged emergency mission and route-version relationship diagram, and the data dictionary. The diagrams preserve exclusive observation ownership, immutable route versions, and route-bound priority events.
+- Chapter 6 retains exactly eight main headings. It now includes the requested project-specific subsection hierarchy for system interactions, design assumptions and constraints, architecture decomposition, technology and storage strategies, the domain model, three sequences, and implementation policies and tactics.
+- Newly added Chapter 6 explanatory paragraphs were expanded with project-specific ownership, provenance, failure, synchronization, and reproducibility detail to respect the established paragraph-development guideline without inventing implementation results.
+- Final validation produced 96 A4 portrait pages. Visual checks covered the title page, declaration, contents, Section 4 screen inventory and navigation, all wireframes, ER views, database discussion, Chapter 6 headings, architecture and domain diagrams, policy pages, conclusion, and bibliography. No landscape page, overfull box, unresolved citation, unresolved reference, duplicate label, subcaption, or unnumbered body heading remains. Narrow-table underfull notices remain non-overflowing template diagnostics.
+
+---
+
+# 41. MAIN.PDF SECTION 4.9 ER-DIAGRAM ALIGNMENT (21 OCTOBER 2026)
+
+- The complete Section 4.9 of the supplied `main.pdf` was inspected again, including its conceptual overview, enlarged ER regions, cardinality conventions, primary-key treatment, captions, surrounding explanation, and transition into the data dictionary.
+- Manzil Section 4.9 now follows that presentation pattern with a complete grouped conceptual model and three enlarged, individually numbered views: experiment configuration and evidence, observation and control evidence, and emergency routing and priority.
+- The ER figures use blue entity rectangles, green attribute ovals, amber relationship diamonds, underlined primary keys, marked foreign keys, named relationships, and explicit cardinalities. The notation is reproduced for consistency, while the entities and relationships remain specific to Manzil.
+- The observation model preserves exclusive run or video-job ownership; the control-decision model records the observation context used by a controller; and the emergency model preserves the immutable mission-to-route-version-to-priority-event chain. These are proposed logical structures and do not imply that a production database has been populated.
+- Multiple visual passes corrected overview congestion, attribute collisions, relationship routing, and rotated cardinality text. The final figures remain readable in portrait A4, use one caption each, are referenced and explained in body prose, and lead into the existing data dictionary.
+- The validated report now contains 97 A4 portrait pages. The final build has no fatal LaTeX error, unresolved citation or reference, duplicate label, overfull box, landscape page, or subcaption.
+
+---
+
+# 42. DELIVERABLE 2 PRESENTATION (21 OCTOBER 2026)
+
+- A 15-slide presentation was created from the verified report and project context. It covers the problem statement and elaboration, project scope and exclusions, achieved and future goals, summarized R&D evidence, related systems, architecture, decision workflow, methodology, requirements, constraints, limitations, proposed interface, evaluation plan, development roadmap, and closing contribution.
+- The presentation distinguishes completed Deliverable 2 work from future implementation and experimental goals. It does not claim a completed system, accuracy, traffic improvement, or deployment readiness.
+- FAST and National University branding are used on the title slide. The report's high-level architecture, research workflow, and proposed wireframes are reused as source visuals, while workflow and roadmap relationships remain editable PowerPoint objects.
+- Academic sources used in the literature and related-systems slides are recorded in speaker notes. The deck uses one editable native comparison table and contains no fabricated quantitative results.
+- The final presentation contains 15 widescreen slides using Segoe UI. Package integrity, expected dimensions, slide count, fonts, bullet geometry, heading fit, and the native-table requirement passed validation with no findings. Every slide was rendered and visually inspected, and workflow arrows and report-image crops were corrected in subsequent passes.
+- Final file: `presentation_output/Manzil_Presentation.pptx`. SHA-256: `9FD70EA37F0F363069DC234A2622B9828CB144E8F164DE5012926D4A8594750C`.

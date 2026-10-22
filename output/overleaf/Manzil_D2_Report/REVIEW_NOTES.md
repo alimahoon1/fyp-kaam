@@ -22,11 +22,15 @@ ParkEase, JobLens, GeoSync, F26-098-1, and the later supplied `main.pdf` report 
 8. Reworked Chapter 4 use cases into the supplied FAST tabular format, renamed Section 4.7 to Graphical User Interface, removed the former Requirements Traceability section, and redrew the ER model with explicit keys, ownership, and cardinality.
 9. Reorganized Chapter 6 under the requested eight main headings while preserving detailed material in numbered subsections: System Overview, Design Considerations, System Architecture, Architectural Strategies, Domain Model/Class Diagram, Sequence Diagrams, Policies and Tactics, and Conclusion.
 10. Set the title and declaration date to 10 October 2026. Added the three supplied signatures as transparent, tightly cropped PNG assets and reformatted the anti-plagiarism page to the supplied reference layout, including an explicitly centered heading, stacked right-aligned Name/Signature pairs, and the lower Authors' Declaration. The completed page was visually verified.
+11. Reopened `main.pdf` and aligned the full Chapter 4 sequence with its SRS presentation. Added a screen inventory and navigation diagram before the five proposed wireframes, renamed Data Design to Database Design, and supplied a complete ER view plus two readable relationship-focused ER diagrams and the data dictionary.
+12. Expanded Chapter 6 under the requested eight main headings. Added project-specific subsections for four system interaction areas, four design considerations, five architecture topics, seven architectural strategies, three sequence diagrams, and detailed policies and tactics. Short newly added body paragraphs were developed with relevant technical detail rather than padding.
+13. Recompiled and visually reviewed the modified pages after both the initial and corrective passes. The second pass corrected ER label spacing and improved paragraph development while preserving portrait layout and project-status boundaries.
+14. Reopened the complete Section 4.9 of `main.pdf` and rebuilt Manzil's database diagrams in its Chen-style presentation. The final sequence contains a grouped overview plus enlarged experiment, observation/control, and emergency-routing regions with entity rectangles, attribute ovals, relationship diamonds, underlined keys, foreign-key labels, and cardinalities. Three successive rendered-PDF checks removed connector and attribute collisions before final packaging.
 
 ## Validation status
 
-- Final PDF: 81 A4 portrait pages, including the intentional blank title-page verso created by the FAST book layout.
-- Final build SHA-256: `D17EB542B7E64A87600C5B01823FDB0FAED7ADDC58CF9D177C8526C3EE8BB8F2`.
+- Final PDF: 97 A4 portrait pages, including the intentional blank title-page verso created by the FAST book layout.
+- Final build SHA-256: `E4D948360E3C8FE57B439525CA8F29535F753401BF77FB4F71F47D445BC4053F`.
 - No overfull boxes, unresolved citations, unresolved references, duplicate labels, duplicate page destinations, landscape pages, or subcaptions.
 - All report figures and tables have one caption, a label, a body reference, and surrounding explanation.
 - All 23 bibliography entries are cited. Citation metadata was previously checked through DOI/publisher, proceedings, or official documentation records.
