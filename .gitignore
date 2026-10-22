@@ -47,6 +47,10 @@ presentation_build/*.inspect.ndjson
 presentation_build/*.validation.json
 presentation_build/montage.webp
 
+# Prototype generated output
+prototype/frontend/dist/
+prototype/frontend/*.tsbuildinfo
+
 # Python caches and local environments
 __pycache__/
 *.py[cod]
