@@ -24,6 +24,7 @@ Update this file whenever a task changes status, then commit and push (see `CLAU
 | 4 | Ibrahim + Claude do most of the work; teammates also use Claude from this same repo plan. |
 | 5 | `CLAUDE.md` + `PLAN.md` coordinate all sessions; Claude commits and pushes automatically after each work session. |
 | 6 | D2 feedback was positive; main demand is working code at the next evaluation. Chapters 1–6 only need a light update to match the real implementation. |
+| 7 | Start fresh around SUMO. The old prototype is archived in `archive/prototype_v0/` and not built on. |
 
 ## Phases and tasks
 

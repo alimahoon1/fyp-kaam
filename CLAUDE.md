@@ -29,7 +29,7 @@ Several team members work on this repo from **different machines, each with thei
 
 ## Repository map
 
-- `prototype/`: earlier non-SUMO prototype (FastAPI + React). See `README.md` and `docs/DEVIATIONS.md`.
+- `archive/prototype_v0/`: earlier non-SUMO prototype, **archived and not to be built on** (team decision, 9 Nov 2026). The new system is built from scratch around SUMO.
 - `Manzil_D2_Report/` + `FYPFast/`: LaTeX source of the reports (FAST template). Deliverable III builds on this.
 - `presentation_output/`: final D2 slides.
 - `FYP Sample Reports/`: reference reports from earlier batches.
