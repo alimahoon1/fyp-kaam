@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "notes": "Signal timing for the synthetic 3x3 grid. Green phase 0 serves north-south, phase 1 east-west, at every junction (checked by tests/test_fixed_time.py). Tuned plans were chosen by a sweep on dev seeds 100-101 (900 s warm-up + 3600 s), never on evaluation seeds; see scenarios/grid3x3/README.md. Change 'version' whenever a value here changes.",
   "safety": {
     "min_green_s": 10,
@@ -63,5 +63,13 @@
     "medium": "medium",
     "heavy": "heavy",
     "uneven": "uneven"
+  },
+  "adaptive": {
+    "description": "Pressure controller (D2 Eq 5.2). Initial values; tuned on dev seeds 100-101.",
+    "alpha": 1.0,
+    "beta": 0.01,
+    "max_green_s": 60,
+    "max_red_s": 90,
+    "switch_margin": 0
   }
 }
