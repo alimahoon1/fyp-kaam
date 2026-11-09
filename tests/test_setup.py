@@ -23,3 +23,10 @@ def test_sumo_binaries_run():
 
 def test_random_trips_tool_present():
     assert sumo_tool("randomTrips.py").is_file()
+
+
+def test_sumo_home_survives_libsumo_import():
+    """libsumo sets SUMO_HOME to the data-only package; tools must still be found."""
+    import libsumo  # noqa: F401
+
+    assert sumo_tool("randomTrips.py").is_file()

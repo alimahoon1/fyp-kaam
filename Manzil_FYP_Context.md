@@ -1507,3 +1507,14 @@ The detailed phased plan is in `PLAN.md`.
 **Result (real, default SUMO signals, not a controller result).** 3,600 s of demand + up to 1,800 s drain, seeds 0–4: all 20 runs were gridlock-free (0 teleports, 0 collisions, every vehicle arrived). Mean waiting time was 26.6 s light, 31.4 s medium, 62.6 s heavy, 45.6 s uneven. Full table: `scenarios/grid3x3/README.md`; raw: `results/phase1/demand_check.json`. Tests: 23 passed (`tests/test_grid.py`, `tests/test_demand.py`, `tests/test_setup.py`); ruff is clean.
 
 **Not done yet:** looking at the grid in `sumo-gui` (cloud sessions are headless; it was checked with `sumolib` and headless `sumo` instead). Next task: 1.3 `SimulationAdapter`.
+
+## 50.5 SimulationAdapter and network reader (tasks 1.3 and 1.4, 9 Nov 2026)
+
+**Merge rule.** Ibrahim told the cloud session to merge its own PRs into `main` and keep working, sending summaries. PR #1 (tasks 1.1/1.2) and PR #2 (claim of 1.3–1.8) were merged this way.
+
+**Network reader (`manzil/sim/network.py`).** For every traffic light it reads, from the `.net.xml` only: the controlled links (TLS link index, from/to lane, direction, junction request index), the approaches (incoming edges and their lanes), and the outgoing lanes. Green phases are the program phases that have green and no yellow; controllers choose among these, and the safety filter generates yellow and all-red. It also reads the junction `<request>` foe and response matrices. **Conflict rule:** two foe links may be green together only if one is a minor green `g` that must yield to the other (e.g. a permissive left facing oncoming traffic). This is the exact check used for the "no conflicting greens" invariant. SUMO's own grid phases pass it, while all-green and "permissive left promoted to `G`" fail. Joined traffic lights that span several junctions raise `NotImplementedError` for now; this may matter for Lahore.
+
+**Adapter (`manzil/sim/adapter.py`).** The only module that imports `traci`/`libsumo` (a test enforces this, FR-03). It has two backends with one API: `libsumo` (default, fast, one instance per process) and `traci` (separate process, needed for `sumo-gui`). Each step it reads lane subscriptions (vehicles, halting, waiting time, mean speed, occupancy), signal states and arrival/departure counts into a `TrafficSnapshot` with per-approach `ApproachState` (empty approach speed = `None`, because missing is not zero). Signals are written only through `set_signal_state`. Both backends gave identical lane states in a test. Speed: about 1 ms per step on the grid with medium demand.
+
+**Bug found and fixed.** Importing `libsumo` sets `SUMO_HOME` to the data-only `sumo_data` package, so SUMO tools were no longer found. `sumo_home()` now trusts `SUMO_HOME` only if it contains SUMO's `tools` folder. A regression test was added.
+

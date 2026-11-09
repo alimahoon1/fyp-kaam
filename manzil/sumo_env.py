@@ -8,9 +8,13 @@ from pathlib import Path
 
 
 def sumo_home() -> Path:
-    """Return SUMO_HOME: the environment variable if set, else the pip package location."""
+    """Return SUMO_HOME: the env variable if it is a full SUMO install, else the pip package.
+
+    Importing ``libsumo`` sets ``SUMO_HOME`` to the ``sumo_data`` package, which has no tools or
+    binaries, so the variable is only trusted when it contains SUMO's ``tools`` folder.
+    """
     env = os.environ.get("SUMO_HOME")
-    if env and Path(env).is_dir():
+    if env and (Path(env) / "tools").is_dir():
         return Path(env)
     import sumo  # provided by the eclipse-sumo package
 
