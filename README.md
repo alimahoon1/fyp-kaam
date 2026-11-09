@@ -55,7 +55,7 @@ The Manzil code finds SUMO even without `SUMO_HOME`, but SUMO's own tools expect
 bash scripts/cloud_setup.sh
 ```
 
-In a claude.ai/code environment, use `bash scripts/cloud_setup.sh` as the setup script and allow network access to package registries. Cloud sessions run SUMO headless (no `sumo-gui`).
+In a claude.ai/code environment, use `cd fyp-kaam && bash scripts/cloud_setup.sh` as the setup script (it runs from the folder above the repo) and allow network access to package registries. Cloud sessions run SUMO headless (no `sumo-gui`).
 
 ### Checks
 
