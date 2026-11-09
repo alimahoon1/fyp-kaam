@@ -73,8 +73,8 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 ### Phase 1 — SUMO foundation (grid + fixed-time)
 | ID | Task | Status | Done when |
 |---|---|---|---|
-| 1.1 | Generate the 3×3 grid (`netgenerate`) with signalised junctions; inspect in `sumo-gui` | todo | Network opens; 9 traffic lights |
-| 1.2 | Demand profiles: light, medium, heavy, uneven (seeded `randomTrips`/flows) | todo | Each profile runs without gridlock in light |
+| 1.1 | Generate the 3×3 grid (`netgenerate`) with signalised junctions; inspect in `sumo-gui` | in progress (Claude cloud session for Ibrahim) | Network opens; 9 traffic lights |
+| 1.2 | Demand profiles: light, medium, heavy, uneven (seeded `randomTrips`/flows) | in progress (Claude cloud session for Ibrahim) | Each profile runs without gridlock in light |
 | 1.3 | `SimulationAdapter`: start/step/stop, subscriptions, read lanes/signals, apply phases (sole owner) | todo | Integration test steps SUMO and reads state |
 | 1.4 | Network reader: junctions, TLS programs, phases, lanes, connections from `.net.xml` (network-agnostic) | todo | Works on the grid with no hard-coded IDs |
 | 1.5 | Safety filter: min green, yellow, all-red; requested vs applied record | todo | Invariant test: no conflicting greens ever applied |
