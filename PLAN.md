@@ -25,6 +25,7 @@ Update this file whenever a task changes status, then commit and push (see `CLAU
 | 5 | `CLAUDE.md` + `PLAN.md` coordinate all sessions; Claude commits and pushes automatically after each work session. |
 | 6 | D2 feedback was positive; main demand is working code at the next evaluation. Chapters 1–6 only need a light update to match the real implementation. |
 | 7 | Start fresh around SUMO. The old prototype is archived in `archive/prototype_v0/` and not built on. |
+| 8 | Network: synthetic 3×3 SUMO grid first, then a Lahore OSM area (10–20 signals + hospital). All code must read the network from the SUMO files (network-agnostic). **Lahore area/hospital: open, to decide later.** |
 
 ## Phases and tasks
 
