@@ -131,3 +131,13 @@ def test_full_run_is_safe_and_explained(tmp_path):
     assert r.manifest["controller"]["controller"] == "adaptive"
     applied = (tmp_path / "applied_controls.csv").read_text()
     assert "pressure S=[" in applied  # the explanation is recorded with each switch
+
+
+def test_min_hold_delays_the_first_decision(grid_model):
+    c = AdaptiveController(AdaptiveParams(beta=0.0, min_hold_s=20.0))
+    c.reset(grid_model, SAFETY)
+    in1, _ = lanes_of_phase(grid_model, 1)
+    snap = snapshot(grid_model, 20, {in1[0]: 9})
+    assert c.decide(snap, signal(0, 15.0)) == []  # past min green 10 s, but within hold 20 s
+    (req,) = c.decide(snap, signal(0, 20.0))
+    assert req.requested_phase == 1

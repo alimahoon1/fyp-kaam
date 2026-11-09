@@ -12,7 +12,8 @@ Score of a legal green phase ``p`` at time ``t``::
 
 Decision rules, every step:
 
-1. During yellow / all-red, or before minimum green: no request (the filter keeps the phase).
+1. During yellow / all-red, or before the minimum green (or the longer ``min_hold_s``): no
+   request, so the filter keeps the phase.
 2. **Max-red promotion:** if another phase has been red for at least ``max_red_s`` minus the
    clearance, request the longest-waiting one (reason ``max_red``).
 3. **Max green:** if the current green has reached ``max_green_s``, request the best other
@@ -40,10 +41,13 @@ class AdaptiveParams:
     max_green_s: float = 60.0
     max_red_s: float = 90.0
     switch_margin: float = 0.0
+    # Shortest green the controller itself chooses before it considers switching. 0 means the
+    # safety filter's minimum green. Longer holds lose less time in yellow / all-red.
+    min_hold_s: float = 0.0
 
     def __post_init__(self):
-        if self.alpha < 0 or self.beta < 0 or self.switch_margin < 0:
-            raise ValueError("alpha, beta and switch_margin must be >= 0")
+        if min(self.alpha, self.beta, self.switch_margin, self.min_hold_s) < 0:
+            raise ValueError("alpha, beta, switch_margin and min_hold_s must be >= 0")
 
 
 @dataclass(frozen=True)
@@ -63,8 +67,8 @@ class AdaptiveController:
     _safety: SafetyConfig | None = field(default=None, repr=False)
 
     def reset(self, network: NetworkModel, safety: SafetyConfig) -> dict[str, int]:
-        if self.params.max_green_s < safety.min_green_s:
-            raise ValueError("max green must be at least the minimum green")
+        if self.params.max_green_s < max(safety.min_green_s, self.params.min_hold_s):
+            raise ValueError("max green must be at least the minimum green and the minimum hold")
         if self.params.max_red_s <= safety.clearance_s:
             raise ValueError("max red must be longer than the clearance time")
         self._safety = safety
@@ -109,7 +113,7 @@ class AdaptiveController:
             if sig.phase_id is None:  # in transition
                 continue
             last[sig.phase_id] = now  # the current phase is being served
-            if sig.phase_elapsed_s < self._safety.min_green_s:
+            if sig.phase_elapsed_s < max(self._safety.min_green_s, p.min_hold_s):
                 continue
             current = sig.phase_id
             s = self.scores(tls, snapshot)
