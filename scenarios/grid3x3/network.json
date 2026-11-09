@@ -1,0 +1,39 @@
+{
+  "network": "grid3x3.net.xml",
+  "synthetic": true,
+  "generator": "netgenerate",
+  "sumo_version": "Eclipse SUMO sumo 1.28.0",
+  "spec": {
+    "size": 3,
+    "block_length_m": 200.0,
+    "fringe_length_m": 200.0,
+    "lanes": 2,
+    "speed_mps": 13.89,
+    "tls_type": "static"
+  },
+  "command": [
+    "netgenerate",
+    "--grid",
+    "--grid.number",
+    "3",
+    "--grid.length",
+    "200.0",
+    "--grid.attach-length",
+    "200.0",
+    "--default.lanenumber",
+    "2",
+    "--default.speed",
+    "13.89",
+    "--default-junction-type",
+    "priority",
+    "--tls.set",
+    "A0,A1,A2,B0,B1,B2,C0,C1,C2",
+    "--tls.default-type",
+    "static",
+    "--no-turnarounds",
+    "true",
+    "--output-file",
+    "grid3x3.net.xml"
+  ],
+  "content_sha256": "16c36ec7f42b7694876cd907774d6d607435f3de4cd2468da263fc91221d65ee"
+}

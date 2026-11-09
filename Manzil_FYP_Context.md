@@ -1495,3 +1495,15 @@ The detailed phased plan is in `PLAN.md`.
 **Not yet verified:** `scripts/cloud_setup.sh` has not been run on Linux. The first cloud session checks it.
 
 **Note:** the GitHub remote is `alimahoon1/fyp-kaam` (Ali's account). To install the Claude GitHub app for cloud sessions, the repo owner may need to approve it.
+
+## 50.4 First cloud session: setup check, grid network and demand (9 Nov 2026)
+
+**Cloud setup.** Two problems were found and fixed. (1) The environment setup script runs from the folder above the repo, so `bash scripts/cloud_setup.sh` was not found. The environment's script is now `if [ -d fyp-kaam ]; then (cd fyp-kaam && bash scripts/cloud_setup.sh); fi`. (2) In the cloud image, `pip install --upgrade pip` fails because Debian manages pip, so `scripts/cloud_setup.sh` now treats that step as optional. After the fixes the script ran end to end on Linux (Python 3.13), and `pytest` passed. One pip download at container start was very slow (about 80 KB/s); a later retry ran at normal speed.
+
+**Task 1.1, network.** `manzil/scenarios/grid.py` wraps `netgenerate`: 3×3 grid, 200 m blocks, 200 m attached fringe roads, 2 lanes per direction, 50 km/h, the nine inner junctions set as traffic lights, no U-turns. The result has 9 four-arm signalised junctions and 12 dead-end fringe nodes. The file keeps SUMO's default static program (42 s green, 3 s yellow, 90 s cycle); Manzil controllers replace it at run time. `network.json` records the command, the SUMO version and a `content_sha256` that ignores SUMO's "generated on" timestamp, so rebuilding unchanged gives the same checksum. It is labelled synthetic, as D2 requires.
+
+**Task 1.2, demand.** Deviation from the plan wording: an own seeded generator is used instead of `randomTrips`. Reason: it controls the rate per entry road directly, which the uneven (starvation) profile needs, and it is easy to test. Entry and exit roads are found from the network (edges at dead-end nodes; north-south is decided from the edge direction), so it is network-agnostic. Arrivals are Poisson per entry road (numpy PCG64, seeded), destinations are uniform with no U-turn, and `duarouter` writes the routes. Rates per entry road: light 200, medium 400, heavy 600, uneven 800 north-south / 100 east-west veh/h. They were calibrated by a sweep with default signals (on seed 0, 750 veh/h already caused a jam teleport and 900 left vehicles unserved). Generated files are git-ignored and rebuilt from the seed.
+
+**Result (real, default SUMO signals, not a controller result).** 3,600 s of demand + up to 1,800 s drain, seeds 0–4: all 20 runs were gridlock-free (0 teleports, 0 collisions, every vehicle arrived). Mean waiting time was 26.6 s light, 31.4 s medium, 62.6 s heavy, 45.6 s uneven. Full table: `scenarios/grid3x3/README.md`; raw: `results/phase1/demand_check.json`. Tests: 23 passed (`tests/test_grid.py`, `tests/test_demand.py`, `tests/test_setup.py`); ruff is clean.
+
+**Not done yet:** looking at the grid in `sumo-gui` (cloud sessions are headless; it was checked with `sumolib` and headless `sumo` instead). Next task: 1.3 `SimulationAdapter`.

@@ -19,6 +19,9 @@ Manzil is a SUMO-based research prototype. It covers:
 | `Manzil_D2_Report/`, `FYPFast/` | LaTeX source of the reports |
 | `archive/prototype_v0/` | Earlier non-SUMO prototype, kept for reference only; not part of the current system |
 | `manzil/` | The new Python package (being built from scratch around SUMO) |
+| `manzil/scenarios/` | Grid builder (`grid.py`), seeded demand profiles (`demand.py`), gridlock check (`check.py`) |
+| `scenarios/grid3x3/` | Synthetic 3×3 SUMO network and its README (profiles, calibration, results) |
+| `results/` | Small result summaries kept in git |
 | `tests/` | Automated tests (`pytest`) |
 | `scripts/cloud_setup.sh` | Setup script for Linux and Claude Code cloud sessions |
 
