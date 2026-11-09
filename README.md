@@ -18,5 +18,43 @@ Manzil is a SUMO-based research prototype. It covers:
 | `F26-104_Project-Proposal.pdf`, `F26-104_Deliverable-2_Report.pdf` | Approved proposal and Deliverable 2 report |
 | `Manzil_D2_Report/`, `FYPFast/` | LaTeX source of the reports |
 | `archive/prototype_v0/` | Earlier non-SUMO prototype, kept for reference only; not part of the current system |
+| `manzil/` | The new Python package (being built from scratch around SUMO) |
+| `tests/` | Automated tests (`pytest`) |
+| `scripts/cloud_setup.sh` | Setup script for Linux and Claude Code cloud sessions |
 
-The new implementation is being built from scratch around SUMO. Its folders and setup instructions will be added here as the work progresses.
+## Setup
+
+SUMO is installed from PyPI (`eclipse-sumo`, pinned to 1.28.0 in `pyproject.toml`), so every machine gets the same version from one command. There is no need for the separate SUMO Windows installer.
+
+### Windows (team laptops)
+
+Requires Python 3.10 or newer (`py -0` lists installed versions). In the repo folder:
+
+```powershell
+py -3.10 -m venv .venv
+.venv\Scripts\python -m pip install --upgrade pip
+.venv\Scripts\python -m pip install -e ".[dev]"
+.venv\Scripts\python -m pytest
+```
+
+Then set `SUMO_HOME` once (replace the path with your own repo location) and reopen the terminal:
+
+```powershell
+.venv\Scripts\python -c "import sumo; print(sumo.SUMO_HOME)"
+setx SUMO_HOME "<path printed above>"
+```
+
+The Manzil code finds SUMO even without `SUMO_HOME`, but SUMO's own tools expect it. `sumo-gui` is at `.venv\Scripts\sumo-gui.exe`.
+
+### Linux, macOS and Claude Code cloud sessions
+
+```bash
+bash scripts/cloud_setup.sh
+```
+
+In a claude.ai/code environment, use `bash scripts/cloud_setup.sh` as the setup script and allow network access to package registries. Cloud sessions run SUMO headless (no `sumo-gui`).
+
+### Checks
+
+- `pytest` passes (includes `tests/test_setup.py`, which runs `sumo` and `netgenerate`)
+- `ruff check manzil tests` and `ruff format --check manzil tests` pass

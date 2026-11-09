@@ -25,7 +25,17 @@ Several team members work on this repo from **different machines, each with thei
 ## Environment notes
 
 - Ibrahim's laptop: i7-8650U, 16 GB RAM, **no NVIDIA GPU**. GPU training runs on **Kaggle** through the Kaggle CLI (`kaggle kernels push/status/output`).
-- Each machine needs SUMO installed with `SUMO_HOME` set. Check `PLAN.md` for setup status.
+- SUMO comes from PyPI (`eclipse-sumo`, pinned in `pyproject.toml`); setup steps are in `README.md`. On Windows, use the repo's `.venv` (`.venv\Scripts\python`).
+
+## Cloud sessions (claude.ai/code)
+
+Ibrahim runs long coding tasks as Claude Code cloud sessions and follows them from the phone app. If you are a cloud session:
+
+- The environment setup script is `bash scripts/cloud_setup.sh`. SUMO runs headless there; never depend on `sumo-gui`.
+- Work autonomously through the task you were given, following `PLAN.md`. Ask the user only when blocked on a decision that is genuinely theirs, and ask one short question.
+- The same commit rules apply. If you can push to `main`, do so (pull/rebase first). If the session only allows a `claude/...` branch, push there, open a PR, and say so clearly in the final summary.
+- End with a short plain-language summary: what was done, test results, and anything that needs Ibrahim.
+- Kaggle tasks need the Kaggle token, which is not available in cloud sessions unless Ibrahim adds it as an environment secret. Otherwise leave Kaggle tasks for the laptop.
 
 ## Repository map
 

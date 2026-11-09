@@ -1480,3 +1480,18 @@ Labelling approach (agreed): **AI-assisted pre-labelling + human correction.** A
 - **FYP-1 (Deliverable III):** 3x3 SUMO grid with light/medium/heavy(/uneven) demand; fixed-time + rule-adaptive (pressure) controllers; a first trained DQN; a three-way controller comparison; ambulance A -> B with time-based routing and closure-triggered rerouting; moving green corridor with off-vs-on comparison; YOLO fine-tuned on Kaggle with tracking and counting and accuracy numbers (plus 1-2 Lahore test clips if filmed); demo through SUMO-GUI plus a simple first dashboard (live map, signal states, ambulance status).
 - **FYP-2:** Lahore OSM network; full five-screen dashboard (G01-G05) + database; the full D2 protocol (10 seeds, 900 + 3600 s, held-out scenarios); rickshaw class; video-to-SUMO integration study; polish and robustness.
 The detailed phased plan is in `PLAN.md`.
+
+## 50.3 Working setup and Phase 0 results (10 Nov 2026)
+
+**Q13: how the work runs.** The user chose the hybrid model. Short setup tasks that need the laptop (SUMO on Windows, Kaggle token) are done locally. The long coding phases (1–5) run mostly as **Claude Code cloud sessions** (claude.ai/code), which push to GitHub while the laptop is off; Ibrahim follows them and answers questions from the Claude phone app. Rules for cloud sessions are in `CLAUDE.md` ("Cloud sessions").
+
+**SUMO install decision.** SUMO comes from PyPI (`eclipse-sumo==1.28.0`, with `libsumo`, `traci`, `sumolib` at 1.28.0), not the Windows installer. That way every laptop and the cloud get the same version from `pip install -e ".[dev]"`. On Ibrahim's laptop it lives in the repo `.venv` (Python 3.10.11), and `SUMO_HOME` is set as a user environment variable pointing to `.venv\Lib\site-packages\sumo`.
+
+**Verified on Ibrahim's laptop:**
+- `sumo`, `sumo-gui` and `netgenerate` 1.28.0 are present.
+- A throw-away smoke test passed: a `netgenerate` 3×3 grid with traffic lights, plus `randomTrips`, ran 400 steps via libsumo and reported 9 traffic lights.
+- `pytest`: 4 passed (`tests/test_setup.py`); ruff is clean.
+
+**Not yet verified:** `scripts/cloud_setup.sh` has not been run on Linux. The first cloud session checks it.
+
+**Note:** the GitHub remote is `alimahoon1/fyp-kaam` (Ali's account). To install the Claude GitHub app for cloud sessions, the repo owner may need to approve it.

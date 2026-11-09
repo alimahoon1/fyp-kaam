@@ -77,3 +77,12 @@ pnpm-debug.log*
 *.tmp
 *.temp
 *.orig
+
+# Python packaging
+*.egg-info/
+build/
+dist/
+
+# Simulation outputs (small summaries in results/ are committed explicitly)
+runs/
+*.tripinfo.xml

@@ -64,10 +64,11 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 ### Phase 0 — Setup
 | ID | Task | Status | Done when |
 |---|---|---|---|
-| 0.1 | Install SUMO on Ibrahim's laptop, set `SUMO_HOME`, check `sumo`, `sumo-gui`, `netgenerate` | in progress (Ibrahim + Claude) | `sumo --version` works |
-| 0.2 | Create the `manzil/` Python project (pyproject, pinned deps, lint/format, pytest) | in progress (Ibrahim + Claude) | `pytest` runs green on an empty test |
-| 0.3 | Write setup instructions in `README.md` so a teammate's machine can reproduce the setup | in progress (Ibrahim + Claude) | A fresh clone can follow the steps |
+| 0.1 | Install SUMO on Ibrahim's laptop, set `SUMO_HOME`, check `sumo`, `sumo-gui`, `netgenerate` | done: SUMO 1.28.0 via pip `eclipse-sumo` in `.venv`; `SUMO_HOME` set (user env); 3×3 grid smoke test ran with 9 TLS | `sumo --version` works |
+| 0.2 | Create the `manzil/` Python project (pyproject, pinned deps, lint/format, pytest) | done: `pyproject.toml`, `manzil/` skeleton, `manzil/sumo_env.py`, `tests/test_setup.py` (4 passed), ruff clean | `pytest` runs green on an empty test |
+| 0.3 | Write setup instructions in `README.md` so a teammate's machine can reproduce the setup | done (Windows steps verified; `scripts/cloud_setup.sh` not yet run on Linux, first cloud session verifies it) | A fresh clone can follow the steps |
 | 0.4 | Kaggle: account with phone verification, `kaggle.json` placed by the user, `pip install kaggle`, test `kaggle kernels list` | todo | CLI works |
+| 0.5 | Claude Code cloud: install the Claude GitHub app on `alimahoon1/fyp-kaam` (repo owner Ali may need to approve), create a claude.ai/code environment with setup script `bash scripts/cloud_setup.sh`, install the Claude phone app with notifications; first cloud task verifies the setup | todo (Ibrahim) | A cloud session runs `pytest` green |
 
 ### Phase 1 — SUMO foundation (grid + fixed-time)
 | ID | Task | Status | Done when |
