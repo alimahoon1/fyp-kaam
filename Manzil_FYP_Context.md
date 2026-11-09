@@ -1347,3 +1347,118 @@ The next logical stage is implementation planning and execution.
 - The traffic-intersection illustration was removed from the methodology slide so it appears only once in the deck. The revised workflow was rendered at full size and checked for legibility, overlap, clipping, and directional clarity.
 - Package integrity, slide dimensions, reference fonts, heading fit, bullet geometry, and first-party re-import passed without findings or warnings.
 - Final file: `presentation_output/Manzil_Presentation_Clear_Workflow_v5.pptx`. SHA-256: `5153964BE70F79762BC753392EEDB2170A473EE328D5E37CF4FC0DEA6B4E32E7`.
+
+---
+
+# 49. AUTHORITATIVE SPEC DIGEST, CURRENT STATE, AND GAP ANALYSIS (9 NOVEMBER 2026)
+
+This section was produced by re-reading `F26-104_Project-Proposal.pdf` (4 pages) and `F26-104_Deliverable-2_Report.pdf` (98 pages, dated 10 October 2026) in full. Treat it as the condensed specification for implementation. The PDFs remain the authority if anything here conflicts.
+
+## 49.1 Identity
+
+- Group ID **F26-104** is now treated as confirmed (deliverable files are named `F26-104_*`).
+- Title: **Manzil: Intelligent Traffic & Emergency Routing**. Supervisor: Miss Umm-e-Ammarah. FAST-NUCES Lahore, BS(CS).
+- Members: Muhammad Ali Mahoon (23L-0531), Muzammil Ahmed Bhatti (23L-0688), Mohammad Ibrahim Salman (23L-0723).
+
+## 49.2 Proposal commitments (what the panel approved)
+
+- AI-assisted traffic management and emergency routing, **developed and evaluated in a SUMO simulation** with a web dashboard.
+- Objectives: (1) web dashboard; evaluate waiting time, queue length, throughput, ambulance travel time. (2) Safe moving green corridor along the ambulance route. (3) Optimal ambulance route from dynamic traffic, queue, and signal-delay information, with rerouting. (4) Multi-intersection SUMO network with **fixed-time, adaptive, and RL** control. (5) Detect and classify vehicles from traffic video; estimate density, queues, waiting time.
+- Scope: a real-world road area imported or reconstructed in SUMO (OSM); normal, congested, and emergency scenarios; YOLO + multi-object tracking on **recorded** video; weighted road-graph routing; FastAPI backend; React dashboard; SUMO + TraCI.
+- Excluded: real government signals, city-wide deployment, live government CCTV, traffic forecasting.
+- Planned datasets: BDD100K, UA-DETRAC. Pretrained YOLO + tracker, not trained from scratch. RL references: DQN (Liang), PressLight, SUMO-RL.
+
+## 49.3 Deliverable 2 commitments (the detailed spec)
+
+**Core framing.** A research prototype, not a product. Two separate evidence paths share one *traffic-state contract*: (a) recorded video -> detection/tracking -> observations, evaluated against annotations; (b) SUMO -> exact simulated state -> controller, routing, and corridor experiments. They are evaluated separately; there is no claim that video drives the SUMO network unless a later, explicit integration study is done. One active ambulance only.
+
+**Objectives O1-O8.** O1 versioned traffic-state representation; O2 pretrained detector + MOT on held-out, source-separated video; O3 manageable multi-intersection SUMO network + repeatable demand; O4 fixed + rule-adaptive, then one RL controller; O5 time-based dynamic routing with bounded rerouting; O6 safe moving priority + restoration; O7 React dashboard + FastAPI; O8 reproducible, auditable run records.
+
+**Functional requirements (Table 4.1).**
+FR-01 validate scenario config (network, controller, seed, duration, demand) before start. FR-02 start/pause/resume/stop one SUMO run. FR-03 simulation adapter is sole owner of SUMO stepping and actuation. FR-04 perception worker processes recorded video into timestamped detections, tracks, metadata, status. FR-05 observation service aggregates into road/lane/approach intervals without mixing sources. FR-06 operator selects fixed / rule-adaptive / RL before a run. FR-07 every signal action records intersection, requested and applied phase, effective step, controller, reason. FR-08 enforce minimum green + yellow/all-red clearance. FR-09 validate ambulance origin/destination; clear no-route response. FR-10 valid remaining path with nonnegative time-based costs + recorded cost snapshot. FR-11 reroute after closure, invalidated edge, or sustained improvement above threshold. FR-12 priority only for a bounded look-ahead set of intersections. FR-13 detect passage/cancellation; restore safe normal control. FR-14 route revision cancels obsolete priority before activating new. FR-15 dashboard shows source mode, sim status, controller, signals, traffic indicators, ambulance position, route, corridor state. FR-16 stale/invalid/disconnected/fallback shown visibly. FR-17 record config, seed, versions, periodic metrics, route revisions, signal events, failures, termination reason. FR-18 comparison aligns runs and warns on incompatible network/demand/duration/warm-up/metric versions. FR-19 export config + metrics in a documented machine-readable format. FR-20 RL loss/invalid action -> fall back to safe baseline and record it.
+
+**Non-functional (Table 4.2).** NFR-01 reproducibility; 02 safety in simulation (no incompatible greens); 03 auditability (requested vs applied); 04 freshness (producedAt + effective step, stale thresholds); 05 responsiveness (deadline set after profiling); 06 isolation (video/dashboard never step SUMO); 07 usability (core demo from one config screen); 08 portability (versioned environments, Docker later); 09 maintainability (typed versioned contracts, one controller interface); 10 data integrity (immutable completed config); 11 privacy (licensed/authorized video only); 12 availability (fail visibly to a safe stopped/baseline state).
+
+**Use cases.** UC-01 configure scenario; UC-02 run/control simulation; UC-03 process traffic video; UC-04 inspect traffic state; UC-05 dispatch ambulance; UC-06 monitor route and corridor; UC-07 handle blockage/route change; UC-08 compare and export runs. Single actor: research operator. Evaluators are read-only.
+
+**GUI (wireframes only so far).** G01 Experiment Configuration, G02 Traffic Overview, G03 Perception & Intersection Detail, G04 Emergency Dispatch & Route, G05 Comparative Analytics. Colour is never the only signal; units, source, and freshness are always visible.
+
+**Data model (ER + dictionary).** Scenario 1:N ExperimentRun; Run 1:N MetricSample, Artifact, ControlDecision, EmergencyMission; VideoJob 1:N Observation; each Observation is owned by exactly one of Run or VideoJob; Observation informs ControlDecision; Mission 1:N RouteVersion (monotonic); RouteVersion 1:N PriorityEvent. PostgreSQL proposed behind a repository interface; file-backed storage allowed during integration.
+
+**Risk register highlights.** Map import lacks valid signals -> synthetic grid fallback. Local video lacks labels/permission -> public data only. RL fails -> report a negative result. Reroute oscillation -> threshold/persistence/cooldown. Insufficient compute -> recorded inference, compact scenarios.
+
+**Methodology (Chapter 5).**
+- Network: Lahore OSM extract, about 10-20 signalized intersections (planning range, not fixed); record bbox, date, checksum, conversion command; NetEdit cleanup; synthetic-grid fallback labelled as synthetic.
+- Demand: light, medium, heavy + uneven-approach (starvation) case; seeds; warm-up; incidents = edge closure / lane-capacity reduction / obstruction at a fixed time; dev / tuning / held-out scenario split.
+- Perception: pretrained YOLO -> ByteTrack (lead) / DeepSORT (comparison) -> bottom-centre point into lane polygons -> line-crossing counts -> interval aggregation: counts, image occupancy (Eq 5.1), queue proxy (slow/stationary tracks in an upstream region), speed proxy (pixels unless calibrated). Metrics: precision/recall or mAP, count MAE (Eq 5.5), queue-proxy error, throughput (fps).
+- Fixed-time: declared cycle; green/yellow/all-red/offsets versioned; credible, not deliberately weak.
+- Rule-adaptive: pressure score S_p = sum(q_l - q_m) + beta * w_l (Eq 5.2); min green, max green, max-red promotion, shared clearance.
+- RL: **parameter-sharing discrete-action DQN**; state = normalized in/out queues, waiting, occupancy, current phase, elapsed time, action mask; action = legal phase or bounded extension; reward r = -a*P - b*W - c*X(starvation) - d*C(switches) (Eq 5.3); safety layer authoritative; emergency status excluded from the RL state.
+- Routing: legal-movement graph from SUMO; cost in seconds c_e = T_run + D_signal + D_queue + M_closure (Eq 5.4), no double counting; Dijkstra is the reference, A* only with an admissible free-flow heuristic. Algorithm 1 = stale-cost rejection, NO_ROUTE, threshold theta + persistence window + cooldown, atomic version bump + cancellation of obsolete priority.
+- Corridor: Algorithm 2 + Fig 6.6 states IDLE -> REQUESTED -> SAFE_TRANSITION -> ACTIVE_PRIORITY -> PASSAGE -> RECOVERY -> IDLE, plus CANCEL/FAILURE; look-ahead activation using ETA, queue clearance, downstream capacity; max priority duration; timeout.
+- Integrated loop: Algorithm 3. A single owner steps SUMO once, then snapshot -> routing -> corridor -> controller -> safety filter -> TraCI apply -> record -> publish dashboard view.
+- Protocol: **900 s warm-up + 3,600 s measurement; 10 matched seeds per controller x scenario**; paired differences, SD, CIs; failed runs retained.
+- Experiments (Table 5.1): perception vs annotations; fixed vs rule vs RL; static vs dynamic route (signal policy fixed); same routing without vs with corridor; robustness across demand, incidents, seeds, optional observation noise.
+- Metrics: mean travel time, waiting time, queue mean/max per approach, throughput, phase changes, max-red/fairness; ambulance travel time, excess delay, stops, route revisions, computation time; ordinary-traffic delay during the mission + recovery interval; recovery time; safety-invariant violations.
+
+**Design (Chapter 6).** Components: React dashboard, FastAPI boundary, Experiment service, Control orchestrator, SUMO/TraCI adapter (sole step/actuation owner), Traffic-state service, Perception worker, Controller registry, Safety filter, Routing service, Corridor coordinator, Experiment store. Contracts (Table 6.3): TrafficSnapshot, ApproachState, SignalState (owner NORMAL|CORRIDOR), ControlRequest, AppliedControl, RoutePlan, PriorityRequest, MetricSample. Failure table 6.4. Testing: unit, invariant/property, small-SUMO integration, scenario replay, headless SUMO smoke test in CI. Modules may begin in one Python process.
+
+## 49.4 What exists in the repository today
+
+- `prototype/` (commit `cc5d81e`): FastAPI backend (`engine.py`, about 370 lines) + React/Vite dashboard (`App.tsx`, about 150 lines). It is a **deterministic Python queue simulator, not SUMO**: six-intersection synthetic network; fixed, pressure-adaptive, and tabular-Q "prototype" controllers; Dijkstra routing with closures and route versions; simplified corridor; mock perception; in-memory state; JSON export; 8 backend tests. Documented in `README.md`, `context.md`, and `docs/*`.
+- Final D2 presentation: `presentation_output/Manzil_Presentation_Clear_Workflow_v5.pptx`.
+
+## 49.5 Development machine facts (checked 9 Nov 2026, Ibrahim's laptop)
+
+- Intel i7-8650U (4C/8T, 2018 laptop), 15.9 GB RAM, **Intel UHD 620 only, no NVIDIA/CUDA GPU**.
+- Python 3.10.11 and 3.13, Node 22.14, PostgreSQL 17, Docker, WSL, Graphviz, MiKTeX present.
+- **SUMO not installed; `SUMO_HOME` unset; `uv` not installed.**
+- Implication: YOLO fine-tuning and DQN training at scale need Colab/Kaggle or a teammate's GPU. CPU is fine for SUMO runs on a small network, YOLO inference on recorded clips (slow but offline), and small DQN training.
+
+## 49.6 Gap analysis: spec vs current state
+
+| Area | D2 commitment | Current state | Gap |
+| --- | --- | --- | --- |
+| Simulator | SUMO + TraCI, single adapter | Custom queue simulator | Install SUMO; write `SumoAdapter`; keep the fallback only for tests |
+| Network | Lahore OSM, 10-20 signals, synthetic fallback | 6-node synthetic | Choose area; netconvert; NetEdit cleanup; validate TLS programs |
+| Demand/incidents | light/med/heavy/uneven, seeds, closures | Seeded synthetic demand | SUMO route files per profile; closures via TraCI |
+| Fixed / adaptive | Credible fixed plan; pressure Eq 5.2 | Implemented on fallback sim | Port to the TraCI phase model with real lane queues |
+| RL | Parameter-sharing DQN | Tabular-Q placeholder | Gym/SUMO-RL env, training, checkpoints, held-out evaluation |
+| Routing | Eq 5.4 time costs, Alg 1 | Dijkstra on toy graph | Build graph from SUMO net incl. connections; live costs from TraCI |
+| Corridor | Alg 2 / Fig 6.6, ambulance obeys signals | Simplified states | Real TLS overrides via TraCI with yellow/all-red and passage detection |
+| Perception | YOLO + ByteTrack, counts/queue proxy, MAE | Mock stream | Pick clips + annotate; offline worker; evaluation script |
+| Persistence | PostgreSQL behind repository | In memory + JSON | Repository + migrations (Postgres 17 available locally) |
+| Dashboard | G01-G05 | One combined page | Split into the five screens; live map from SUMO geometry |
+| Evaluation | 10 seeds x (900 + 3600 s), ablations | One-click single-seed compare | Batch runner, analysis notebooks, plots |
+
+## 49.7 Open questions raised with the user on 9 Nov 2026
+
+Next deliverable/deadline and what the panel expects; keep-and-evolve vs rebuild the prototype; Lahore area choice; video source; GPU access; RL ambition; emergency-vehicle detection from video (in the older brainstorm, not in D2); team split; database now or later. Record the answers in section 50.
+
+---
+
+# 50. DELIVERABLE III REQUIREMENTS AND PLANNING ANSWERS (9 NOVEMBER 2026)
+
+## 50.1 University instructions for Deliverable III (R&D projects, FYP-1)
+
+1. Update the chapters from previous deliverables (Chapters 1-6) with the supervisor's feedback incorporated.
+2. **Chapter 7 - Implementation and Test Cases:** implementation details of the software component developed or the subproblem solved.
+3. **Chapter 9 - Experimental Results and Discussion:** results of the experiments actually conducted.
+4. **Chapter 10 - Conclusion and Future Work:** for FYP-1, a plan of the work to be done in FYP-2 is mandatory.
+5. Chapter 8 is not listed (in the FAST template it is the User Manual), so it appears not to be required for D3. Confirm with the user.
+
+Implication: D3 needs **real, working SUMO-based implementation and genuine experimental results**, not just design. The FYP-1 scope must be chosen so that at least one subproblem is fully implemented, tested, and evaluated with real numbers. The remaining work becomes the FYP-2 plan in Chapter 10.
+
+## 50.2 Answers from the user (asked one at a time)
+
+**Q1 - Deadline / target.** No fixed date is being planned around. Work proceeds regardless of the due date. Target for the FYP-1 / Deliverable III milestone: a healthy amount of real coding **plus some actual model training**, with visible output that can be shown to evaluators. It is explicitly not the complete FYP. The work will be planned in phases, and a revised plan (including the FYP-2 plan for Chapter 10) will be proposed.
+
+**Standing instruction:** keep the context files updated after every decision or work session (`Manzil_FYP_Context.md` is the master; `context.md` points to it). Commit context updates so they cannot be lost (on 9 Nov an outside process reverted this file to its committed version and deleted sections 49-50; they were restored from scratch copies).
+
+**Q2 - Which model to train first.** **Option C: both, in parallel.** The vision model (pretrained YOLO fine-tuned on traffic video, with a tracker and counting) starts immediately as an independent track because it does not depend on SUMO. The signal-control RL model (parameter-sharing DQN in SUMO) follows the SUMO setup, fixed-time, and rule-adaptive controllers in the main track. Deliverable III should therefore contain trained-vision results and, if reached, first DQN training/evaluation results.
+
+**Q3 - Compute.** Use **Kaggle** for GPU training, driven from the local machine through the **Kaggle API/CLI**. Workflow: notebooks/scripts live in the repo; `kaggle kernels push` with `kernel-metadata.json` (`enable_gpu: true`, `enable_internet: true`), then `kaggle kernels status` and `kaggle kernels output` to pull trained weights and metrics back; datasets are uploaded with `kaggle datasets create/version`. Setup needed: Kaggle account with phone verification (required for GPU and internet), an API token placed by the user in `C:\Users\X1 Carbon\.kaggle\kaggle.json` (never pasted into chat or committed), and `pip install kaggle`. Free GPU quota is about 30 h/week. The local laptop (no CUDA) is used for SUMO, DQN on a small network, and offline YOLO inference.
+
+**Q4 - Team working model.** Ibrahim and Claude will do most of the work. Ali and Muzammil will also work through Claude, on their own devices, following the same plan. Consequence: the plan, task status, decisions, and context **must live in the Git repository** (committed and pushed to `alimahoon1/fyp-kaam`), be self-contained, and be readable by any fresh Claude session on any machine. No essential state may live only in one machine's local Claude memory. Task ownership is therefore per task, not per fixed track.
+
+**Q5 - Sync setup.** Approved. `CLAUDE.md` (auto-loaded by Claude Code: project summary, read-first list, working rules) and `PLAN.md` (phases, tasks, status, owners) were created at the repo root. **Claude is authorised to commit and push automatically after each work session**, without asking each time.

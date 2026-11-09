@@ -100,3 +100,7 @@ npm run build
 ```
 
 After the frontend build, FastAPI serves the complete application at `http://127.0.0.1:8000/`.
+
+## Planning status (9 November 2026)
+
+Planning for Deliverable III (Chapters 7, 9, 10 + updated 1-6) is in progress. The full specification digest, gap analysis, Deliverable III requirements, and the user's planning answers live in `Manzil_FYP_Context.md` sections 49-50. Read those first.
