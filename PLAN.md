@@ -5,7 +5,7 @@ Before starting a task, set it to `in progress (Name)` and push. When finished, 
 
 ## Current stage
 
-Planning is finished (10 Nov 2026). **Now: Phase 0 (setup) on Ibrahim's laptop. Coding phases 1–5 will mostly run as Claude Code cloud sessions (claude.ai/code), with Ibrahim checking from the phone app.** The vision track (V) can run in parallel at any time after Phase 0 step 0.4.
+Planning is finished (10 Nov 2026). **Phase 0 done except Kaggle (0.4). Phase 1: 1.1 and 1.2 done; next is 1.3 (`SimulationAdapter`). Coding phases 1–5 mostly run as Claude Code cloud sessions (claude.ai/code), with Ibrahim checking from the phone app.** The vision track (V) can run in parallel at any time after Phase 0 step 0.4.
 
 ## Deliverable III requirements (from the university)
 
@@ -66,15 +66,15 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 |---|---|---|---|
 | 0.1 | Install SUMO on Ibrahim's laptop, set `SUMO_HOME`, check `sumo`, `sumo-gui`, `netgenerate` | done: SUMO 1.28.0 via pip `eclipse-sumo` in `.venv`; `SUMO_HOME` set (user env); 3×3 grid smoke test ran with 9 TLS | `sumo --version` works |
 | 0.2 | Create the `manzil/` Python project (pyproject, pinned deps, lint/format, pytest) | done: `pyproject.toml`, `manzil/` skeleton, `manzil/sumo_env.py`, `tests/test_setup.py` (4 passed), ruff clean | `pytest` runs green on an empty test |
-| 0.3 | Write setup instructions in `README.md` so a teammate's machine can reproduce the setup | done (Windows steps verified; `scripts/cloud_setup.sh` not yet run on Linux, first cloud session verifies it) | A fresh clone can follow the steps |
+| 0.3 | Write setup instructions in `README.md` so a teammate's machine can reproduce the setup | done (Windows steps verified; `scripts/cloud_setup.sh` verified on Linux in the first cloud session, 9 Nov, after fixing a non-fatal pip upgrade) | A fresh clone can follow the steps |
 | 0.4 | Kaggle: account with phone verification, `kaggle.json` placed by the user, `pip install kaggle`, test `kaggle kernels list` | todo | CLI works |
-| 0.5 | Claude Code cloud: install the Claude GitHub app on `alimahoon1/fyp-kaam` (repo owner Ali may need to approve), create a claude.ai/code environment with setup script `bash scripts/cloud_setup.sh`, install the Claude phone app with notifications; first cloud task verifies the setup | todo (Ibrahim) | A cloud session runs `pytest` green |
+| 0.5 | Claude Code cloud: install the Claude GitHub app on `alimahoon1/fyp-kaam` (repo owner Ali may need to approve), create a claude.ai/code environment with setup script `bash scripts/cloud_setup.sh`, install the Claude phone app with notifications; first cloud task verifies the setup | done: cloud session ran `pytest` green (9 Nov). Environment setup script corrected to `cd fyp-kaam` first, because it runs from the folder above the repo | A cloud session runs `pytest` green |
 
 ### Phase 1 — SUMO foundation (grid + fixed-time)
 | ID | Task | Status | Done when |
 |---|---|---|---|
-| 1.1 | Generate the 3×3 grid (`netgenerate`) with signalised junctions; inspect in `sumo-gui` | in progress (Claude cloud session for Ibrahim) | Network opens; 9 traffic lights |
-| 1.2 | Demand profiles: light, medium, heavy, uneven (seeded `randomTrips`/flows) | in progress (Claude cloud session for Ibrahim) | Each profile runs without gridlock in light |
+| 1.1 | Generate the 3×3 grid (`netgenerate`) with signalised junctions; inspect in `sumo-gui` | done (cloud, 9 Nov): `manzil/scenarios/grid.py` → `scenarios/grid3x3/grid3x3.net.xml` + `network.json`; 9 TLS, 4-arm junctions, checked headless by `tests/test_grid.py`. A `sumo-gui` look on the laptop is still worth doing (command in `scenarios/grid3x3/README.md`) | Network opens; 9 traffic lights |
+| 1.2 | Demand profiles: light, medium, heavy, uneven (seeded `randomTrips`/flows) | done (cloud, 9 Nov): `manzil/scenarios/demand.py` (own seeded Poisson generator + `duarouter`, used instead of `randomTrips`), `manzil/scenarios/check.py`; all 4 profiles × seeds 0–4 gridlock-free with default signals → `results/phase1/demand_check.json` | Each profile runs without gridlock in light |
 | 1.3 | `SimulationAdapter`: start/step/stop, subscriptions, read lanes/signals, apply phases (sole owner) | todo | Integration test steps SUMO and reads state |
 | 1.4 | Network reader: junctions, TLS programs, phases, lanes, connections from `.net.xml` (network-agnostic) | todo | Works on the grid with no hard-coded IDs |
 | 1.5 | Safety filter: min green, yellow, all-red; requested vs applied record | todo | Invariant test: no conflicting greens ever applied |

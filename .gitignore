@@ -86,3 +86,6 @@ dist/
 # Simulation outputs (small summaries in results/ are committed explicitly)
 runs/
 *.tripinfo.xml
+
+# Generated demand files (rebuild with: python -m manzil.scenarios.demand --all --seed N)
+scenarios/*/demand/
