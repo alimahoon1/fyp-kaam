@@ -85,9 +85,9 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 ### Phase 2 — Rule-adaptive control + first comparison
 | ID | Task | Status | Done when |
 |---|---|---|---|
-| 2.1 | Pressure-based adaptive controller (Eq 5.2: pressure + wait term, min/max green, max-red promotion) | todo | Runs; explanation fields recorded |
-| 2.2 | Batch runner: controller × demand × seeds (FYP-1: about 3–5 seeds, shorter runs) | todo | One command produces a results table |
-| 2.3 | First comparison: fixed vs adaptive, with plots | todo | Results + plots in `results/` |
+| 2.1 | Pressure-based adaptive controller (Eq 5.2: pressure + wait term, min/max green, max-red promotion) | in progress (Claude cloud session for Ibrahim) | Runs; explanation fields recorded |
+| 2.2 | Batch runner: controller × demand × seeds (FYP-1: about 3–5 seeds, shorter runs) | in progress (Claude cloud session for Ibrahim) | One command produces a results table |
+| 2.3 | First comparison: fixed vs adaptive, with plots | in progress (Claude cloud session for Ibrahim) | Results + plots in `results/` |
 
 ### Phase 3 — Ambulance routing, rerouting, green corridor
 | ID | Task | Status | Done when |
