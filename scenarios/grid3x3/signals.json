@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "notes": "Signal timing for the synthetic 3x3 grid. Green phase 0 serves north-south, phase 1 east-west, at every junction (checked by tests/test_fixed_time.py). Tuned plans were chosen by a sweep on dev seeds 100-101 (900 s warm-up + 3600 s), never on evaluation seeds; see scenarios/grid3x3/README.md. Change 'version' whenever a value here changes.",
+  "safety": {
+    "min_green_s": 10,
+    "yellow_s": 3,
+    "all_red_s": 2
+  },
+  "fixed_time_plans": {
+    "equal": {
+      "description": "Reference: 35 s green per phase, 80 s cycle, no offsets.",
+      "default": {
+        "green_s": [
+          35,
+          35
+        ],
+        "offset_s": 0
+      }
+    },
+    "light": {
+      "description": "Tuned for light demand: 20/20 s, 50 s cycle.",
+      "default": {
+        "green_s": [
+          20,
+          20
+        ],
+        "offset_s": 0
+      }
+    },
+    "medium": {
+      "description": "Tuned for medium demand: 25/25 s, 60 s cycle.",
+      "default": {
+        "green_s": [
+          25,
+          25
+        ],
+        "offset_s": 0
+      }
+    },
+    "heavy": {
+      "description": "Tuned for heavy demand: 45/45 s, 100 s cycle.",
+      "default": {
+        "green_s": [
+          45,
+          45
+        ],
+        "offset_s": 0
+      }
+    },
+    "uneven": {
+      "description": "Tuned for uneven demand: 45 s north-south / 25 s east-west, 80 s cycle.",
+      "default": {
+        "green_s": [
+          45,
+          25
+        ],
+        "offset_s": 0
+      }
+    }
+  },
+  "profile_plans": {
+    "light": "light",
+    "medium": "medium",
+    "heavy": "heavy",
+    "uneven": "uneven"
+  }
+}

@@ -5,7 +5,7 @@ Before starting a task, set it to `in progress (Name)` and push. When finished, 
 
 ## Current stage
 
-Planning is finished (10 Nov 2026). **Phase 0 done except Kaggle (0.4). Phase 1: 1.1–1.4 done; next is 1.5 (safety filter). Coding phases 1–5 mostly run as Claude Code cloud sessions (claude.ai/code), with Ibrahim checking from the phone app.** The vision track (V) can run in parallel at any time after Phase 0 step 0.4.
+Planning is finished (10 Nov 2026). **Phase 0 done except Kaggle (0.4). **Phase 1 done.** Next: Phase 2 (2.1 pressure-adaptive controller). Coding phases 1–5 mostly run as Claude Code cloud sessions (claude.ai/code), with Ibrahim checking from the phone app.** The vision track (V) can run in parallel at any time after Phase 0 step 0.4.
 
 ## Deliverable III requirements (from the university)
 
@@ -77,10 +77,10 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 | 1.2 | Demand profiles: light, medium, heavy, uneven (seeded `randomTrips`/flows) | done (cloud, 9 Nov): `manzil/scenarios/demand.py` (own seeded Poisson generator + `duarouter`, used instead of `randomTrips`), `manzil/scenarios/check.py`; all 4 profiles × seeds 0–4 gridlock-free with default signals → `results/phase1/demand_check.json` | Each profile runs without gridlock in light |
 | 1.3 | `SimulationAdapter`: start/step/stop, subscriptions, read lanes/signals, apply phases (sole owner) | done (cloud, 9 Nov): `manzil/sim/adapter.py` (libsumo + traci backends, lane/TLS/sim subscriptions → `TrafficSnapshot`, only module importing TraCI, enforced by `tests/test_adapter.py`), contracts in `manzil/sim/contracts.py` | Integration test steps SUMO and reads state |
 | 1.4 | Network reader: junctions, TLS programs, phases, lanes, connections from `.net.xml` (network-agnostic) | done (cloud, 9 Nov): `manzil/sim/network.py`: links, approaches, green phases, foe/yield matrices from `.net.xml`; conflict check; tested on the 3×3 grid and a generated 4×4 grid | Works on the grid with no hard-coded IDs |
-| 1.5 | Safety filter: min green, yellow, all-red; requested vs applied record | in progress (Claude cloud session for Ibrahim) | Invariant test: no conflicting greens ever applied |
-| 1.6 | Fixed-time controller (declared cycle per junction) | in progress (Claude cloud session for Ibrahim) | Runs a full scenario |
-| 1.7 | Metrics + run manifest: waiting time, queue mean/max, throughput, travel time, phase changes; config, seed, versions | in progress (Claude cloud session for Ibrahim) | One run produces a manifest + metrics files |
-| 1.8 | Reproducibility check: same seed gives the same metrics | in progress (Claude cloud session for Ibrahim) | Test passes |
+| 1.5 | Safety filter: min green, yellow, all-red; requested vs applied record | done (cloud, 9 Nov): `manzil/control/safety.py`: `SafetyFilter` (min green 10 s, yellow 3 s, all-red 2 s; `AppliedControl` requested vs applied) + independent `SafetyMonitor`; a random controller over 5,000 steps and in real SUMO produced 0 violations (`tests/test_safety.py`) | Invariant test: no conflicting greens ever applied |
+| 1.6 | Fixed-time controller (declared cycle per junction) | done (cloud, 9 Nov): `manzil/control/fixed_time.py` + `scenarios/grid3x3/signals.json`; plans tuned per profile on dev seeds 100–101; full 900 + 3,600 s runs for all 4 profiles, seed 0 → `results/phase1/fixed_time_seed0.json` | Runs a full scenario |
+| 1.7 | Metrics + run manifest: waiting time, queue mean/max, throughput, travel time, phase changes; config, seed, versions | done (cloud, 9 Nov): `manzil/experiments/runner.py` + `metrics.py`: run folder with `manifest.json` (config, seed, versions, git commit, checksums, termination) and `metrics.json` (metric version 1), time series, signal events, applied controls | One run produces a manifest + metrics files |
+| 1.8 | Reproducibility check: same seed gives the same metrics | done (cloud, 9 Nov): `tests/test_runner.py`: same seed → identical metrics (also libsumo vs traci); a full-length heavy rerun was also identical | Test passes |
 
 ### Phase 2 — Rule-adaptive control + first comparison
 | ID | Task | Status | Done when |
