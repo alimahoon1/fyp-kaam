@@ -75,12 +75,12 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 |---|---|---|---|
 | 1.1 | Generate the 3×3 grid (`netgenerate`) with signalised junctions; inspect in `sumo-gui` | done (cloud, 9 Nov): `manzil/scenarios/grid.py` → `scenarios/grid3x3/grid3x3.net.xml` + `network.json`; 9 TLS, 4-arm junctions, checked headless by `tests/test_grid.py`. A `sumo-gui` look on the laptop is still worth doing (command in `scenarios/grid3x3/README.md`) | Network opens; 9 traffic lights |
 | 1.2 | Demand profiles: light, medium, heavy, uneven (seeded `randomTrips`/flows) | done (cloud, 9 Nov): `manzil/scenarios/demand.py` (own seeded Poisson generator + `duarouter`, used instead of `randomTrips`), `manzil/scenarios/check.py`; all 4 profiles × seeds 0–4 gridlock-free with default signals → `results/phase1/demand_check.json` | Each profile runs without gridlock in light |
-| 1.3 | `SimulationAdapter`: start/step/stop, subscriptions, read lanes/signals, apply phases (sole owner) | todo | Integration test steps SUMO and reads state |
-| 1.4 | Network reader: junctions, TLS programs, phases, lanes, connections from `.net.xml` (network-agnostic) | todo | Works on the grid with no hard-coded IDs |
-| 1.5 | Safety filter: min green, yellow, all-red; requested vs applied record | todo | Invariant test: no conflicting greens ever applied |
-| 1.6 | Fixed-time controller (declared cycle per junction) | todo | Runs a full scenario |
-| 1.7 | Metrics + run manifest: waiting time, queue mean/max, throughput, travel time, phase changes; config, seed, versions | todo | One run produces a manifest + metrics files |
-| 1.8 | Reproducibility check: same seed gives the same metrics | todo | Test passes |
+| 1.3 | `SimulationAdapter`: start/step/stop, subscriptions, read lanes/signals, apply phases (sole owner) | in progress (Claude cloud session for Ibrahim) | Integration test steps SUMO and reads state |
+| 1.4 | Network reader: junctions, TLS programs, phases, lanes, connections from `.net.xml` (network-agnostic) | in progress (Claude cloud session for Ibrahim) | Works on the grid with no hard-coded IDs |
+| 1.5 | Safety filter: min green, yellow, all-red; requested vs applied record | in progress (Claude cloud session for Ibrahim) | Invariant test: no conflicting greens ever applied |
+| 1.6 | Fixed-time controller (declared cycle per junction) | in progress (Claude cloud session for Ibrahim) | Runs a full scenario |
+| 1.7 | Metrics + run manifest: waiting time, queue mean/max, throughput, travel time, phase changes; config, seed, versions | in progress (Claude cloud session for Ibrahim) | One run produces a manifest + metrics files |
+| 1.8 | Reproducibility check: same seed gives the same metrics | in progress (Claude cloud session for Ibrahim) | Test passes |
 
 ### Phase 2 — Rule-adaptive control + first comparison
 | ID | Task | Status | Done when |
