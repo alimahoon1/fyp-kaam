@@ -1274,3 +1274,76 @@ The next logical stage is implementation planning and execution.
 - Academic sources used in the literature and related-systems slides are recorded in speaker notes. The deck uses one editable native comparison table and contains no fabricated quantitative results.
 - The final presentation contains 15 widescreen slides using Segoe UI. Package integrity, expected dimensions, slide count, fonts, bullet geometry, heading fit, and the native-table requirement passed validation with no findings. Every slide was rendered and visually inspected, and workflow arrows and report-image crops were corrected in subsequent passes.
 - Final file: `presentation_output/Manzil_Presentation.pptx`. SHA-256: `9FD70EA37F0F363069DC234A2622B9828CB144E8F164DE5012926D4A8594750C`.
+
+---
+
+# 43. PRESENTATION REDESIGN (23 OCTOBER 2026)
+
+- The 15-slide deck was rebuilt as a 12-slide presentation using the supplied `template_for_presentation.pptx` as visual direction. The revised style uses its warm ivory background, restrained blush and taupe accents, thin coral rules, large headings, and increased whitespace without copying the complete template.
+- Text density was reduced across the deck while retaining the required problem statement, scope boundaries, achieved and future goals, R&D summary, related applications, requirements, constraints, limitations, methodology, and evaluation content.
+- Slide 5 now presents goals as a dependency-based milestone chart. Completed Deliverable 2 research, requirements, architecture, and UI design are visually separated from network preparation, baseline implementation, integration, and evaluation.
+- Slide 7 now uses concise checkbox statements for core requirements, constraints, and limitations. A visible fallback rule explains that invalid data, routes, models, or timing must stop the run or trigger a declared baseline.
+- The former architecture, decision-workflow, and methodology-image sequence was removed. Slide 8 replaces it with one high-level application-flow diagram covering observation, traffic-state construction, decision, safety validation, SUMO application, and evidence recording.
+- Slide 9 uses a newly generated mobile-application concept showing traffic overview, active ambulance mission, route, signal priority, and corridor status. The slide and speaker notes identify it as a concept rather than an implemented screenshot.
+- The rebuilt deck contains one editable native R&D comparison table, editable milestone and workflow graphics, and speaker-note citations. No fabricated performance measurements or completed-implementation claims were added.
+- Package integrity, 16:9 dimensions, 12-slide count, Arial font policy, heading fit, bullet geometry, and native-table checks passed with no warnings. The final PPTX was rendered into 12 slide images; the montage and full-size inspection found no clipping, overlap, or overflow. `slides_test.py` also reported no overflow.
+- Final revised file: `presentation_output/Manzil_Presentation_Updated.pptx`. SHA-256: `2DA19862466B2EEDF8A5196EE7E8372CA6E0AD5D0D86B54AA14AD1BC168DDAD8`.
+- The previous `presentation_output/Manzil_Presentation.pptx` was open in another process and could not be overwritten. A backup of that original file is stored under `presentation_build/revision_v2/Manzil_Presentation_before_revision.pptx`; use the updated filename until the open presentation is closed.
+
+---
+
+# 44. TEMPLATE-BASED PRESENTATION REBUILD (23 OCTOBER 2026)
+
+- The presentation was rebuilt again after visual comparison with the supplied `template_for_presentation.pptx`. This version imports and duplicates the template's actual slide layouts, retaining its abstract ivory, beige, and blush backgrounds, coral linework, and embedded Kulim Park and Manrope typography.
+- The deck contains 12 newly authored slides: title, problem statement, connected problem, scope, achieved and future goals, Development and R&D, requirements/constraints/limitations, high-level application flow, graphical user interface, methodology, evaluation plan, and closing questions.
+- Slide 7 no longer uses checkbox-like notes. It contains genuine native PowerPoint bullet lists with three concise statements under each of Requirements, Constraints, and Limitations. The statements are self-explanatory and the slide preserves substantial white space.
+- The goals slide uses a four-stage milestone graphic that clearly separates completed Deliverable 2 design work from network/baseline work, integration, and evaluation. It does not imply completion of unverified implementation work.
+- The whole-application flow is an editable diagram covering traffic input, state construction, decision, safety validation, control, and evidence. The former proposed-architecture and methodology images remain excluded.
+- The GUI slide retains the generated mobile concept and explicitly labels it as a proposed concept rather than an implemented screenshot. No fabricated test result or performance claim was introduced.
+- Package integrity, reference-font policy, slide dimensions, heading fit, bullet geometry, and first-party re-import passed with no findings or warnings. All 12 slides were rendered again from the finalized PPTX and visually checked.
+- Final template-based file: `presentation_output/Manzil_Presentation_Template_Design.pptx`. SHA-256: `1E7F5D93EB728FC9C2E776B0625A37F51632CC097F6ED2D61AC8C562CF647474`.
+
+---
+
+# 45. PRESENTATION READABILITY AND TRAFFIC VISUALS (23 OCTOBER 2026)
+
+- A second template-based revision increases the smaller subtitle, body, bullet, diagram-label, milestone-label, evaluation, and footer text while preserving the existing slide boundaries and minimalist spacing.
+- Slide 5 now includes a transparent warm-palette illustration of two cars opening a lane for an ambulance. Slide 10 includes a transparent top-down signalized intersection with cars and an ambulance. Both visuals were generated specifically for the deck and their origin is disclosed in speaker notes.
+- The new illustration assets are stored as `presentation_build/assets/traffic_ambulance_corridor.png` and `presentation_build/assets/traffic_signal_intersection.png`.
+- All 12 finalized slides were rendered again. Full-size inspection covered the text-heavy scope, R&D, requirements, application-flow, GUI, methodology, and evaluation slides. No new clipping, overflow, connector obstruction, or unreadable wrapping was found.
+- Package integrity, slide dimensions, reference-font policy, heading fit, bullet geometry, and first-party re-import passed with no findings or warnings.
+- Updated file: `presentation_output/Manzil_Presentation_Template_Design_v2.pptx`. SHA-256: `2450463DABFC2C265D0AEB809BDC6AF0773AB4B26FA8696FF401945C8B83DE98`.
+
+---
+
+# 46. PRESENTATION FINAL VISUAL REFINEMENT (23 OCTOBER 2026)
+
+- A third template-based revision adds a standalone transparent traffic signal and compact-car illustration to the open center of the problem-statement slide. It reinforces the traffic context without obstructing either text column.
+- The remaining small labels were enlarged, including the related-applications label, GUI concept disclosure, GUI implementation note, and closing team-member line.
+- The new asset is stored as `presentation_build/assets/traffic_signal_car.png`; its AI-generated origin is disclosed in the problem slide's speaker notes.
+- All 12 finalized slides were rendered and inspected again. The traffic signal, ambulance corridor, and intersection figures remain proportionate to the template and do not overlap text, connectors, or slide boundaries.
+- Package integrity, reference-font policy, slide dimensions, heading fit, bullet geometry, and first-party re-import passed without findings or warnings.
+- Final refined file: `presentation_output/Manzil_Presentation_Template_Design_v3.pptx`. SHA-256: `C3C0B5BB99C7AF81C5697D70C993BB979BA0755303DE628E3046ADCEE6FF3F98`.
+
+---
+
+# 47. INTEGRATED ARCHITECTURE AND APPLICATION FLOW (23 OCTOBER 2026)
+
+- The original 15-slide presentation was reopened and Slides 8, 9, and 10 were visually reviewed. Their useful content comprised the component architecture and ownership rules, the six-stage decision loop, and the staged research/evaluation workflow.
+- Slide 8 of the template-based deck now consolidates those three views into one editable high-level diagram. The diagram is arranged in three visual lanes: declared inputs; the live decision and control loop; and the application, evidence, and validation path.
+- The integrated view identifies the SUMO network, recorded-video input, emergency mission, traffic-state builder, normal controller, dynamic route, safety and corridor manager, TraCI execution boundary, operator/mobile interface, run-evidence store, and matched evaluation.
+- Direction markers show how normal traffic control and ambulance routing converge at the safety boundary before actuation. The supporting note explains that only the TraCI execution component advances simulation time, while the interface observes the loop and the evidence store retains states, actions, routes, and failures for evaluation.
+- Text size and routing were refined after the first render because lane backgrounds suppressed connector visibility. The final version uses explicit directional markers that do not cross node labels and remains legible in the complete slide montage.
+- Package integrity, 16:9 dimensions, reference-font policy, heading fit, bullet geometry, and first-party re-import passed with no findings or warnings. All 12 slides were rendered again and the revised architecture slide was inspected at full size.
+- Final integrated file: `presentation_output/Manzil_Presentation_Integrated_Architecture_v4_Final.pptx`. SHA-256: `E1B522D59142305432A39A2F9DAC4414D1E338F119722289A352C25BB3BC9202`.
+
+---
+
+# 48. SINGLE CLEAR MANZIL WORKFLOW (23 OCTOBER 2026)
+
+- Slide 8 was simplified after feedback that the lane-based version appeared to contain three separate diagrams. The replacement is one uninterrupted left-to-right control loop with six numbered stages.
+- The diagram now communicates the complete project with short labels only: observe traffic through recorded video and SUMO, build the current traffic state, select the controller and ambulance route, validate a safe green corridor, apply the signal action through TraCI, and display and evaluate the result.
+- Component ownership remains visible through one short technical label beneath each stage. An intersection illustration connects the emergency mission with ordinary-traffic recovery, while a single feedback statement explains that each SUMO step creates the next observation.
+- The traffic-intersection illustration was removed from the methodology slide so it appears only once in the deck. The revised workflow was rendered at full size and checked for legibility, overlap, clipping, and directional clarity.
+- Package integrity, slide dimensions, reference fonts, heading fit, bullet geometry, and first-party re-import passed without findings or warnings.
+- Final file: `presentation_output/Manzil_Presentation_Clear_Workflow_v5.pptx`. SHA-256: `5153964BE70F79762BC753392EEDB2170A473EE328D5E37CF4FC0DEA6B4E32E7`.
