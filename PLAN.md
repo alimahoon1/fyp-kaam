@@ -5,7 +5,7 @@ Before starting a task, set it to `in progress (Name)` and push. When finished, 
 
 ## Current stage
 
-Planning is finished (10 Nov 2026). **Next up: Phase 0 (setup).** The vision track (V) can run in parallel at any time after Phase 0 step 0.4.
+Planning is finished (10 Nov 2026). **Now: Phase 0 (setup) on Ibrahim's laptop. Coding phases 1–5 will mostly run as Claude Code cloud sessions (claude.ai/code), with Ibrahim checking from the phone app.** The vision track (V) can run in parallel at any time after Phase 0 step 0.4.
 
 ## Deliverable III requirements (from the university)
 
@@ -64,9 +64,9 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 ### Phase 0 — Setup
 | ID | Task | Status | Done when |
 |---|---|---|---|
-| 0.1 | Install SUMO on Ibrahim's laptop, set `SUMO_HOME`, check `sumo`, `sumo-gui`, `netgenerate` | todo | `sumo --version` works |
-| 0.2 | Create the `manzil/` Python project (pyproject, pinned deps, lint/format, pytest) | todo | `pytest` runs green on an empty test |
-| 0.3 | Write setup instructions in `README.md` so a teammate's machine can reproduce the setup | todo | A fresh clone can follow the steps |
+| 0.1 | Install SUMO on Ibrahim's laptop, set `SUMO_HOME`, check `sumo`, `sumo-gui`, `netgenerate` | in progress (Ibrahim + Claude) | `sumo --version` works |
+| 0.2 | Create the `manzil/` Python project (pyproject, pinned deps, lint/format, pytest) | in progress (Ibrahim + Claude) | `pytest` runs green on an empty test |
+| 0.3 | Write setup instructions in `README.md` so a teammate's machine can reproduce the setup | in progress (Ibrahim + Claude) | A fresh clone can follow the steps |
 | 0.4 | Kaggle: account with phone verification, `kaggle.json` placed by the user, `pip install kaggle`, test `kaggle kernels list` | todo | CLI works |
 
 ### Phase 1 — SUMO foundation (grid + fixed-time)
