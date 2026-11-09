@@ -28,6 +28,7 @@ Update this file whenever a task changes status, then commit and push (see `CLAU
 | 8 | Network: synthetic 3×3 SUMO grid first, then a Lahore OSM area (10–20 signals + hospital). All code must read the network from the SUMO files (network-agnostic). **Lahore area/hospital: open, to decide later.** |
 | 9 | Video: train on UA-DETRAC; test also on 2–3 own Lahore clips. Labelling is AI pre-labelled + human-corrected; test labels must be human-verified; local clips can use manual line-crossing counts. |
 | 10 | YOLO classes for FYP-1: car, bus, truck, motorcycle. Rickshaw is added in FYP-2 with labelled Lahore footage. |
+| 11 | The ambulance obeys red lights; only the Manzil corridor speeds it up (measured as corridor off vs on). SUMO's run-the-reds mode is an optional later upper-bound comparison. |
 
 ## Phases and tasks
 
