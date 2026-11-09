@@ -1,0 +1,150 @@
+{
+  "what": "Fixed-time baseline (tuned plan per profile), synthetic 3x3 grid, seed 0, 900 s warm-up + 3600 s measurement. Single seed: a smoke result, not a comparison.",
+  "runs": [
+    {
+      "profile": "light",
+      "plan": "light",
+      "termination": "completed",
+      "wall_time_s": 3.27,
+      "metrics": {
+        "metric_version": 1,
+        "run_id": "grid3x3_fixed_time_light_s0",
+        "window_s": [
+          900.0,
+          4500.0
+        ],
+        "throughput_veh": 2257,
+        "completed_trips": 2200,
+        "unfinished_veh": 63,
+        "travel_time_mean_s": 98.5641,
+        "waiting_time_mean_s": 23.1845,
+        "time_loss_mean_s": 38.1753,
+        "queue_mean_veh": 0.3979,
+        "queue_max_veh": 6,
+        "phase_changes": 1296,
+        "max_red_s": 30.0,
+        "vehicles_loaded": 2894,
+        "vehicles_inserted": 2894,
+        "teleports": 0,
+        "teleports_jam": 0,
+        "collisions": 0,
+        "emergency_braking": 0,
+        "safety_violations": 0,
+        "safety_interventions": {
+          "none": 1620
+        }
+      }
+    },
+    {
+      "profile": "medium",
+      "plan": "medium",
+      "termination": "completed",
+      "wall_time_s": 5.69,
+      "metrics": {
+        "metric_version": 1,
+        "run_id": "grid3x3_fixed_time_medium_s0",
+        "window_s": [
+          900.0,
+          4500.0
+        ],
+        "throughput_veh": 4796,
+        "completed_trips": 4659,
+        "unfinished_veh": 148,
+        "travel_time_mean_s": 109.6111,
+        "waiting_time_mean_s": 30.674,
+        "time_loss_mean_s": 49.352,
+        "queue_mean_veh": 1.088,
+        "queue_max_veh": 16,
+        "phase_changes": 1080,
+        "max_red_s": 35.0,
+        "vehicles_loaded": 5994,
+        "vehicles_inserted": 5990,
+        "teleports": 0,
+        "teleports_jam": 0,
+        "collisions": 0,
+        "emergency_braking": 0,
+        "safety_violations": 0,
+        "safety_interventions": {
+          "none": 1350
+        }
+      }
+    },
+    {
+      "profile": "heavy",
+      "plan": "heavy",
+      "termination": "completed",
+      "wall_time_s": 8.63,
+      "metrics": {
+        "metric_version": 1,
+        "run_id": "grid3x3_fixed_time_heavy_s0",
+        "window_s": [
+          900.0,
+          4500.0
+        ],
+        "throughput_veh": 7179,
+        "completed_trips": 6877,
+        "unfinished_veh": 351,
+        "travel_time_mean_s": 172.4915,
+        "waiting_time_mean_s": 75.3656,
+        "time_loss_mean_s": 112.2386,
+        "queue_mean_veh": 4.146,
+        "queue_max_veh": 37,
+        "phase_changes": 648,
+        "max_red_s": 55.0,
+        "vehicles_loaded": 9060,
+        "vehicles_inserted": 9043,
+        "teleports": 0,
+        "teleports_jam": 0,
+        "collisions": 0,
+        "emergency_braking": 0,
+        "safety_violations": 0,
+        "safety_interventions": {
+          "none": 810
+        }
+      }
+    },
+    {
+      "profile": "uneven",
+      "plan": "uneven",
+      "termination": "completed",
+      "wall_time_s": 5.66,
+      "metrics": {
+        "metric_version": 1,
+        "run_id": "grid3x3_fixed_time_uneven_s0",
+        "window_s": [
+          900.0,
+          4500.0
+        ],
+        "throughput_veh": 5408,
+        "completed_trips": 5274,
+        "unfinished_veh": 169,
+        "travel_time_mean_s": 120.1925,
+        "waiting_time_mean_s": 38.4702,
+        "time_loss_mean_s": 59.8728,
+        "queue_mean_veh": 1.5599,
+        "queue_max_veh": 24,
+        "phase_changes": 810,
+        "max_red_s": 55.0,
+        "vehicles_loaded": 6748,
+        "vehicles_inserted": 6747,
+        "teleports": 0,
+        "teleports_jam": 0,
+        "collisions": 0,
+        "emergency_braking": 0,
+        "safety_violations": 0,
+        "safety_interventions": {
+          "none": 1008
+        }
+      }
+    }
+  ],
+  "versions": {
+    "manzil": "0.1.0",
+    "sumo": "Eclipse SUMO sumo 1.28.0",
+    "python": "3.13.18",
+    "git": {
+      "commit": "6971353b292b3dd5ba8f91d8b43b123af0331fba",
+      "dirty": true
+    }
+  }
+}

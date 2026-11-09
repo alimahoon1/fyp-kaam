@@ -19,6 +19,9 @@ Manzil is a SUMO-based research prototype. It covers:
 | `Manzil_D2_Report/`, `FYPFast/` | LaTeX source of the reports |
 | `archive/prototype_v0/` | Earlier non-SUMO prototype, kept for reference only; not part of the current system |
 | `manzil/` | The new Python package (being built from scratch around SUMO) |
+| `manzil/sim/` | `SimulationAdapter` (only code that touches SUMO), network reader, data contracts |
+| `manzil/control/` | Safety filter + monitor, controller interface, fixed-time controller |
+| `manzil/experiments/` | Run config, runner (one experiment → run folder), metrics |
 | `manzil/scenarios/` | Grid builder (`grid.py`), seeded demand profiles (`demand.py`), gridlock check (`check.py`) |
 | `scenarios/grid3x3/` | Synthetic 3×3 SUMO network and its README (profiles, calibration, results) |
 | `results/` | Small result summaries kept in git |
@@ -56,6 +59,14 @@ bash scripts/cloud_setup.sh
 ```
 
 In a claude.ai/code environment, use `cd fyp-kaam && bash scripts/cloud_setup.sh` as the setup script (it runs from the folder above the repo) and allow network access to package registries. Cloud sessions run SUMO headless (no `sumo-gui`).
+
+### Run one experiment
+
+```bash
+python -m manzil.experiments.runner --profile medium --seed 0
+```
+
+The result goes to `runs/` (git-ignored). See `scenarios/grid3x3/README.md` for the profiles and plans.
 
 ### Checks
 
