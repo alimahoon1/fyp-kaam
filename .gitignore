@@ -84,8 +84,11 @@ build/
 dist/
 
 # Simulation outputs (small summaries in results/ are committed explicitly)
-runs/
+/runs/
 *.tripinfo.xml
 
 # Generated demand files (rebuild with: python -m manzil.scenarios.demand --all --seed N)
 scenarios/*/demand/
+
+# Per-run detail inside committed batch results (manifest.json and metrics.json are kept)
+results/**/runs/*/*.csv

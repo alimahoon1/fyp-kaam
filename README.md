@@ -20,8 +20,8 @@ Manzil is a SUMO-based research prototype. It covers:
 | `archive/prototype_v0/` | Earlier non-SUMO prototype, kept for reference only; not part of the current system |
 | `manzil/` | The new Python package (being built from scratch around SUMO) |
 | `manzil/sim/` | `SimulationAdapter` (only code that touches SUMO), network reader, data contracts |
-| `manzil/control/` | Safety filter + monitor, controller interface, fixed-time controller |
-| `manzil/experiments/` | Run config, runner (one experiment → run folder), metrics |
+| `manzil/control/` | Safety filter + monitor, controller interface, fixed-time and adaptive (pressure) controllers |
+| `manzil/experiments/` | Run config, runner (one experiment → run folder), metrics, batch runner, comparison + plots |
 | `manzil/scenarios/` | Grid builder (`grid.py`), seeded demand profiles (`demand.py`), gridlock check (`check.py`) |
 | `scenarios/grid3x3/` | Synthetic 3×3 SUMO network and its README (profiles, calibration, results) |
 | `results/` | Small result summaries kept in git |
@@ -67,6 +67,16 @@ python -m manzil.experiments.runner --profile medium --seed 0
 ```
 
 The result goes to `runs/` (git-ignored). See `scenarios/grid3x3/README.md` for the profiles and plans.
+
+Compare controllers over several seeds (parallel), then summarise with plots:
+
+```bash
+python -m manzil.experiments.batch --arms fixed_time fixed_time:equal adaptive --seeds 0 1 2 3 4 --out results/phase2/comparison
+```
+
+```bash
+python -m manzil.experiments.compare results/phase2/comparison/results.csv
+```
 
 ### Checks
 

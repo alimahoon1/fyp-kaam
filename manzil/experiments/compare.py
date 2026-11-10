@@ -59,12 +59,14 @@ def summarise(rows: list[dict]) -> dict:
     check_compatible(rows)
     by = defaultdict(dict)  # (profile, controller) -> seed -> row
     for r in rows:
-        key = (r["profile"], r["controller"])
+        key = (r["profile"], r.get("arm") or r["controller"])
         if r["seed"] in by[key]:
             raise ValueError(f"duplicate run for {key} seed {r['seed']}")
         by[key][r["seed"]] = r
     profiles = [p for p in PROFILE_ORDER if any(k[0] == p for k in by)]
-    controllers = sorted({k[1] for k in by}, key=lambda c: (c != REFERENCE, c))
+    controllers = sorted(
+        {k[1] for k in by}, key=lambda c: (c != REFERENCE, not c.startswith("fixed"), c)
+    )
     out = {"profiles": profiles, "controllers": controllers, "summary": {}, "paired": {}}
     for p in profiles:
         for c in controllers:
@@ -171,7 +173,11 @@ def plot(rows: list[dict], summary: dict, path: Path, metrics=None) -> None:
                 xs.append(x)
                 means.append(s[m]["mean"])
                 sds.append(0 if math.isnan(s[m]["sd"]) else s[m]["sd"])
-                seeds = [float(r[m]) for r in rows if r["profile"] == p and r["controller"] == c]
+                seeds = [
+                    float(r[m])
+                    for r in rows
+                    if r["profile"] == p and (r.get("arm") or r["controller"]) == c
+                ]
                 ax.scatter([x] * len(seeds), seeds, s=9, color="black", zorder=3, alpha=0.6)
             ax.bar(xs, means, width, yerr=sds, capsize=3, label=c, color=colors[ci % 4])
         ax.set_xticks(range(len(profiles)), profiles)

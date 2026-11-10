@@ -7,8 +7,8 @@ metric version differ (FR-18).
 
 Usage::
 
-    python -m manzil.experiments.batch --controllers fixed_time adaptive --seeds 0 1 2 3 4 \\
-        --out results/phase2/comparison
+    python -m manzil.experiments.batch --arms fixed_time fixed_time:equal adaptive \\
+        --seeds 0 1 2 3 4 --out results/phase2/comparison
 """
 
 from __future__ import annotations
@@ -37,7 +37,13 @@ def _run_one(args: tuple[RunConfig, str, bool]) -> dict:
             p = run_dir / name
             shutil.rmtree(p) if p.is_dir() else p.unlink(missing_ok=True)
     m = result.manifest
+    arm = (
+        config.controller
+        if config.plan == "auto" or config.controller != "fixed_time"
+        else (f"fixed_time:{config.plan}")
+    )
     return {
+        "arm": arm,
         **{k: v for k, v in asdict(config).items() if k != "controller_params"},
         "controller_params": json.dumps(dict(config.controller_params), sort_keys=True),
         "plan_used": m["controller"].get("plan_name", ""),
@@ -104,18 +110,33 @@ def read_table(path: Path) -> list[dict]:
         return [{k: conv(v) for k, v in r.items()} for r in csv.DictReader(f)]
 
 
-def grid(base: RunConfig, controllers, profiles, seeds) -> list[RunConfig]:
-    return [
-        replace(base, controller=c, profile=p, seed=s)
-        for p in profiles
-        for c in controllers
-        for s in seeds
-    ]
+def parse_arm(arm: str) -> tuple[str, str]:
+    """``"adaptive"`` -> (adaptive, auto); ``"fixed_time:equal"`` -> (fixed_time, equal)."""
+    controller, _, plan = arm.partition(":")
+    if controller not in CONTROLLERS:
+        raise ValueError(f"unknown controller in arm {arm!r}")
+    return controller, plan or "auto"
+
+
+def grid(base: RunConfig, arms, profiles, seeds) -> list[RunConfig]:
+    out = []
+    for p in profiles:
+        for arm in arms:
+            controller, plan = parse_arm(arm)
+            out += [
+                replace(base, controller=controller, plan=plan, profile=p, seed=s) for s in seeds
+            ]
+    return out
 
 
 def main(argv: list[str] | None = None) -> None:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--controllers", nargs="+", default=list(CONTROLLERS), choices=CONTROLLERS)
+    ap.add_argument(
+        "--arms",
+        nargs="+",
+        default=list(CONTROLLERS),
+        help='controllers to compare; "fixed_time:<plan>" fixes one plan for every profile',
+    )
     ap.add_argument("--profiles", nargs="+", default=sorted(PROFILES), choices=sorted(PROFILES))
     ap.add_argument("--seeds", nargs="+", type=int, default=[0, 1, 2, 3, 4])
     ap.add_argument("--warmup", type=float, default=900.0)
@@ -125,7 +146,7 @@ def main(argv: list[str] | None = None) -> None:
     ap.add_argument("--out", type=Path, required=True)
     a = ap.parse_args(argv)
     base = RunConfig(warmup_s=a.warmup, measure_s=a.measure)
-    configs = grid(base, a.controllers, a.profiles, a.seeds)
+    configs = grid(base, a.arms, a.profiles, a.seeds)
     rows = run_batch(configs, a.out, a.workers, a.keep_raw)
     check_compatible(rows)
     write_table(rows, a.out / "results.csv")

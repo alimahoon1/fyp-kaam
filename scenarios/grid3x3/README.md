@@ -62,7 +62,7 @@ These numbers only check the demand. They are **not** controller results: there 
 
 ## Signal timing and fixed-time plans (PLAN tasks 1.5 and 1.6)
 
-`signals.json` is versioned with the scenario. All controllers share the same safety timing: **minimum green 10 s, yellow 3 s, all-red 2 s**. On this grid, green phase 0 is north-south and phase 1 is east-west at every junction (`tests/test_fixed_time.py` checks this).
+`signals.json` is versioned with the scenario (now version 3: the safety timing and fixed-time plans are unchanged since version 1; versions 2 and 3 added and then froze the adaptive controller's parameters). All controllers share the same safety timing: **minimum green 10 s, yellow 3 s, all-red 2 s**. On this grid, green phase 0 is north-south and phase 1 is east-west at every junction (`tests/test_fixed_time.py` checks this).
 
 **Fixed-time plans.** D2 requires a credible baseline, not a deliberately weak one, with splits chosen from the declared demand. Plans were therefore tuned per profile by a sweep on **dev seeds 100 and 101**, never on the evaluation seeds (0–4), using the full 900 s warm-up + 3,600 s measurement. Mean travel time over the two dev seeds:
 
@@ -82,4 +82,13 @@ python -m manzil.experiments.runner --profile heavy --seed 0
 ```
 
 This writes `runs/<time>_grid3x3_fixed_time_heavy_s0/`, which contains the manifest, metrics, time series, signal events and applied controls (`runs/` is git-ignored). `results/phase1/fixed_time_seed0.json` holds one full run per profile on seed 0. These are smoke results: a single seed is not a comparison. `unfinished_veh` counts vehicles that departed in the measurement window but were still driving at its end, mostly trips that started in the last minutes.
+
+## Adaptive (pressure) controller parameters (PLAN task 2.1)
+
+One parameter set is used for **every** profile, because an adaptive controller should not need to know the demand in advance. It was chosen by two sweeps on dev seeds 100–101, 60 settings in total; the full list is in `results/phase2/adaptive_tuning_dev_seeds.csv`. The score of a setting is its mean travel time divided by the tuned fixed-time plan's, averaged over the four profiles.
+
+- Sweep 1: α ∈ {0.5, 1}, β ∈ {0, 0.005, 0.02}, switch margin ∈ {0, 3, 6}, max green ∈ {40, 60} s. The best setting tied fixed-time (mean ratio 1.009), but heavy demand was 8 % worse because the controller switched too often.
+- Sweep 2 added a controller-side minimum hold ∈ {15, 20, 25} s (and β ∈ {0.02, 0.05}).
+
+**Frozen:** α 0.5, β 0.02, max green 40 s, max red 90 s, switch margin 3, minimum hold 15 s. On the dev seeds its mean ratio is 1.005 and its worst profile is uneven at 1.053. α made little difference.
 

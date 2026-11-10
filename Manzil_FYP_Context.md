@@ -1530,3 +1530,22 @@ The detailed phased plan is in `PLAN.md`.
 
 **Result (real, single seed 0, 900 s warm-up + 3,600 s, fixed-time, tuned plans):** mean travel time 98.6 s light, 109.6 s medium, 172.5 s heavy, 120.2 s uneven. Mean waiting time 23.2 / 30.7 / 75.4 / 38.5 s. Max approach queue 6 / 16 / 37 / 24 vehicles. 0 teleports, 0 collisions, 0 safety violations. A run takes 3–9 s of wall time. File: `results/phase1/fixed_time_seed0.json` (recorded from an uncommitted working tree, so its git `dirty` flag is true). Tests: 65 passed.
 
+## 50.7 Adaptive controller and first controller comparison (Phase 2, 10 Nov 2026)
+
+**Adaptive controller (`manzil/control/adaptive.py`, D2 Eq 5.2).** Score S_p = Σ served incoming-lane queues − α Σ fed outgoing-lane queues + β × (largest accumulated waiting time among the served approaches). Each lane is counted once per phase. Deviation from a literal per-movement sum: an incoming lane that feeds two movements is not double counted. Exit lanes can be fed by both phases, so downstream queues lower both scores. Rules: no request during a transition or before the minimum green / controller minimum hold; max-red promotion; max green forces the best other phase; otherwise switch only if another phase beats the current one by more than the switch margin. Every request carries its scores (e.g. `pressure S=[12.0, 3.5]`), and switches appear in `applied_controls.csv`.
+
+**Tuning (dev seeds 100–101 only, 60 settings).** One parameter set for all profiles: α 0.5, β 0.02, max green 40 s, max red 90 s, switch margin 3, minimum hold 15 s (`signals.json` v3). `min_hold_s` was added after sweep 1 showed too many switches in heavy demand. Full list: `results/phase2/adaptive_tuning_dev_seeds.csv`.
+
+**Batch runner and comparison.** `batch.py` runs arms × profiles × seeds in parallel (spawned processes, because libsumo allows one per process) and refuses to compare runs with a different network, demand generator, protocol or metric version (FR-18). `compare.py` gives mean ± SD, paired differences against tuned fixed-time with 95 % t intervals, and the number of seeds that improved, plus plots. The `.gitignore` rule `runs/` became `/runs/`, so committed batch results keep each run's `manifest.json` and `metrics.json`; per-run CSVs are ignored.
+
+**Result (real; seeds 0–4; 900 s warm-up + 3,600 s; synthetic 3×3 grid).** Three arms: fixed-time with a plan tuned for each profile, fixed-time with one 35/35 plan for every profile, and adaptive with one parameter set. Adaptive vs tuned fixed-time (paired mean difference, 95 % CI):
+- Mean waiting time is lower on every profile, on 5/5 seeds each: light −0.4 s (−1.9 %), medium −6.4 s [−6.8, −6.0] (−21.1 %), heavy −8.1 s [−9.8, −6.3] (−10.6 %), uneven −2.4 s [−3.1, −1.8] (−6.5 %).
+- Mean approach queue is lower on every profile (−2 % to −22 %). Max queue in heavy: 29.0 vs 36.8 vehicles (−21 %).
+- Mean travel time is lower only on medium: −4.7 s [−5.1, −4.2] (−4.3 %). It is slightly higher on light (+0.6 s), heavy (+2.8 s [0.2, 5.5], +1.6 %) and uneven (+3.1 s [2.0, 4.1], +2.6 %).
+- Throughput: no clear difference (all within ±0.2 %).
+- Max red is 50 s for adaptive vs 30–55 s for fixed-time.
+
+Against the single-plan fixed-time, adaptive is much better on uneven demand: travel time 121.6 vs 149.3 s, waiting time 34.9 vs 59.4 s.
+
+**Reading.** Adaptive cuts stopped time and queues, but against a fixed-time plan already tuned for each profile it does not cut total travel time, except on medium. The likely reason is the extra switching: in heavy demand there were 1,535 phase changes vs 648, each with 5 s of yellow/all-red, which turns long stops into more stop-and-go. This explanation is plausible but not yet tested. When demand is not known in advance (one plan for all), adaptive clearly wins on uneven demand. This is a mixed, honest result for Chapter 9. It also gives the DQN (Phase 4) a clear target: keep the waiting/queue gains without the extra switching cost. Files: `results/phase2/comparison/summary.md`, `comparison.png`, `results.csv`.
+
