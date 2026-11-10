@@ -7,6 +7,9 @@ Measurement window: ``[warmup_s, end_s)``. Definitions (metric version 1):
   ``waitingTime`` and ``timeLoss``, averaged over vehicles that *departed* inside the window and
   arrived before the end. Vehicles that departed but did not finish are counted in
   ``unfinished_veh`` instead, so congestion cannot hide by leaving slow trips out.
+- **travel_time_all_mean_s**: like travel time, but over *every* vehicle that departed in the
+  window; unfinished vehicles count their time so far (a lower bound). Unlike the mean over
+  finished trips, a policy that strands vehicles cannot look fast on it.
 - **queue_mean_veh / queue_max_veh**: halting vehicles (speed < 0.1 m/s) on an approach, sampled
   every step; the mean over approaches of the time-average, and the largest single value.
 - **phase_changes**: switches started (green -> yellow) inside the window, all junctions.
@@ -73,7 +76,7 @@ class QueueCollector:
 
 
 def trip_metrics(tripinfo: Path, warmup_s: float, end_s: float) -> dict:
-    durations, waits, losses = [], [], []
+    durations, waits, losses, all_durations = [], [], [], []
     throughput = unfinished = 0
     for _, el in ET.iterparse(tripinfo, events=("end",)):
         if el.tag != "tripinfo":
@@ -82,7 +85,8 @@ def trip_metrics(tripinfo: Path, warmup_s: float, end_s: float) -> dict:
         finished = arrival >= 0
         if finished and warmup_s <= arrival < end_s:
             throughput += 1
-        if depart >= warmup_s:
+        if depart >= warmup_s and depart < end_s:
+            all_durations.append(float(el.get("duration")) if finished else end_s - depart)
             if finished:
                 durations.append(float(el.get("duration")))
                 waits.append(float(el.get("waitingTime")))
@@ -99,6 +103,7 @@ def trip_metrics(tripinfo: Path, warmup_s: float, end_s: float) -> dict:
         "completed_trips": len(durations),
         "unfinished_veh": unfinished,
         "travel_time_mean_s": mean(durations),
+        "travel_time_all_mean_s": mean(all_durations),
         "waiting_time_mean_s": mean(waits),
         "time_loss_mean_s": mean(losses),
     }

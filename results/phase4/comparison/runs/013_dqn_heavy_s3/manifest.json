@@ -1,0 +1,94 @@
+{
+  "run_id": "grid3x3_dqn_heavy_s3",
+  "created_at_utc": "20261110T004645Z",
+  "config": {
+    "scenario": "grid3x3",
+    "profile": "heavy",
+    "seed": 3,
+    "controller": "dqn",
+    "plan": "auto",
+    "warmup_s": 900.0,
+    "measure_s": 3600.0,
+    "backend": "libsumo",
+    "time_to_teleport_s": 300.0,
+    "controller_params": [],
+    "mission": null,
+    "label": "",
+    "checkpoint": ""
+  },
+  "config_digest": "564863da94",
+  "metric_version": 1,
+  "versions": {
+    "manzil": "0.1.0",
+    "sumo": "Eclipse SUMO sumo 1.28.0",
+    "python": "3.13.18",
+    "git": {
+      "commit": "74372cfcf19077b23cbc69377bbb6113bf7e411e",
+      "dirty": true
+    }
+  },
+  "network": {
+    "id": "grid3x3.net.xml#16c36ec7f42b",
+    "content_sha256": "16c36ec7f42b7694876cd907774d6d607435f3de4cd2468da263fc91221d65ee"
+  },
+  "demand": {
+    "profile": {
+      "name": "heavy",
+      "major_rate_vph": 600,
+      "minor_rate_vph": 600,
+      "description": "Near saturation for default signals; long queues."
+    },
+    "seed": 3,
+    "duration_s": 4500.0,
+    "vehicles": 9069,
+    "network": "grid3x3.net.xml",
+    "generator": "manzil.scenarios.demand (Poisson per entry road, numpy PCG64)"
+  },
+  "signal_timing": {
+    "version": 5,
+    "safety": {
+      "min_green_s": 10,
+      "yellow_s": 3,
+      "all_red_s": 2,
+      "max_red_s": 90
+    }
+  },
+  "controller": {
+    "controller": "dqn",
+    "checkpoint": "/home/user/fyp-kaam/models/dqn/grid3x3/best.pt",
+    "decision_s": 5,
+    "training": {
+      "episode": 180,
+      "env_steps": 64800,
+      "seed": 0
+    }
+  },
+  "sumo_args": [
+    "--net-file",
+    "scenarios/grid3x3/grid3x3.net.xml",
+    "--route-files",
+    "results/phase4/comparison/runs/013_dqn_heavy_s3/demand/heavy_seed3.rou.xml",
+    "--seed",
+    "3",
+    "--begin",
+    "0",
+    "--end",
+    "4500.0",
+    "--step-length",
+    "1",
+    "--time-to-teleport",
+    "300.0",
+    "--tripinfo-output",
+    "results/phase4/comparison/runs/013_dqn_heavy_s3/tripinfo.xml",
+    "--tripinfo-output.write-unfinished",
+    "true",
+    "--statistic-output",
+    "results/phase4/comparison/runs/013_dqn_heavy_s3/statistics.xml",
+    "--no-step-log",
+    "true",
+    "--no-warnings",
+    "true"
+  ],
+  "termination": "completed",
+  "wall_time_s": 12.68
+}

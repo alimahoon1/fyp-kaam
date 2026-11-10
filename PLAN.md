@@ -5,7 +5,7 @@ Before starting a task, set it to `in progress (Name)` and push. When finished, 
 
 ## Current stage
 
-Planning is finished (10 Nov 2026). **Phase 0 done except Kaggle (0.4). **Phases 1–3 done.** Next: Phase 4 (DQN) and the vision track; Kaggle (0.4) still needs Ibrahim. Coding phases 1–5 mostly run as Claude Code cloud sessions (claude.ai/code), with Ibrahim checking from the phone app.** The vision track (V) can run in parallel at any time after Phase 0 step 0.4.
+Planning is finished (10 Nov 2026). **Phase 0 done except Kaggle (0.4). **Phases 1–4 done.** Next: vision track (needs Kaggle 0.4 from Ibrahim), Phase 5 dashboard, Phase 6 report chapters. Coding phases 1–5 mostly run as Claude Code cloud sessions (claude.ai/code), with Ibrahim checking from the phone app.** The vision track (V) can run in parallel at any time after Phase 0 step 0.4.
 
 ## Deliverable III requirements (from the university)
 
@@ -102,9 +102,9 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 ### Phase 4 — DQN signal control
 | ID | Task | Status | Done when |
 |---|---|---|---|
-| 4.1 | RL environment on top of `SimulationAdapter` (state, action mask, reward Eq 5.3) | in progress (Claude cloud session for Ibrahim) | Random policy runs safely through the safety filter |
-| 4.2 | Parameter-sharing DQN; train on the grid (laptop CPU or Kaggle with `eclipse-sumo` + `libsumo`) | in progress (Claude cloud session for Ibrahim) | Training curve + saved checkpoint |
-| 4.3 | Evaluate the DQN vs fixed vs adaptive on held-out seeds | in progress (Claude cloud session for Ibrahim) | Three-way results + plots |
+| 4.1 | RL environment on top of `SimulationAdapter` (state, action mask, reward Eq 5.3) | done (cloud, 10 Nov): `manzil/control/rl_env.py`: shared 26-value observation, masked actions, Eq 5.3 reward; random policy safe (`tests/test_rl.py`) | Random policy runs safely through the safety filter |
+| 4.2 | Parameter-sharing DQN; train on the grid (laptop CPU or Kaggle with `eclipse-sumo` + `libsumo`) | done (cloud, 10 Nov): parameter-sharing Double DQN trained 200 episodes on CPU in the cloud (17 min); `models/dqn/grid3x3/best.pt` + `training_curve.png`, `training.json` | Training curve + saved checkpoint |
+| 4.3 | Evaluate the DQN vs fixed vs adaptive on held-out seeds | done (cloud, 10 Nov): `results/phase4/`: DQN −9 % to −11 % travel time vs tuned fixed-time on all profiles, 5/5 held-out seeds; longer max red (≤ 89 s, guarded by the new 90 s max-red rule in the safety filter) | Three-way results + plots |
 
 ### Phase V — Vision track (parallel)
 | ID | Task | Status | Done when |

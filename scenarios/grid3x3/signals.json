@@ -1,10 +1,11 @@
 {
-  "version": 3,
+  "version": 5,
   "notes": "Signal timing for the synthetic 3x3 grid. Green phase 0 serves north-south, phase 1 east-west, at every junction (checked by tests/test_fixed_time.py). Tuned plans were chosen by a sweep on dev seeds 100-101 (900 s warm-up + 3600 s), never on evaluation seeds; see scenarios/grid3x3/README.md. Change 'version' whenever a value here changes.",
   "safety": {
     "min_green_s": 10,
     "yellow_s": 3,
-    "all_red_s": 2
+    "all_red_s": 2,
+    "max_red_s": 90
   },
   "fixed_time_plans": {
     "equal": {
@@ -72,5 +73,10 @@
     "max_red_s": 90,
     "switch_margin": 3,
     "min_hold_s": 15
+  },
+  "dqn": {
+    "description": "Parameter-sharing DQN trained on CPU (models/dqn/grid3x3/training.json). Checkpoint chosen on dev seeds 100-101 by the rule fixed in manzil/experiments/train_dqn.py.",
+    "checkpoint": "models/dqn/grid3x3/best.pt",
+    "decision_s": 5
   }
 }

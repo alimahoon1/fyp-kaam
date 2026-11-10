@@ -1568,3 +1568,27 @@ Against the single-plan fixed-time, adaptive is much better on uneven demand: tr
 
 Tests: 98 pass.
 
+## 50.9 DQN signal control (Phase 4, 10 Nov 2026)
+
+**Where it ran.** On CPU in the cloud session: PyTorch 2.9.1 CPU build, as an optional extra `[rl]` in `pyproject.toml`. Kaggle was not needed for this small network, so Kaggle (task 0.4) is now needed only for the vision track.
+
+**Environment (`manzil/control/rl_env.py`).** Parameter sharing via one fixed-length observation per junction (26 values). Up to 4 approaches in compass order, each with queue, vehicles, waiting time and green-now; per phase slot, one-hot current phase and pressure; elapsed green and a transition flag. Actions are phase slots, masked: before minimum green only "keep", during a transition only the phase already coming. Reward Eq 5.3: −(a·mean approach queue + b·mean wait/100) − c·starvation (a phase red > 90 s) − d·switch, with a=1, b=0.5, c=2, d=0.5. Decisions every 5 s. Emergency status is excluded. The same feature code is used in training and in `DQNController` inside normal runs.
+
+**Agent (`manzil/control/dqn.py`).** Double DQN, MLP 26-128-128-4, Adam 5e-4, γ 0.95, replay 100k, batch 128, Huber loss, target sync every 1,000 steps, ε from 1 to 0.05 over 20k decision steps. Masked argmax in both acting and bootstrapping. FR-20 fallback: if inference fails, hold the current phase and count it.
+
+**Seed discipline.** Training seeds 1001+, dev seeds 100–101 for checkpoint selection, evaluation seeds 0–4. **Metric trap found:** an untrained network looked 2× better than fixed-time on "mean travel time of finished trips", because a bad policy strands vehicles and only short trips finish. New metric `travel_time_all_mean_s` counts unfinished vehicles (time so far). The selection score multiplies the travel-time ratio by the inverse throughput ratio.
+
+**Training.** 200 episodes × 1,800 s, 17 minutes, 0 safety violations. Selected checkpoint: episode 180 (dev score 0.892, where 1.0 = tuned fixed-time). Dev scores stayed at 0.89–0.94 from episode 10, so it learned early.
+
+**Max-red guard (new safety rule).** The first evaluation showed one DQN run with a phase red for 95 s. D2 §5.4.3 puts maximum red under the safety layer, so `SafetyFilter` now forces a switch when a phase reaches max_red − clearance (90 − 5 s) under normal ownership. It is not applied while the corridor owns a junction; the corridor is bounded by its 60 s maximum priority. `signals.json` v5. After re-running, fixed-time and adaptive results were bit-identical (they never reach it), and the guard intervened 5 times in 20 DQN runs. Phase 3 results were produced with v3, before the guard existed.
+
+**Result (real; held-out seeds 0–4; 900 + 3,600 s).** DQN vs tuned fixed-time, every row better on 5/5 seeds:
+- Mean travel time: −11.0 % light, −9.5 % medium, −10.0 % heavy, −8.9 % uneven.
+- Waiting time: −24 % to −40 %.
+- Throughput: equal, or +0.6 % on heavy.
+- The DQN also beats adaptive everywhere.
+- Trade-off: max red 62–76 s on average (worst 89 s) against 30–55 s for the baselines, so it is less fair to minor phases.
+- 0 safety violations, teleports or collisions.
+
+Limits: one network, the same profile types in training and evaluation (disjoint seeds), one training seed. Details: `results/phase4/README.md`.
+

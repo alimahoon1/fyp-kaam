@@ -1,0 +1,154 @@
+{
+  "run_id": "grid3x3_fixed_time_uneven_s1",
+  "created_at_utc": "20261110T004751Z",
+  "config": {
+    "scenario": "grid3x3",
+    "profile": "uneven",
+    "seed": 1,
+    "controller": "fixed_time",
+    "plan": "auto",
+    "warmup_s": 900.0,
+    "measure_s": 3600.0,
+    "backend": "libsumo",
+    "time_to_teleport_s": 300.0,
+    "controller_params": [],
+    "mission": null,
+    "label": "",
+    "checkpoint": ""
+  },
+  "config_digest": "6765a87cc8",
+  "metric_version": 1,
+  "versions": {
+    "manzil": "0.1.0",
+    "sumo": "Eclipse SUMO sumo 1.28.0",
+    "python": "3.13.18",
+    "git": {
+      "commit": "74372cfcf19077b23cbc69377bbb6113bf7e411e",
+      "dirty": true
+    }
+  },
+  "network": {
+    "id": "grid3x3.net.xml#16c36ec7f42b",
+    "content_sha256": "16c36ec7f42b7694876cd907774d6d607435f3de4cd2468da263fc91221d65ee"
+  },
+  "demand": {
+    "profile": {
+      "name": "uneven",
+      "major_rate_vph": 800,
+      "minor_rate_vph": 100,
+      "description": "Heavy north-south, light east-west (starvation case)."
+    },
+    "seed": 1,
+    "duration_s": 4500.0,
+    "vehicles": 6751,
+    "network": "grid3x3.net.xml",
+    "generator": "manzil.scenarios.demand (Poisson per entry road, numpy PCG64)"
+  },
+  "signal_timing": {
+    "version": 5,
+    "safety": {
+      "min_green_s": 10,
+      "yellow_s": 3,
+      "all_red_s": 2,
+      "max_red_s": 90
+    }
+  },
+  "controller": {
+    "controller": "fixed_time",
+    "plan_name": "uneven",
+    "plan_version": 5,
+    "plans": {
+      "A0": {
+        "green_s": [
+          45.0,
+          25.0
+        ],
+        "offset_s": 0.0
+      },
+      "A1": {
+        "green_s": [
+          45.0,
+          25.0
+        ],
+        "offset_s": 0.0
+      },
+      "A2": {
+        "green_s": [
+          45.0,
+          25.0
+        ],
+        "offset_s": 0.0
+      },
+      "B0": {
+        "green_s": [
+          45.0,
+          25.0
+        ],
+        "offset_s": 0.0
+      },
+      "B1": {
+        "green_s": [
+          45.0,
+          25.0
+        ],
+        "offset_s": 0.0
+      },
+      "B2": {
+        "green_s": [
+          45.0,
+          25.0
+        ],
+        "offset_s": 0.0
+      },
+      "C0": {
+        "green_s": [
+          45.0,
+          25.0
+        ],
+        "offset_s": 0.0
+      },
+      "C1": {
+        "green_s": [
+          45.0,
+          25.0
+        ],
+        "offset_s": 0.0
+      },
+      "C2": {
+        "green_s": [
+          45.0,
+          25.0
+        ],
+        "offset_s": 0.0
+      }
+    }
+  },
+  "sumo_args": [
+    "--net-file",
+    "scenarios/grid3x3/grid3x3.net.xml",
+    "--route-files",
+    "results/phase4/comparison/runs/046_fixed_time_uneven_s1/demand/uneven_seed1.rou.xml",
+    "--seed",
+    "1",
+    "--begin",
+    "0",
+    "--end",
+    "4500.0",
+    "--step-length",
+    "1",
+    "--time-to-teleport",
+    "300.0",
+    "--tripinfo-output",
+    "results/phase4/comparison/runs/046_fixed_time_uneven_s1/tripinfo.xml",
+    "--tripinfo-output.write-unfinished",
+    "true",
+    "--statistic-output",
+    "results/phase4/comparison/runs/046_fixed_time_uneven_s1/statistics.xml",
+    "--no-step-log",
+    "true",
+    "--no-warnings",
+    "true"
+  ],
+  "termination": "completed",
+  "wall_time_s": 5.8
+}
