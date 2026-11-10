@@ -1,0 +1,422 @@
+{
+  "profiles": [
+    "medium",
+    "heavy"
+  ],
+  "controllers": [
+    "corridor_off",
+    "corridor_on"
+  ],
+  "reference": "corridor_off",
+  "metrics": [
+    "amb_travel_time_s",
+    "amb_excess_delay_s",
+    "amb_stops",
+    "amb_waiting_s",
+    "route_revisions",
+    "mission_window_queue_mean_veh",
+    "waiting_time_mean_s",
+    "queue_mean_veh",
+    "recovery_time_mean_s"
+  ],
+  "summary": {
+    "medium": {
+      "corridor_off": {
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "amb_travel_time_s": {
+          "mean": 154.0,
+          "sd": 14.404860290887934,
+          "n": 5
+        },
+        "amb_excess_delay_s": {
+          "mean": 75.09,
+          "sd": 14.404860290887934,
+          "n": 5
+        },
+        "amb_stops": {
+          "mean": 4.2,
+          "sd": 1.3038404810405297,
+          "n": 5
+        },
+        "amb_waiting_s": {
+          "mean": 47.4,
+          "sd": 13.049904214207858,
+          "n": 5
+        },
+        "route_revisions": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 5
+        },
+        "mission_window_queue_mean_veh": {
+          "mean": 35.8858,
+          "sd": 3.009313825442605,
+          "n": 5
+        },
+        "waiting_time_mean_s": {
+          "mean": 28.739440000000002,
+          "sd": 1.3395041071232296,
+          "n": 5
+        },
+        "queue_mean_veh": {
+          "mean": 1.02462,
+          "sd": 0.07213045126713127,
+          "n": 5
+        },
+        "recovery_time_mean_s": null
+      },
+      "corridor_on": {
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "amb_travel_time_s": {
+          "mean": 102.6,
+          "sd": 6.580273550544841,
+          "n": 5
+        },
+        "amb_excess_delay_s": {
+          "mean": 23.69,
+          "sd": 6.58027355054484,
+          "n": 5
+        },
+        "amb_stops": {
+          "mean": 2.0,
+          "sd": 0.7071067811865476,
+          "n": 5
+        },
+        "amb_waiting_s": {
+          "mean": 3.6,
+          "sd": 1.8165902124584952,
+          "n": 5
+        },
+        "route_revisions": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 5
+        },
+        "mission_window_queue_mean_veh": {
+          "mean": 37.1406,
+          "sd": 2.79550251296614,
+          "n": 5
+        },
+        "waiting_time_mean_s": {
+          "mean": 29.394779999999997,
+          "sd": 1.4427658878002345,
+          "n": 5
+        },
+        "queue_mean_veh": {
+          "mean": 1.0427199999999999,
+          "sd": 0.06896286681976035,
+          "n": 5
+        },
+        "recovery_time_mean_s": {
+          "mean": 8.28,
+          "sd": 4.131827682757353,
+          "n": 5
+        }
+      }
+    },
+    "heavy": {
+      "corridor_off": {
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "amb_travel_time_s": {
+          "mean": 313.8,
+          "sd": 78.93478320740483,
+          "n": 5
+        },
+        "amb_excess_delay_s": {
+          "mean": 234.88999999999996,
+          "sd": 78.93478320740482,
+          "n": 5
+        },
+        "amb_stops": {
+          "mean": 10.2,
+          "sd": 1.9235384061671346,
+          "n": 5
+        },
+        "amb_waiting_s": {
+          "mean": 174.6,
+          "sd": 67.9102348692743,
+          "n": 5
+        },
+        "route_revisions": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 5
+        },
+        "mission_window_queue_mean_veh": {
+          "mean": 146.9644,
+          "sd": 15.720656468481211,
+          "n": 5
+        },
+        "waiting_time_mean_s": {
+          "mean": 66.81128,
+          "sd": 5.797878054253984,
+          "n": 5
+        },
+        "queue_mean_veh": {
+          "mean": 3.9611400000000003,
+          "sd": 0.3698539346823283,
+          "n": 5
+        },
+        "recovery_time_mean_s": null
+      },
+      "corridor_on": {
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "amb_travel_time_s": {
+          "mean": 133.4,
+          "sd": 18.66279721799495,
+          "n": 5
+        },
+        "amb_excess_delay_s": {
+          "mean": 54.49000000000001,
+          "sd": 18.66279721799495,
+          "n": 5
+        },
+        "amb_stops": {
+          "mean": 3.2,
+          "sd": 1.3038404810405297,
+          "n": 5
+        },
+        "amb_waiting_s": {
+          "mean": 17.2,
+          "sd": 7.259476565152615,
+          "n": 5
+        },
+        "route_revisions": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 5
+        },
+        "mission_window_queue_mean_veh": {
+          "mean": 155.4728,
+          "sd": 21.203514029518782,
+          "n": 5
+        },
+        "waiting_time_mean_s": {
+          "mean": 69.41542000000001,
+          "sd": 7.019850505317048,
+          "n": 5
+        },
+        "queue_mean_veh": {
+          "mean": 4.1329,
+          "sd": 0.4420386465005069,
+          "n": 5
+        },
+        "recovery_time_mean_s": {
+          "mean": 12.040000000000001,
+          "sd": 7.617611174114888,
+          "n": 5
+        }
+      }
+    }
+  },
+  "paired": {
+    "medium": {
+      "corridor_on": {
+        "amb_travel_time_s": {
+          "mean_diff": -51.4,
+          "sd_diff": 12.641202474448386,
+          "ci95": [
+            -67.0936096854739,
+            -35.706390314526104
+          ],
+          "pct_change": -33.37662337662338,
+          "seeds_better": 5,
+          "n": 5
+        },
+        "amb_excess_delay_s": {
+          "mean_diff": -51.4,
+          "sd_diff": 12.641202474448386,
+          "ci95": [
+            -67.0936096854739,
+            -35.706390314526104
+          ],
+          "pct_change": -68.45119190304968,
+          "seeds_better": 5,
+          "n": 5
+        },
+        "amb_stops": {
+          "mean_diff": -2.2,
+          "sd_diff": 1.4832396974191326,
+          "ci95": [
+            -4.041390083605318,
+            -0.3586099163946823
+          ],
+          "pct_change": -52.38095238095239,
+          "seeds_better": 4,
+          "n": 5
+        },
+        "amb_waiting_s": {
+          "mean_diff": -43.8,
+          "sd_diff": 12.477980605851252,
+          "ci95": [
+            -59.29097545798843,
+            -28.309024542011564
+          ],
+          "pct_change": -92.40506329113924,
+          "seeds_better": 5,
+          "n": 5
+        },
+        "route_revisions": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": null,
+          "n": 5
+        },
+        "mission_window_queue_mean_veh": {
+          "mean_diff": 1.2547999999999988,
+          "sd_diff": 2.050124069416286,
+          "ci95": [
+            -1.2903571571017445,
+            3.7999571571017423
+          ],
+          "pct_change": 3.496647699089887,
+          "seeds_better": 1,
+          "n": 5
+        },
+        "waiting_time_mean_s": {
+          "mean_diff": 0.6553399999999989,
+          "sd_diff": 0.5145129084872414,
+          "ci95": [
+            0.016590262365640096,
+            1.2940897376343576
+          ],
+          "pct_change": 2.280281035399433,
+          "seeds_better": 0,
+          "n": 5
+        },
+        "queue_mean_veh": {
+          "mean_diff": 0.018099999999999984,
+          "sd_diff": 0.020174117081052177,
+          "ci95": [
+            -0.0069454590739319935,
+            0.04314545907393196
+          ],
+          "pct_change": 1.7665085592707523,
+          "seeds_better": 1,
+          "n": 5
+        }
+      }
+    },
+    "heavy": {
+      "corridor_on": {
+        "amb_travel_time_s": {
+          "mean_diff": -180.4,
+          "sd_diff": 66.81541738251734,
+          "ci95": [
+            -263.34899820588555,
+            -97.45100179411449
+          ],
+          "pct_change": -57.48884639898024,
+          "seeds_better": 5,
+          "n": 5
+        },
+        "amb_excess_delay_s": {
+          "mean_diff": -180.39999999999998,
+          "sd_diff": 66.81541738251732,
+          "ci95": [
+            -263.34899820588544,
+            -97.45100179411449
+          ],
+          "pct_change": -76.80190727574609,
+          "seeds_better": 5,
+          "n": 5
+        },
+        "amb_stops": {
+          "mean_diff": -7.0,
+          "sd_diff": 2.345207879911715,
+          "ci95": [
+            -9.911493362520341,
+            -4.088506637479659
+          ],
+          "pct_change": -68.62745098039215,
+          "seeds_better": 5,
+          "n": 5
+        },
+        "amb_waiting_s": {
+          "mean_diff": -157.4,
+          "sd_diff": 65.33222788180424,
+          "ci95": [
+            -238.5076704397309,
+            -76.29232956026911
+          ],
+          "pct_change": -90.14891179839634,
+          "seeds_better": 5,
+          "n": 5
+        },
+        "route_revisions": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": null,
+          "n": 5
+        },
+        "mission_window_queue_mean_veh": {
+          "mean_diff": 8.508399999999995,
+          "sd_diff": 5.6955028136240875,
+          "ci95": [
+            1.4376329349043848,
+            15.579167065095604
+          ],
+          "pct_change": 5.7894292767500115,
+          "seeds_better": 0,
+          "n": 5
+        },
+        "waiting_time_mean_s": {
+          "mean_diff": 2.6041400000000037,
+          "sd_diff": 2.1048839476322723,
+          "ci95": [
+            -0.008999626086223511,
+            5.217279626086231
+          ],
+          "pct_change": 3.897754989875967,
+          "seeds_better": 1,
+          "n": 5
+        },
+        "queue_mean_veh": {
+          "mean_diff": 0.17175999999999983,
+          "sd_diff": 0.12071848657103025,
+          "ci95": [
+            0.02189223117846298,
+            0.32162776882153665
+          ],
+          "pct_change": 4.336125458832554,
+          "seeds_better": 0,
+          "n": 5
+        }
+      }
+    }
+  }
+}

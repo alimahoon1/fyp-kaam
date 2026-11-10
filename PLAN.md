@@ -5,7 +5,7 @@ Before starting a task, set it to `in progress (Name)` and push. When finished, 
 
 ## Current stage
 
-Planning is finished (10 Nov 2026). **Phase 0 done except Kaggle (0.4). **Phases 1 and 2 done.** Next: Phase 3 (ambulance routing and corridor) or Phase 4 (DQN). Coding phases 1–5 mostly run as Claude Code cloud sessions (claude.ai/code), with Ibrahim checking from the phone app.** The vision track (V) can run in parallel at any time after Phase 0 step 0.4.
+Planning is finished (10 Nov 2026). **Phase 0 done except Kaggle (0.4). **Phases 1–3 done.** Next: Phase 4 (DQN) and the vision track; Kaggle (0.4) still needs Ibrahim. Coding phases 1–5 mostly run as Claude Code cloud sessions (claude.ai/code), with Ibrahim checking from the phone app.** The vision track (V) can run in parallel at any time after Phase 0 step 0.4.
 
 ## Deliverable III requirements (from the university)
 
@@ -92,12 +92,12 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 ### Phase 3 — Ambulance routing, rerouting, green corridor
 | ID | Task | Status | Done when |
 |---|---|---|---|
-| 3.1 | Routing graph from SUMO legal movements; time-based edge cost (Eq 5.4) | todo | Unit tests on costs, no double counting |
-| 3.2 | Dijkstra (reference) + A* (admissible heuristic) + no-route handling | todo | Same cost as Dijkstra on tests |
-| 3.3 | Ambulance dispatch A→B (obeys signals), route versioning | todo | Ambulance reaches B |
-| 3.4 | Road-closure incident + rerouting (Alg 1: threshold, persistence, cooldown) | todo | Closure triggers a new route version |
-| 3.5 | Corridor state machine (Alg 2: REQUESTED → SAFE_TRANSITION → ACTIVE → PASSAGE → RECOVERY), bounded look-ahead | todo | Invariant tests; recovery to normal control |
-| 3.6 | Emergency experiments: static vs dynamic route; corridor off vs on; ordinary-traffic impact | todo | Results + plots |
+| 3.1 | Routing graph from SUMO legal movements; time-based edge cost (Eq 5.4) | done (cloud, 10 Nov): `manzil/routing/graph.py`: edge graph from SUMO connections (vClass emergency), Eq 5.4 costs (free flow + queue + declared signal delay + closure; reported speed limits), tests for no double counting | Unit tests on costs, no double counting |
+| 3.2 | Dijkstra (reference) + A* (admissible heuristic) + no-route handling | done (cloud, 10 Nov): Dijkstra + A* with an admissible heuristic (scaled for junction interiors); A* = Dijkstra on 200 random cost sets; NO_ROUTE handled | Same cost as Dijkstra on tests |
+| 3.3 | Ambulance dispatch A→B (obeys signals), route versioning | done (cloud, 10 Nov): `manzil/experiments/emergency.py`: ambulance (obeys signals) dispatched A→B with route versions; arrives in every test and experiment run | Ambulance reaches B |
+| 3.4 | Road-closure incident + rerouting (Alg 1: threshold, persistence, cooldown) | done (cloud, 10 Nov): `manzil/routing/mission.py` (Algorithm 1: threshold, persistence, cooldown); a closure on the route triggers v2 and cancels obsolete priority (`tests/test_emergency.py`) | Closure triggers a new route version |
+| 3.5 | Corridor state machine (Alg 2: REQUESTED → SAFE_TRANSITION → ACTIVE → PASSAGE → RECOVERY), bounded look-ahead | done (cloud, 10 Nov): `manzil/corridor/coordinator.py` (Algorithm 2: REQUESTED → SAFE_TRANSITION → ACTIVE_PRIORITY → PASSAGE → RECOVERY → IDLE, look-ahead 2, max priority 60 s, timeout, ownership through the safety filter); 0 safety violations | Invariant tests; recovery to normal control |
+| 3.6 | Emergency experiments: static vs dynamic route; corridor off vs on; ordinary-traffic impact | done (cloud, 10 Nov): `results/phase3/` (static vs dynamic −53 % / −49 % ambulance time; corridor −33 % / −57 % at a cost of +3.5 % / +5.8 % network queue), see `results/phase3/README.md` | Results + plots |
 
 ### Phase 4 — DQN signal control
 | ID | Task | Status | Done when |

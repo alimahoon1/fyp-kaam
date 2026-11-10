@@ -37,14 +37,16 @@ def _run_one(args: tuple[RunConfig, str, bool]) -> dict:
             p = run_dir / name
             shutil.rmtree(p) if p.is_dir() else p.unlink(missing_ok=True)
     m = result.manifest
-    arm = (
-        config.controller
-        if config.plan == "auto" or config.controller != "fixed_time"
-        else (f"fixed_time:{config.plan}")
-    )
+    if config.label:
+        arm = config.label
+    elif config.plan == "auto" or config.controller != "fixed_time":
+        arm = config.controller
+    else:
+        arm = f"fixed_time:{config.plan}"
     return {
         "arm": arm,
-        **{k: v for k, v in asdict(config).items() if k != "controller_params"},
+        **{k: (json.dumps(v, sort_keys=True) if isinstance(v, dict) else v)
+           for k, v in asdict(config).items() if k != "controller_params"},
         "controller_params": json.dumps(dict(config.controller_params), sort_keys=True),
         "plan_used": m["controller"].get("plan_name", ""),
         "network_id": m["network"]["id"],
@@ -52,7 +54,7 @@ def _run_one(args: tuple[RunConfig, str, bool]) -> dict:
         "termination": m["termination"],
         "wall_time_s": m["wall_time_s"],
         "run_dir": str(run_dir),
-        **{k: (json.dumps(v, sort_keys=True) if isinstance(v, dict) else v)
+        **{k: (json.dumps(v, sort_keys=True) if isinstance(v, (dict, list)) else v)
            for k, v in result.metrics.items() if k not in ("run_id", "window_s")},
     }  # fmt: skip
 
@@ -66,7 +68,7 @@ def run_batch(
     jobs = []
     for i, c in enumerate(configs):
         c.validate()
-        name = f"{i:03d}_{c.controller}_{c.profile}_s{c.seed}"
+        name = f"{i:03d}_{c.label or c.controller}_{c.profile}_s{c.seed}"
         jobs.append((c, str(runs_dir / name), keep_raw))
     workers = workers or min(len(jobs), mp.cpu_count())
     if workers <= 1:

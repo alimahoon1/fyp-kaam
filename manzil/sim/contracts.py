@@ -35,6 +35,29 @@ class LaneState:
 
 
 @dataclass(frozen=True)
+class EdgeState:
+    """Simulator values for one road edge (all lanes) in the last step."""
+
+    edge_id: str
+    vehicles: int
+    halting: int
+    mean_speed_mps: float
+
+
+@dataclass(frozen=True)
+class VehicleState:
+    """A tracked vehicle (the ambulance). ``edge_id`` starts with ':' inside a junction."""
+
+    vehicle_id: str
+    edge_id: str
+    lane_id: str
+    position_m: float
+    speed_mps: float
+    waiting_time_s: float  # current continuous standstill
+    route_index: int
+
+
+@dataclass(frozen=True)
 class ApproachState:
     intersection_id: str
     approach_id: str  # incoming edge id
@@ -74,6 +97,9 @@ class TrafficSnapshot:
     departed_total: int
     running: int
     approaches: dict[str, tuple[ApproachState, ...]] = field(default_factory=dict)
+    edges: dict[str, EdgeState] = field(default_factory=dict)
+    tracked: dict[str, VehicleState] = field(default_factory=dict)  # tracked vehicles en route
+    arrived_ids: tuple[str, ...] = ()  # vehicles that arrived in the last step
 
     def is_valid_at(self, step: int) -> bool:
         return self.schema_version == SCHEMA_VERSION and step <= self.valid_until_step

@@ -1,0 +1,409 @@
+{
+  "profiles": [
+    "medium",
+    "heavy"
+  ],
+  "controllers": [
+    "static",
+    "dynamic"
+  ],
+  "reference": "static",
+  "metrics": [
+    "amb_travel_time_s",
+    "amb_excess_delay_s",
+    "amb_stops",
+    "amb_waiting_s",
+    "route_revisions",
+    "mission_window_queue_mean_veh",
+    "waiting_time_mean_s",
+    "queue_mean_veh"
+  ],
+  "summary": {
+    "medium": {
+      "static": {
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "amb_travel_time_s": {
+          "mean": 307.8,
+          "sd": 37.03646851415507,
+          "n": 5
+        },
+        "amb_excess_delay_s": {
+          "mean": 228.89000000000001,
+          "sd": 37.03646851415506,
+          "n": 5
+        },
+        "amb_stops": {
+          "mean": 5.8,
+          "sd": 1.3038404810405297,
+          "n": 5
+        },
+        "amb_waiting_s": {
+          "mean": 81.6,
+          "sd": 31.38948868650141,
+          "n": 5
+        },
+        "route_revisions": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 5
+        },
+        "mission_window_queue_mean_veh": {
+          "mean": 45.3174,
+          "sd": 7.379096950169444,
+          "n": 5
+        },
+        "waiting_time_mean_s": {
+          "mean": 36.4885,
+          "sd": 5.379326697180606,
+          "n": 5
+        },
+        "queue_mean_veh": {
+          "mean": 1.3291,
+          "sd": 0.23008778759421372,
+          "n": 5
+        }
+      },
+      "dynamic": {
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "amb_travel_time_s": {
+          "mean": 144.6,
+          "sd": 38.78530649614619,
+          "n": 5
+        },
+        "amb_excess_delay_s": {
+          "mean": 65.69,
+          "sd": 38.78530649614619,
+          "n": 5
+        },
+        "amb_stops": {
+          "mean": 3.6,
+          "sd": 2.701851217221259,
+          "n": 5
+        },
+        "amb_waiting_s": {
+          "mean": 30.0,
+          "sd": 23.632604596192948,
+          "n": 5
+        },
+        "route_revisions": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 5
+        },
+        "mission_window_queue_mean_veh": {
+          "mean": 43.4666,
+          "sd": 6.202566347891813,
+          "n": 5
+        },
+        "waiting_time_mean_s": {
+          "mean": 35.44712,
+          "sd": 4.477181285362477,
+          "n": 5
+        },
+        "queue_mean_veh": {
+          "mean": 1.2870000000000001,
+          "sd": 0.1856490371642148,
+          "n": 5
+        }
+      }
+    },
+    "heavy": {
+      "static": {
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "amb_travel_time_s": {
+          "mean": 588.2,
+          "sd": 84.12015216343822,
+          "n": 5
+        },
+        "amb_excess_delay_s": {
+          "mean": 509.28999999999996,
+          "sd": 84.12015216343825,
+          "n": 5
+        },
+        "amb_stops": {
+          "mean": 12.0,
+          "sd": 1.8708286933869707,
+          "n": 5
+        },
+        "amb_waiting_s": {
+          "mean": 291.0,
+          "sd": 70.0,
+          "n": 5
+        },
+        "route_revisions": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 5
+        },
+        "mission_window_queue_mean_veh": {
+          "mean": 196.1842,
+          "sd": 17.650703065317263,
+          "n": 5
+        },
+        "waiting_time_mean_s": {
+          "mean": 89.27405999999999,
+          "sd": 3.6617712937866576,
+          "n": 5
+        },
+        "queue_mean_veh": {
+          "mean": 5.9054,
+          "sd": 0.26040827559814617,
+          "n": 5
+        }
+      },
+      "dynamic": {
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "amb_travel_time_s": {
+          "mean": 298.0,
+          "sd": 82.8854631404084,
+          "n": 5
+        },
+        "amb_excess_delay_s": {
+          "mean": 219.09,
+          "sd": 82.88546314040839,
+          "n": 5
+        },
+        "amb_stops": {
+          "mean": 8.6,
+          "sd": 2.9664793948382653,
+          "n": 5
+        },
+        "amb_waiting_s": {
+          "mean": 167.0,
+          "sd": 64.0,
+          "n": 5
+        },
+        "route_revisions": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 5
+        },
+        "mission_window_queue_mean_veh": {
+          "mean": 181.412,
+          "sd": 16.744384655758484,
+          "n": 5
+        },
+        "waiting_time_mean_s": {
+          "mean": 91.4721,
+          "sd": 5.3369326494719775,
+          "n": 5
+        },
+        "queue_mean_veh": {
+          "mean": 5.95768,
+          "sd": 0.4095003748472034,
+          "n": 5
+        }
+      }
+    }
+  },
+  "paired": {
+    "medium": {
+      "dynamic": {
+        "amb_travel_time_s": {
+          "mean_diff": -163.2,
+          "sd_diff": 29.969984984981224,
+          "ci95": [
+            -200.40668564438386,
+            -125.99331435561612
+          ],
+          "pct_change": -53.0214424951267,
+          "seeds_better": 5,
+          "n": 5
+        },
+        "amb_excess_delay_s": {
+          "mean_diff": -163.2,
+          "sd_diff": 29.969984984981224,
+          "ci95": [
+            -200.40668564438386,
+            -125.99331435561612
+          ],
+          "pct_change": -71.30062475424876,
+          "seeds_better": 5,
+          "n": 5
+        },
+        "amb_stops": {
+          "mean_diff": -2.2,
+          "sd_diff": 2.949576240750525,
+          "ci95": [
+            -5.861795494016562,
+            1.4617954940165614
+          ],
+          "pct_change": -37.931034482758626,
+          "seeds_better": 4,
+          "n": 5
+        },
+        "amb_waiting_s": {
+          "mean_diff": -51.6,
+          "sd_diff": 28.41302518212378,
+          "ci95": [
+            -86.87377463442209,
+            -16.326225365577905
+          ],
+          "pct_change": -63.235294117647065,
+          "seeds_better": 5,
+          "n": 5
+        },
+        "route_revisions": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": null,
+          "n": 5
+        },
+        "mission_window_queue_mean_veh": {
+          "mean_diff": -1.8507999999999982,
+          "sd_diff": 2.6695970107864584,
+          "ci95": [
+            -5.165011095777789,
+            1.463411095777793
+          ],
+          "pct_change": -4.084082493699988,
+          "seeds_better": 4,
+          "n": 5
+        },
+        "waiting_time_mean_s": {
+          "mean_diff": -1.0413800000000002,
+          "sd_diff": 1.0284389320713223,
+          "ci95": [
+            -2.3181508782369784,
+            0.23539087823697802
+          ],
+          "pct_change": -2.853995094344794,
+          "seeds_better": 4,
+          "n": 5
+        },
+        "queue_mean_veh": {
+          "mean_diff": -0.042099999999999985,
+          "sd_diff": 0.05008318080952926,
+          "ci95": [
+            -0.1042765131141977,
+            0.020076513114197725
+          ],
+          "pct_change": -3.167556993454216,
+          "seeds_better": 4,
+          "n": 5
+        }
+      }
+    },
+    "heavy": {
+      "dynamic": {
+        "amb_travel_time_s": {
+          "mean_diff": -290.2,
+          "sd_diff": 97.84528603872545,
+          "ci95": [
+            -411.6714922697503,
+            -168.72850773024973
+          ],
+          "pct_change": -49.336960217613054,
+          "seeds_better": 5,
+          "n": 5
+        },
+        "amb_excess_delay_s": {
+          "mean_diff": -290.2,
+          "sd_diff": 97.84528603872543,
+          "ci95": [
+            -411.6714922697502,
+            -168.72850773024976
+          ],
+          "pct_change": -56.98128767499853,
+          "seeds_better": 5,
+          "n": 5
+        },
+        "amb_stops": {
+          "mean_diff": -3.4,
+          "sd_diff": 4.159326868617084,
+          "ci95": [
+            -8.563658485996145,
+            1.7636584859961446
+          ],
+          "pct_change": -28.333333333333332,
+          "seeds_better": 4,
+          "n": 5
+        },
+        "amb_waiting_s": {
+          "mean_diff": -124.0,
+          "sd_diff": 55.79874550561151,
+          "ci95": [
+            -193.27218630301775,
+            -54.72781369698225
+          ],
+          "pct_change": -42.61168384879725,
+          "seeds_better": 5,
+          "n": 5
+        },
+        "route_revisions": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": null,
+          "n": 5
+        },
+        "mission_window_queue_mean_veh": {
+          "mean_diff": -14.772199999999993,
+          "sd_diff": 8.131710471973289,
+          "ci95": [
+            -24.86743346219467,
+            -4.676966537805317
+          ],
+          "pct_change": -7.52976029670075,
+          "seeds_better": 5,
+          "n": 5
+        },
+        "waiting_time_mean_s": {
+          "mean_diff": 2.1980400000000033,
+          "sd_diff": 3.604103799559606,
+          "ci95": [
+            -2.27632851126696,
+            6.672408511266966
+          ],
+          "pct_change": 2.4621261764055578,
+          "seeds_better": 2,
+          "n": 5
+        },
+        "queue_mean_veh": {
+          "mean_diff": 0.052280000000000194,
+          "sd_diff": 0.2365965595692382,
+          "ci95": [
+            -0.2414463338919519,
+            0.3460063338919523
+          ],
+          "pct_change": 0.8852914281843769,
+          "seeds_better": 3,
+          "n": 5
+        }
+      }
+    }
+  }
+}
