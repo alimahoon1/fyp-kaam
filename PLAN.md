@@ -92,12 +92,12 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 ### Phase 3 — Ambulance routing, rerouting, green corridor
 | ID | Task | Status | Done when |
 |---|---|---|---|
-| 3.1 | Routing graph from SUMO legal movements; time-based edge cost (Eq 5.4) | todo | Unit tests on costs, no double counting |
-| 3.2 | Dijkstra (reference) + A* (admissible heuristic) + no-route handling | todo | Same cost as Dijkstra on tests |
-| 3.3 | Ambulance dispatch A→B (obeys signals), route versioning | todo | Ambulance reaches B |
-| 3.4 | Road-closure incident + rerouting (Alg 1: threshold, persistence, cooldown) | todo | Closure triggers a new route version |
-| 3.5 | Corridor state machine (Alg 2: REQUESTED → SAFE_TRANSITION → ACTIVE → PASSAGE → RECOVERY), bounded look-ahead | todo | Invariant tests; recovery to normal control |
-| 3.6 | Emergency experiments: static vs dynamic route; corridor off vs on; ordinary-traffic impact | todo | Results + plots |
+| 3.1 | Routing graph from SUMO legal movements; time-based edge cost (Eq 5.4) | in progress (Claude cloud session for Ibrahim) | Unit tests on costs, no double counting |
+| 3.2 | Dijkstra (reference) + A* (admissible heuristic) + no-route handling | in progress (Claude cloud session for Ibrahim) | Same cost as Dijkstra on tests |
+| 3.3 | Ambulance dispatch A→B (obeys signals), route versioning | in progress (Claude cloud session for Ibrahim) | Ambulance reaches B |
+| 3.4 | Road-closure incident + rerouting (Alg 1: threshold, persistence, cooldown) | in progress (Claude cloud session for Ibrahim) | Closure triggers a new route version |
+| 3.5 | Corridor state machine (Alg 2: REQUESTED → SAFE_TRANSITION → ACTIVE → PASSAGE → RECOVERY), bounded look-ahead | in progress (Claude cloud session for Ibrahim) | Invariant tests; recovery to normal control |
+| 3.6 | Emergency experiments: static vs dynamic route; corridor off vs on; ordinary-traffic impact | in progress (Claude cloud session for Ibrahim) | Results + plots |
 
 ### Phase 4 — DQN signal control
 | ID | Task | Status | Done when |
