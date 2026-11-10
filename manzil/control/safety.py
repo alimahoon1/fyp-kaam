@@ -32,10 +32,17 @@ class SafetyConfig:
     min_green_s: float = 10.0
     yellow_s: float = 3.0
     all_red_s: float = 2.0
+    # Longest a green phase may wait (red) under normal control; None disables the guard.
+    # When a phase reaches max_red_s - clearance the filter forces a switch to it.
+    max_red_s: float | None = None
 
     def __post_init__(self):
         if self.min_green_s <= 0 or self.yellow_s <= 0 or self.all_red_s < 0:
             raise ValueError(f"invalid safety timing {self}")
+        if self.max_red_s is not None and self.max_red_s <= self.min_green_s + 2 * (
+            self.yellow_s + self.all_red_s
+        ):
+            raise ValueError("max red is too short to serve minimum green and clearance")
 
     @property
     def clearance_s(self) -> float:
@@ -76,6 +83,7 @@ class _Junction:
     target: int | None = None
     state: str = ""
     owner: Owner = Owner.NORMAL
+    last_served: list[float] = field(default_factory=list)  # per phase: last time it was green
 
 
 @dataclass
@@ -101,7 +109,8 @@ class SafetyFilter:
             phase = initial_phases.get(tls, 0)
             if not 0 <= phase < len(x.green_phases):
                 raise ValueError(f"{tls}: invalid initial phase {phase}")
-            j = _Junction(x, phase, Mode.GREEN, now, state=x.green_phases[phase].state)
+            j = _Junction(x, phase, Mode.GREEN, now, state=x.green_phases[phase].state,
+                          last_served=[now] * len(x.green_phases))  # fmt: skip
             self._j[tls] = j
             self._event(j, step, now, Mode.GREEN, phase)
         return self.states()
@@ -146,6 +155,9 @@ class SafetyFilter:
     def tick(self, now: float, step: int) -> dict[str, str]:
         """Advance yellow / all-red transitions whose time is up. Returns states to show."""
         for j in self._j.values():
+            if j.mode is Mode.GREEN:
+                j.last_served[j.phase] = now
+                self._guard_max_red(j, now, step)
             if j.mode is Mode.YELLOW and now - j.since >= self.config.yellow_s:
                 target = j.x.green_phases[j.target].state
                 if self.config.all_red_s > 0:
@@ -200,6 +212,27 @@ class SafetyFilter:
         return j.mode is Mode.GREEN and now - j.since >= self.config.min_green_s
 
     # ----- internals -------------------------------------------------------------------------
+    def _guard_max_red(self, j: _Junction, now: float, step: int) -> None:
+        """Force a switch when a phase is about to exceed max red (normal ownership only)."""
+        c = self.config
+        if c.max_red_s is None or j.owner is not Owner.NORMAL or now - j.since < c.min_green_s:
+            return
+        limit = c.max_red_s - c.clearance_s
+        waiting = [(now - t, k) for k, t in enumerate(j.last_served) if k != j.phase]
+        if not waiting:
+            return
+        red_for, k = max(waiting)
+        if red_for < limit:
+            return
+        req = ControlRequest("safety_filter", j.x.tls_id, k, step, f"max red {red_for:.0f}s")
+        rid = self._next_request_id
+        self._next_request_id += 1
+        target = j.x.green_phases[k].state
+        j.target, j.mode, j.since = k, Mode.YELLOW, now
+        j.state = yellow_state(j.state, target)
+        self._event(j, step, now, Mode.YELLOW, None)
+        self._record(rid, req, k, step, "max_red_forced")
+
     def _enter_green(self, j: _Junction, now: float, step: int) -> None:
         j.phase, j.target = j.target, None
         j.mode, j.since = Mode.GREEN, now

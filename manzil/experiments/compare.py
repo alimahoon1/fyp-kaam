@@ -24,6 +24,7 @@ from manzil.experiments.batch import check_compatible, read_table
 METRICS = {
     # name: (label, unit, lower is better)
     "travel_time_mean_s": ("Mean travel time", "s", True),
+    "travel_time_all_mean_s": ("Mean travel time incl. unfinished", "s", True),
     "waiting_time_mean_s": ("Mean waiting time", "s", True),
     "time_loss_mean_s": ("Mean time loss", "s", True),
     "queue_mean_veh": ("Mean approach queue", "veh", True),
@@ -42,8 +43,8 @@ METRICS = {
     "recovery_time_mean_s": ("Junction recovery time", "s", True),
 }
 DEFAULT_TABLE = [
-    "travel_time_mean_s", "waiting_time_mean_s", "queue_mean_veh", "queue_max_veh",
-    "throughput_veh", "max_red_s",
+    "travel_time_mean_s", "travel_time_all_mean_s", "waiting_time_mean_s", "queue_mean_veh",
+    "queue_max_veh", "throughput_veh", "max_red_s",
 ]  # fmt: skip
 REFERENCE = REFERENCE_DEFAULT = "fixed_time"
 PROFILE_ORDER = ("light", "medium", "heavy", "uneven")

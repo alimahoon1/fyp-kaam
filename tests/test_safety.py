@@ -154,3 +154,36 @@ def test_random_requests_never_unsafe_in_sumo(grid_model, light_cfg):
                 sim.set_signal_state(tls, s)
     assert m.violations == []
     assert sum(e.kind == "yellow" for e in f.events) > 50  # the test really switched a lot
+
+
+def test_max_red_guard_forces_service(grid_model):
+    """D2 5.4.3: the safety layer, not the controller, has the last word on maximum red."""
+    cfg = SafetyConfig(min_green_s=10, yellow_s=3, all_red_s=2, max_red_s=40)
+    f = SafetyFilter(grid_model, cfg)
+    m = SafetyMonitor(grid_model, cfg)
+    m.observe(0, f.reset())
+    for t in range(1, 200):  # the controller keeps asking for phase 0 forever
+        f.submit(req(0, t), t, t)
+        m.observe(t, f.tick(t, t))
+    forced = [a for a in f.applied if a.safety_intervention == "max_red_forced"]
+    assert forced and all(a.controller_id == "safety_filter" for a in forced)
+    assert forced[0].effective_step == 35  # 40 s max red - 5 s clearance
+    greens = [e for e in f.events if e.intersection_id == TLS and e.kind == "green"]
+    gaps = [b.sim_time_s - a.sim_time_s for a, b in zip(greens, greens[1:], strict=False)]
+    assert max(gaps) <= 45  # phase 1 never waits more than max red + its own clearance
+    assert m.violations == []
+
+
+def test_max_red_guard_does_not_override_the_corridor(grid_model):
+    from manzil.control.safety import CORRIDOR_ID
+    from manzil.sim.contracts import Owner
+
+    cfg = SafetyConfig(min_green_s=10, yellow_s=3, all_red_s=2, max_red_s=40)
+    f = SafetyFilter(grid_model, cfg)
+    f.reset()
+    f.set_owner(TLS, Owner.CORRIDOR, 0, 0)
+    for t in range(1, 80):
+        f.submit(ControlRequest(CORRIDOR_ID, TLS, 0, t, "corridor"), t, t)
+        f.tick(t, t)
+    assert not any(a.intersection_id == TLS and a.safety_intervention == "max_red_forced"
+                   for a in f.applied)  # fmt: skip

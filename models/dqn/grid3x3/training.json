@@ -1,0 +1,49 @@
+{
+  "selection_rule": "lowest mean over profiles of (T_dqn/T_fixed) x (throughput_fixed/throughput_dqn), T = travel_time_all_mean_s, dev seeds 100-101, checked every 10 episodes",
+  "selected_checkpoint": "ep0180.pt",
+  "selected_dev_score": 0.892,
+  "fixed_time_dev": {
+    "tt_all": {
+      "heavy": 148.47,
+      "light": 93.73,
+      "medium": 103.37,
+      "uneven": 112.04
+    },
+    "throughput": {
+      "heavy": 2330.0,
+      "light": 805.5,
+      "medium": 1609.5,
+      "uneven": 1802.5
+    }
+  },
+  "episodes": 200,
+  "episode_s": 1800.0,
+  "seed": 0,
+  "dev_protocol": {
+    "warmup_s": 300.0,
+    "measure_s": 1200.0
+  },
+  "dqn_params": {
+    "hidden": 128,
+    "lr": 0.0005,
+    "gamma": 0.95,
+    "batch": 128,
+    "replay": 100000,
+    "target_sync": 1000,
+    "eps_start": 1.0,
+    "eps_end": 0.05,
+    "eps_decay_steps": 20000,
+    "warmup_transitions": 2000
+  },
+  "reward_params": {
+    "a": 1.0,
+    "b": 0.5,
+    "c": 2.0,
+    "d": 0.5,
+    "max_red_s": 90.0,
+    "decision_s": 5
+  },
+  "reward_scale": 10.0,
+  "training_seeds": "1001..1200",
+  "wall_time_s": 1004.7
+}
