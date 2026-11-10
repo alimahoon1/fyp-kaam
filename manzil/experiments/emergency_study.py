@@ -8,8 +8,8 @@
    arrival, plus the usual whole-window metrics.
 
 Every arm sees the same seeded background demand. The ambulance departs at 1,200 s from the
-south-west corner (``left0A0``) to the north-east exit (``C2top2``). Runs: 900 s warm-up +
-900 s measurement.
+south-west corner (``left0A0``) to the north-east exit (``C2top2``). Runs: 900 s warm-up, then
+1,800 s (routing) or 900 s (corridor) of measurement.
 
 Usage::
 
@@ -39,6 +39,9 @@ AMB_METRICS = [
 EXPERIMENTS = {
     "routing": {
         "reference": "static",
+        # Long enough for a static-route ambulance stuck behind the obstruction in heavy
+        # demand to finish: 1,500 s after dispatch (900 s was not enough on 4 of 5 seeds).
+        "measure_s": 1800.0,
         "arms": {
             "static": replace(BASE_MISSION, routing="static", **OBSTRUCTION),
             "dynamic": replace(BASE_MISSION, routing="dynamic", **OBSTRUCTION),
@@ -48,6 +51,7 @@ EXPERIMENTS = {
     },
     "corridor": {
         "reference": "corridor_off",
+        "measure_s": 900.0,
         "arms": {
             "corridor_off": replace(BASE_MISSION, routing="dynamic", corridor=False),
             "corridor_on": replace(BASE_MISSION, routing="dynamic", corridor=True),
@@ -58,8 +62,9 @@ EXPERIMENTS = {
 }  # fmt: skip
 
 
-def configs_for(name: str, profiles, seeds, warmup_s=900.0, measure_s=900.0) -> list[RunConfig]:
+def configs_for(name: str, profiles, seeds, warmup_s=900.0) -> list[RunConfig]:
     exp = EXPERIMENTS[name]
+    measure_s = exp["measure_s"]
     return [
         RunConfig(profile=p, seed=s, warmup_s=warmup_s, measure_s=measure_s, mission=m, label=arm)
         for p in profiles

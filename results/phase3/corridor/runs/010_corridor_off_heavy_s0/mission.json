@@ -1,0 +1,49 @@
+{
+  "config": {
+    "origin": "left0A0",
+    "destination": "C2top2",
+    "dispatch_s": 1200.0,
+    "routing": "dynamic",
+    "corridor": false,
+    "incident": "none",
+    "incident_edge": "",
+    "incident_s": 0.0,
+    "incident_speed_mps": 2.0,
+    "lookahead": 2,
+    "activate_eta_s": 15.0,
+    "max_priority_s": 60.0,
+    "delta_s": 10.0,
+    "persistence_s": 10.0,
+    "cooldown_s": 30.0
+  },
+  "route_versions": [
+    {
+      "mission_id": "m1",
+      "route_version": 1,
+      "edge_ids": [
+        "left0A0",
+        "A0B0",
+        "B0B1",
+        "B1C1",
+        "C1C2",
+        "C2top2"
+      ],
+      "cost_s": 117.256,
+      "snapshot_step": 1200,
+      "trigger": "dispatch",
+      "compute_ms": 0.042
+    }
+  ],
+  "routing_log": [
+    {
+      "time_s": 1200.0,
+      "event": "route_v1",
+      "route_version": 1,
+      "saving_s": null,
+      "reason": "dispatch",
+      "nodes_expanded": 23,
+      "compute_ms": 0.042
+    }
+  ],
+  "corridor_events": []
+}

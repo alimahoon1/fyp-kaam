@@ -197,6 +197,7 @@ class MissionDriver:
                 ),
                 recovery_time_mean_s=round(sum(rec) / len(rec), 1) if rec else None,
                 recovery_time_max_s=max(rec) if rec else None,
+                recovery_unfinished=self.corridor.open_recoveries,
             )
         return out
 

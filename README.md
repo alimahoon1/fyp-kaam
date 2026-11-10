@@ -22,6 +22,8 @@ Manzil is a SUMO-based research prototype. It covers:
 | `manzil/sim/` | `SimulationAdapter` (only code that touches SUMO), network reader, data contracts |
 | `manzil/control/` | Safety filter + monitor, controller interface, fixed-time and adaptive (pressure) controllers |
 | `manzil/experiments/` | Run config, runner (one experiment → run folder), metrics, batch runner, comparison + plots |
+| `manzil/routing/` | Routing graph from SUMO connections, Eq 5.4 costs, Dijkstra/A*, Algorithm 1 rerouting |
+| `manzil/corridor/` | Moving green corridor (Algorithm 2) |
 | `manzil/scenarios/` | Grid builder (`grid.py`), seeded demand profiles (`demand.py`), gridlock check (`check.py`) |
 | `scenarios/grid3x3/` | Synthetic 3×3 SUMO network and its README (profiles, calibration, results) |
 | `results/` | Small result summaries kept in git |
@@ -76,6 +78,12 @@ python -m manzil.experiments.batch --arms fixed_time fixed_time:equal adaptive -
 
 ```bash
 python -m manzil.experiments.compare results/phase2/comparison/results.csv
+```
+
+### Ambulance experiments
+
+```bash
+python -m manzil.experiments.emergency_study --seeds 0 1 2 3 4 --out results/phase3
 ```
 
 ### Checks

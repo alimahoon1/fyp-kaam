@@ -39,8 +39,14 @@ def test_corridor_lifecycle_order_and_safety(corridor_run):
         by_tls[e["tls"]].append(e["state"])
     assert by_tls, "the corridor never acted"
     for tls, states in by_tls.items():
-        assert states == ORDER, (tls, states)  # full Algorithm 2 cycle, in order
-    assert r.metrics["corridor_served"] == len(by_tls)
+        # Full Algorithm 2 cycle in order. ACTIVE_PRIORITY may be skipped when the ambulance
+        # legally crosses on yellow while a change that was already under way completes.
+        allowed = (ORDER, [s for s in ORDER if s != "ACTIVE_PRIORITY"])
+        # A recovery may still be open when the run ends; it is then counted as unfinished.
+        assert states in allowed or states + ["IDLE"] in allowed, (tls, states)
+    assert 0 < r.metrics["corridor_served"] <= len(by_tls)
+    open_at_end = sum(1 for states in by_tls.values() if states[-1] == "RECOVERY")
+    assert r.metrics["recovery_unfinished"] == open_at_end
     assert r.metrics["corridor_held_requests"] > 0  # normal control waited while owned
 
 
@@ -52,13 +58,17 @@ def test_corridor_helps_the_ambulance(corridor_run, tmp_path):
 
 
 def test_closure_triggers_new_route_version_and_cancels_priority(tmp_path):
+    # Same seed and dispatch, so route v1 is the same with and without the later closure.
+    first, _ = mission_run(tmp_path / "plain", corridor=True)
+    target = first.metrics["driven_route"][3]
     r, rec = mission_run(
-        tmp_path, corridor=True, incident="closure", incident_edge="C0C1", incident_s=1210.0
-    )
+        tmp_path / "closed", corridor=True, incident="closure", incident_edge=target,
+        incident_s=1210.0,
+    )  # fmt: skip
     m = r.metrics
     assert m["mission_status"] == "ARRIVED"
     assert m["route_revisions"] >= 1 and m["revision_triggers"][0] == "closure"
-    assert "C0C1" not in m["driven_route"]
+    assert target not in m["driven_route"]
     versions = [v["route_version"] for v in rec["route_versions"]]
     assert versions == sorted(versions) == list(range(1, len(versions) + 1))
     cancelled = [e for e in rec["corridor_events"] if e["state"] == "CANCELLED"]

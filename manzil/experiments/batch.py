@@ -37,11 +37,12 @@ def _run_one(args: tuple[RunConfig, str, bool]) -> dict:
             p = run_dir / name
             shutil.rmtree(p) if p.is_dir() else p.unlink(missing_ok=True)
     m = result.manifest
-    arm = (
-        config.controller
-        if config.plan == "auto" or config.controller != "fixed_time"
-        else (f"fixed_time:{config.plan}")
-    )
+    if config.label:
+        arm = config.label
+    elif config.plan == "auto" or config.controller != "fixed_time":
+        arm = config.controller
+    else:
+        arm = f"fixed_time:{config.plan}"
     return {
         "arm": arm,
         **{k: (json.dumps(v, sort_keys=True) if isinstance(v, dict) else v)

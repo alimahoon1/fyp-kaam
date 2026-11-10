@@ -73,3 +73,9 @@ def test_statistics_helpers():
     assert m == 2.0 and sd == pytest.approx(1.0)
     assert t95(4) == pytest.approx(2.776) and t95(100) == 1.96
     assert math.isnan(mean_sd([5.0])[1])
+
+
+def test_label_names_the_arm(tmp_path):
+    (row,) = run_batch([RunConfig(warmup_s=30, measure_s=60, label="my_arm")], tmp_path, workers=1)
+    assert row["arm"] == "my_arm"
+    assert (tmp_path / "runs" / "000_my_arm_light_s0" / "manifest.json").is_file()

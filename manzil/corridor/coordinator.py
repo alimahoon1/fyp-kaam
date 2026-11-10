@@ -14,8 +14,10 @@ Per junction the state runs::
 - ACTIVE_PRIORITY: the ambulance's phase is shown; it is held for at most ``max_priority_s``.
 - PASSAGE: the ambulance has left the approach edge. Ownership returns to normal control at once
   (the safety filter guarantees a legal phase boundary) and the junction enters RECOVERY.
-- RECOVERY ends when the junction's approach queue is back to its level at activation (or
-  after ``recovery_cap_s``); that duration is recorded as the recovery time.
+- RECOVERY ends when the junction's approach queue is back to its typical level: the larger of
+  its value at activation and its mean over the ``baseline_s`` before activation (or after
+  ``recovery_cap_s``). That duration is the recovery time; recoveries still open when the run
+  ends are reported separately, not dropped.
 - A route revision cancels requests for junctions no longer on the route before new ones are
   made (FR-14); NO_ROUTE or a timeout cancels and releases safely (FR-13).
 
@@ -39,6 +41,7 @@ class CorridorParams:
     headway_s: float = 2.0  # queue discharge per halting vehicle per lane
     max_priority_s: float = 60.0  # longest a junction may be held for the ambulance
     recovery_cap_s: float = 300.0
+    baseline_s: int = 120  # window for a junction's typical queue before activation
 
 
 @dataclass
@@ -53,7 +56,7 @@ class _Request:
     activated_s: float | None = None
     served_s: float | None = None
     passed_s: float | None = None
-    queue_at_activation: int = 0
+    queue_at_activation: float = 0.0
 
 
 @dataclass
@@ -66,11 +69,17 @@ class CorridorCoordinator:
     events: list[dict] = field(default_factory=list)
     recovery_times_s: list[float] = field(default_factory=list)
     _active: dict[str, _Request] = field(default_factory=dict)  # tls -> request
-    _recovering: dict[str, tuple[float, int]] = field(default_factory=dict)
+    _recovering: dict[str, tuple[float, float]] = field(default_factory=dict)
+    _history: dict[str, list[int]] = field(default_factory=dict)  # recent queue per junction
 
     # ----- per step --------------------------------------------------------------------------
     def step(self, snap: TrafficSnapshot, amb: VehicleState | None, plan: RoutePlan | None):
         now, step = snap.sim_time_s, snap.effective_step
+        for tls in self.network.intersections:
+            h = self._history.setdefault(tls, [])
+            h.append(_queue(snap, tls))
+            if len(h) > self.params.baseline_s:
+                del h[0]
         self._track_recovery(snap)
         if plan is None or amb is None:
             return
@@ -93,7 +102,8 @@ class CorridorCoordinator:
                 self._event(now, step, req, "REQUESTED", eta=eta)
             if req.state == "REQUESTED" and eta <= self._activation_eta(snap, tls, approach):
                 req.state, req.activated_s = "SAFE_TRANSITION", now
-                req.queue_at_activation = _queue(snap, tls)
+                h = self._history.get(tls) or [0]
+                req.queue_at_activation = max(_queue(snap, tls), sum(h) / len(h))
                 self.safety.set_owner(tls, Owner.CORRIDOR, now, step)
                 self._event(now, step, req, "SAFE_TRANSITION", eta=eta)
             if req.state in ("SAFE_TRANSITION", "ACTIVE_PRIORITY"):
@@ -182,6 +192,10 @@ class CorridorCoordinator:
         if self.safety.owner(req.tls) is Owner.CORRIDOR:
             self.safety.set_owner(req.tls, Owner.NORMAL, now, step)
             self._recovering[req.tls] = (now, req.queue_at_activation)
+
+    @property
+    def open_recoveries(self) -> int:
+        return len(self._recovering)
 
     def _track_recovery(self, snap: TrafficSnapshot) -> None:
         for tls, (start, q0) in list(self._recovering.items()):

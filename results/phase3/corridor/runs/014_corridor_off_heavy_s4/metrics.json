@@ -1,0 +1,49 @@
+{
+  "metric_version": 1,
+  "run_id": "grid3x3_fixed_time_heavy_s4",
+  "window_s": [
+    900.0,
+    1800.0
+  ],
+  "throughput_veh": 1784,
+  "completed_trips": 1485,
+  "unfinished_veh": 331,
+  "travel_time_mean_s": 155.2801,
+  "waiting_time_mean_s": 65.3764,
+  "time_loss_mean_s": 96.1704,
+  "queue_mean_veh": 3.8898,
+  "queue_max_veh": 31,
+  "phase_changes": 162,
+  "max_red_s": 55.0,
+  "vehicles_loaded": 3639,
+  "vehicles_inserted": 3623,
+  "teleports": 0,
+  "teleports_jam": 0,
+  "collisions": 0,
+  "emergency_braking": 0,
+  "safety_violations": 0,
+  "safety_interventions": {
+    "none": 324
+  },
+  "controller_decisions": {},
+  "corridor_held_requests": 0,
+  "mission_status": "ARRIVED",
+  "amb_travel_time_s": 387.0,
+  "amb_insertion_delay_s": 0.0,
+  "amb_free_flow_time_s": 78.91,
+  "amb_excess_delay_s": 308.09,
+  "amb_stops": 9,
+  "amb_waiting_s": 221.0,
+  "route_revisions": 0,
+  "revision_triggers": [],
+  "route_compute_ms_max": 0.046,
+  "driven_route": [
+    "left0A0",
+    "A0B0",
+    "B0B1",
+    "B1B2",
+    "B2C2",
+    "C2top2"
+  ],
+  "mission_window_queue_mean_veh": 144.073
+}
