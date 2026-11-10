@@ -50,7 +50,7 @@ from manzil.sim.adapter import QUIET_ARGS, SimulationAdapter
 from manzil.sim.network import NetworkModel
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-CONTROLLERS = ("fixed_time", "adaptive")
+CONTROLLERS = ("fixed_time", "adaptive", "dqn")
 
 
 @dataclass(frozen=True)
@@ -69,6 +69,7 @@ class RunConfig:
     controller_params: tuple[tuple[str, float], ...] = ()
     mission: MissionConfig | None = None  # an ambulance mission inside the run (Phase 3)
     label: str = ""  # name of the experiment arm, e.g. "corridor_on" (used by comparisons)
+    checkpoint: str = ""  # DQN checkpoint overriding the scenario's (path from the repo root)
 
     @property
     def end_s(self) -> float:
@@ -121,6 +122,14 @@ def make_controller(config: RunConfig, timing: SignalTiming, network: NetworkMod
     if config.controller == "adaptive":
         params = {**timing.adaptive, **dict(config.controller_params)}
         return AdaptiveController(AdaptiveParams(**params))
+    if config.controller == "dqn":
+        from manzil.control.dqn import DQNController  # needs the optional torch dependency
+
+        ckpt = config.checkpoint or timing.dqn.get("checkpoint", "")
+        if not ckpt:
+            raise ValueError("no DQN checkpoint configured")
+        path = Path(ckpt) if Path(ckpt).is_absolute() else REPO_ROOT / ckpt
+        return DQNController(str(path), decision_s=int(timing.dqn.get("decision_s", 5)))
     raise ValueError(f"unknown controller {config.controller!r}")
 
 

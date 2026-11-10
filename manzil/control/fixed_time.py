@@ -98,6 +98,7 @@ class SignalTiming:
     plans: dict[str, dict]  # plan name -> {"default": {...}, "junctions": {tls: {...}}}
     profile_plans: dict[str, str]  # demand profile -> plan name used when the plan is "auto"
     adaptive: dict  # parameters of the pressure controller
+    dqn: dict  # trained DQN checkpoint (path relative to the repo root) and decision interval
 
     @classmethod
     def load(cls, path: str | Path) -> SignalTiming:
@@ -108,6 +109,7 @@ class SignalTiming:
             plans=data["fixed_time_plans"],
             profile_plans=data.get("profile_plans", {}),
             adaptive={k: v for k, v in data.get("adaptive", {}).items() if k != "description"},
+            dqn={k: v for k, v in data.get("dqn", {}).items() if k != "description"},
         )
 
     def resolve_plan(self, plan_name: str, profile: str) -> str:

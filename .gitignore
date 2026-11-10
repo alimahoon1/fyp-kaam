@@ -92,3 +92,6 @@ scenarios/*/demand/
 
 # Per-run detail inside committed batch results (manifest.json and metrics.json are kept)
 results/**/runs/*/*.csv
+
+# DQN training: keep best.pt, logs and plots; intermediate checkpoints stay local
+models/**/checkpoints/
