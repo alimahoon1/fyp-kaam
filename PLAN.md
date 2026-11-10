@@ -102,9 +102,9 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 ### Phase 4 — DQN signal control
 | ID | Task | Status | Done when |
 |---|---|---|---|
-| 4.1 | RL environment on top of `SimulationAdapter` (state, action mask, reward Eq 5.3) | todo | Random policy runs safely through the safety filter |
-| 4.2 | Parameter-sharing DQN; train on the grid (laptop CPU or Kaggle with `eclipse-sumo` + `libsumo`) | todo | Training curve + saved checkpoint |
-| 4.3 | Evaluate the DQN vs fixed vs adaptive on held-out seeds | todo | Three-way results + plots |
+| 4.1 | RL environment on top of `SimulationAdapter` (state, action mask, reward Eq 5.3) | in progress (Claude cloud session for Ibrahim) | Random policy runs safely through the safety filter |
+| 4.2 | Parameter-sharing DQN; train on the grid (laptop CPU or Kaggle with `eclipse-sumo` + `libsumo`) | in progress (Claude cloud session for Ibrahim) | Training curve + saved checkpoint |
+| 4.3 | Evaluate the DQN vs fixed vs adaptive on held-out seeds | in progress (Claude cloud session for Ibrahim) | Three-way results + plots |
 
 ### Phase V — Vision track (parallel)
 | ID | Task | Status | Done when |
