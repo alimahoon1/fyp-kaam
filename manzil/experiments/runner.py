@@ -15,7 +15,7 @@ Run folder contents::
 
 Usage::
 
-    python -m manzil.experiments.runner --profile light --seed 0
+    python -m manzil.experiments.runner --profile light --seed 0 --controller adaptive
 """
 
 from __future__ import annotations
@@ -32,6 +32,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import manzil
+from manzil.control.adaptive import AdaptiveController, AdaptiveParams
 from manzil.control.fixed_time import SignalTiming
 from manzil.control.safety import SafetyFilter, SafetyMonitor
 from manzil.experiments.metrics import (
@@ -48,7 +49,7 @@ from manzil.sim.adapter import QUIET_ARGS, SimulationAdapter
 from manzil.sim.network import NetworkModel
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-CONTROLLERS = ("fixed_time",)
+CONTROLLERS = ("fixed_time", "adaptive")
 
 
 @dataclass(frozen=True)
@@ -62,6 +63,9 @@ class RunConfig:
     measure_s: float = 3600.0
     backend: str = "libsumo"
     time_to_teleport_s: float = 300.0
+    # Overrides of the scenario's controller parameters, e.g. (("beta", 0.02),). A tuple of
+    # pairs keeps the config hashable and its digest stable.
+    controller_params: tuple[tuple[str, float], ...] = ()
 
     @property
     def end_s(self) -> float:
@@ -103,6 +107,16 @@ class RunResult:
     violations: list[str] = field(default_factory=list)
 
 
+def make_controller(config: RunConfig, timing: SignalTiming, network: NetworkModel):
+    if config.controller == "fixed_time":
+        plan = timing.resolve_plan(config.plan, config.profile)
+        return timing.fixed_time_controller(network, plan)
+    if config.controller == "adaptive":
+        params = {**timing.adaptive, **dict(config.controller_params)}
+        return AdaptiveController(AdaptiveParams(**params))
+    raise ValueError(f"unknown controller {config.controller!r}")
+
+
 def _git_commit() -> dict:
     def git(*args):
         out = subprocess.run(["git", *args], cwd=REPO_ROOT, capture_output=True, text=True)
@@ -121,9 +135,7 @@ def run(config: RunConfig, out_dir: Path | None = None) -> RunResult:
     net_file = config.scenario_dir / f"{config.scenario}.net.xml"
     network = NetworkModel.from_file(net_file)
     timing = SignalTiming.load(config.scenario_dir / "signals.json")
-    controller = timing.fixed_time_controller(
-        network, timing.resolve_plan(config.plan, config.profile)
-    )
+    controller = make_controller(config, timing, network)
     demand = build_demand(config.profile, config.seed, config.end_s, net_file, run_dir / "demand")
 
     tripinfo, stats = run_dir / "tripinfo.xml", run_dir / "statistics.xml"
@@ -211,6 +223,7 @@ def run(config: RunConfig, out_dir: Path | None = None) -> RunResult:
         **statistics_output(stats),
         "safety_violations": len(monitor.violations),
         "safety_interventions": dict(sorted(interventions.items())),
+        "controller_decisions": dict(sorted(getattr(controller, "decisions", {}).items())),
     }
     (run_dir / "metrics.json").write_text(json.dumps(metrics, indent=2) + "\n")
     write_csv(run_dir / "timeseries.csv", queues.samples)
@@ -227,6 +240,7 @@ def _row(obj) -> dict:
 def main(argv: list[str] | None = None) -> None:
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument("--scenario", default="grid3x3")
+    p.add_argument("--controller", default="fixed_time", choices=CONTROLLERS)
     p.add_argument("--profile", default="light", choices=sorted(PROFILES))
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--plan", default="auto", help='fixed-time plan name, or "auto"')
@@ -235,7 +249,7 @@ def main(argv: list[str] | None = None) -> None:
     p.add_argument("--backend", default="libsumo", choices=("libsumo", "traci"))
     p.add_argument("--out-dir", type=Path, default=None)
     a = p.parse_args(argv)
-    cfg = RunConfig(a.scenario, a.profile, a.seed, "fixed_time", a.plan, a.warmup, a.measure,
+    cfg = RunConfig(a.scenario, a.profile, a.seed, a.controller, a.plan, a.warmup, a.measure,
                     a.backend)  # fmt: skip
     result = run(cfg, a.out_dir)
     print(json.dumps(result.metrics, indent=2))

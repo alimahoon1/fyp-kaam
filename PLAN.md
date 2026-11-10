@@ -5,7 +5,7 @@ Before starting a task, set it to `in progress (Name)` and push. When finished, 
 
 ## Current stage
 
-Planning is finished (10 Nov 2026). **Phase 0 done except Kaggle (0.4). **Phase 1 done.** Next: Phase 2 (2.1 pressure-adaptive controller). Coding phases 1–5 mostly run as Claude Code cloud sessions (claude.ai/code), with Ibrahim checking from the phone app.** The vision track (V) can run in parallel at any time after Phase 0 step 0.4.
+Planning is finished (10 Nov 2026). **Phase 0 done except Kaggle (0.4). **Phases 1 and 2 done.** Next: Phase 3 (ambulance routing and corridor) or Phase 4 (DQN). Coding phases 1–5 mostly run as Claude Code cloud sessions (claude.ai/code), with Ibrahim checking from the phone app.** The vision track (V) can run in parallel at any time after Phase 0 step 0.4.
 
 ## Deliverable III requirements (from the university)
 
@@ -85,9 +85,9 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 ### Phase 2 — Rule-adaptive control + first comparison
 | ID | Task | Status | Done when |
 |---|---|---|---|
-| 2.1 | Pressure-based adaptive controller (Eq 5.2: pressure + wait term, min/max green, max-red promotion) | in progress (Claude cloud session for Ibrahim) | Runs; explanation fields recorded |
-| 2.2 | Batch runner: controller × demand × seeds (FYP-1: about 3–5 seeds, shorter runs) | in progress (Claude cloud session for Ibrahim) | One command produces a results table |
-| 2.3 | First comparison: fixed vs adaptive, with plots | in progress (Claude cloud session for Ibrahim) | Results + plots in `results/` |
+| 2.1 | Pressure-based adaptive controller (Eq 5.2: pressure + wait term, min/max green, max-red promotion) | done (cloud, 10 Nov): `manzil/control/adaptive.py` (Eq 5.2, min/max green, max-red promotion, hysteresis, min hold; scores in every request); one parameter set frozen after 60 dev-seed settings → `results/phase2/adaptive_tuning_dev_seeds.csv` | Runs; explanation fields recorded |
+| 2.2 | Batch runner: controller × demand × seeds (FYP-1: about 3–5 seeds, shorter runs) | done (cloud, 10 Nov): `manzil/experiments/batch.py`: parallel arms × profiles × seeds → `results.csv`, FR-18 compatibility check; 60 full runs take about 100 s on 4 cores | One command produces a results table |
+| 2.3 | First comparison: fixed vs adaptive, with plots | done (cloud, 10 Nov): `manzil/experiments/compare.py`; fixed (tuned) vs fixed (one plan) vs adaptive, seeds 0–4, 900 + 3,600 s → `results/phase2/comparison/` (`summary.md`, `comparison.png`) | Results + plots in `results/` |
 
 ### Phase 3 — Ambulance routing, rerouting, green corridor
 | ID | Task | Status | Done when |
