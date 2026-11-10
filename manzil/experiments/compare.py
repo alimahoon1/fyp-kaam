@@ -32,8 +32,20 @@ METRICS = {
     "unfinished_veh": ("Unfinished at end", "veh", True),
     "phase_changes": ("Phase changes", "count", None),
     "max_red_s": ("Max red", "s", True),
+    # Emergency missions (Phase 3)
+    "amb_travel_time_s": ("Ambulance travel time", "s", True),
+    "amb_excess_delay_s": ("Ambulance excess delay", "s", True),
+    "amb_stops": ("Ambulance stops", "count", True),
+    "amb_waiting_s": ("Ambulance time stopped", "s", True),
+    "route_revisions": ("Route revisions", "count", None),
+    "mission_window_queue_mean_veh": ("Network queue, mission + 300 s", "veh", True),
+    "recovery_time_mean_s": ("Junction recovery time", "s", True),
 }
-REFERENCE = "fixed_time"
+DEFAULT_TABLE = [
+    "travel_time_mean_s", "waiting_time_mean_s", "queue_mean_veh", "queue_max_veh",
+    "throughput_veh", "max_red_s",
+]  # fmt: skip
+REFERENCE = REFERENCE_DEFAULT = "fixed_time"
 PROFILE_ORDER = ("light", "medium", "heavy", "uneven")
 
 # Two-sided 95 % Student t quantiles by degrees of freedom.
@@ -55,7 +67,14 @@ def mean_sd(xs: list[float]) -> tuple[float, float]:
     return m, sd
 
 
-def summarise(rows: list[dict]) -> dict:
+def _val(r, m):
+    v = r.get(m)
+    return None if v in ("", None) else float(v)
+
+
+def summarise(rows: list[dict], reference: str = REFERENCE, metrics=None) -> dict:
+    REFERENCE = reference  # noqa: N806 - local alias keeps the code below readable
+    metrics = metrics or list(METRICS)
     check_compatible(rows)
     by = defaultdict(dict)  # (profile, controller) -> seed -> row
     for r in rows:
@@ -67,32 +86,38 @@ def summarise(rows: list[dict]) -> dict:
     controllers = sorted(
         {k[1] for k in by}, key=lambda c: (c != REFERENCE, not c.startswith("fixed"), c)
     )
-    out = {"profiles": profiles, "controllers": controllers, "summary": {}, "paired": {}}
+    out = {"profiles": profiles, "controllers": controllers, "reference": REFERENCE,
+           "metrics": metrics, "summary": {}, "paired": {}}  # fmt: skip
+    metrics = [m for m in metrics if any(_val(r, m) is not None for r in rows)]
+    out["metrics"] = metrics
     for p in profiles:
         for c in controllers:
             runs = by.get((p, c), {})
             if not runs:
                 continue
-            out["summary"].setdefault(p, {})[c] = {
-                "seeds": sorted(runs),
-                **{
-                    m: dict(zip(("mean", "sd"), mean_sd([float(r[m]) for r in runs.values()]),
-                                strict=True))
-                    for m in METRICS
-                },
-            }  # fmt: skip
+            entry = {"seeds": sorted(runs)}
+            for m in metrics:
+                vals = [v for r in runs.values() if (v := _val(r, m)) is not None]
+                entry[m] = (
+                    {"mean": mean_sd(vals)[0], "sd": mean_sd(vals)[1], "n": len(vals)}
+                    if vals else None
+                )  # fmt: skip
+            out["summary"].setdefault(p, {})[c] = entry
             ref = by.get((p, REFERENCE), {})
             if c == REFERENCE or not ref:
                 continue
-            seeds = sorted(set(runs) & set(ref))
-            if set(seeds) != set(runs) or set(seeds) != set(ref):
+            if set(runs) != set(ref):
                 raise ValueError(f"{p}: {c} and {REFERENCE} were not run on the same seeds")
             paired = {}
-            for m in METRICS:
-                diffs = [float(runs[s][m]) - float(ref[s][m]) for s in seeds]
+            for m in metrics:
+                pairs = [(_val(runs[s], m), _val(ref[s], m)) for s in sorted(runs)]
+                pairs = [(a, b) for a, b in pairs if a is not None and b is not None]
+                if not pairs:
+                    continue
+                diffs = [a - b for a, b in pairs]
                 d, sd = mean_sd(diffs)
                 half = t95(len(diffs) - 1) * sd / math.sqrt(len(diffs)) if len(diffs) > 1 else None
-                base = mean_sd([float(ref[s][m]) for s in seeds])[0]
+                base = sum(b for _, b in pairs) / len(pairs)
                 paired[m] = {
                     "mean_diff": d,
                     "sd_diff": sd,
@@ -116,10 +141,8 @@ def _fmt(x, nd=1) -> str:
 
 
 def markdown(summary: dict, metrics=None) -> str:
-    metrics = metrics or [
-        "travel_time_mean_s", "waiting_time_mean_s", "queue_mean_veh", "queue_max_veh",
-        "throughput_veh", "max_red_s",
-    ]  # fmt: skip
+    REFERENCE = summary.get("reference", REFERENCE_DEFAULT)  # noqa: N806
+    metrics = [m for m in (metrics or DEFAULT_TABLE) if m in summary["metrics"]]
     lines = []
     for p in summary["profiles"]:
         lines += [f"### {p}", ""]
@@ -131,7 +154,7 @@ def markdown(summary: dict, metrics=None) -> str:
             label, unit, _ = METRICS[m]
             row = f"| {label} ({unit}) |"
             for c in summary["controllers"]:
-                s = summary["summary"][p].get(c, {}).get(m)
+                s = (summary["summary"][p].get(c) or {}).get(m)
                 row += f" {_fmt(s['mean'])} ± {_fmt(s['sd'])} |" if s else " — |"
             for c in extra:
                 d = summary["paired"].get(p, {}).get(c, {}).get(m)
@@ -148,15 +171,13 @@ def markdown(summary: dict, metrics=None) -> str:
     return "\n".join(lines)
 
 
-def plot(rows: list[dict], summary: dict, path: Path, metrics=None) -> None:
+def plot(rows: list[dict], summary: dict, path: Path, metrics=None, title=None) -> None:
     import matplotlib
 
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
-    metrics = metrics or [
-        "travel_time_mean_s", "waiting_time_mean_s", "queue_mean_veh", "queue_max_veh",
-    ]  # fmt: skip
+    metrics = metrics or DEFAULT_TABLE[:4]
     profiles, controllers = summary["profiles"], summary["controllers"]
     colors = ["#4C72B0", "#DD8452", "#55A868", "#C44E52"]
     fig, axes = plt.subplots(2, 2, figsize=(11, 7.5))
@@ -167,16 +188,18 @@ def plot(rows: list[dict], summary: dict, path: Path, metrics=None) -> None:
             xs, means, sds = [], [], []
             for pi, p in enumerate(profiles):
                 s = summary["summary"][p].get(c)
-                if not s:
+                if not s or not s.get(m):
                     continue
                 x = pi + (ci - (len(controllers) - 1) / 2) * width
                 xs.append(x)
                 means.append(s[m]["mean"])
                 sds.append(0 if math.isnan(s[m]["sd"]) else s[m]["sd"])
                 seeds = [
-                    float(r[m])
+                    v
                     for r in rows
-                    if r["profile"] == p and (r.get("arm") or r["controller"]) == c
+                    if r["profile"] == p
+                    and (r.get("arm") or r["controller"]) == c
+                    and (v := _val(r, m)) is not None
                 ]
                 ax.scatter([x] * len(seeds), seeds, s=9, color="black", zorder=3, alpha=0.6)
             ax.bar(xs, means, width, yerr=sds, capsize=3, label=c, color=colors[ci % 4])
@@ -187,7 +210,8 @@ def plot(rows: list[dict], summary: dict, path: Path, metrics=None) -> None:
     axes.flat[0].legend()
     n = len(next(iter(next(iter(summary["summary"].values())).values()))["seeds"])
     fig.suptitle(
-        f"Synthetic 3×3 grid (SUMO): bars = mean over {n} seeds, error bars = SD, dots = seeds"
+        f"{title or 'Synthetic 3×3 grid (SUMO)'}: bars = mean over {n} seeds, "
+        "error bars = SD, dots = seeds"
     )
     fig.tight_layout()
     path.parent.mkdir(parents=True, exist_ok=True)

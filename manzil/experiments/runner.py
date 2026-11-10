@@ -35,6 +35,7 @@ import manzil
 from manzil.control.adaptive import AdaptiveController, AdaptiveParams
 from manzil.control.fixed_time import SignalTiming
 from manzil.control.safety import SafetyFilter, SafetyMonitor
+from manzil.experiments.emergency import MissionConfig, MissionDriver
 from manzil.experiments.metrics import (
     METRIC_VERSION,
     QueueCollector,
@@ -66,6 +67,8 @@ class RunConfig:
     # Overrides of the scenario's controller parameters, e.g. (("beta", 0.02),). A tuple of
     # pairs keeps the config hashable and its digest stable.
     controller_params: tuple[tuple[str, float], ...] = ()
+    mission: MissionConfig | None = None  # an ambulance mission inside the run (Phase 3)
+    label: str = ""  # name of the experiment arm, e.g. "corridor_on" (used by comparisons)
 
     @property
     def end_s(self) -> float:
@@ -92,6 +95,10 @@ class RunConfig:
             problems.append("durations must be whole seconds (1 s steps)")
         if self.backend not in ("libsumo", "traci"):
             problems.append(f"unknown backend {self.backend!r}")
+        if self.mission is not None:
+            problems += self.mission.validate()
+            if not 0 <= self.mission.dispatch_s < self.end_s:
+                problems.append("mission dispatch must be inside the run")
         if problems:
             raise ValueError("invalid run config: " + "; ".join(problems))
 
@@ -140,18 +147,32 @@ def run(config: RunConfig, out_dir: Path | None = None) -> RunResult:
 
     tripinfo, stats = run_dir / "tripinfo.xml", run_dir / "statistics.xml"
     sumo_args = [
-        "--net-file", str(net_file),
-        "--route-files", str(demand.routes),
-        "--seed", str(config.seed),
-        "--begin", "0",
-        "--end", str(config.end_s),
-        "--step-length", "1",
-        "--time-to-teleport", str(config.time_to_teleport_s),
-        "--tripinfo-output", str(tripinfo),
-        "--tripinfo-output.write-unfinished", "true",
-        "--statistic-output", str(stats),
+        "--net-file",
+        str(net_file),
+        "--route-files",
+        str(demand.routes),
+        "--seed",
+        str(config.seed),
+        "--begin",
+        "0",
+        "--end",
+        str(config.end_s),
+        "--step-length",
+        "1",
+        "--time-to-teleport",
+        str(config.time_to_teleport_s),
+        "--tripinfo-output",
+        str(tripinfo),
+        "--tripinfo-output.write-unfinished",
+        "true",
+        "--statistic-output",
+        str(stats),
         *QUIET_ARGS,
-    ]  # fmt: skip
+    ]
+    if config.mission and config.mission.incident == "closure":
+        # Vehicles whose pre-generated route crosses the closure would be refused at insertion.
+        # Insert them anyway; the adapter reroutes every new vehicle around closures at once.
+        sumo_args += ["--ignore-route-errors", "true"]  # fmt: skip
 
     manifest = {
         "run_id": run_id,
@@ -178,6 +199,7 @@ def run(config: RunConfig, out_dir: Path | None = None) -> RunResult:
     monitor = SafetyMonitor(network, timing.safety)
     queues = QueueCollector(config.warmup_s)
     sim = SimulationAdapter(network, config.backend)
+    driver = MissionDriver(config.mission, network, safety, sim) if config.mission else None
     wall0 = time.perf_counter()
     try:
         snap = sim.start(sumo_args)
@@ -192,6 +214,8 @@ def run(config: RunConfig, out_dir: Path | None = None) -> RunResult:
             if now >= config.end_s:
                 queues.record(snap)
                 break
+            if driver:  # routing and corridor act before the normal controller (Alg 3)
+                driver.step(snap)
             signals = {tls: safety.signal_state(tls, now) for tls in network.tls_ids}
             for req in controller.decide(snap, signals):
                 safety.submit(req, now, step)
@@ -224,7 +248,11 @@ def run(config: RunConfig, out_dir: Path | None = None) -> RunResult:
         "safety_violations": len(monitor.violations),
         "safety_interventions": dict(sorted(interventions.items())),
         "controller_decisions": dict(sorted(getattr(controller, "decisions", {}).items())),
+        "corridor_held_requests": safety.owner_held,
     }
+    if driver:
+        metrics.update(driver.metrics())
+        (run_dir / "mission.json").write_text(json.dumps(driver.records(), indent=2) + "\n")
     (run_dir / "metrics.json").write_text(json.dumps(metrics, indent=2) + "\n")
     write_csv(run_dir / "timeseries.csv", queues.samples)
     write_csv(run_dir / "signal_events.csv", [_row(e) for e in safety.events])

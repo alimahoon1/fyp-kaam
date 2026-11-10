@@ -24,6 +24,8 @@ from enum import Enum
 from manzil.sim.contracts import AppliedControl, ControlRequest, Owner, SignalEvent, SignalState
 from manzil.sim.network import GREEN_CHARS, Intersection, NetworkModel
 
+CORRIDOR_ID = "corridor"  # controller id the corridor coordinator uses for its requests
+
 
 @dataclass(frozen=True)
 class SafetyConfig:
@@ -83,6 +85,7 @@ class SafetyFilter:
     applied: list[AppliedControl] = field(default_factory=list)
     events: list[SignalEvent] = field(default_factory=list)
     hold_count: int = 0
+    owner_held: int = 0  # normal-controller requests ignored while the corridor owns a junction
     _j: dict[str, _Junction] = field(default_factory=dict, repr=False)
     _next_request_id: int = 0
 
@@ -93,6 +96,7 @@ class SafetyFilter:
         self.applied.clear()
         self.events.clear()
         self.hold_count = 0
+        self.owner_held = 0
         for tls, x in self.network.intersections.items():
             phase = initial_phases.get(tls, 0)
             if not 0 <= phase < len(x.green_phases):
@@ -105,6 +109,12 @@ class SafetyFilter:
     # ----- requests --------------------------------------------------------------------------
     def submit(self, req: ControlRequest, now: float, step: int) -> AppliedControl | None:
         j = self._j[req.intersection_id]
+        is_corridor = req.controller_id == CORRIDOR_ID
+        if is_corridor != (j.owner is Owner.CORRIDOR):
+            if is_corridor:
+                raise PermissionError(f"{j.x.tls_id}: corridor request without ownership")
+            self.owner_held += 1  # the corridor owns this junction: normal control waits
+            return None
         rid = self._next_request_id
         self._next_request_id += 1
         n_phases = len(j.x.green_phases)
@@ -165,6 +175,25 @@ class SafetyFilter:
             owner=j.owner,
             in_transition=not green,
         )
+
+    def set_owner(self, tls: str, owner: Owner, now: float, step: int) -> None:
+        """Hand a junction to the corridor or back to normal control. Safety rules (minimum
+        green, yellow, all-red) apply to every owner, so the hand-over itself is always safe."""
+        j = self._j[tls]
+        if j.owner is owner:
+            return
+        j.owner = owner
+        self.events.append(
+            SignalEvent(step, now, tls, f"owner_{owner.value.lower()}", j.phase, j.state, owner)
+        )
+
+    def owner(self, tls: str) -> Owner:
+        return self._j[tls].owner
+
+    def showing(self, tls: str) -> int | None:
+        """Green phase currently shown, or None during yellow / all-red."""
+        j = self._j[tls]
+        return j.phase if j.mode is Mode.GREEN else None
 
     def can_switch(self, tls: str, now: float) -> bool:
         j = self._j[tls]

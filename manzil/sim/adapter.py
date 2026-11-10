@@ -22,9 +22,11 @@ from traci import constants as tc
 from manzil.sim.contracts import (
     SCHEMA_VERSION,
     ApproachState,
+    EdgeState,
     LaneState,
     SourceMode,
     TrafficSnapshot,
+    VehicleState,
 )
 from manzil.sim.network import NetworkModel
 from manzil.sumo_env import sumo_binary
@@ -36,10 +38,24 @@ LANE_VARS = (
     tc.LAST_STEP_MEAN_SPEED,
     tc.LAST_STEP_OCCUPANCY,
 )
-SIM_VARS = (
-    tc.VAR_ARRIVED_VEHICLES_NUMBER,
-    tc.VAR_DEPARTED_VEHICLES_NUMBER,
+EDGE_VARS = (
+    tc.LAST_STEP_VEHICLE_NUMBER,
+    tc.LAST_STEP_VEHICLE_HALTING_NUMBER,
+    tc.LAST_STEP_MEAN_SPEED,
 )
+VEHICLE_VARS = (
+    tc.VAR_ROAD_ID,
+    tc.VAR_LANE_ID,
+    tc.VAR_LANEPOSITION,
+    tc.VAR_SPEED,
+    tc.VAR_WAITING_TIME,
+    tc.VAR_ROUTE_INDEX,
+)
+SIM_VARS = (
+    tc.VAR_ARRIVED_VEHICLES_IDS,
+    tc.VAR_DEPARTED_VEHICLES_IDS,
+)
+AMBULANCE_TYPE = "ambulance"
 
 # Options that keep SUMO quiet on the console (append to the start arguments).
 QUIET_ARGS = ("--no-step-log", "true", "--no-warnings", "true")
@@ -64,6 +80,10 @@ class SimulationAdapter:
         self._departed = 0
         self._applied: dict[str, str] = {}
         self._snapshot: TrafficSnapshot | None = None
+        self._tracked: set[str] = set()
+        self._closed: set[str] = set()
+        self._speed_limits: dict[str, float] = {}
+        self._edges = sorted(e.getID() for e in network.net.getEdges())
         self._lanes = sorted(
             {
                 lane
@@ -158,6 +178,79 @@ class SimulationAdapter:
         self._applied[tls_id] = state
         return True
 
+    # ----- vehicles and incidents -------------------------------------------------------------
+    def add_ambulance_type(self, color=(255, 255, 255, 255)) -> str:
+        """An ambulance that obeys signals: vClass ``emergency``, no blue-light device (D11)."""
+        self._require_running()
+        vt = self._conn.vehicletype
+        if AMBULANCE_TYPE not in vt.getIDList():
+            vt.copy("DEFAULT_VEHTYPE", AMBULANCE_TYPE)
+            vt.setVehicleClass(AMBULANCE_TYPE, "emergency")
+            vt.setShapeClass(AMBULANCE_TYPE, "emergency")
+            vt.setColor(AMBULANCE_TYPE, color)
+            vt.setImperfection(AMBULANCE_TYPE, 0.0)  # deterministic driver (sigma = 0)
+            vt.setSpeedFactor(AMBULANCE_TYPE, 1.0)
+        return AMBULANCE_TYPE
+
+    def add_vehicle(self, vehicle_id: str, edges: Sequence[str], type_id: str) -> None:
+        """Insert a vehicle now on the given route and track its state in every snapshot."""
+        self._require_running()
+        route_id = f"route_{vehicle_id}"
+        self._conn.route.add(route_id, list(edges))
+        self._conn.vehicle.add(
+            vehicle_id, route_id, typeID=type_id, depart="now", departLane="best",
+            departSpeed="max",
+        )  # fmt: skip
+        self._conn.vehicle.subscribe(vehicle_id, VEHICLE_VARS)
+        self._tracked.add(vehicle_id)
+
+    def set_route(self, vehicle_id: str, edges: Sequence[str]) -> None:
+        """Replace a vehicle's route; ``edges[0]`` must be the edge it is on."""
+        self._require_running()
+        self._conn.vehicle.setRoute(vehicle_id, list(edges))
+
+    def vehicle_route(self, vehicle_id: str) -> tuple[str, ...]:
+        self._require_running()
+        return tuple(self._conn.vehicle.getRoute(vehicle_id))
+
+    def close_edge(self, edge_id: str) -> int:
+        """Hard closure: no vehicle may enter. Background vehicles that would use the edge are
+        rerouted by SUMO's own router; tracked vehicles (the ambulance) are left to Manzil.
+        Returns the number of vehicles rerouted now."""
+        self._require_running()
+        for lane in self.network.net.getEdge(edge_id).getLanes():
+            self._conn.lane.setDisallowed(lane.getID(), ["all"])
+        self._closed.add(edge_id)
+        return self._reroute_around_closures(self._conn.vehicle.getIDList())
+
+    def slow_edge(self, edge_id: str, speed_mps: float) -> None:
+        """Obstruction: lower the speed limit on every lane of the edge."""
+        self._require_running()
+        for lane in self.network.net.getEdge(edge_id).getLanes():
+            self._conn.lane.setMaxSpeed(lane.getID(), speed_mps)
+        self._speed_limits[edge_id] = speed_mps
+
+    @property
+    def closed_edges(self) -> frozenset[str]:
+        return frozenset(self._closed)
+
+    @property
+    def speed_limits(self) -> dict[str, float]:
+        """Edges whose speed limit was lowered by an incident (edge -> m/s)."""
+        return dict(self._speed_limits)
+
+    def _reroute_around_closures(self, vehicle_ids) -> int:
+        n = 0
+        for vid in vehicle_ids:
+            if vid in self._tracked:
+                continue
+            v = self._conn.vehicle
+            route, idx = v.getRoute(vid), v.getRouteIndex(vid)
+            if any(e in self._closed for e in route[max(idx, 0) + 1 :]):
+                v.rerouteTraveltime(vid)
+                n += 1
+        return n
+
     # ----- internals -------------------------------------------------------------------------
     def _require_running(self) -> None:
         if self._conn is None:
@@ -168,7 +261,12 @@ class SimulationAdapter:
             self._conn.lane.subscribe(lane, LANE_VARS)
         for tls in self.network.tls_ids:
             self._conn.trafficlight.subscribe(tls, (tc.TL_RED_YELLOW_GREEN_STATE,))
+        for edge in self._edges:
+            self._conn.edge.subscribe(edge, EDGE_VARS)
         self._conn.simulation.subscribe(SIM_VARS)
+        self._tracked = set()
+        self._closed = set()
+        self._speed_limits = {}
         self._arrived = 0
         self._departed = 0
 
@@ -189,8 +287,39 @@ class SimulationAdapter:
         tls_res = conn.trafficlight.getAllSubscriptionResults()
         signals = {t: tls_res[t][tc.TL_RED_YELLOW_GREEN_STATE] for t in self.network.tls_ids}
         sim = conn.simulation.getSubscriptionResults()
-        self._arrived += int(sim[tc.VAR_ARRIVED_VEHICLES_NUMBER])
-        self._departed += int(sim[tc.VAR_DEPARTED_VEHICLES_NUMBER])
+        arrived_ids = tuple(sim[tc.VAR_ARRIVED_VEHICLES_IDS])
+        departed_ids = sim[tc.VAR_DEPARTED_VEHICLES_IDS]
+        self._arrived += len(arrived_ids)
+        self._departed += len(departed_ids)
+        if self._closed and departed_ids:  # new vehicles may have routes through a closure
+            self._reroute_around_closures(departed_ids)
+        edge_res = conn.edge.getAllSubscriptionResults()
+        edges = {
+            e: EdgeState(
+                e,
+                int(r[tc.LAST_STEP_VEHICLE_NUMBER]),
+                int(r[tc.LAST_STEP_VEHICLE_HALTING_NUMBER]),
+                float(r[tc.LAST_STEP_MEAN_SPEED]),
+            )
+            for e, r in edge_res.items()
+        }
+        tracked = {}
+        veh_res = conn.vehicle.getAllSubscriptionResults()
+        for vid in list(self._tracked):
+            if vid in arrived_ids:
+                self._tracked.discard(vid)
+                continue
+            r = veh_res.get(vid)
+            if r:
+                tracked[vid] = VehicleState(
+                    vid,
+                    r[tc.VAR_ROAD_ID],
+                    r[tc.VAR_LANE_ID],
+                    float(r[tc.VAR_LANEPOSITION]),
+                    float(r[tc.VAR_SPEED]),
+                    float(r[tc.VAR_WAITING_TIME]),
+                    int(r[tc.VAR_ROUTE_INDEX]),
+                )
 
         approaches = {
             tls: tuple(_approach_state(tls, a.edge_id, a.lanes, lanes) for a in x.approaches)
@@ -210,6 +339,9 @@ class SimulationAdapter:
             departed_total=self._departed,
             running=conn.vehicle.getIDCount(),
             approaches=approaches,
+            edges=edges,
+            tracked=tracked,
+            arrived_ids=arrived_ids,
         )
 
 
