@@ -22,6 +22,11 @@ dev = [
     "ruff==0.17.4",
 ]
 
+# Kaggle CLI for the vision track (GPU training runs on Kaggle, not locally)
+kaggle = [
+    "kaggle==1.7.4.5",
+]
+
 # DQN training/evaluation (Phase 4). CPU build, e.g.:
 #   pip install -e ".[rl]" --extra-index-url https://download.pytorch.org/whl/cpu
 rl = [

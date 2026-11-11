@@ -35,7 +35,7 @@ Ibrahim runs long coding tasks as Claude Code cloud sessions and follows them fr
 - Work autonomously through the task you were given, following `PLAN.md`. Ask the user only when blocked on a decision that is genuinely theirs, and ask one short question.
 - The same commit rules apply. If you can push to `main`, do so (pull/rebase first). If the session only allows a `claude/...` branch, push there, open a PR, and say so clearly in the final summary.
 - End with a short plain-language summary: what was done, test results, and anything that needs Ibrahim.
-- Kaggle tasks need the Kaggle token, which is not available in cloud sessions unless Ibrahim adds it as an environment secret. Otherwise leave Kaggle tasks for the laptop.
+- Kaggle: the cloud environment may provide `KAGGLE_USERNAME` and `KAGGLE_KEY` as environment variables (the Kaggle CLI reads them). Check with `kaggle kernels list --mine`. Never print, log or commit their values. Heavy work (dataset download, YOLO training) runs *inside* Kaggle kernels with GPU and internet; the cloud session only pushes kernel code and pulls back small outputs (metrics, plots, weights under ~50 MB). If the variables are missing or kaggle.com is blocked by the network settings, say so in the summary and leave Kaggle tasks for the laptop.
 
 ## Repository map
 
