@@ -20,3 +20,8 @@ Datasets are attached through `dataset_sources` in the metadata (for example `br
 | Kernel | Purpose | Result |
 |---|---|---|
 | `gpu_test/` | Checks GPU, internet and PyTorch | 12 Nov 2026: 2× Tesla T4 (15 GB each), PyTorch 2.11 sees CUDA, internet OK |
+| `detrac_inspect/` | Prints the UA-DETRAC layout, XML format and class names (CPU) | 11 Nov 2026: 60 train + 40 test XML sequences; types car / van / bus / others |
+| `yolo_data/` | Builds the 4-class YOLO dataset (UA-DETRAC + COCO motorcycle images) (CPU) | 11 Nov 2026: kernel output `manzil_yolo/` used as the dataset, see `results/vision/README.md` |
+| `yolo_train/` | Fine-tunes YOLO11s on 2× T4, evaluates fine-tuned vs pretrained | 12 Nov 2026: UA-DETRAC test mAP50 0.799 (pretrained 0.752); weights in `models/yolo/` |
+
+Tip: kernel inputs under `/kaggle/input` are slow to read (~1 MB/s reported by Ultralytics). Copying the dataset to `/kaggle/working` first should speed up training a lot.
