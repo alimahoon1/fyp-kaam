@@ -109,9 +109,9 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 ### Phase V — Vision track (parallel)
 | ID | Task | Status | Done when |
 |---|---|---|---|
-| V.1 | Get UA-DETRAC on Kaggle; convert to YOLO format; class mapping (car/bus/truck; van→car, others→truck, to confirm) | todo | Dataset version on Kaggle |
-| V.2 | Add a motorcycle-containing source so motorcycles aren't forgotten | todo | Merged dataset with 4 classes |
-| V.3 | Fine-tune YOLO on Kaggle GPU via the CLI; pull back weights + metrics | todo | mAP/precision/recall on the UA-DETRAC test split |
+| V.1 | Get UA-DETRAC on Kaggle; convert to YOLO format; class mapping (car/bus/truck; van→car, others→truck, to confirm) | in progress (Ibrahim, cloud) | Dataset version on Kaggle |
+| V.2 | Add a motorcycle-containing source so motorcycles aren't forgotten | in progress (Ibrahim, cloud) | Merged dataset with 4 classes |
+| V.3 | Fine-tune YOLO on Kaggle GPU via the CLI; pull back weights + metrics | in progress (Ibrahim, cloud) | mAP/precision/recall on the UA-DETRAC test split |
 | V.4 | Tracking (ByteTrack) + line-crossing counting + queue proxy on video | todo | Annotated output video + counts CSV |
 | V.5 | Count error (MAE) on held-out clips | todo | MAE table |
 | V.6 | Film 1–2 Lahore clips; AI pre-label + human-verify a small test set; manual counts | todo (needs filming) | Local-domain accuracy + MAE |
