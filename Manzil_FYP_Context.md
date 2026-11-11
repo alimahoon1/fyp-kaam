@@ -1592,3 +1592,20 @@ Tests: 98 pass.
 
 Limits: one network, the same profile types in training and evaluation (disjoint seeds), one training seed. Details: `results/phase4/README.md`.
 
+
+## 50.10 Kaggle connected (task 0.4, 12 Nov 2026)
+
+Kaggle no longer offers a `kaggle.json` download. It now issues a **new-style API token**, which needs Kaggle CLI 1.8 or newer; those versions require Python 3.11 or newer.
+
+**Where the token lives:**
+- **Laptop:** CLI 2.2.5 is installed for Python 3.13, outside the project's Python 3.10 `.venv`; run it as `py -3.13 -m kaggle`. The token is in `C:\Users\X1 Carbon\.kaggle\access_token`. The CLI needed `six` installed separately.
+- **Cloud environment:** the token is the `KAGGLE_API_TOKEN` variable, and `scripts/cloud_setup.sh` installs `kaggle==2.2.5`.
+
+**Verified (real):**
+- Authenticated CLI calls work (account `mibrahimsalman022`).
+- A private test kernel, `kaggle/gpu_test`, ran on Kaggle and reported **2× Tesla T4 (15 GB)**, PyTorch 2.11 with CUDA, and working internet.
+- A UA-DETRAC copy exists on Kaggle as `bratjay/ua-detrac-orig` (9.9 GB, the most used). It can be attached to kernels directly, so the data never passes through the laptop or the cloud session.
+
+**Not yet verified:** whether a cloud session can reach kaggle.com under its network setting. The first vision cloud task checks this.
+
+**Vision track:** now unblocked.
