@@ -25,6 +25,7 @@ Several team members work on this repo from **different machines, each with thei
 ## Environment notes
 
 - Ibrahim's laptop: i7-8650U, 16 GB RAM, **no NVIDIA GPU**. GPU training runs on **Kaggle** through the Kaggle CLI (`kaggle kernels push/status/output`).
+- Kaggle CLI on Ibrahim's laptop: version 2.2.5 installed for Python 3.13 (not in `.venv`, which is Python 3.10); run it as `py -3.13 -m kaggle ...`. The token is a new-style API token in `C:\Users\X1 Carbon\.kaggle\access_token` (never in the repo).
 - SUMO comes from PyPI (`eclipse-sumo`, pinned in `pyproject.toml`); setup steps are in `README.md`. On Windows, use the repo's `.venv` (`.venv\Scripts\python`).
 
 ## Cloud sessions (claude.ai/code)
@@ -35,7 +36,7 @@ Ibrahim runs long coding tasks as Claude Code cloud sessions and follows them fr
 - Work autonomously through the task you were given, following `PLAN.md`. Ask the user only when blocked on a decision that is genuinely theirs, and ask one short question.
 - The same commit rules apply. If you can push to `main`, do so (pull/rebase first). If the session only allows a `claude/...` branch, push there, open a PR, and say so clearly in the final summary.
 - End with a short plain-language summary: what was done, test results, and anything that needs Ibrahim.
-- Kaggle: the cloud environment may provide `KAGGLE_USERNAME` and `KAGGLE_KEY` as environment variables (the Kaggle CLI reads them). Check with `kaggle kernels list --mine`. Never print, log or commit their values. Heavy work (dataset download, YOLO training) runs *inside* Kaggle kernels with GPU and internet; the cloud session only pushes kernel code and pulls back small outputs (metrics, plots, weights under ~50 MB). If the variables are missing or kaggle.com is blocked by the network settings, say so in the summary and leave Kaggle tasks for the laptop.
+- Kaggle: the cloud environment may provide `KAGGLE_API_TOKEN` (Kaggle's new-style API token; needs Kaggle CLI 2.x, installed by the setup script). Check with `kaggle kernels list --mine`. Never print, log or commit their values. Heavy work (dataset download, YOLO training) runs *inside* Kaggle kernels with GPU and internet; the cloud session only pushes kernel code and pulls back small outputs (metrics, plots, weights under ~50 MB). If the variables are missing or kaggle.com is blocked by the network settings, say so in the summary and leave Kaggle tasks for the laptop.
 
 ## Repository map
 
