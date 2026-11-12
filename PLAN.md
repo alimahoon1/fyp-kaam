@@ -119,8 +119,8 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 ### Phase 5 — Simple dashboard v1
 | ID | Task | Status | Done when |
 |---|---|---|---|
-| 5.1 | FastAPI service: start/stop run, select controller, dispatch ambulance, close road, stream state | todo | API tests |
-| 5.2 | React dashboard: live map from network geometry, signal states, ambulance + route + corridor status | todo | Demo-able in a browser |
+| 5.1 | FastAPI service: start/stop run, select controller, dispatch ambulance, close road, stream state | in progress (Ibrahim, cloud) | API tests |
+| 5.2 | React dashboard: live map from network geometry, signal states, ambulance + route + corridor status | in progress (Ibrahim, cloud) | Demo-able in a browser |
 
 ### Phase 6 — Deliverable III report and demo
 | ID | Task | Status | Done when |
