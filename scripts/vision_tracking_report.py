@@ -21,6 +21,8 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 
+from manzil.perception.counting import count_errors  # noqa: E402
+
 D = Path(__file__).resolve().parents[1] / "results" / "vision" / "tracking"
 PRED, TRUE = "#2a78d6", "#eb6834"  # categorical slots 1 and 2 of the dataviz reference palette
 INK, INK2, GRID = "#0b0b0b", "#52514e", "#e4e3df"
@@ -52,6 +54,11 @@ def main():
 
     # ---- MAE table
     rows = [("all vehicles", summary["total"])]
+    # UA-DETRAC labels no two-wheelers, so every counted motorcycle is "wrong" by construction;
+    # this row scores only the classes the ground truth can contain.
+    no_moto = [(sum(int(r[f"pred_{c}"]) for c in ("car", "bus", "truck")),
+                sum(int(r[f"true_{c}"]) for c in ("car", "bus", "truck"))) for r in counts]
+    rows.append(("car + bus + truck", count_errors(no_moto)))
     rows += [(n, m) for n, m in summary["per_class"].items()]
     rows += [(f"direction {d}", m) for d, m in summary["per_direction"].items()]
     header = ["group", "clips", "true", "predicted", "MAE", "bias", "RMSE", "WAPE", "MAPE",

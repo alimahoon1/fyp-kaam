@@ -1646,3 +1646,36 @@ Kaggle no longer offers a `kaggle.json` download. It now issues a **new-style AP
 
 **Limits.** One run at a time; closed roads cannot be reopened within a run; one active ambulance at a time. This is the "simple dashboard" of FYP-1 (Decision 12); the five-screen dashboard + database stays in FYP-2.
 
+## 50.13 Vision track: tracking, counting, queue estimate and count error (tasks V.4, V.5, 12 Nov 2026)
+
+**Real result, Kaggle T4.** Kernel `mibrahimsalman022/manzil-yolo-track` (`kaggle/yolo_track/`). Full write-up: `results/vision/tracking/README.md`.
+
+- **Setup:**
+  - The fine-tuned YOLO11s from V.3 (sha256 checked in the kernel; weights taken from the `manzil-yolo-train` output through `kernel_sources`).
+  - ByteTrack from Ultralytics 8.4.210 with default settings, reset for each sequence.
+  - All 40 official UA-DETRAC test sequences at the full 25 fps: 56,340 frames, about 37.6 min of video.
+  - Ignored regions are filled grey, as in training.
+  - Speed: 40–66 frames/s including tracking. The run took 17 min.
+- **Counting rule** (`manzil/perception/counting.py`, 13 unit tests):
+  - One full-width line at 60 % of the image height.
+  - A track is counted once, when its box centre crosses the line.
+  - Crossings in ignored regions are dropped.
+  - The class is the majority class over the track.
+- **Ground truth:** the DETRAC target ids are true track ids, so the true counts are made by passing the annotated boxes through **the same counter**. The error then measures detection plus tracking only. This answers the earlier question of how to get true counts without manual counting.
+- **Queue estimate:** UA-DETRAC has no stop lines or signals, so the queue is a proxy: the number of tracked vehicles in view that moved less than 0.25 × box height in 1 s. It is computed the same way from the true tracks.
+- **V.5 results (one clip = one test sequence):**
+  - All vehicles: MAE **2.60**, bias +2.55, WAPE **12.0 %**, 11/40 sequences exact (870 true, 972 counted).
+  - Car + bus + truck only: MAE **1.62**, WAPE **7.5 %**.
+  - Car MAE 1.35, bus 0.40, truck 0.17 (4 counted against 9 true: still the weak class).
+  - 39 "motorcycle" counts, but DETRAC labels no two-wheelers. Some may be real scooters or bicycles and some false detections; this run cannot tell which.
+  - Queue: mean per-frame absolute error **0.80** stopped vehicles. On the busiest clip (MVI_40714, about 30 stopped vehicles) the estimate follows the truth closely.
+- **Error pattern:** an over-count, never an under-count of more than 1. The probable causes are false detections (one seen on a kerb island) and ID switches near the line in dense traffic. This is an inference, not verified frame by frame.
+- **Deliverables:**
+  - Annotated 30 s sample video `results/vision/tracking/sample_MVI_40714_tracking.mp4` (3.5 MB, in git) and three sample frames.
+  - `counts.csv`, `events.csv`, `queue.csv`, `mae_table.md`, and three figures.
+- **Engineering note:** a Kaggle script kernel is one file, so `kaggle/yolo_track/build.py` inlines the shared counting module into `track_count.py`. A test fails if the generated file is out of date.
+- **Next / FYP-2:**
+  - Per-camera line and ROI placement.
+  - A motorcycle false-positive check on Lahore footage (V.6).
+  - Tuning the ByteTrack thresholds against ID switches.
+  - Feeding counts and queues into SUMO (video→SUMO study).
