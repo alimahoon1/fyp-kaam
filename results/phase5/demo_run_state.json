@@ -1,0 +1,147 @@
+{
+  "note": "API state at ambulance arrival during the screenshot run (scripts/dashboard_screenshots.js)",
+  "run_id": "20261112T022736Z_grid3x3_dqn_heavy_s0",
+  "config": {
+    "controller": "dqn",
+    "profile": "heavy",
+    "seed": 0,
+    "duration_s": 3600,
+    "speed": 10,
+    "scenario": "grid3x3",
+    "backend": "traci"
+  },
+  "sim_time_s": 608,
+  "stats": {
+    "running": 329,
+    "departed": 1274,
+    "arrived": 945,
+    "planned": 7215,
+    "halting": 116,
+    "mean_speed_mps": 4.61,
+    "safety_violations": 0,
+    "sim_rate": 6.6
+  },
+  "closed_edges": [
+    "B0B1"
+  ],
+  "ambulance": {
+    "vehicle_id": "ambulance_1",
+    "status": "ARRIVED",
+    "origin": "left0A0",
+    "destination": "C2top2",
+    "corridor_enabled": true,
+    "dispatch_s": 411,
+    "arrival_s": 608,
+    "position": null,
+    "speed_mps": null,
+    "edge": null,
+    "route": [
+      "left0A0",
+      "A0B0",
+      "B0C0",
+      "C0C1",
+      "C1C2",
+      "C2top2"
+    ],
+    "route_version": 2,
+    "route_triggers": [
+      "dispatch",
+      "closure"
+    ],
+    "stops": 6,
+    "corridor": {
+      "B0": "RECOVERY"
+    },
+    "corridor_events": [
+      {
+        "time_s": 575,
+        "tls": "C0",
+        "state": "IDLE",
+        "recovery_s": 13
+      },
+      {
+        "time_s": 576,
+        "step": 576,
+        "tls": "C2",
+        "state": "ACTIVE_PRIORITY",
+        "route_version": 2,
+        "phase": 0,
+        "eta": 13.5
+      },
+      {
+        "time_s": 577,
+        "step": 577,
+        "tls": "C1",
+        "state": "PASSAGE",
+        "route_version": 2,
+        "phase": 0
+      },
+      {
+        "time_s": 577,
+        "step": 577,
+        "tls": "C1",
+        "state": "RECOVERY",
+        "route_version": 2,
+        "phase": 0
+      },
+      {
+        "time_s": 589,
+        "tls": "C1",
+        "state": "IDLE",
+        "recovery_s": 12
+      },
+      {
+        "time_s": 594,
+        "step": 594,
+        "tls": "C2",
+        "state": "PASSAGE",
+        "route_version": 2,
+        "phase": 0
+      },
+      {
+        "time_s": 594,
+        "step": 594,
+        "tls": "C2",
+        "state": "RECOVERY",
+        "route_version": 2,
+        "phase": 0
+      },
+      {
+        "time_s": 595,
+        "tls": "C2",
+        "state": "IDLE",
+        "recovery_s": 1
+      }
+    ],
+    "metrics": {
+      "mission_status": "ARRIVED",
+      "amb_travel_time_s": 197,
+      "amb_insertion_delay_s": 0,
+      "amb_free_flow_time_s": 78.91,
+      "amb_excess_delay_s": 118.09,
+      "amb_stops": 6,
+      "amb_waiting_s": 66,
+      "route_revisions": 1,
+      "revision_triggers": [
+        "closure"
+      ],
+      "route_compute_ms_max": 0.096,
+      "driven_route": [
+        "left0A0",
+        "A0B0",
+        "B0C0",
+        "C0C1",
+        "C1C2",
+        "C2top2"
+      ],
+      "mission_window_queue_mean_veh": 120.193,
+      "corridor_activations": 6,
+      "corridor_served": 6,
+      "corridor_cancelled": 2,
+      "corridor_timeouts": 1,
+      "recovery_time_mean_s": 16,
+      "recovery_time_max_s": 47,
+      "recovery_unfinished": 1
+    }
+  }
+}

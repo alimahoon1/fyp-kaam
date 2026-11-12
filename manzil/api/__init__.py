@@ -1,1 +1,1 @@
-"""manzil.api (see PLAN.md for the planned contents)."""
+"""FastAPI service and live-run session for the dashboard (PLAN Phase 5)."""

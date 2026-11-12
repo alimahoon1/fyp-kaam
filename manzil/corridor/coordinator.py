@@ -193,6 +193,12 @@ class CorridorCoordinator:
             self.safety.set_owner(req.tls, Owner.NORMAL, now, step)
             self._recovering[req.tls] = (now, req.queue_at_activation)
 
+    def status(self) -> dict[str, str]:
+        """Current corridor state per junction that takes part (for display only)."""
+        out = {tls: "RECOVERY" for tls in self._recovering}
+        out.update({tls: req.state for tls, req in self._active.items()})
+        return out
+
     @property
     def open_recoveries(self) -> int:
         return len(self._recovering)

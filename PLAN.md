@@ -5,7 +5,7 @@ Before starting a task, set it to `in progress (Name)` and push. When finished, 
 
 ## Current stage
 
-Planning is finished (10 Nov 2026). **Phase 0 done. Phases 1–4 done; vision V.1–V.3 done.** Next: vision V.4 (tracking + counting), Phase 5 dashboard, Phase 6 report chapters. Coding phases 1–5 mostly run as Claude Code cloud sessions (claude.ai/code), with Ibrahim checking from the phone app.** The vision track (V) can run in parallel at any time after Phase 0 step 0.4.
+Planning is finished (10 Nov 2026). **Phase 0 done. Phases 1–5 done; vision V.1–V.3 done.** Next: vision V.4 (tracking + counting), Phase 6 report chapters. Coding phases 1–5 mostly run as Claude Code cloud sessions (claude.ai/code), with Ibrahim checking from the phone app.** The vision track (V) can run in parallel at any time after Phase 0 step 0.4.
 
 ## Deliverable III requirements (from the university)
 
@@ -119,8 +119,8 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 ### Phase 5 — Simple dashboard v1
 | ID | Task | Status | Done when |
 |---|---|---|---|
-| 5.1 | FastAPI service: start/stop run, select controller, dispatch ambulance, close road, stream state | todo | API tests |
-| 5.2 | React dashboard: live map from network geometry, signal states, ambulance + route + corridor status | todo | Demo-able in a browser |
+| 5.1 | FastAPI service: start/stop run, select controller, dispatch ambulance, close road, stream state | done (cloud, 12 Nov): `manzil/api/` (`app.py` FastAPI + WebSocket state stream, `live.py` step-wise live run in a worker thread using the same Algorithm 3 loop as the runner); start/stop, speed, controller fixed/adaptive/DQN, dispatch ambulance, close road; 13 tests in `tests/test_api.py` (full suite 127 passed) | API tests |
+| 5.2 | React dashboard: live map from network geometry, signal states, ambulance + route + corridor status | done (cloud, 12 Nov): `dashboard/` (Vite + React 19 + TypeScript, SVG map from the `.net.xml`): signal colours per link, vehicles, queue shading, ambulance + route + corridor states, closures; screenshots of a live DQN/heavy run in `results/phase5/`; Windows steps in `README.md` | Demo-able in a browser |
 
 ### Phase 6 — Deliverable III report and demo
 | ID | Task | Status | Done when |
