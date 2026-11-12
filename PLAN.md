@@ -114,7 +114,7 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 | V.3 | Fine-tune YOLO on Kaggle GPU via the CLI; pull back weights + metrics | done (cloud, 12 Nov): YOLO11s, 50 epochs on 2× T4 (1.8 h). UA-DETRAC test mAP50 0.799 / mAP50-95 0.586 (pretrained 0.752 / 0.530); motorcycle mAP50 0.749 (pretrained 0.761); truck recall weak (0.46). `results/vision/README.md`, `models/yolo/manzil_yolo11s_best.pt` | mAP/precision/recall on the UA-DETRAC test split |
 | V.4 | Tracking (ByteTrack) + line-crossing counting + queue proxy on video | todo | Annotated output video + counts CSV |
 | V.5 | Count error (MAE) on held-out clips | todo | MAE table |
-| V.6 | Film 1–2 Lahore clips; AI pre-label + human-verify a small test set; manual counts | todo (needs filming) | Local-domain accuracy + MAE |
+| V.6 | Film 1–2 Lahore clips; AI pre-label + human-verify a small test set; manual counts | deferred (12 Nov: skipped for now by Ibrahim; kept on the list; do if time allows, else FYP-2) | Local-domain accuracy + MAE |
 
 ### Phase 5 — Simple dashboard v1
 | ID | Task | Status | Done when |
