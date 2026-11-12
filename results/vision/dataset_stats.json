@@ -1,0 +1,96 @@
+{
+  "detrac": {
+    "train": {
+      "images": 7365,
+      "sequences": 54,
+      "boxes": {
+        "car": 48463,
+        "bus": 3034,
+        "truck": 274
+      }
+    },
+    "val": {
+      "images": 867,
+      "sequences": 6,
+      "boxes": {
+        "car": 7213,
+        "bus": 172,
+        "truck": 89
+      }
+    },
+    "test": {
+      "images": 5625,
+      "sequences": 40,
+      "boxes": {
+        "car": 55183,
+        "bus": 6565,
+        "truck": 1629
+      }
+    }
+  },
+  "coco": {
+    "train": {
+      "images": 3202,
+      "boxes": {
+        "car": 4643,
+        "bus": 436,
+        "truck": 918,
+        "motorcycle": 7883
+      }
+    },
+    "val": {
+      "images": 300,
+      "boxes": {
+        "car": 421,
+        "bus": 25,
+        "truck": 95,
+        "motorcycle": 769
+      }
+    },
+    "test_motorcycle": {
+      "images": 159,
+      "boxes": {
+        "car": 175,
+        "bus": 32,
+        "truck": 47,
+        "motorcycle": 367
+      }
+    }
+  },
+  "config": {
+    "classes": [
+      "car",
+      "bus",
+      "truck",
+      "motorcycle"
+    ],
+    "detrac_map": {
+      "car": 0,
+      "van": 0,
+      "bus": 1,
+      "others": 2
+    },
+    "coco_map": {
+      "3": "car",
+      "6": "bus",
+      "8": "truck",
+      "4": "motorcycle"
+    },
+    "frame_stride": 10,
+    "val_sequences": [
+      "MVI_20011",
+      "MVI_20063",
+      "MVI_39861",
+      "MVI_40191",
+      "MVI_40732",
+      "MVI_41073"
+    ],
+    "coco_val_images": 300,
+    "seed": 0,
+    "sources": [
+      "bratjay/ua-detrac-orig",
+      "awsaf49/coco-2017-dataset"
+    ]
+  },
+  "labels_sha256": "37af57707467687f939e9b2242c69485e0fc77cbec37fefe2f14b59e088d45cd"
+}

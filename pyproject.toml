@@ -28,6 +28,12 @@ rl = [
     "torch==2.9.1",
 ]
 
+# Vision track (YOLO inference / tracking on recorded video). Training runs on Kaggle
+# (kaggle/yolo_train), which pins the same version.
+vision = [
+    "ultralytics==8.4.210",
+]
+
 [tool.setuptools.packages.find]
 include = ["manzil*"]
 

@@ -1,0 +1,13 @@
+{
+  "id": "mibrahimsalman022/manzil-yolo-train",
+  "title": "manzil-yolo-train",
+  "code_file": "train_yolo.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": ["mibrahimsalman022/manzil-yolo-data"]
+}

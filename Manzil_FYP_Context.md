@@ -1609,3 +1609,24 @@ Kaggle no longer offers a `kaggle.json` download. It now issues a **new-style AP
 **Not yet verified:** whether a cloud session can reach kaggle.com under its network setting. The first vision cloud task checks this.
 
 **Vision track:** now unblocked.
+
+
+## 50.11 Vision track: dataset and YOLO fine-tuning (tasks V.1–V.3, 11–12 Nov 2026)
+
+**Kaggle from a cloud session works.** `kaggle kernels list --mine` and push / status / output all work with `KAGGLE_API_TOKEN` in the cloud environment, so the earlier open question in 50.10 is answered. (One `output` call hit a short rate limit, which a retry fixed.)
+
+**Dataset (V.1, V.2).** Kernel `kaggle/yolo_data` builds the dataset on Kaggle. Its output is the dataset (attached to training via `kernel_sources`), not a separate `kaggle datasets` entry: making a dataset from inside a kernel would need the API token inside the kernel. **Deviation from the V.1 "done when" wording (dataset version on Kaggle):** the kernel output plays that role and is versioned with the kernel.
+- The UA-DETRAC XML has exactly four types: car / van / bus / others. The planned mapping is confirmed: car→car, van→car, bus→bus, others→truck.
+- Every 10th frame. Validation = 6 whole training sequences (every 10th in sorted order). Test = the official 40 test sequences.
+- Ignored regions are filled grey.
+- Motorcycle source: COCO 2017 images that contain a motorcycle (all four classes labelled, crowd boxes skipped). The train2017 images are split 3,202 train / 300 val; the 159 val2017 images are a separate motorcycle test set.
+- Totals: train 10,567 images, val 1,167, UA-DETRAC test 5,625, motorcycle test 159.
+
+**Training (V.3), real result.** YOLO11s, Ultralytics 8.4.210, 50 epochs at 640 px, batch 32, seed 0, on 2× T4 (1.8 h). Best epoch: 40.
+- UA-DETRAC test: fine-tuned mAP50 **0.799** / mAP50-95 **0.586** / precision 0.889 / recall 0.729, against the unchanged COCO-pretrained YOLO11s at 0.752 / 0.530 / 0.748 / 0.769.
+- Per class (mAP50, fine-tuned vs pretrained): car 0.924 vs 0.875; bus 0.918 vs 0.859; truck 0.555 vs 0.522. Truck recall dropped from 0.66 to 0.46, because there are only 274 "others" training boxes.
+- Motorcycle (COCO val2017): mAP50 0.749 vs 0.761 pretrained. Mixing in COCO kept motorcycles, with a small drop.
+- Inference: about 6.8 ms per image on a T4.
+- Weights: `models/yolo/manzil_yolo11s_best.pt` (19 MB, sha256 in `results/vision/README.md`).
+
+**Limits / next.** One seed. Truck is weak (more truck data or class weighting). Lahore footage is not tested yet (V.6). For a faster next run, copy the data to local disk first: Ultralytics reported slow reads from `/kaggle/input`. Next: V.4 ByteTrack + line counting with this model.
