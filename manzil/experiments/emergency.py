@@ -55,6 +55,7 @@ class MissionDriver:
     network: NetworkModel
     safety: SafetyFilter
     sim: SimulationAdapter
+    vehicle_id: str = AMBULANCE_ID  # unique per mission when one run dispatches several
 
     def __post_init__(self):
         c = self.config
@@ -116,17 +117,17 @@ class MissionDriver:
             plan = self.mission.dispatch(costs, now)
             if plan is not None:
                 self.sim.add_ambulance_type()
-                self.sim.add_vehicle(AMBULANCE_ID, plan.edge_ids, "ambulance")
+                self.sim.add_vehicle(self.vehicle_id, plan.edge_ids, "ambulance")
             return
 
         if self.mission.status != "ACTIVE":
             return
-        if AMBULANCE_ID in snap.arrived_ids:
+        if self.vehicle_id in snap.arrived_ids:
             self.mission.arrived(now)
             if self.corridor:
                 self.corridor.cancel_all(now, step, "arrived")
             return
-        amb = snap.tracked.get(AMBULANCE_ID)
+        amb = snap.tracked.get(self.vehicle_id)
         if amb is None or amb.edge_id == "":  # still waiting to enter the network
             return
         if self.depart_s is None:
@@ -137,7 +138,7 @@ class MissionDriver:
             amb, self.graph.live_snapshot(snap, closed, self.sim.speed_limits), now, step
         )
         if plan is not None:
-            self.sim.set_route(AMBULANCE_ID, plan.edge_ids)
+            self.sim.set_route(self.vehicle_id, plan.edge_ids)
             if self.corridor:
                 self.corridor.on_route_change(plan, now, step)
         if self.mission.status == "NO_ROUTE" and self.corridor:

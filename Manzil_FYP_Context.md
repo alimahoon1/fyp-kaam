@@ -1630,3 +1630,19 @@ Kaggle no longer offers a `kaggle.json` download. It now issues a **new-style AP
 - Weights: `models/yolo/manzil_yolo11s_best.pt` (19 MB, sha256 in `results/vision/README.md`).
 
 **Limits / next.** One seed. Truck is weak (more truck data or class weighting). Lahore footage is not tested yet (V.6). For a faster next run, copy the data to local disk first: Ultralytics reported slow reads from `/kaggle/input`. Next: V.4 ByteTrack + line counting with this model.
+
+## 50.12 Dashboard v1: FastAPI service + React dashboard (Phase 5, 12 Nov 2026)
+
+**What exists.** `python -m manzil.api` serves the API and the built dashboard on http://127.0.0.1:8000.
+- `manzil/api/live.py` (`LiveSession`): one live run in a worker thread, the same Algorithm 3 order as `runner.run` (snapshot → routing → corridor → controller → safety filter → adapter). API requests (dispatch, close road) are queued and run between two steps, so only the worker thread touches SUMO. Default backend is `traci` (SUMO in its own process), so a SUMO crash cannot take the API down. Each run writes `runs/live/<id>/` with tripinfo and `summary.json` (config, safety violations, closures, every mission's metrics and route versions).
+- `manzil/api/app.py`: `/api/options`, `/api/network` (geometry, junctions, signal links read from the `.net.xml`), `/api/state`, `/api/run/start|stop|speed`, `/api/ambulance`, `/api/roads/close`, WebSocket `/ws/state` (about 10 updates/s).
+- `dashboard/`: Vite + React 19 + TypeScript, plain SVG map (no map library). Signal colour per TLS link at the stop line, vehicles, queue shading per road, ambulance + route + corridor ring per junction, closed roads; controls for run, controller, demand, seed, speed, dispatch (From/To), close road (click a road).
+- Small changes to existing code: `SimulationAdapter(track_positions=True)` subscribes every vehicle's position (off by default, so experiments are unchanged); `MissionDriver.vehicle_id` (several ambulances in one run, one at a time); `CorridorCoordinator.status()` (read-only).
+- Optional extra `api` in `pyproject.toml` (fastapi 0.162.5, uvicorn 0.54.0, websockets 15.0.1, httpx 0.28.1); the cloud setup script installs it.
+
+**Tests.** `tests/test_api.py`, 13 tests against real SUMO: bad requests rejected (422/409), live signals/vehicles, one run at a time, dispatch → closure on the route → route v2 (`closure`) → corridor served → ARRIVED, second ambulance, DQN controller, WebSocket stream, 0 safety violations. Full suite: 127 passed.
+
+**Demo run (screenshots in `results/phase5/`).** DQN, heavy, seed 0; ambulance left0A0 → C2top2 with corridor, B0B1 closed: response 197 s (free flow 78.9 s), 1 revision, 6 corridor activations, 0 safety violations. A single demonstration, not an experiment.
+
+**Limits.** One run at a time; closed roads cannot be reopened within a run; one active ambulance at a time. This is the "simple dashboard" of FYP-1 (Decision 12); the five-screen dashboard + database stays in FYP-2.
+
