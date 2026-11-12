@@ -50,7 +50,11 @@ VEHICLE_VARS = (
     tc.VAR_SPEED,
     tc.VAR_WAITING_TIME,
     tc.VAR_ROUTE_INDEX,
+    tc.VAR_POSITION,
+    tc.VAR_ANGLE,
 )
+# Background vehicles, only when positions are tracked (the live dashboard map).
+POSITION_VARS = (tc.VAR_POSITION, tc.VAR_ANGLE, tc.VAR_SPEED)
 SIM_VARS = (
     tc.VAR_ARRIVED_VEHICLES_IDS,
     tc.VAR_DEPARTED_VEHICLES_IDS,
@@ -66,7 +70,13 @@ _labels = itertools.count()
 class SimulationAdapter:
     _libsumo_in_use = False
 
-    def __init__(self, network: NetworkModel, backend: str = "libsumo", gui: bool = False):
+    def __init__(
+        self,
+        network: NetworkModel,
+        backend: str = "libsumo",
+        gui: bool = False,
+        track_positions: bool = False,
+    ):
         if backend not in ("libsumo", "traci"):
             raise ValueError(f"unknown backend {backend!r}")
         if gui and backend != "traci":
@@ -74,6 +84,8 @@ class SimulationAdapter:
         self.network = network
         self.backend = backend
         self.gui = gui
+        self.track_positions = track_positions  # x/y of every vehicle (for a live map)
+        self._positions: dict[str, tuple[float, float, float, float]] = {}
         self._conn = None
         self._step = 0
         self._arrived = 0
@@ -151,6 +163,12 @@ class SimulationAdapter:
         if self._snapshot is None:
             raise RuntimeError("simulation not started")
         return self._snapshot
+
+    @property
+    def vehicle_positions(self) -> dict[str, tuple[float, float, float, float]]:
+        """vehicle id -> (x m, y m, angle deg, speed m/s) after the last step. Empty unless the
+        adapter was created with ``track_positions=True`` (only the dashboard needs it)."""
+        return dict(self._positions)
 
     @property
     def step_count(self) -> int:
@@ -267,6 +285,7 @@ class SimulationAdapter:
         self._tracked = set()
         self._closed = set()
         self._speed_limits = {}
+        self._positions = {}
         self._arrived = 0
         self._departed = 0
 
@@ -293,6 +312,10 @@ class SimulationAdapter:
         self._departed += len(departed_ids)
         if self._closed and departed_ids:  # new vehicles may have routes through a closure
             self._reroute_around_closures(departed_ids)
+        if self.track_positions:
+            for vid in departed_ids:
+                if vid not in self._tracked:
+                    conn.vehicle.subscribe(vid, POSITION_VARS)
         edge_res = conn.edge.getAllSubscriptionResults()
         edges = {
             e: EdgeState(
@@ -305,6 +328,12 @@ class SimulationAdapter:
         }
         tracked = {}
         veh_res = conn.vehicle.getAllSubscriptionResults()
+        if self.track_positions:
+            self._positions = {
+                vid: (*r[tc.VAR_POSITION], float(r[tc.VAR_ANGLE]), float(r[tc.VAR_SPEED]))
+                for vid, r in veh_res.items()
+                if tc.VAR_POSITION in r and vid not in arrived_ids
+            }
         for vid in list(self._tracked):
             if vid in arrived_ids:
                 self._tracked.discard(vid)

@@ -95,3 +95,6 @@ results/**/runs/*/*.csv
 
 # DQN training: keep best.pt, logs and plots; intermediate checkpoints stay local
 models/**/checkpoints/
+
+# Dashboard build output
+dashboard/*.tsbuildinfo

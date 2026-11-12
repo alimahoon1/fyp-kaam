@@ -25,6 +25,8 @@ Manzil is a SUMO-based research prototype. It covers:
 | `manzil/experiments/` | Run config, runner (one experiment → run folder), metrics, batch runner, comparison + plots |
 | `manzil/routing/` | Routing graph from SUMO connections, Eq 5.4 costs, Dijkstra/A*, Algorithm 1 rerouting |
 | `manzil/corridor/` | Moving green corridor (Algorithm 2) |
+| `manzil/api/` | FastAPI service and live-run session for the dashboard |
+| `dashboard/` | React + TypeScript dashboard (Vite) |
 | `manzil/scenarios/` | Grid builder (`grid.py`), seeded demand profiles (`demand.py`), gridlock check (`check.py`) |
 | `scenarios/grid3x3/` | Synthetic 3×3 SUMO network and its README (profiles, calibration, results) |
 | `results/` | Small result summaries kept in git |
@@ -100,6 +102,38 @@ python -m manzil.experiments.train_dqn --episodes 200 --out models/dqn/grid3x3
 ```bash
 python -m manzil.experiments.batch --arms fixed_time adaptive dqn --seeds 0 1 2 3 4 --out results/phase4/comparison
 ```
+
+### Dashboard (Phase 5: FastAPI + React)
+
+A live view of one SUMO run: the road map from the `.net.xml`, signal colours at every stop line, vehicles, queues, the ambulance with its route and green-corridor status. From the browser you can start/stop a run, pick the controller (fixed-time, adaptive, DQN), demand and seed, dispatch an ambulance and close a road. Everything shown is the real simulation; each run is saved under `runs/live/` (tripinfo + `summary.json`).
+
+**Windows, one time** (in the repo folder, after the setup above). Install Node.js 20 or newer (LTS) from nodejs.org, then:
+
+```powershell
+.venv\Scripts\python -m pip install -e ".[dev,api]"
+.venv\Scripts\python -m pip install -e ".[rl]" --extra-index-url https://download.pytorch.org/whl/cpu
+```
+
+```powershell
+cd dashboard
+npm install
+npm run build
+cd ..
+```
+
+The `rl` line is only needed for the DQN controller (otherwise it shows as unavailable). Rerun `npm run build` after changing anything in `dashboard/src`.
+
+**Windows, every time:**
+
+```powershell
+.venv\Scripts\python -m manzil.api
+```
+
+Open http://127.0.0.1:8000 in the browser. Choose a controller and demand, press **Start run**, then **Dispatch ambulance** (default: south-west corner to the north-east exit). Click a road on the map and press **Close road** to see the ambulance reroute. Stop the server with Ctrl+C.
+
+For frontend work, run the API as above and, in a second terminal, `cd dashboard` then `npm run dev`; open http://localhost:5173 (it reloads on every save and forwards API calls to port 8000).
+
+Linux/macOS: the same commands with `python` instead of `.venv\Scripts\python`. API reference: http://127.0.0.1:8000/docs. Screenshots: `results/phase5/`.
 
 ### Checks
 
