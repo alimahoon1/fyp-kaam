@@ -144,5 +144,4 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 
 - Lahore area + hospital (decide before FYP-2)
 - Who films the Lahore clips, and where
-- `FYP Sample Reports/main.pdf` and `F26-098-1.pdf` are missing locally (still in git); restore or delete?
 - Is Chapter 8 (User Manual) required for Deliverable III? Assumed **no**.
