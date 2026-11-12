@@ -1,0 +1,13 @@
+{
+  "id": "mibrahimsalman022/manzil-yolo-track",
+  "title": "manzil-yolo-track",
+  "code_file": "track_count.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": ["bratjay/ua-detrac-orig"],
+  "competition_sources": [],
+  "kernel_sources": ["mibrahimsalman022/manzil-yolo-train"]
+}

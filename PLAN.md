@@ -112,8 +112,8 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 | V.1 | Get UA-DETRAC on Kaggle; convert to YOLO format; class mapping (car/bus/truck; van→car, others→truck, to confirm) | done (cloud, 11 Nov): `kaggle/yolo_data` kernel `manzil-yolo-data` (output = dataset, attached by `kernel_sources`); mapping confirmed (DETRAC types are only car/van/bus/others): car, van→car, bus, others→truck; 7,365 / 867 / 5,625 train/val/test frames, val split by whole sequence → `results/vision/dataset_stats.json` | Dataset version on Kaggle |
 | V.2 | Add a motorcycle-containing source so motorcycles aren't forgotten | done (cloud, 11 Nov): 3,502 COCO train2017 images with motorcycles (3,202 train, 300 val), all 4 classes labelled; COCO val2017 motorcycle images (159) kept as a separate motorcycle test set | Merged dataset with 4 classes |
 | V.3 | Fine-tune YOLO on Kaggle GPU via the CLI; pull back weights + metrics | done (cloud, 12 Nov): YOLO11s, 50 epochs on 2× T4 (1.8 h). UA-DETRAC test mAP50 0.799 / mAP50-95 0.586 (pretrained 0.752 / 0.530); motorcycle mAP50 0.749 (pretrained 0.761); truck recall weak (0.46). `results/vision/README.md`, `models/yolo/manzil_yolo11s_best.pt` | mAP/precision/recall on the UA-DETRAC test split |
-| V.4 | Tracking (ByteTrack) + line-crossing counting + queue proxy on video | todo | Annotated output video + counts CSV |
-| V.5 | Count error (MAE) on held-out clips | todo | MAE table |
+| V.4 | Tracking (ByteTrack) + line-crossing counting + queue proxy on video | in progress (Ibrahim, cloud) | Annotated output video + counts CSV |
+| V.5 | Count error (MAE) on held-out clips | in progress (Ibrahim, cloud) | MAE table |
 | V.6 | Film 1–2 Lahore clips; AI pre-label + human-verify a small test set; manual counts | deferred (12 Nov: skipped for now by Ibrahim; kept on the list; do if time allows, else FYP-2) | Local-domain accuracy + MAE |
 
 ### Phase 5 — Simple dashboard v1
