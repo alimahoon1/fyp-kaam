@@ -1716,3 +1716,29 @@ Cloud session. Everything below is from real SUMO runs; full tables and plots in
 - Phase 5 demo scenario replayed headless (DQN heavy, dispatch 411 s, `B0B1` closed 413 s, seeds 0–4): off 258.4 s, v1 (fixed) 145.2 s, v2 128.6 s (5/5 better than v1). Live dashboard rerun with the same clicks: 164 s (was 197 s), 3 stops (was 6), 0 s at reds; screenshots in `results/phase5/`.
 
 **Code.** `manzil/experiments/corridor_v2_study.py`, `corridor_v2_report.py`; changes in `control/safety.py` (`corridor_min_green_s`, `min_green_for`, monitor with owners), `corridor/coordinator.py`, `experiments/emergency.py`, `sim/adapter.py` (`stop_context`, give-way type, speed mode 31, speedDev 0), `experiments/runner.py`, `api/live.py`. Tests: `tests/test_corridor_v2.py`.
+
+## 50.16 Report Chapters 1–6 updated for Deliverable III (task 6.1, 15 Nov 2026)
+
+Laptop session (Ibrahim + Claude). The D2 LaTeX in `Manzil_D2_Report/` was edited in place; the submitted D2 PDF stays unchanged at the repo root, and git keeps the D2 source.
+
+- **D2 formatting feedback (from the evaluator):**
+  - (1) The "Manzil implication" unnumbered headings on pp. 29–33 were the repeated bold column header of the literature longtable. All multi-page tables now carry a "(continued)" caption, and the risk register gained its missing repeated header.
+  - (2) An intro paragraph was added under all 14 headings that were followed directly by a subheading (3.2.1–3.2.4 named by the evaluator, plus Ch 1, 4.9, 5.2, 5.4, 5.8, 6.2, 6.4, 6.6, 6.7, 6.7.5).
+  - (3) The bold in paragraphs came from the definition-list labels in 1.3 and 3.1; they are now normal weight.
+- **Content brought in line with the code:**
+  - Abstract and executive summary.
+  - Objective status table (2.1).
+  - FR status column (Table 4.1): 13 implemented, 6 partial, FR-16 planned.
+  - Measured performance numbers.
+  - Real hardware and pinned software.
+  - Real dashboard screenshot (Fig 4.8).
+  - Realized values for the network, demand, perception, controllers, routing and corridor.
+  - New 5.6.1 corridor v2.
+  - New 5.9 table of deviations from D2.
+  - New 6.3.6 component→module table.
+  - Test count (147), no hosted CI.
+  - File-based storage instead of a DB.
+- **New deviation found while writing:** the DQN reward's first term is the mean halting vehicles, not D2's pressure magnitude P_t (pressure is still in the observation). Recorded in Table 5.2. Its effect is untested.
+- **Honesty note recorded in 5.9:** the corridor v2 minimum-green change was selected on seeds 0–4, the same seeds used to report the corridor result. Chapter 9 must call that result a development-stage estimate, to be confirmed on new seeds in FYP-II.
+- **Build:** `build.ps1` stops in PowerShell on the MiKTeX "not checked for updates" notice (stderr). Run the same pdflatex → bibtex → pdflatex ×2 steps from bash instead. Result: 110 pages, 0 overfull boxes, 0 undefined references.
+- **Open:** the title page and declaration date (still 10 Oct 2026) needs the D3 submission date. Chapters 7, 9 and 10 are next.

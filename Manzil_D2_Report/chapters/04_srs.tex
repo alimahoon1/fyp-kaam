@@ -1,7 +1,7 @@
 \chapter{Software Requirement Specifications}
 \label{ch:srs}
 
-This chapter translates the reviewed problem and evidence into a specification for the Manzil research prototype. The requirements describe observable behavior rather than implying that every item has already been implemented. Where the available repository evidence does not support a measured threshold, the text states a design target or requires profiling before a value is fixed. The specification gives particular attention to reproducibility, legal signal transitions, observation freshness, route-version consistency, and visible failure handling because these properties determine whether later experiments can be interpreted. It also separates the video-perception workflow from SUMO-based control experiments so that estimated observations are not silently presented as simulator ground truth. Account management, public dispatch integration, traffic enforcement, clinical response prediction, and physical signal deployment remain outside the approved scope. The resulting requirements provide a contract for the architecture in Chapter \ref{ch:design} and a traceable basis for the evaluation procedures in Chapter \ref{ch:method}.
+This chapter translates the reviewed problem and evidence into a specification for the Manzil research prototype. The requirements describe observable behavior rather than implying that every item has already been implemented. Where the available repository evidence does not support a measured threshold, the text states a design target or requires profiling before a value is fixed. The specification gives particular attention to reproducibility, legal signal transitions, observation freshness, route-version consistency, and visible failure handling because these properties determine whether later experiments can be interpreted. It also separates the video-perception workflow from SUMO-based control experiments so that estimated observations are not silently presented as simulator ground truth. Account management, public dispatch integration, traffic enforcement, clinical response prediction, and physical signal deployment remain outside the approved scope. The resulting requirements provide a contract for the architecture in Chapter \ref{ch:design} and a traceable basis for the evaluation procedures in Chapter \ref{ch:method}. For Deliverable III, the functional requirements carry an FYP-I status, and the hardware, software, and interface sections describe the environment and dashboard that were actually used; requirements not yet met are marked rather than removed.
 
 \section{List of Features}
 
@@ -18,38 +18,41 @@ The prototype is organized into six feature groups that follow the operator's ex
 
 \section{Functional Requirements}
 
-Table \ref{tab:functional-requirements} defines the mandatory system behavior using stable identifiers that are reused in the traceability matrix. The requirements distinguish a requested signal action from the action actually applied, require route and observation versions to be retained, and make fallback behavior part of the specification rather than an informal implementation detail. Several entries use the word ``shall'' because they are acceptance conditions for the proposed prototype; they are not claims of completed implementation. Together, FR-01 through FR-08 cover experiment configuration and normal control, FR-09 through FR-14 define the emergency-route and corridor lifecycle, and FR-15 through FR-20 cover monitoring, evidence, comparison, export, and controller failure. This arrangement lets tests target a coherent workflow while preserving individual identifiers for defect tracking. A requirement is satisfied only when its normal and failure paths are demonstrated with retained evidence. For example, returning a path is insufficient for FR-10 if the cost snapshot and graph-validity conditions are not also recorded.
+Table \ref{tab:functional-requirements} defines the mandatory system behavior using stable identifiers that are reused in the traceability matrix. The requirements distinguish a requested signal action from the action actually applied, require route and observation versions to be retained, and make fallback behavior part of the specification rather than an informal implementation detail. Several entries use the word ``shall'' because they are acceptance conditions for the prototype. The final column gives the FYP-I status: implemented, partial with the missing part named, or planned for FYP-II. Together, FR-01 through FR-08 cover experiment configuration and normal control, FR-09 through FR-14 define the emergency-route and corridor lifecycle, and FR-15 through FR-20 cover monitoring, evidence, comparison, export, and controller failure. This arrangement lets tests target a coherent workflow while preserving individual identifiers for defect tracking. A requirement is satisfied only when its normal and failure paths are demonstrated with retained evidence. For example, returning a path is insufficient for FR-10 if the cost snapshot and graph-validity conditions are not also recorded.
 
-\begin{longtable}{p{0.10\textwidth}p{0.78\textwidth}}
-\caption{Functional requirements}\label{tab:functional-requirements}\\
+\begin{longtable}{p{0.08\textwidth}p{0.60\textwidth}p{0.20\textwidth}}
+\caption{Functional requirements and FYP-I status}\label{tab:functional-requirements}\\
 \toprule
-\textbf{ID} & \textbf{Requirement}\\
+\textbf{ID} & \textbf{Requirement} & \textbf{FYP-I status}\\
 \midrule\endfirsthead
+\caption[]{Functional requirements and FYP-I status (continued)}\\
 \toprule
-\textbf{ID} & \textbf{Requirement}\\
+\textbf{ID} & \textbf{Requirement} & \textbf{FYP-I status}\\
 \midrule\endhead
-FR-01 & The system shall validate a scenario configuration before starting and shall reject missing network, controller, seed, duration, or demand inputs.\\
-FR-02 & The system shall start, pause, resume, and stop one controlled SUMO run while preserving an unambiguous run state.\\
-FR-03 & The simulation adapter shall be the sole owner of SUMO stepping and signal actuation.\\
-FR-04 & The perception worker shall process a selected recorded video and emit timestamped detections, tracks, source metadata, and processing status.\\
-FR-05 & The observation service shall aggregate valid vehicle observations into defined road, lane, or approach intervals without silently mixing sources.\\
-FR-06 & The operator shall be able to select fixed-time, rule-adaptive, or the configured RL controller before a run.\\
-FR-07 & Every signal action shall identify its intersection, requested and applied phase, effective simulation step, controller, and reason.\\
-FR-08 & The system shall enforce minimum green and configured yellow/all-red clearance before incompatible movements receive right of way.\\
-FR-09 & The emergency service shall validate ambulance origin and destination and return a clear no-route response if either is invalid or disconnected.\\
-FR-10 & The route service shall compute a valid remaining path using nonnegative time-based edge costs and shall record the cost snapshot.\\
-FR-11 & The rerouting service shall re-evaluate the remaining path after a closure, invalidated edge, or sustained cost improvement above the configured threshold.\\
-FR-12 & The corridor coordinator shall activate priority only for a bounded look-ahead set of intersections on the current ambulance route.\\
-FR-13 & The corridor coordinator shall detect passage or cancellation and restore the affected intersection to a safe normal-control state.\\
-FR-14 & A route revision shall cancel priority requests that no longer belong to the remaining path before activating new ones.\\
-FR-15 & The dashboard shall display the current source mode, simulation status, controller, signal state, traffic indicators, ambulance position, route, and corridor state.\\
-FR-16 & The dashboard shall present stale, invalid, disconnected, and fallback states visibly rather than continuing with apparently current data.\\
-FR-17 & The system shall record configuration, seed, component versions, periodic metrics, route revisions, signal events, failures, and termination reason for each run.\\
-FR-18 & The comparison service shall align selected runs by metric definition and warn when network, demand, duration, warm-up, or measurement versions are incompatible.\\
-FR-19 & The operator shall be able to export run configuration and metrics in a documented machine-readable format.\\
-FR-20 & On loss of the learned controller or invalid action, the control service shall fall back to a configured safe baseline and record the transition.\\
+FR-01 & The system shall validate a scenario configuration before starting and shall reject missing network, controller, seed, duration, or demand inputs. & Implemented\\
+FR-02 & The system shall start, pause, resume, and stop one controlled SUMO run while preserving an unambiguous run state. & Partial: start, stop, and speed; no pause\\
+FR-03 & The simulation adapter shall be the sole owner of SUMO stepping and signal actuation. & Implemented; enforced by a test\\
+FR-04 & The perception worker shall process a selected recorded video and emit timestamped detections, tracks, source metadata, and processing status. & Partial: offline batch job on Kaggle\\
+FR-05 & The observation service shall aggregate valid vehicle observations into defined road, lane, or approach intervals without silently mixing sources. & Partial: per-sequence counts and per-frame queue proxy\\
+FR-06 & The operator shall be able to select fixed-time, rule-adaptive, or the configured RL controller before a run. & Implemented\\
+FR-07 & Every signal action shall identify its intersection, requested and applied phase, effective simulation step, controller, and reason. & Implemented\\
+FR-08 & The system shall enforce minimum green and configured yellow/all-red clearance before incompatible movements receive right of way. & Implemented; corridor exception (Section \ref{sec:corridor-v2})\\
+FR-09 & The emergency service shall validate ambulance origin and destination and return a clear no-route response if either is invalid or disconnected. & Implemented\\
+FR-10 & The route service shall compute a valid remaining path using nonnegative time-based edge costs and shall record the cost snapshot. & Implemented\\
+FR-11 & The rerouting service shall re-evaluate the remaining path after a closure, invalidated edge, or sustained cost improvement above the configured threshold. & Implemented\\
+FR-12 & The corridor coordinator shall activate priority only for a bounded look-ahead set of intersections on the current ambulance route. & Implemented\\
+FR-13 & The corridor coordinator shall detect passage or cancellation and restore the affected intersection to a safe normal-control state. & Implemented\\
+FR-14 & A route revision shall cancel priority requests that no longer belong to the remaining path before activating new ones. & Implemented\\
+FR-15 & The dashboard shall display the current source mode, simulation status, controller, signal state, traffic indicators, ambulance position, route, and corridor state. & Partial: simulation source only\\
+FR-16 & The dashboard shall present stale, invalid, disconnected, and fallback states visibly rather than continuing with apparently current data. & Planned for FYP-II\\
+FR-17 & The system shall record configuration, seed, component versions, periodic metrics, route revisions, signal events, failures, and termination reason for each run. & Implemented\\
+FR-18 & The comparison service shall align selected runs by metric definition and warn when network, demand, duration, warm-up, or measurement versions are incompatible. & Implemented\\
+FR-19 & The operator shall be able to export run configuration and metrics in a documented machine-readable format. & Partial: JSON/CSV run files; no export command\\
+FR-20 & On loss of the learned controller or invalid action, the control service shall fall back to a configured safe baseline and record the transition. & Partial: holds current phase\\
 \bottomrule
 \end{longtable}
+
+Two statuses need explanation. FR-08 is met for every normal controller, but the corridor coordinator may end the current green after 5 s instead of the 10 s minimum when it serves an ambulance; yellow and all-red clearance are never shortened, and an independent safety monitor checks both limits in every run. Chapter \ref{ch:method} records this deviation and the evidence behind it. For FR-20, the implemented fallback keeps the current legal phase and counts the event instead of switching to the fixed-time controller, which is simpler but still safe because the safety filter remains in control of every transition. The partial and planned items, mainly in perception streaming, dashboard warnings, and export, form part of the FYP-II plan in Chapter 10.
 
 \section{Quality Attributes}
 
@@ -69,7 +72,7 @@ Manzil is not a public dispatch or traffic-control service, but its development 
 
 \subsection{Performance}
 
-Performance is defined relative to the chosen simulation step, control interval, video workload, and demonstration hardware. The control path must complete its decision before the configured deadline for the step in which the action becomes effective; otherwise the interval is marked late and a declared baseline or safe continuation is used. Video inference runs in a bounded worker so a slow model cannot block simulation stepping or an API request indefinitely. Dashboard delivery is a lossy view of authoritative state, allowing an inactive client to skip intermediate frames without delaying control. Route computation and comparison queries are profiled separately from simulation actuation because their acceptable latency depends on network size and update frequency. The repository contains no measured benchmark for the final hardware, detector, or road network, so exact thresholds remain design targets to be set after baseline profiling. This treatment prevents aspirational response times from being presented as achieved results and ensures that later measurements identify workload, hardware, and software versions.
+Performance is defined relative to the chosen simulation step, control interval, video workload, and demonstration hardware. The control path must complete its decision before the configured deadline for the step in which the action becomes effective; otherwise the interval is marked late and a declared baseline or safe continuation is used. Video inference runs in a bounded worker so a slow model cannot block simulation stepping or an API request indefinitely. Dashboard delivery is a lossy view of authoritative state, allowing an inactive client to skip intermediate frames without delaying control. Route computation and comparison queries are profiled separately from simulation actuation because their acceptable latency depends on network size and update frequency. FYP-I profiling on the synthetic grid provides first measured values. One SUMO step with medium demand takes about 1 ms through libsumo, a route computation takes less than 0.1 ms, and a batch of 60 full-length runs completes in about 100 s on four CPU cores. The fine-tuned detector needs about 6.8 ms per image on a Tesla T4, and detection with tracking runs at 40 to 66 frames per second on the same GPU. These values describe the grid and the stated hardware only; thresholds for the Lahore network will be set after it is profiled in FYP-II, and every measurement identifies its workload, hardware, and software versions.
 
 \subsection{Maintainability and Reusability}
 
@@ -88,6 +91,7 @@ Functional behavior alone would permit a demonstration that appears successful b
 \toprule
 \textbf{ID} & \textbf{Attribute} & \textbf{Requirement or target}\\
 \midrule\endfirsthead
+\caption[]{Non-functional requirements and design targets (continued)}\\
 \toprule
 \textbf{ID} & \textbf{Attribute} & \textbf{Requirement or target}\\
 \midrule\endhead
@@ -110,7 +114,7 @@ NFR-12 & Availability & The prototype shall fail visibly and recover to a safe s
 
 SUMO and TraCI are required for controlled traffic experiments \cite{lopez2018sumo,sumodocs}. A selected network must contain legal lane connections and signal plans after import and manual cleanup, and representative routes must be validated before it is used for comparison. Video sources require sufficient visibility, a documented license or team authorization, and annotations appropriate to the selected measure. The simulation assumes one clock owner, nonnegative route costs, and emergency endpoints on ambulance-accessible edges. It also assumes that configured phase transitions reflect the validated simulation network; they are not certified timings for physical signal hardware. The dashboard is an operator and evaluator tool rather than an autonomous public dispatch system, and a displayed route does not constitute operational navigation advice. When an assumption cannot be met, the affected workflow must stop or disclose a bounded fallback. It must not silently substitute a different network, data source, time unit, or observation mode because that would make later comparisons irreproducible.
 
-React and FastAPI are fixed by the approved proposal for the interface and application service boundary \cite{reactdocs,fastapidocs}. Python is implied by the planned perception, reinforcement-learning, and TraCI ecosystem. PostgreSQL, a WebSocket transport, Docker, and specific chart or map libraries are proposed dependencies and remain replaceable until implementation confirms them. These assumptions are deliberately narrower than a production deployment specification. Manzil is evaluated as a controlled prototype on prepared networks, not as an interface to public signal controllers or ambulance dispatch infrastructure. A selected video source must have suitable permission and sufficient visibility for the intended annotation task, while the simulation network must be checked for lane connectivity, valid traffic-light programs, and ambulance-accessible routes. If any assumption fails, the run must be rejected or marked with an explicit limitation instead of substituting an undocumented configuration. This treatment keeps dependencies traceable and prevents a convenient library choice from becoming an unsupported architectural claim.
+React and FastAPI are fixed by the approved proposal for the interface and application service boundary \cite{reactdocs,fastapidocs}. Python is implied by the planned perception, reinforcement-learning, and TraCI ecosystem. In FYP-I the dashboard receives state over a WebSocket and draws the map as plain SVG without a map library. PostgreSQL and Docker were not needed for the prototype: run records are stored as versioned files, and a database is planned for FYP-II behind the same repository boundary. These assumptions are deliberately narrower than a production deployment specification. Manzil is evaluated as a controlled prototype on prepared networks, not as an interface to public signal controllers or ambulance dispatch infrastructure. A selected video source must have suitable permission and sufficient visibility for the intended annotation task, while the simulation network must be checked for lane connectivity, valid traffic-light programs, and ambulance-accessible routes. If any assumption fails, the run must be rejected or marked with an explicit limitation instead of substituting an undocumented configuration. This treatment keeps dependencies traceable and prevents a convenient library choice from becoming an unsupported architectural claim.
 
 \section{Use Cases}
 
@@ -179,11 +183,11 @@ The primary actor is a research operator who configures experiments, observes th
 
 \section{Hardware and Software Requirements}
 
-The development environment must support two different workloads: repeated model or controller experiments and a prepared, repeatable demonstration. The distinction avoids presenting a high-end training machine as a mandatory deployment requirement. Hardware values in this section are capability statements because the selected Lahore network, final detector, training budget, and demonstration machine have not yet been fixed. Software choices are separated from hardware so that a library can be versioned or replaced without changing the resource description. Tables \ref{tab:hardware} and \ref{tab:software} identify the responsibilities and confirmation points that must be resolved before implementation evidence is reported. The demonstration must use the same network, controller configuration, metric schema, and software versions as the retained evaluation record even if it runs fewer scenarios. Measured CPU, GPU, memory, storage, and response-time values will replace the current planning statements only after the representative workload has been profiled.
+The development environment must support two different workloads: repeated model or controller experiments and a prepared, repeatable demonstration. The distinction avoids presenting a high-end training machine as a mandatory deployment requirement. The hardware and software below are the environment actually used in FYP-I; capability statements remain only for the Lahore network, which has not yet been selected. Software choices are separated from hardware so that a library can be versioned or replaced without changing the resource description. Tables \ref{tab:hardware} and \ref{tab:software} list the resources and pinned versions behind every reported result. The demonstration uses the same network, controller configuration, metric schema, and software versions as the retained evaluation record even when it runs fewer scenarios.
 
 \subsection{Hardware Requirements}
 
-Table \ref{tab:hardware} separates development and training resources from the minimum capabilities needed to reproduce a prepared demonstration. A multi-core processor is required for SUMO, service processes, preprocessing, and analysis. A CUDA-capable GPU is desirable for detector experiments and reinforcement-learning training, but its model and memory capacity remain unconfirmed; it is not required for every dashboard or SUMO-only workflow. Storage must accommodate approved video, virtual environments, checkpoints, network files, traces, and repeated run records while preserving checksums and versions. The demonstration system needs enough memory and compute to run the selected network, API, dashboard, and prepared policies without unbounded queues. If live video inference cannot meet the profiled budget, recorded inference output may be demonstrated as an explicitly labelled fallback. These conditions keep resource claims honest and allow the team to scale the network or model before committing to a numerical minimum.
+Table \ref{tab:hardware} lists the machines used in FYP-I. The team laptop has an Intel Core i7-8650U processor and 16 GB of memory but no NVIDIA GPU; it runs SUMO, all controller and routing experiments, the API, and the dashboard. Long coding and experiment sessions also ran on cloud Linux machines with the same pinned software. Detector training and video tracking need a GPU, so they ran on Kaggle with two Tesla T4 GPUs of 15 GB each, and only small outputs such as metrics, plots, and the 19 MB model weights were brought back. The DQN was trained on CPU in 17 minutes because the grid is small. Large datasets stay on Kaggle and are referenced by name and checksum rather than copied. The demonstration therefore needs only a CPU machine: it shows prepared perception results and runs SUMO, the controllers, and the dashboard live.
 
 \begin{table}[htbp]
 \centering
@@ -193,18 +197,18 @@ Table \ref{tab:hardware} separates development and training resources from the m
 \toprule
 \textbf{Resource} & \textbf{Development and training} & \textbf{Prepared demonstration}\\
 \midrule
-Processor & Multi-core CPU for SUMO, preprocessing, services, and repeated analysis & CPU able to run the selected SUMO network, API, and dashboard at the configured step rate\\
-Graphics processor & CUDA-capable GPU desirable for detector and RL experiments; exact model and memory are unconfirmed & Required only when live inference is included; otherwise prepared outputs or CPU-safe models may be used and labelled\\
-Memory & Capacity for concurrent simulator, worker, services, model, and analysis processes; amount to be profiled & Capacity for the selected scenario and services without unbounded swapping or queue growth\\
-Storage & Approved video, environments, checkpoints, maps, traces, exports, and backups & Versioned scenario, required models, application build, and demonstration records\\
-Display/network & Development display and local networking for dashboard and service testing & Display suitable for the dashboard; local connectivity only unless a reviewed deployment requires more\\
+Processor & Intel Core i7-8650U laptop and cloud Linux sessions for SUMO, controllers, routing, DQN training, and analysis & The same laptop runs SUMO, the API, and the dashboard in real time\\
+Graphics processor & Kaggle notebooks with 2$\times$ Tesla T4 (15 GB) for YOLO training and video tracking; no local NVIDIA GPU & Not required; perception results are prepared in advance\\
+Memory & 16 GB on the laptop; sufficient for parallel batch runs on the grid & 16 GB; no swapping observed during demonstration runs\\
+Storage & Repository with code, scenarios, results, and the 19 MB detector weights; datasets kept on Kaggle & Repository checkout with the built dashboard and trained models\\
+Display/network & Local browser for the dashboard; internet only for Kaggle and the repository & Local browser on the same machine; no network connection needed\\
 \bottomrule
 \end{tabularx}
 \end{table}
 
 \subsection{Software Requirements}
 
-Table \ref{tab:software} follows the sample report's responsibility-oriented presentation: each technology is tied to a task and to a configuration item that must be recorded. SUMO and TraCI provide the authoritative simulation environment and control interface. Python supports perception, routing, control, experiment orchestration, and analysis, while React and FastAPI form the proposed interface boundary from the approved proposal. A detector, tracker, and reinforcement-learning library will be selected and versioned during implementation; the report does not claim a final checkpoint or tracker configuration. OpenStreetMap tools and SUMO NetEdit support network preparation, with a documented synthetic network retained as fallback. PostgreSQL remains proposed for structured persistence, but a file-backed repository may be used during integration if it preserves the same schema semantics. Git and environment lock files identify the software state used for every retained experiment.
+Table \ref{tab:software} follows the sample report's responsibility-oriented presentation: each technology is tied to a task and to a configuration item that must be recorded. SUMO and TraCI provide the authoritative simulation environment and control interface. Python supports perception, routing, control, experiment orchestration, and analysis, while React and FastAPI form the interface boundary from the approved proposal. All versions are pinned in the project configuration so every machine installs the same software; SUMO is installed from the Python package index rather than a system installer for this reason. The synthetic grid was generated with SUMO's own network generator, so OpenStreetMap tools and NetEdit are reserved for the Lahore network in FYP-II. Git commit identifiers and the pinned versions are written into every run manifest.
 
 \begin{table}[htbp]
 \centering
@@ -214,13 +218,16 @@ Table \ref{tab:software} follows the sample report's responsibility-oriented pre
 \toprule
 \textbf{Technology or resource} & \textbf{Responsibility} & \textbf{Configuration status}\\
 \midrule
-Python & Orchestration, perception, control, routing, metrics, and analysis & Interpreter and package lock recorded per experiment release\\
-SUMO and TraCI & Microscopic traffic simulation, state access, route application, and signal actuation & Version and validated network package recorded\\
-React & Operator dashboard and evidence views & Approved proposal choice; component and build versions to be recorded\\
-FastAPI & Command, validation, query, and streaming boundary & Approved proposal choice; API schema versioned\\
-Detector, tracker, and RL libraries & Vehicle observation and learned-controller experiments & Final frameworks, checkpoints, and hyperparameters remain to be confirmed\\
-OpenStreetMap tools and SUMO NetEdit & Network extraction, cleanup, connection, route, and signal validation & Exact Lahore extract remains to be selected; synthetic fallback retained\\
-Repository and persistence tools & Version control, manifests, structured records, and artifacts & Git required; PostgreSQL proposed behind a replaceable repository interface\\
+Python & Orchestration, perception, control, routing, metrics, and analysis & Python 3.10 on the laptop; NumPy 2.2.6\\
+SUMO, TraCI, and libsumo & Microscopic traffic simulation, state access, route application, and signal actuation & SUMO 1.28.0 from the Python package index\\
+React & Operator dashboard & React 19 with TypeScript, built with Vite\\
+FastAPI & Command, validation, query, and WebSocket streaming boundary & FastAPI 0.162.5 with Uvicorn 0.54.0\\
+Ultralytics YOLO and ByteTrack & Vehicle detection, tracking, and counting & Ultralytics 8.4.210; YOLO11s fine-tuned checkpoint with SHA-256 recorded\\
+PyTorch & Double DQN training and inference & PyTorch 2.9.1 (CPU build)\\
+Kaggle CLI & Pushing training kernels and retrieving outputs & Kaggle CLI 2.2.5\\
+pytest and Ruff & Automated tests and code style & pytest 9.2.0 and Ruff 0.17.4\\
+OpenStreetMap tools and SUMO NetEdit & Network extraction and cleanup & Planned for the Lahore network in FYP-II\\
+Git and file-based records & Version control, manifests, metrics, and artifacts & Git with run manifests; database planned for FYP-II\\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -354,8 +361,19 @@ Emergency operation and experiment setup require different decisions, so they ar
 
 Figure \ref{fig:wire-analytics} represents the final evidence-review workflow. Run selection is paired with a comparability warning and metric definition so that two visually adjacent bars are not assumed to represent matched experiments. The chart area is schematic and contains no claimed result; an implemented view would present the chosen distribution, central tendency, variability, and sample count from retained run records. The adjoining panel exposes configuration differences, seed coverage, failed runs, and export controls. This design responds directly to the methodology requirement that failed or incompatible runs must not disappear from a favorable summary. It also keeps measurement units and metric versions close to the visualization, reducing the risk that a screenshot is detached from its experimental meaning. Together, the five wireframes define the minimum information architecture for the prototype while leaving visual polish and specific chart libraries open to implementation. Exported graphics must retain the same metric and run identifiers.
 
+For FYP-I the team implemented a single-page dashboard that combines the essential parts of G01, G02, and G04, shown in Figure \ref{fig:dashboard-v1}. It draws the network from the SUMO network file, colours each signal at its stop line, shades queued roads, and shows the vehicles, the ambulance, its current route version, and the corridor state of each junction. The side panel starts a run with a chosen controller, demand profile, seed, and speed, dispatches an ambulance between two roads, and closes a road selected on the map. Every value comes from the live SUMO run through the FastAPI WebSocket stream; nothing on the screen is mocked. The perception detail (G03) and comparative analytics (G05) screens, stale-data warnings, and export remain FYP-II work, while the corresponding results are currently presented as figures in Chapter 9.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/results/dashboard_corridor_active.png}
+\caption{Implemented FYP-I dashboard during a live DQN run with a closed road, a revised ambulance route, and an active corridor junction}
+\label{fig:dashboard-v1}
+\end{figure}
+
 \section{Database Design}
 \label{sec:data-design}
+
+This section defines the logical data model that keeps experiments, observations, control decisions, and emergency missions traceable. The model is independent of the storage engine. In FYP-I it is realized as versioned files: every run folder holds a manifest with the configuration, seed, software versions, commit, and checksums, a metrics file, time series, signal events, applied controls, and mission records with route versions and corridor events. These files map one-to-one onto the Scenario, ExperimentRun, MetricSample, ControlDecision, EmergencyMission, RouteVersion, and PriorityEvent entities below. A relational database behind the same model is planned for FYP-II, when the five-screen dashboard needs cross-run queries.
 
 \subsection{Entity Relationship Diagram}
 
@@ -563,6 +581,7 @@ Table \ref{tab:data-dictionary} defines the principal identifiers and integrity 
 \toprule
 \textbf{Entity} & \textbf{Key fields} & \textbf{Integrity rule}\\
 \midrule\endfirsthead
+\caption[]{Data dictionary (continued)}\\
 \toprule
 \textbf{Entity} & \textbf{Key fields} & \textbf{Integrity rule}\\
 \midrule\endhead
@@ -581,13 +600,17 @@ Artifact & run/job\_id, type, URI, checksum, license/provenance & Content is add
 
 \section{Risk Analysis}
 
-Table \ref{tab:risks} records technical and research risks that could invalidate the prototype or its conclusions. Likelihood and impact are qualitative planning judgments rather than measured probabilities. The highest-consequence risks concern invalid signal phases, irreproducible results, unsuitable map imports, and evidence that cannot be legally or reliably used. Each mitigation is paired with a bounded fallback so that the team can preserve an honest deliverable if a preferred component fails. For example, a documented synthetic network is preferable to an unverified real-map extract, and a negative reinforcement-learning result is preferable to tuning on the final test scenarios. The register also treats timing drift, route oscillation, occlusion, and reward imbalance as system-level concerns rather than isolated coding defects. These risks are revisited through invariant tests, scenario checks, provenance records, and the controlled comparisons defined in Chapter \ref{ch:method}; unresolved items must remain visible in the final limitations rather than being converted into unsupported performance claims.
+Table \ref{tab:risks} records technical and research risks that could invalidate the prototype or its conclusions. Likelihood and impact are qualitative planning judgments rather than measured probabilities. The highest-consequence risks concern invalid signal phases, irreproducible results, unsuitable map imports, and evidence that cannot be legally or reliably used. Each mitigation is paired with a bounded fallback so that the team can preserve an honest deliverable if a preferred component fails. For example, a documented synthetic network is preferable to an unverified real-map extract, and a negative reinforcement-learning result is preferable to tuning on the final test scenarios. The register also treats timing drift, route oscillation, occlusion, and reward imbalance as system-level concerns rather than isolated coding defects. These risks are revisited through invariant tests, scenario checks, provenance records, and the controlled comparisons defined in Chapter \ref{ch:method}; unresolved items must remain visible in the final limitations rather than being converted into unsupported performance claims. Several risks were met during FYP-I and handled as planned. The team chose the documented synthetic grid first, so the map-import risk moves to FYP-II. Local video was not filmed, so perception is evaluated on public data and the domain gap is stated. The learned controller converged, but it held minor phases red for longer, so a maximum-red guard was added to the safety filter. A metric that counted only finished trips made an untrained policy look better than it was; it was replaced by a travel-time measure that also counts unfinished vehicles.
 
 \begin{longtable}{P{0.20\textwidth}P{0.16\textwidth}P{0.34\textwidth}P{0.19\textwidth}}
 \caption{Risk register}\label{tab:risks}\\
 \toprule
 \textbf{Risk} & \textbf{Rating} & \textbf{Mitigation} & \textbf{Fallback}\\
 \midrule\endfirsthead
+\caption[]{Risk register (continued)}\\
+\toprule
+\textbf{Risk} & \textbf{Rating} & \textbf{Mitigation} & \textbf{Fallback}\\
+\midrule\endhead
 Map import lacks valid signals/turns & Medium likelihood; high impact & Inspect and clean a small extract early; validate routes and phases & Use a documented synthetic grid\\
 Local video lacks labels or permission & Medium likelihood; high impact & Use licensed public sequences and record provenance & Evaluate public data only; state domain gap\\
 Occlusion causes unstable counts & High likelihood; medium impact & Use region rules, temporal aggregation, and tracker comparison & Limit claims to labelled conditions\\
@@ -604,4 +627,4 @@ Results are not reproducible & Medium likelihood; high impact & Retain immutable
 \section{Conclusion}
 
 
-The specification centers on traceability and failure visibility rather than on a collection of loosely connected features. It requires one simulation-clock owner, legal signal transitions, stable route revision, explicit observation freshness, immutable run configuration, and comparisons that cannot hide incompatible settings or failed trials. Functional requirements define what the operator and services must observe, while non-functional requirements constrain timing, ownership, privacy, auditability, and recovery. The use cases exercise both successful and failed paths, the wireframes show how critical state and provenance remain visible, and the data model preserves the route and decision history needed for later analysis. The risk controls connect those requirements to bounded fallbacks and planned verification. Chapter \ref{ch:method} converts the specification into a staged research protocol, and Chapter \ref{ch:design} assigns each mutable resource and interface to a clear architectural owner. Implementation status will continue to be reported separately so that a specified feature is never presented as completed evidence.
+The specification centers on traceability and failure visibility rather than on a collection of loosely connected features. It requires one simulation-clock owner, legal signal transitions, stable route revision, explicit observation freshness, immutable run configuration, and comparisons that cannot hide incompatible settings or failed trials. Functional requirements define what the operator and services must observe, while non-functional requirements constrain timing, ownership, privacy, auditability, and recovery. The use cases exercise both successful and failed paths, the wireframes show how critical state and provenance remain visible, and the data model preserves the route and decision history needed for later analysis. The risk controls connect those requirements to bounded fallbacks and planned verification. Chapter \ref{ch:method} converts the specification into a staged research protocol, and Chapter \ref{ch:design} assigns each mutable resource and interface to a clear architectural owner. The FYP-I status column and the implemented dashboard show which parts of the specification are now met; the remaining items are carried into the FYP-II plan, so a specified feature is never presented as completed evidence.

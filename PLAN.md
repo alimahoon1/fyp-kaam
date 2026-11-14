@@ -5,7 +5,7 @@ Before starting a task, set it to `in progress (Name)` and push. When finished, 
 
 ## Current stage
 
-Planning is finished (10 Nov 2026). **Phase 0 done. Phases 1–5 done; vision V.1–V.5 done (V.6 deferred).** Laptop demo check done 14 Nov (140 tests pass on the laptop, dashboard runs). Task 3.7 (corridor v2) done 14 Nov in the cloud: route-index bug fixed + 5 s emergency min-green truncation; Phase 3 corridor results and Phase 5 screenshots rerun. Next: Phase 6 report chapters (mention the FR-08 deviation, context §50.15). Coding phases 1–5 mostly run as Claude Code cloud sessions (claude.ai/code), with Ibrahim checking from the phone app. The vision track (V) can run in parallel at any time after Phase 0 step 0.4.
+Planning is finished (10 Nov 2026). **Phase 0 done. Phases 1–5 done; vision V.1–V.5 done (V.6 deferred).** Laptop demo check done 14 Nov (140 tests pass on the laptop, dashboard runs). Task 3.7 (corridor v2) done 14 Nov in the cloud: route-index bug fixed + 5 s emergency min-green truncation; Phase 3 corridor results and Phase 5 screenshots rerun. Task 6.1 (Ch 1–6 update) done 15 Nov. Next: 6.2 Chapter 7, 6.3 Chapter 9, 6.4 Chapter 10. Coding phases 1–5 mostly run as Claude Code cloud sessions (claude.ai/code), with Ibrahim checking from the phone app. The vision track (V) can run in parallel at any time after Phase 0 step 0.4.
 
 ## Deliverable III requirements (from the university)
 
@@ -126,7 +126,7 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 ### Phase 6 — Deliverable III report and demo
 | ID | Task | Status | Done when |
 |---|---|---|---|
-| 6.1 | Light update of Chapters 1–6 to match the real implementation | in progress (Ibrahim + Claude, laptop, 15 Nov; includes the D2 formatting feedback: numbered headings, intro text under every heading, no bold in paragraphs) | Compiles |
+| 6.1 | Light update of Chapters 1–6 to match the real implementation | done (Ibrahim + Claude, laptop, 15 Nov): D2 formatting feedback fixed (continued captions on multi-page tables, intro text under 14 headings, no bold labels in paragraphs); Ch 1–6 + abstract/executive summary updated to FYP-I facts; new objective-status table, FR status column, real hardware/software, real dashboard screenshot, D2-deviation table (5.9), implementation mapping (6.3.6); builds clean, 110 pages. Full list: `Manzil_D2_Report/D3_CHANGES.md`. Open: D3 date on title page | Compiles |
 | 6.2 | Chapter 7: Implementation and Test Cases (modules, key code, test-case tables) | todo | Compiles |
 | 6.3 | Chapter 9: Experimental Results and Discussion (controllers, emergency, vision) | todo | Real numbers only |
 | 6.4 | Chapter 10: Conclusion + FYP-2 plan | todo | Compiles |
@@ -145,6 +145,7 @@ One line per session or cloud task, newest last: date, who/where, what changed, 
 | 14 Nov | Ibrahim + Claude (laptop) | Laptop demo check: torch installed, dashboard built, 140 tests pass; Ibrahim saw the ambulance stop at red lights → task 3.7 added; session-log rule added | this file, `CLAUDE.md`, context §50.14 |
 | 14 Nov | cloud | Task 3.7 corridor v2: stop-reason diagnostics, reroute bug fix, 5 s corridor min-green truncation (D2 deviation), give-way and early activation tested and rejected; Phase 3 + Phase 5 reruns | `results/phase3/corridor_v2/`, `results/phase3/`, `results/phase5/`, context §50.15, `tests/test_corridor_v2.py` |
 | 15 Nov | Ibrahim + Claude (laptop) | Reviewed task 3.7 (PR #13, merged by the cloud): results and notes checked; full suite on the laptop 147 passed | this file |
+| 15 Nov | Ibrahim + Claude (laptop) | Task 6.1: Ch 1–6 updated for D3 + D2 formatting feedback fixed; report builds clean (110 pages) | `Manzil_D2_Report/D3_CHANGES.md`, context §50.16 |
 
 ## FYP-2 backlog (goes into the Chapter 10 plan)
 

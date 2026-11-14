@@ -1,9 +1,11 @@
 \chapter{Introduction}
 \label{ch:introduction}
 
+This chapter introduces the Deliverable III report for Manzil, an intelligent traffic and emergency-routing prototype developed as a FAST--NUCES Final Year Project. It states what the report is for, who is expected to read it, and the terms used throughout the later chapters. It also separates work that has been implemented and measured during FYP-I from work that remains planned for FYP-II, because the evaluators asked for working code and the report must not blur that boundary. Chapters 1 to 6 carry forward the Deliverable 2 specification, updated where the implementation confirmed, refined, or changed an earlier design decision. Chapter 7 describes the implementation and its test cases, Chapter 9 reports the experiments that were actually run, and Chapter 10 concludes FYP-I and sets out the FYP-II plan.
+
 \section{Purpose of this Document}
 
-This Deliverable 2 report translates the approved proposal into a traceable research and software design. It defines the questions to be investigated, reviews the evidence behind major design choices, specifies externally visible requirements, and describes the methodology and architecture needed to conduct fair experiments. It also records the distinction between confirmed project scope, proposed technical choices, and future implementation work. The report does not claim experimental improvements, real-time performance, model accuracy, or deployment readiness. At the proposal stage, the problem definition, major functions, and conceptual architecture were established, while dataset preparation, implementation, tuning, and evaluation remained planned work. The methodology therefore defines how later claims must be produced rather than anticipating their outcome. This distinction is important because a successful simulation run or a plausible interface design does not demonstrate a measurable improvement. Any later performance statement must be tied to a recorded configuration, matched baseline, stated metric, and repeatable set of runs.
+This Deliverable III report records the implemented FYP-I state of the Manzil prototype and the evidence produced by it. Deliverable 2 translated the approved proposal into a traceable research and software design; this report keeps that design as the reference and updates it to match the system that now exists. During FYP-I the team built a SUMO-based simulation core with a single simulation adapter and safety filter, fixed-time, pressure-based adaptive, and parameter-sharing Deep Q-Network signal controllers, time-based ambulance routing with closure-triggered rerouting, a moving green corridor, a YOLO-based vehicle detection, tracking, and counting pipeline trained on Kaggle, and a first web dashboard. All controller, routing, and corridor results come from repeated, seeded SUMO runs on a synthetic 3$\times$3 signalized grid, and all perception results come from public UA-DETRAC and COCO data. The report therefore claims measured simulation and video evidence, not field performance or deployment readiness. Where the implementation deviates from the Deliverable 2 design, the deviation and its reason are stated in the relevant chapter rather than silently absorbed. Any performance statement in this report is tied to a recorded configuration, matched baseline, stated metric, and repeatable set of runs.
 
 \section{Intended Audience}
 
@@ -13,17 +15,22 @@ The primary audience is the FAST--NUCES FYP supervisor and evaluation panel. The
 
 Key terms and abbreviations used throughout the report are defined below.
 
-\begin{description}[leftmargin=0pt,labelindent=0pt,itemindent=0pt,labelsep=0.45em,itemsep=0pt,parsep=0pt,topsep=0.25\baselineskip]
+\begin{description}[font=\normalfont,leftmargin=0pt,labelindent=0pt,itemindent=0pt,labelsep=0.45em,itemsep=0pt,parsep=0pt,topsep=0.25\baselineskip]
 \item[A*:] A shortest-path search using accumulated cost and an admissible lower-bound heuristic \cite{hart1968astar}.
 \item[API:] Application Programming Interface.
+\item[ByteTrack:] A multi-object tracker that associates high-confidence detections first and then recovers objects from lower-confidence detections \cite{zhang2022bytetrack}.
 \item[CV:] Computer vision used to derive observable traffic indicators from video.
+\item[Double DQN:] A Deep Q-Network variant that selects the next action with the online network and evaluates it with a target network to reduce overestimation.
+\item[FYP-I / FYP-II:] The first and second semesters of the Final Year Project; this report closes FYP-I.
 \item[Green corridor:] A moving sequence of bounded signal-priority interventions ahead of an ambulance.
 \item[MOT:] Multi-object tracking, which associates detections into identities across video frames.
 \item[Queue proxy:] An estimate of tracked slow or stationary vehicles in a defined lane region.
 \item[RL:] Reinforcement learning, in which a policy is optimized using states, actions, and cumulative reward.
 \item[Signal preemption:] A controlled signal change for an emergency request, including transition and recovery.
 \item[SUMO:] Simulation of Urban MObility, a microscopic road-traffic simulator.
-\item[TraCI:] Traffic Control Interface for reading and changing a running SUMO simulation.
+\item[TraCI:] Traffic Control Interface for reading and changing a running SUMO simulation; libsumo offers the same interface inside the Python process.
+\item[UA-DETRAC:] A public benchmark for detecting and tracking vehicles in video from fixed traffic cameras \cite{wen2020uadetrac}.
+\item[WAPE:] Weighted absolute percentage error, the sum of absolute count errors divided by the sum of true counts.
 \item[Traffic-state contract:] A versioned observation structure with source, time, units, confidence, and validity.
 \item[Throughput:] Vehicles leaving a measured movement or network region per unit time.
 \item[Waiting time:] Time accumulated below the configured SUMO speed threshold.
@@ -31,4 +38,4 @@ Key terms and abbreviations used throughout the report are defined below.
 
 \section{Conclusion}
 
-This chapter has established Manzil as a reproducible investigation of interacting traffic decisions rather than a collection of unrelated artificial-intelligence features. The system will study how observable traffic conditions can inform signal control, how dynamic routing can respond to network delay, and how an ambulance can receive temporary priority without ignoring ordinary traffic. It has also fixed the evidence boundary for this deliverable. The approved proposal confirms the problem, intended functions, simulation basis, and broad technology direction, while the repository does not yet provide an implemented controller, trained perception model, prepared road network, or experimental results. Architecture diagrams therefore describe the system to be built, and performance requirements remain targets for later measurement. The defined terminology prevents video-derived proxies from being confused with exact simulator state and distinguishes a moving corridor from an unsafe instruction to turn every signal green. A proposed choice may be described as implemented only after its code, configuration, test evidence, or experimental record exists.
+This chapter has established Manzil as a reproducible investigation of interacting traffic decisions rather than a collection of unrelated artificial-intelligence features. The system will study how observable traffic conditions can inform signal control, how dynamic routing can respond to network delay, and how an ambulance can receive temporary priority without ignoring ordinary traffic. It has also fixed the evidence boundary for this deliverable. The repository now contains implemented controllers, a trained detector and DQN policy, a validated synthetic SUMO network, and recorded experimental results, so these are reported as measured evidence. The Lahore road network, the full five-screen dashboard with a database, filmed local video, and the full ten-seed protocol remain FYP-II work and are described as planned. The defined terminology prevents video-derived proxies from being confused with exact simulator state and distinguishes a moving corridor from an unsafe instruction to turn every signal green. A choice is described as implemented only where its code, configuration, test evidence, or experimental record exists in the project repository.
