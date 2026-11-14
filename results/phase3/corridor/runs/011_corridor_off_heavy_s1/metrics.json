@@ -9,9 +9,10 @@
   "completed_trips": 1471,
   "unfinished_veh": 387,
   "travel_time_mean_s": 156.1999,
-  "waiting_time_mean_s": 65.2896,
-  "time_loss_mean_s": 96.6353,
-  "queue_mean_veh": 3.9784,
+  "travel_time_all_mean_s": 147.7632,
+  "waiting_time_mean_s": 65.2882,
+  "time_loss_mean_s": 96.6345,
+  "queue_mean_veh": 3.9783,
   "queue_max_veh": 28,
   "phase_changes": 162,
   "max_red_s": 55.0,
@@ -33,10 +34,10 @@
   "amb_free_flow_time_s": 78.91,
   "amb_excess_delay_s": 307.09,
   "amb_stops": 11,
-  "amb_waiting_s": 244.0,
+  "amb_waiting_s": 242.0,
   "route_revisions": 0,
   "revision_triggers": [],
-  "route_compute_ms_max": 0.042,
+  "route_compute_ms_max": 0.053,
   "driven_route": [
     "left0A0",
     "A0B0",
@@ -45,5 +46,24 @@
     "B2C2",
     "C2top2"
   ],
-  "mission_window_queue_mean_veh": 151.593
+  "amb_signal_crossings": 5,
+  "amb_red_crossings": 0,
+  "amb_yellow_crossings": 0,
+  "amb_stop_reasons": {
+    "green_blocked": 1,
+    "inside_junction": 43,
+    "queue_at_green": 41,
+    "queue_at_red": 29,
+    "red_no_corridor": 128
+  },
+  "amb_stopped_other_s": 44,
+  "amb_stopped_queue_s": 70,
+  "amb_stopped_red_corridor_s": 0,
+  "amb_stopped_red_no_corridor_s": 128,
+  "amb_stopped_red_outside_lookahead_s": 0,
+  "mission_window_queue_mean_veh": 151.589,
+  "cross_street_wait_veh_s": 19049,
+  "cross_street_approaches": 10,
+  "fixed_window_queue_mean_veh": 151.589,
+  "amb_speed_mode": 31
 }

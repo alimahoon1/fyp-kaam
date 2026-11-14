@@ -1,0 +1,935 @@
+{
+  "config": {
+    "origin": "left0A0",
+    "destination": "C2top2",
+    "dispatch_s": 1200.0,
+    "routing": "dynamic",
+    "corridor": true,
+    "incident": "none",
+    "incident_edge": "",
+    "incident_s": 0.0,
+    "incident_speed_mps": 2.0,
+    "lookahead": 3,
+    "activate_eta_s": 25.0,
+    "max_priority_s": 60.0,
+    "delta_s": 10.0,
+    "persistence_s": 10.0,
+    "cooldown_s": 30.0,
+    "corridor_min_green_s": 10.0,
+    "give_way": false
+  },
+  "route_versions": [
+    {
+      "mission_id": "m1",
+      "route_version": 1,
+      "edge_ids": [
+        "left0A0",
+        "A0B0",
+        "B0B1",
+        "B1B2",
+        "B2C2",
+        "C2top2"
+      ],
+      "cost_s": 118.256,
+      "snapshot_step": 1200,
+      "trigger": "dispatch",
+      "compute_ms": 0.051
+    }
+  ],
+  "routing_log": [
+    {
+      "time_s": 1200.0,
+      "event": "route_v1",
+      "route_version": 1,
+      "saving_s": null,
+      "reason": "dispatch",
+      "nodes_expanded": 25,
+      "compute_ms": 0.051
+    }
+  ],
+  "corridor_events": [
+    {
+      "time_s": 1201.0,
+      "step": 1201,
+      "tls": "A0",
+      "state": "REQUESTED",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 13.3
+    },
+    {
+      "time_s": 1201.0,
+      "step": 1201,
+      "tls": "A0",
+      "state": "SAFE_TRANSITION",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 13.3
+    },
+    {
+      "time_s": 1201.0,
+      "step": 1201,
+      "tls": "B0",
+      "state": "REQUESTED",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 26.2
+    },
+    {
+      "time_s": 1201.0,
+      "step": 1201,
+      "tls": "B1",
+      "state": "REQUESTED",
+      "route_version": 1,
+      "phase": 0,
+      "eta": 39.1
+    },
+    {
+      "time_s": 1202.0,
+      "step": 1202,
+      "tls": "B0",
+      "state": "SAFE_TRANSITION",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 25.5
+    },
+    {
+      "time_s": 1216.0,
+      "step": 1216,
+      "tls": "A0",
+      "state": "ACTIVE_PRIORITY",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 9.8
+    },
+    {
+      "time_s": 1216.0,
+      "step": 1216,
+      "tls": "B0",
+      "state": "ACTIVE_PRIORITY",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 22.7
+    },
+    {
+      "time_s": 1233.0,
+      "step": 1233,
+      "tls": "A0",
+      "state": "PASSAGE",
+      "route_version": 1,
+      "phase": 1
+    },
+    {
+      "time_s": 1233.0,
+      "step": 1233,
+      "tls": "A0",
+      "state": "RECOVERY",
+      "route_version": 1,
+      "phase": 1
+    },
+    {
+      "time_s": 1233.0,
+      "step": 1233,
+      "tls": "B2",
+      "state": "REQUESTED",
+      "route_version": 1,
+      "phase": 0,
+      "eta": 38.7
+    },
+    {
+      "time_s": 1234.0,
+      "tls": "A0",
+      "state": "IDLE",
+      "recovery_s": 1.0
+    },
+    {
+      "time_s": 1235.0,
+      "step": 1235,
+      "tls": "B1",
+      "state": "SAFE_TRANSITION",
+      "route_version": 1,
+      "phase": 0,
+      "eta": 24.5
+    },
+    {
+      "time_s": 1235.0,
+      "step": 1235,
+      "tls": "B1",
+      "state": "ACTIVE_PRIORITY",
+      "route_version": 1,
+      "phase": 0,
+      "eta": 24.5
+    },
+    {
+      "time_s": 1247.0,
+      "step": 1247,
+      "tls": "B0",
+      "state": "PASSAGE",
+      "route_version": 1,
+      "phase": 1
+    },
+    {
+      "time_s": 1247.0,
+      "step": 1247,
+      "tls": "B0",
+      "state": "RECOVERY",
+      "route_version": 1,
+      "phase": 1
+    },
+    {
+      "time_s": 1247.0,
+      "step": 1247,
+      "tls": "C2",
+      "state": "REQUESTED",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 38.7
+    },
+    {
+      "time_s": 1249.0,
+      "step": 1249,
+      "tls": "B2",
+      "state": "SAFE_TRANSITION",
+      "route_version": 1,
+      "phase": 0,
+      "eta": 25.8
+    },
+    {
+      "time_s": 1266.0,
+      "step": 1266,
+      "tls": "B2",
+      "state": "ACTIVE_PRIORITY",
+      "route_version": 1,
+      "phase": 0,
+      "eta": 25.8
+    },
+    {
+      "time_s": 1275.0,
+      "step": 1275,
+      "tls": "C2",
+      "state": "SAFE_TRANSITION",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 31.9
+    },
+    {
+      "time_s": 1275.0,
+      "step": 1275,
+      "tls": "C2",
+      "state": "ACTIVE_PRIORITY",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 31.9
+    },
+    {
+      "time_s": 1282.0,
+      "step": 1282,
+      "tls": "B1",
+      "state": "PASSAGE",
+      "route_version": 1,
+      "phase": 0
+    },
+    {
+      "time_s": 1282.0,
+      "step": 1282,
+      "tls": "B1",
+      "state": "RECOVERY",
+      "route_version": 1,
+      "phase": 0
+    },
+    {
+      "time_s": 1297.0,
+      "tls": "B1",
+      "state": "IDLE",
+      "recovery_s": 15.0
+    },
+    {
+      "time_s": 1297.0,
+      "step": 1297,
+      "tls": "B2",
+      "state": "PASSAGE",
+      "route_version": 1,
+      "phase": 0
+    },
+    {
+      "time_s": 1297.0,
+      "step": 1297,
+      "tls": "B2",
+      "state": "RECOVERY",
+      "route_version": 1,
+      "phase": 0
+    },
+    {
+      "time_s": 1303.0,
+      "tls": "B0",
+      "state": "IDLE",
+      "recovery_s": 56.0
+    },
+    {
+      "time_s": 1336.0,
+      "step": 1336,
+      "tls": "C2",
+      "state": "CANCELLED",
+      "route_version": 1,
+      "phase": 1,
+      "reason": "timeout"
+    },
+    {
+      "time_s": 1337.0,
+      "step": 1337,
+      "tls": "C2",
+      "state": "REQUESTED",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 0.2
+    },
+    {
+      "time_s": 1337.0,
+      "step": 1337,
+      "tls": "C2",
+      "state": "SAFE_TRANSITION",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 0.2
+    },
+    {
+      "time_s": 1346.0,
+      "tls": "C2",
+      "state": "IDLE",
+      "recovery_s": 10.0
+    },
+    {
+      "time_s": 1357.0,
+      "step": 1357,
+      "tls": "C2",
+      "state": "PASSAGE",
+      "route_version": 1,
+      "phase": 1
+    },
+    {
+      "time_s": 1357.0,
+      "step": 1357,
+      "tls": "C2",
+      "state": "RECOVERY",
+      "route_version": 1,
+      "phase": 1
+    },
+    {
+      "time_s": 1358.0,
+      "tls": "C2",
+      "state": "IDLE",
+      "recovery_s": 1.0
+    }
+  ],
+  "stop_log": [
+    {
+      "time_s": 1249.0,
+      "edge": ":B0_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    },
+    {
+      "time_s": 1250.0,
+      "edge": ":B0_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    },
+    {
+      "time_s": 1251.0,
+      "edge": ":B0_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    },
+    {
+      "time_s": 1252.0,
+      "edge": ":B0_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    },
+    {
+      "time_s": 1253.0,
+      "edge": ":B0_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    },
+    {
+      "time_s": 1254.0,
+      "edge": ":B0_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    },
+    {
+      "time_s": 1255.0,
+      "edge": ":B0_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    },
+    {
+      "time_s": 1256.0,
+      "edge": ":B0_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    },
+    {
+      "time_s": 1257.0,
+      "edge": ":B0_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    },
+    {
+      "time_s": 1258.0,
+      "edge": ":B0_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    },
+    {
+      "time_s": 1259.0,
+      "edge": ":B0_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    },
+    {
+      "time_s": 1260.0,
+      "edge": ":B0_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    },
+    {
+      "time_s": 1261.0,
+      "edge": ":B0_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    },
+    {
+      "time_s": 1262.0,
+      "edge": ":B0_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    },
+    {
+      "time_s": 1263.0,
+      "edge": ":B0_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    },
+    {
+      "time_s": 1264.0,
+      "edge": ":B0_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    },
+    {
+      "time_s": 1265.0,
+      "edge": ":B0_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    },
+    {
+      "time_s": 1312.0,
+      "edge": "B2C2",
+      "reason": "queue_at_green",
+      "tls": "C2",
+      "tls_state": "g",
+      "tls_dist_m": 47.6,
+      "leader_gap_m": 0.0,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1313.0,
+      "edge": "B2C2",
+      "reason": "queue_at_green",
+      "tls": "C2",
+      "tls_state": "g",
+      "tls_dist_m": 47.6,
+      "leader_gap_m": 0.2,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1326.0,
+      "edge": "B2C2",
+      "reason": "queue_at_green",
+      "tls": "C2",
+      "tls_state": "g",
+      "tls_dist_m": 10.1,
+      "leader_gap_m": 1.9,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1332.0,
+      "edge": "B2C2",
+      "reason": "queue_at_green",
+      "tls": "C2",
+      "tls_state": "g",
+      "tls_dist_m": 2.6,
+      "leader_gap_m": 0.0,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1333.0,
+      "edge": "B2C2",
+      "reason": "queue_at_green",
+      "tls": "C2",
+      "tls_state": "g",
+      "tls_dist_m": 2.6,
+      "leader_gap_m": 0.0,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1334.0,
+      "edge": "B2C2",
+      "reason": "queue_at_green",
+      "tls": "C2",
+      "tls_state": "g",
+      "tls_dist_m": 2.6,
+      "leader_gap_m": 0.0,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1335.0,
+      "edge": "B2C2",
+      "reason": "queue_at_green",
+      "tls": "C2",
+      "tls_state": "g",
+      "tls_dist_m": 2.6,
+      "leader_gap_m": 0.0,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1336.0,
+      "edge": "B2C2",
+      "reason": "queue_at_green",
+      "tls": "C2",
+      "tls_state": "g",
+      "tls_dist_m": 2.6,
+      "leader_gap_m": 0.0,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1337.0,
+      "edge": "B2C2",
+      "reason": "queue_at_red",
+      "tls": "C2",
+      "tls_state": "y",
+      "tls_dist_m": 2.6,
+      "leader_gap_m": 1.7,
+      "corridor_state": null,
+      "filter_mode": "yellow"
+    },
+    {
+      "time_s": 1339.0,
+      "edge": "B2C2",
+      "reason": "red_corridor_clearance",
+      "tls": "C2",
+      "tls_state": "y",
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 10.9,
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "yellow"
+    },
+    {
+      "time_s": 1340.0,
+      "edge": "B2C2",
+      "reason": "red_corridor_clearance",
+      "tls": "C2",
+      "tls_state": "r",
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 18.1,
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "all_red"
+    },
+    {
+      "time_s": 1341.0,
+      "edge": "B2C2",
+      "reason": "red_corridor_clearance",
+      "tls": "C2",
+      "tls_state": "r",
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 26.8,
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "all_red"
+    },
+    {
+      "time_s": 1342.0,
+      "edge": "B2C2",
+      "reason": "red_corridor_min_green",
+      "tls": "C2",
+      "tls_state": "r",
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 37.9,
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1343.0,
+      "edge": "B2C2",
+      "reason": "red_corridor_min_green",
+      "tls": "C2",
+      "tls_state": "r",
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 49.5,
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1344.0,
+      "edge": "B2C2",
+      "reason": "red_corridor_min_green",
+      "tls": "C2",
+      "tls_state": "r",
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 61.5,
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1345.0,
+      "edge": "B2C2",
+      "reason": "red_corridor_min_green",
+      "tls": "C2",
+      "tls_state": "r",
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 73.9,
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1346.0,
+      "edge": "B2C2",
+      "reason": "red_corridor_min_green",
+      "tls": "C2",
+      "tls_state": "r",
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 86.4,
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1347.0,
+      "edge": "B2C2",
+      "reason": "red_corridor_min_green",
+      "tls": "C2",
+      "tls_state": "r",
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 98.3,
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1348.0,
+      "edge": "B2C2",
+      "reason": "red_corridor_min_green",
+      "tls": "C2",
+      "tls_state": "r",
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 110.4,
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1349.0,
+      "edge": "B2C2",
+      "reason": "red_corridor_min_green",
+      "tls": "C2",
+      "tls_state": "r",
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 122.7,
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1350.0,
+      "edge": "B2C2",
+      "reason": "red_corridor_min_green",
+      "tls": "C2",
+      "tls_state": "r",
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 134.2,
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1351.0,
+      "edge": "B2C2",
+      "reason": "red_corridor_min_green",
+      "tls": "C2",
+      "tls_state": "r",
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 145.9,
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1352.0,
+      "edge": "B2C2",
+      "reason": "red_corridor_clearance",
+      "tls": "C2",
+      "tls_state": "r",
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 158.5,
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "yellow"
+    },
+    {
+      "time_s": 1353.0,
+      "edge": "B2C2",
+      "reason": "red_corridor_clearance",
+      "tls": "C2",
+      "tls_state": "r",
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 171.2,
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "yellow"
+    },
+    {
+      "time_s": 1354.0,
+      "edge": "B2C2",
+      "reason": "red_corridor_clearance",
+      "tls": "C2",
+      "tls_state": "r",
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 182.9,
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "yellow"
+    },
+    {
+      "time_s": 1355.0,
+      "edge": "B2C2",
+      "reason": "red_corridor_clearance",
+      "tls": "C2",
+      "tls_state": "r",
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 194.7,
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "all_red"
+    },
+    {
+      "time_s": 1356.0,
+      "edge": "B2C2",
+      "reason": "red_corridor_clearance",
+      "tls": "C2",
+      "tls_state": "r",
+      "tls_dist_m": 1.0,
+      "leader_gap_m": null,
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "all_red"
+    },
+    {
+      "time_s": 1359.0,
+      "edge": ":C2_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    },
+    {
+      "time_s": 1360.0,
+      "edge": ":C2_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    },
+    {
+      "time_s": 1361.0,
+      "edge": ":C2_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    },
+    {
+      "time_s": 1362.0,
+      "edge": ":C2_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    },
+    {
+      "time_s": 1363.0,
+      "edge": ":C2_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    },
+    {
+      "time_s": 1364.0,
+      "edge": ":C2_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    },
+    {
+      "time_s": 1365.0,
+      "edge": ":C2_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    },
+    {
+      "time_s": 1366.0,
+      "edge": ":C2_15",
+      "reason": "inside_junction",
+      "tls": null,
+      "tls_state": null,
+      "tls_dist_m": null,
+      "leader_gap_m": null,
+      "corridor_state": null,
+      "filter_mode": null
+    }
+  ],
+  "signal_crossings": [
+    {
+      "time_s": 1233.0,
+      "tls": "A0",
+      "approach": "left0A0",
+      "link": 13,
+      "state": "G"
+    },
+    {
+      "time_s": 1247.0,
+      "tls": "B0",
+      "approach": "A0B0",
+      "link": 15,
+      "state": "g"
+    },
+    {
+      "time_s": 1282.0,
+      "tls": "B1",
+      "approach": "B0B1",
+      "link": 9,
+      "state": "G"
+    },
+    {
+      "time_s": 1297.0,
+      "tls": "B2",
+      "approach": "B1B2",
+      "link": 8,
+      "state": "G"
+    },
+    {
+      "time_s": 1357.0,
+      "tls": "C2",
+      "approach": "B2C2",
+      "link": 15,
+      "state": "g"
+    }
+  ]
+}

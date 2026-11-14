@@ -1,6 +1,6 @@
 {
   "run_id": "grid3x3_fixed_time_medium_s1",
-  "created_at_utc": "20261110T001618Z",
+  "created_at_utc": "20261114T153100Z",
   "config": {
     "scenario": "grid3x3",
     "profile": "medium",
@@ -27,18 +27,21 @@
       "max_priority_s": 60.0,
       "delta_s": 10.0,
       "persistence_s": 10.0,
-      "cooldown_s": 30.0
+      "cooldown_s": 30.0,
+      "corridor_min_green_s": null,
+      "give_way": false
     },
-    "label": "static"
+    "label": "static",
+    "checkpoint": ""
   },
-  "config_digest": "0c6cc6179a",
+  "config_digest": "cbf3942c70",
   "metric_version": 1,
   "versions": {
     "manzil": "0.1.0",
     "sumo": "Eclipse SUMO sumo 1.28.0",
     "python": "3.13.18",
     "git": {
-      "commit": "40b61c852b85710877143f8e5ce01299fe669d46",
+      "commit": "f7323da4e2e75b5d3ea9230eeed0102675deb9ea",
       "dirty": true
     }
   },
@@ -60,17 +63,26 @@
     "generator": "manzil.scenarios.demand (Poisson per entry road, numpy PCG64)"
   },
   "signal_timing": {
-    "version": 3,
+    "version": 6,
     "safety": {
       "min_green_s": 10,
       "yellow_s": 3,
-      "all_red_s": 2
+      "all_red_s": 2,
+      "max_red_s": 90,
+      "corridor_min_green_s": 5
     }
+  },
+  "safety_applied": {
+    "min_green_s": 10,
+    "yellow_s": 3,
+    "all_red_s": 2,
+    "max_red_s": 90,
+    "corridor_min_green_s": 5
   },
   "controller": {
     "controller": "fixed_time",
     "plan_name": "medium",
-    "plan_version": 3,
+    "plan_version": 6,
     "plans": {
       "A0": {
         "green_s": [
@@ -164,5 +176,5 @@
     "true"
   ],
   "termination": "completed",
-  "wall_time_s": 3.68
+  "wall_time_s": 4.7
 }

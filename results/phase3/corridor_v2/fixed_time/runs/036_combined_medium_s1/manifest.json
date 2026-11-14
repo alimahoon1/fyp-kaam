@@ -1,0 +1,180 @@
+{
+  "run_id": "grid3x3_fixed_time_medium_s1",
+  "created_at_utc": "20261114T152744Z",
+  "config": {
+    "scenario": "grid3x3",
+    "profile": "medium",
+    "seed": 1,
+    "controller": "fixed_time",
+    "plan": "auto",
+    "warmup_s": 900.0,
+    "measure_s": 900.0,
+    "backend": "libsumo",
+    "time_to_teleport_s": 300.0,
+    "controller_params": [],
+    "mission": {
+      "origin": "left0A0",
+      "destination": "C2top2",
+      "dispatch_s": 1200.0,
+      "routing": "dynamic",
+      "corridor": true,
+      "incident": "none",
+      "incident_edge": "",
+      "incident_s": 0.0,
+      "incident_speed_mps": 2.0,
+      "lookahead": 3,
+      "activate_eta_s": 30.0,
+      "max_priority_s": 60.0,
+      "delta_s": 10.0,
+      "persistence_s": 10.0,
+      "cooldown_s": 30.0,
+      "corridor_min_green_s": 5.0,
+      "give_way": true
+    },
+    "label": "combined",
+    "checkpoint": ""
+  },
+  "config_digest": "c60adcb82e",
+  "metric_version": 1,
+  "versions": {
+    "manzil": "0.1.0",
+    "sumo": "Eclipse SUMO sumo 1.28.0",
+    "python": "3.13.18",
+    "git": {
+      "commit": "f7323da4e2e75b5d3ea9230eeed0102675deb9ea",
+      "dirty": true
+    }
+  },
+  "network": {
+    "id": "grid3x3.net.xml#16c36ec7f42b",
+    "content_sha256": "16c36ec7f42b7694876cd907774d6d607435f3de4cd2468da263fc91221d65ee"
+  },
+  "demand": {
+    "profile": {
+      "name": "medium",
+      "major_rate_vph": 400,
+      "minor_rate_vph": 400,
+      "description": "Busy but stable traffic."
+    },
+    "seed": 1,
+    "duration_s": 1800.0,
+    "vehicles": 2384,
+    "network": "grid3x3.net.xml",
+    "generator": "manzil.scenarios.demand (Poisson per entry road, numpy PCG64)"
+  },
+  "signal_timing": {
+    "version": 6,
+    "safety": {
+      "min_green_s": 10,
+      "yellow_s": 3,
+      "all_red_s": 2,
+      "max_red_s": 90,
+      "corridor_min_green_s": 5
+    }
+  },
+  "safety_applied": {
+    "min_green_s": 10,
+    "yellow_s": 3,
+    "all_red_s": 2,
+    "max_red_s": 90,
+    "corridor_min_green_s": 5.0
+  },
+  "controller": {
+    "controller": "fixed_time",
+    "plan_name": "medium",
+    "plan_version": 6,
+    "plans": {
+      "A0": {
+        "green_s": [
+          25.0,
+          25.0
+        ],
+        "offset_s": 0.0
+      },
+      "A1": {
+        "green_s": [
+          25.0,
+          25.0
+        ],
+        "offset_s": 0.0
+      },
+      "A2": {
+        "green_s": [
+          25.0,
+          25.0
+        ],
+        "offset_s": 0.0
+      },
+      "B0": {
+        "green_s": [
+          25.0,
+          25.0
+        ],
+        "offset_s": 0.0
+      },
+      "B1": {
+        "green_s": [
+          25.0,
+          25.0
+        ],
+        "offset_s": 0.0
+      },
+      "B2": {
+        "green_s": [
+          25.0,
+          25.0
+        ],
+        "offset_s": 0.0
+      },
+      "C0": {
+        "green_s": [
+          25.0,
+          25.0
+        ],
+        "offset_s": 0.0
+      },
+      "C1": {
+        "green_s": [
+          25.0,
+          25.0
+        ],
+        "offset_s": 0.0
+      },
+      "C2": {
+        "green_s": [
+          25.0,
+          25.0
+        ],
+        "offset_s": 0.0
+      }
+    }
+  },
+  "sumo_args": [
+    "--net-file",
+    "scenarios/grid3x3/grid3x3.net.xml",
+    "--route-files",
+    "results/phase3/corridor_v2/fixed_time/runs/036_combined_medium_s1/demand/medium_seed1.rou.xml",
+    "--seed",
+    "1",
+    "--begin",
+    "0",
+    "--end",
+    "1800.0",
+    "--step-length",
+    "1",
+    "--time-to-teleport",
+    "300.0",
+    "--tripinfo-output",
+    "results/phase3/corridor_v2/fixed_time/runs/036_combined_medium_s1/tripinfo.xml",
+    "--tripinfo-output.write-unfinished",
+    "true",
+    "--statistic-output",
+    "results/phase3/corridor_v2/fixed_time/runs/036_combined_medium_s1/statistics.xml",
+    "--no-step-log",
+    "true",
+    "--no-warnings",
+    "true"
+  ],
+  "termination": "completed",
+  "wall_time_s": 3.05
+}

@@ -275,7 +275,7 @@ class _Run:
         states = self.safety.tick(now, step)
         for tls, s in states.items():
             self.sim.set_signal_state(tls, s)
-        self.monitor.observe(now, states)
+        self.monitor.observe(now, states, self.safety.owners())
 
     # ----- commands --------------------------------------------------------------------------
     def dispatch(self, origin: str, destination: str, corridor: bool) -> dict:
