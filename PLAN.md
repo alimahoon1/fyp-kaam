@@ -5,7 +5,7 @@ Before starting a task, set it to `in progress (Name)` and push. When finished, 
 
 ## Current stage
 
-Planning is finished (10 Nov 2026). **Phase 0 done. Phases 1–5 done; vision V.1–V.5 done (V.6 deferred).** Next: Phase 6 report chapters. Coding phases 1–5 mostly run as Claude Code cloud sessions (claude.ai/code), with Ibrahim checking from the phone app. The vision track (V) can run in parallel at any time after Phase 0 step 0.4.
+Planning is finished (10 Nov 2026). **Phase 0 done. Phases 1–5 done; vision V.1–V.5 done (V.6 deferred).** Laptop demo check done 14 Nov (140 tests pass on the laptop, dashboard runs). Next: task 3.7 (corridor improvement), then Phase 6 report chapters. Coding phases 1–5 mostly run as Claude Code cloud sessions (claude.ai/code), with Ibrahim checking from the phone app. The vision track (V) can run in parallel at any time after Phase 0 step 0.4.
 
 ## Deliverable III requirements (from the university)
 
@@ -98,6 +98,7 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 | 3.4 | Road-closure incident + rerouting (Alg 1: threshold, persistence, cooldown) | done (cloud, 10 Nov): `manzil/routing/mission.py` (Algorithm 1: threshold, persistence, cooldown); a closure on the route triggers v2 and cancels obsolete priority (`tests/test_emergency.py`) | Closure triggers a new route version |
 | 3.5 | Corridor state machine (Alg 2: REQUESTED → SAFE_TRANSITION → ACTIVE → PASSAGE → RECOVERY), bounded look-ahead | done (cloud, 10 Nov): `manzil/corridor/coordinator.py` (Algorithm 2: REQUESTED → SAFE_TRANSITION → ACTIVE_PRIORITY → PASSAGE → RECOVERY → IDLE, look-ahead 2, max priority 60 s, timeout, ownership through the safety filter); 0 safety violations | Invariant tests; recovery to normal control |
 | 3.6 | Emergency experiments: static vs dynamic route; corridor off vs on; ordinary-traffic impact | done (cloud, 10 Nov): `results/phase3/` (static vs dynamic −53 % / −49 % ambulance time; corridor −33 % / −57 % at a cost of +3.5 % / +5.8 % network queue), see `results/phase3/README.md` | Results + plots |
+| 3.7 | Corridor improvement (14 Nov, Ibrahim saw the ambulance stop at red lights in the laptop demo): measure red-light waiting of the ambulance; try earlier activation, look-ahead 3, emergency truncation of minimum green (yellow + all-red always kept), and ordinary vehicles giving way; keep only what helps on several seeds; rerun Phase 3 corridor results + Phase 5 demo | todo | Before/after table + plots in `results/phase3/corridor_v2/`; 0 safety violations; no retraining needed (DQN state has no emergency input) |
 
 ### Phase 4 — DQN signal control
 | ID | Task | Status | Done when |
@@ -130,6 +131,18 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 | 6.3 | Chapter 9: Experimental Results and Discussion (controllers, emergency, vision) | todo | Real numbers only |
 | 6.4 | Chapter 10: Conclusion + FYP-2 plan | todo | Compiles |
 | 6.5 | Demo script + presentation | todo | Rehearsed |
+
+## Session log
+
+One line per session or cloud task, newest last: date, who/where, what changed, evidence. Every session adds its line before its final push (see `CLAUDE.md`).
+
+| Date | Session | What changed | Evidence |
+|---|---|---|---|
+| 9 Nov | Ibrahim + Claude (laptop) | Phase 0 setup; cloud environment created | `tests/test_setup.py`, `scripts/cloud_setup.sh` |
+| 9–10 Nov | cloud | Phases 1–4 (SUMO grid, controllers, routing, corridor, DQN) | `results/phase1`–`phase4`, context §50 |
+| 11–12 Nov | cloud | Vision V.1–V.5 on Kaggle; Phase 5 dashboard (PRs #11, #12, merged) | `results/vision/`, `results/phase5/` |
+| 12 Nov | Ibrahim + Claude (laptop) | Kaggle token setup; V.6 deferred; cloud told to merge its own PRs and save every figure | `CLAUDE.md`, this file |
+| 14 Nov | Ibrahim + Claude (laptop) | Laptop demo check: torch installed, dashboard built, 140 tests pass; Ibrahim saw the ambulance stop at red lights → task 3.7 added; session-log rule added | this file, `CLAUDE.md`, context §50.14 |
 
 ## FYP-2 backlog (goes into the Chapter 10 plan)
 

@@ -1679,3 +1679,12 @@ Kaggle no longer offers a `kaggle.json` download. It now issues a **new-style AP
   - A motorcycle false-positive check on Lahore footage (V.6).
   - Tuning the ByteTrack thresholds against ID switches.
   - Feeding counts and queues into SUMO (video→SUMO study).
+
+## 50.14 Laptop demo check and corridor issue (14 Nov 2026)
+
+- Laptop check: PyTorch CPU installed in `.venv` (`pip install -e ".[rl]" --extra-index-url https://download.pytorch.org/whl/cpu`), dashboard built with Node 22.14 (`npm install`, `npm run build`), `python -m manzil.api` serves it on http://127.0.0.1:8000. Full suite on the laptop: **140 passed, 0 skipped**.
+- Ibrahim ran a DQN/heavy demo and saw the **ambulance stopping at red lights** on its route. He expected only green lights along the chosen route.
+- Explanation (current design, task 3.5): only the next 2 signalised junctions take part (bounded look-ahead, FR-12); activation happens when the free-flow ETA is within 15 s plus queue clearance; the safety filter first finishes minimum green (10 s), then yellow (3 s) and all-red (2 s); ordinary queued vehicles do not give way; priority is held at most 60 s. So red waits near the junction are possible.
+- Decision: making the whole route green at once is rejected (blocks cross traffic, contradicts the bounded look-ahead in D2). Instead, task 3.7 improves the corridor: measure the ambulance's red-light waiting, then test earlier activation, look-ahead 3, emergency truncation of minimum green (yellow + all-red always kept), and ordinary vehicles giving way. Keep only what helps across seeds; report the ordinary-traffic cost. Decision 11 (ambulance obeys red lights) still holds.
+- No retraining needed: the DQN's state has no emergency input (`manzil/control/rl_env.py`), and the corridor takes ownership of the junctions it needs. YOLO is unaffected. Only the Phase 3 corridor experiments and the Phase 5 demo run are rerun.
+- New standing rule (CLAUDE.md): every session updates `PLAN.md` (task + Session log line), context §50, and the affected READMEs in the same push.
