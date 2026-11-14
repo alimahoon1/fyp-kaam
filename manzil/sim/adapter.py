@@ -60,6 +60,10 @@ SIM_VARS = (
     tc.VAR_DEPARTED_VEHICLES_IDS,
 )
 AMBULANCE_TYPE = "ambulance"
+GIVE_WAY_TYPE = "ambulance_give_way"  # same ambulance + SUMO bluelight device (others yield)
+# SUMO speed mode 31 = all checks on: safe speed, max accel/decel, right of way at junctions,
+# and brake to avoid passing a red light. The bluelight device lowers it to 7 (runs reds).
+OBEY_SIGNALS_SPEED_MODE = 31
 
 # Options that keep SUMO quiet on the console (append to the start arguments).
 QUIET_ARGS = ("--no-step-log", "true", "--no-warnings", "true")
@@ -197,18 +201,27 @@ class SimulationAdapter:
         return True
 
     # ----- vehicles and incidents -------------------------------------------------------------
-    def add_ambulance_type(self, color=(255, 255, 255, 255)) -> str:
-        """An ambulance that obeys signals: vClass ``emergency``, no blue-light device (D11)."""
+    def add_ambulance_type(self, color=(255, 255, 255, 255), give_way: bool = False) -> str:
+        """An ambulance that obeys signals: vClass ``emergency``, speed factor exactly 1 (D11).
+
+        ``give_way=True`` (task 3.7) adds SUMO's bluelight device, so ordinary vehicles ahead
+        move aside for it. That device also lets the ambulance run red lights (speed mode 7);
+        :meth:`add_vehicle` therefore sets speed mode 31 again, so it still stops at red.
+        """
         self._require_running()
         vt = self._conn.vehicletype
-        if AMBULANCE_TYPE not in vt.getIDList():
-            vt.copy("DEFAULT_VEHTYPE", AMBULANCE_TYPE)
-            vt.setVehicleClass(AMBULANCE_TYPE, "emergency")
-            vt.setShapeClass(AMBULANCE_TYPE, "emergency")
-            vt.setColor(AMBULANCE_TYPE, color)
-            vt.setImperfection(AMBULANCE_TYPE, 0.0)  # deterministic driver (sigma = 0)
-            vt.setSpeedFactor(AMBULANCE_TYPE, 1.0)
-        return AMBULANCE_TYPE
+        type_id = GIVE_WAY_TYPE if give_way else AMBULANCE_TYPE
+        if type_id not in vt.getIDList():
+            vt.copy("DEFAULT_VEHTYPE", type_id)
+            vt.setVehicleClass(type_id, "emergency")
+            vt.setShapeClass(type_id, "emergency")
+            vt.setColor(type_id, color)
+            vt.setImperfection(type_id, 0.0)  # deterministic driver (sigma = 0)
+            vt.setSpeedFactor(type_id, 1.0)
+            vt.setSpeedDeviation(type_id, 0.0)  # else SUMO draws a factor around 1.0 per vehicle
+            if give_way:
+                vt.setParameter(type_id, "has.bluelight.device", "true")
+        return type_id
 
     def add_vehicle(self, vehicle_id: str, edges: Sequence[str], type_id: str) -> None:
         """Insert a vehicle now on the given route and track its state in every snapshot."""
@@ -221,11 +234,42 @@ class SimulationAdapter:
         )  # fmt: skip
         self._conn.vehicle.subscribe(vehicle_id, VEHICLE_VARS)
         self._tracked.add(vehicle_id)
+        if type_id in (AMBULANCE_TYPE, GIVE_WAY_TYPE):
+            self.obey_signals(vehicle_id)
+
+    def obey_signals(self, vehicle_id: str) -> None:
+        """Make sure the vehicle stops at red lights and respects right of way (Decision 11)."""
+        self._require_running()
+        self._conn.vehicle.setSpeedMode(vehicle_id, OBEY_SIGNALS_SPEED_MODE)
+
+    def speed_mode(self, vehicle_id: str) -> int:
+        self._require_running()
+        return int(self._conn.vehicle.getSpeedMode(vehicle_id))
 
     def set_route(self, vehicle_id: str, edges: Sequence[str]) -> None:
         """Replace a vehicle's route; ``edges[0]`` must be the edge it is on."""
         self._require_running()
         self._conn.vehicle.setRoute(vehicle_id, list(edges))
+
+    def stop_context(self, vehicle_id: str) -> dict:
+        """Why a (tracked) vehicle may be standing still: its next traffic light and its leader.
+
+        Returns ``tls`` (id or None), ``link`` (link index), ``tls_dist_m`` (distance to that
+        stop line), ``tls_state`` (the link's signal character) and ``leader_gap_m`` (gap to the
+        vehicle ahead, None if none within 100 m). Read-only; used for diagnostics.
+        """
+        self._require_running()
+        v = self._conn.vehicle
+        out = {"tls": None, "link": None, "tls_dist_m": None, "tls_state": None,
+               "leader_gap_m": None}  # fmt: skip
+        nxt = v.getNextTLS(vehicle_id)
+        if nxt:
+            tls, link, dist, state = nxt[0]
+            out.update(tls=tls, link=int(link), tls_dist_m=float(dist), tls_state=state)
+        lead = v.getLeader(vehicle_id, 100.0)
+        if lead and lead[0]:
+            out["leader_gap_m"] = float(lead[1])
+        return out
 
     def vehicle_route(self, vehicle_id: str) -> tuple[str, ...]:
         self._require_running()

@@ -35,10 +35,17 @@ class SafetyConfig:
     # Longest a green phase may wait (red) under normal control; None disables the guard.
     # When a phase reaches max_red_s - clearance the filter forces a switch to it.
     max_red_s: float | None = None
+    # Emergency truncation (PLAN task 3.7): a corridor request may end the current green after
+    # this long instead of ``min_green_s``. Yellow and all-red are never shortened. None = no
+    # truncation (the corridor waits for the full minimum green like every other controller).
+    corridor_min_green_s: float | None = None
 
     def __post_init__(self):
         if self.min_green_s <= 0 or self.yellow_s <= 0 or self.all_red_s < 0:
             raise ValueError(f"invalid safety timing {self}")
+        c = self.corridor_min_green_s
+        if c is not None and not 0 < c <= self.min_green_s:
+            raise ValueError("corridor minimum green must be in (0, min_green_s]")
         if self.max_red_s is not None and self.max_red_s <= self.min_green_s + 2 * (
             self.yellow_s + self.all_red_s
         ):
@@ -47,6 +54,12 @@ class SafetyConfig:
     @property
     def clearance_s(self) -> float:
         return self.yellow_s + self.all_red_s
+
+    def min_green_for(self, owner: Owner) -> float:
+        """Minimum green before a switch requested by the junction's current owner."""
+        if owner is Owner.CORRIDOR and self.corridor_min_green_s is not None:
+            return self.corridor_min_green_s
+        return self.min_green_s
 
 
 class Mode(str, Enum):
@@ -139,8 +152,9 @@ class SafetyFilter:
         if req.requested_phase == j.phase:
             self.hold_count += 1
             return None
-        if now - j.since < self.config.min_green_s:
+        if now - j.since < self.config.min_green_for(j.owner):
             return self._record(rid, req, j.phase, step, "min_green_hold")
+        truncated = now - j.since < self.config.min_green_s  # only possible for the corridor
 
         # Start the change: yellow now, then all-red, then the requested green.
         target = j.x.green_phases[req.requested_phase].state
@@ -149,7 +163,8 @@ class SafetyFilter:
         j.since = now
         j.state = yellow_state(j.state, target)
         self._event(j, step, now, Mode.YELLOW, None)
-        return self._record(rid, req, req.requested_phase, step, "none")
+        why = "corridor_min_green_truncated" if truncated else "none"
+        return self._record(rid, req, req.requested_phase, step, why)
 
     # ----- time ------------------------------------------------------------------------------
     def tick(self, now: float, step: int) -> dict[str, str]:
@@ -201,6 +216,13 @@ class SafetyFilter:
 
     def owner(self, tls: str) -> Owner:
         return self._j[tls].owner
+
+    def owners(self) -> dict[str, Owner]:
+        return {tls: j.owner for tls, j in self._j.items()}
+
+    def mode(self, tls: str) -> str:
+        """``green``, ``yellow`` or ``all_red`` (read-only, for diagnostics)."""
+        return self._j[tls].mode.value
 
     def showing(self, tls: str) -> int | None:
         """Green phase currently shown, or None during yellow / all-red."""
@@ -264,7 +286,9 @@ class SafetyMonitor:
     Checks, per junction and step: no conflicting greens (exact foe/yield rule), every green
     state is one of the declared green phases or a filter transition, a link that loses green
     shows yellow for at least ``yellow_s`` first, and each green phase lasts at least
-    ``min_green_s`` before it is left.
+    ``min_green_s`` before it is left. If ``owners`` is passed to :meth:`observe` and the
+    config allows emergency truncation, a green left while the corridor owns the junction must
+    last at least ``corridor_min_green_s`` instead; every other green keeps the full minimum.
     """
 
     network: NetworkModel
@@ -274,7 +298,9 @@ class SafetyMonitor:
     _yellow_since: dict[tuple[str, int], float] = field(default_factory=dict)
     _green_since: dict[str, tuple[str, float]] = field(default_factory=dict)
 
-    def observe(self, now: float, states: dict[str, str]) -> None:
+    def observe(
+        self, now: float, states: dict[str, str], owners: dict[str, Owner] | None = None
+    ) -> None:
         eps = 1e-9
         for tls, state in states.items():
             x = self.network.intersections[tls]
@@ -298,7 +324,8 @@ class SafetyMonitor:
                         self._yellow_since[(tls, i)] = now
                 # Minimum green: a declared green that is replaced must have lasted long enough.
                 g = self._green_since.get(tls)
-                if g and g[0] == prev and now - g[1] < self.config.min_green_s - eps:
+                owner = owners.get(tls, Owner.NORMAL) if owners else Owner.NORMAL
+                if g and g[0] == prev and now - g[1] < self.config.min_green_for(owner) - eps:
                     self.violations.append(f"t={now} {tls}: green {prev} left after {now - g[1]}s")
             if state in greens and (self._green_since.get(tls, ("",))[0] != state):
                 self._green_since[tls] = (state, now)

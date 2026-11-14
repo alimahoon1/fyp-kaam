@@ -10,7 +10,9 @@ Per junction the state runs::
 - Activation when the ambulance's free-flow ETA to the stop line is within ``activate_eta_s``
   plus the time to clear the queue on its approach. The coordinator then owns the junction and
   requests the green phase that serves the ambulance's movement. The safety filter still
-  finishes minimum green and applies yellow + all-red (SAFE_TRANSITION).
+  finishes minimum green and applies yellow + all-red (SAFE_TRANSITION). Since task 3.7 the
+  minimum green a corridor request must wait for is ``corridor_min_green_s`` (5 s on the grid,
+  emergency truncation); yellow and all-red are never shortened.
 - ACTIVE_PRIORITY: the ambulance's phase is shown; it is held for at most ``max_priority_s``.
 - PASSAGE: the ambulance has left the approach edge. Ownership returns to normal control at once
   (the safety filter guarantees a legal phase boundary) and the junction enters RECOVERY.
@@ -71,6 +73,7 @@ class CorridorCoordinator:
     _active: dict[str, _Request] = field(default_factory=dict)  # tls -> request
     _recovering: dict[str, tuple[float, float]] = field(default_factory=dict)
     _history: dict[str, list[int]] = field(default_factory=dict)  # recent queue per junction
+    _last_edge: str = ""  # last normal (non-junction) edge the ambulance was on
 
     # ----- per step --------------------------------------------------------------------------
     def step(self, snap: TrafficSnapshot, amb: VehicleState | None, plan: RoutePlan | None):
@@ -83,6 +86,8 @@ class CorridorCoordinator:
         self._track_recovery(snap)
         if plan is None or amb is None:
             return
+        if not amb.edge_id.startswith(":"):
+            self._last_edge = amb.edge_id
         upcoming = self._upcoming(plan, amb)
         wanted = {tls for tls, *_ in upcoming[: self.params.lookahead]}
 
@@ -136,16 +141,28 @@ class CorridorCoordinator:
             self._cancel(req, now, step, reason)
 
     # ----- internals -------------------------------------------------------------------------
+    def _plan_index(self, plan: RoutePlan, amb: VehicleState) -> int:
+        """Position of the ambulance's current (or, inside a junction, last) edge in the plan.
+
+        SUMO's own route index cannot be used: after ``setRoute`` SUMO keeps the edges already
+        driven at the front of the vehicle's route, while ``plan.edge_ids`` starts at the edge
+        the ambulance was on when the route was revised (task 3.7 bug fix). Routes never repeat
+        an edge, so the edge itself identifies the position.
+        """
+        edge = self._last_edge if amb.edge_id.startswith(":") else amb.edge_id
+        edges = plan.edge_ids
+        return edges.index(edge) if edge in edges else 0
+
     def _upcoming(self, plan: RoutePlan, amb: VehicleState):
         """Signalised junctions still ahead: (tls, approach, exit, phase, free-flow ETA).
 
-        SUMO's route index points at the current edge of the route it was given, which is always
-        ``plan.edge_ids``. Inside a junction (edge id starting with ':') the index still points at
-        the edge just left, whose junction has therefore been passed.
+        Inside a junction (edge id starting with ':') the last normal edge's junction is the
+        one being crossed, so it has been passed.
         """
         edges = plan.edge_ids
         inside = amb.edge_id.startswith(":")
-        start = amb.route_index + 1 if inside else amb.route_index
+        idx = self._plan_index(plan, amb)
+        start = idx + 1 if inside else idx
         if inside:
             eta = 0.0
         else:
@@ -159,7 +176,7 @@ class CorridorCoordinator:
             x = self.network.intersections.get(self.network.net.getEdge(a).getToNode().getID())
             if x is None:
                 continue
-            phase = _phase_for(x, a, b)
+            phase = phase_for(x, a, b)
             if phase is not None:
                 out.append((x.tls_id, a, b, phase, eta))
         return out
@@ -176,7 +193,8 @@ class CorridorCoordinator:
         if req.approach not in edges:
             return False
         ai = edges.index(req.approach)
-        return amb.route_index > ai or (amb.route_index == ai and amb.edge_id.startswith(":"))
+        idx = self._plan_index(plan, amb)
+        return idx > ai or (idx == ai and amb.edge_id.startswith(":"))
 
     def _release(self, req: _Request, now, step, state, snap) -> None:
         self._event(now, step, req, state)
@@ -198,6 +216,11 @@ class CorridorCoordinator:
         out = {tls: "RECOVERY" for tls in self._recovering}
         out.update({tls: req.state for tls, req in self._active.items()})
         return out
+
+    def request_state(self, tls: str) -> str | None:
+        """State of the open request for this junction, or None (read-only, diagnostics)."""
+        req = self._active.get(tls)
+        return req.state if req else None
 
     @property
     def open_recoveries(self) -> int:
@@ -221,7 +244,7 @@ class CorridorCoordinator:
                                for k, v in extra.items()}})  # fmt: skip
 
 
-def _phase_for(x, approach: str, exit_: str) -> int | None:
+def phase_for(x, approach: str, exit_: str) -> int | None:
     """Green phase giving the movement approach -> exit a priority green ('G') if possible."""
     links = [lk.index for lk in x.links if lk.from_edge == approach and lk.to_edge == exit_]
     if not links:

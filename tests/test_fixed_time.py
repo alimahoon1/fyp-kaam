@@ -25,7 +25,9 @@ def test_schedule_windows():
 
 def test_signal_file_loads_and_every_profile_has_a_plan(grid_model):
     timing = SignalTiming.load(SIGNALS)
-    assert timing.safety == SafetyConfig(min_green_s=10, yellow_s=3, all_red_s=2, max_red_s=90)
+    assert timing.safety == SafetyConfig(
+        min_green_s=10, yellow_s=3, all_red_s=2, max_red_s=90, corridor_min_green_s=5
+    )
     for profile in PROFILES:
         name = timing.resolve_plan("auto", profile)
         ctrl = timing.fixed_time_controller(grid_model, name)

@@ -89,6 +89,15 @@ python -m manzil.experiments.compare results/phase2/comparison/results.csv
 python -m manzil.experiments.emergency_study --seeds 0 1 2 3 4 --out results/phase3
 ```
 
+Corridor v2 study (task 3.7: why the ambulance stops, candidate fixes; `dqn` needs the `rl` extra):
+
+```bash
+python -m manzil.experiments.corridor_v2_study --out results/phase3/corridor_v2/fixed_time
+python -m manzil.experiments.corridor_v2_study --controller dqn --out results/phase3/corridor_v2/dqn
+python -m manzil.experiments.corridor_v2_study --demo --out results/phase3/corridor_v2/demo_scenario
+python -m manzil.experiments.corridor_v2_report results/phase3/corridor_v2
+```
+
 ### DQN (optional `rl` extra)
 
 ```bash

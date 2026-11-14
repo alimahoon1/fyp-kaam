@@ -1,6 +1,6 @@
 {
   "note": "API state at ambulance arrival during the screenshot run (scripts/dashboard_screenshots.js)",
-  "run_id": "20261112T022736Z_grid3x3_dqn_heavy_s0",
+  "run_id": "20261114T153422Z_grid3x3_dqn_heavy_s0",
   "config": {
     "controller": "dqn",
     "profile": "heavy",
@@ -10,16 +10,16 @@
     "scenario": "grid3x3",
     "backend": "traci"
   },
-  "sim_time_s": 608,
+  "sim_time_s": 575,
   "stats": {
-    "running": 329,
-    "departed": 1274,
-    "arrived": 945,
+    "running": 328,
+    "departed": 1204,
+    "arrived": 876,
     "planned": 7215,
-    "halting": 116,
-    "mean_speed_mps": 4.61,
+    "halting": 132,
+    "mean_speed_mps": 4.95,
     "safety_violations": 0,
-    "sim_rate": 6.6
+    "sim_rate": 6.8
   },
   "closed_edges": [
     "B0B1"
@@ -31,7 +31,7 @@
     "destination": "C2top2",
     "corridor_enabled": true,
     "dispatch_s": 411,
-    "arrival_s": 608,
+    "arrival_s": 575,
     "position": null,
     "speed_mps": null,
     "edge": null,
@@ -48,66 +48,67 @@
       "dispatch",
       "closure"
     ],
-    "stops": 6,
-    "corridor": {
-      "B0": "RECOVERY"
-    },
+    "stops": 3,
+    "corridor": {},
     "corridor_events": [
       {
-        "time_s": 575,
-        "tls": "C0",
-        "state": "IDLE",
-        "recovery_s": 13
+        "time_s": 536,
+        "step": 536,
+        "tls": "C1",
+        "state": "ACTIVE_PRIORITY",
+        "route_version": 2,
+        "phase": 0,
+        "eta": 3.8
       },
       {
-        "time_s": 576,
-        "step": 576,
+        "time_s": 538,
+        "step": 538,
         "tls": "C2",
         "state": "ACTIVE_PRIORITY",
         "route_version": 2,
         "phase": 0,
-        "eta": 13.5
+        "eta": 14.8
       },
       {
-        "time_s": 577,
-        "step": 577,
+        "time_s": 544,
+        "step": 544,
         "tls": "C1",
         "state": "PASSAGE",
         "route_version": 2,
         "phase": 0
       },
       {
-        "time_s": 577,
-        "step": 577,
+        "time_s": 544,
+        "step": 544,
         "tls": "C1",
         "state": "RECOVERY",
         "route_version": 2,
         "phase": 0
       },
       {
-        "time_s": 589,
+        "time_s": 545,
         "tls": "C1",
         "state": "IDLE",
-        "recovery_s": 12
+        "recovery_s": 1
       },
       {
-        "time_s": 594,
-        "step": 594,
+        "time_s": 560,
+        "step": 560,
         "tls": "C2",
         "state": "PASSAGE",
         "route_version": 2,
         "phase": 0
       },
       {
-        "time_s": 594,
-        "step": 594,
+        "time_s": 560,
+        "step": 560,
         "tls": "C2",
         "state": "RECOVERY",
         "route_version": 2,
         "phase": 0
       },
       {
-        "time_s": 595,
+        "time_s": 561,
         "tls": "C2",
         "state": "IDLE",
         "recovery_s": 1
@@ -115,17 +116,17 @@
     ],
     "metrics": {
       "mission_status": "ARRIVED",
-      "amb_travel_time_s": 197,
+      "amb_travel_time_s": 164,
       "amb_insertion_delay_s": 0,
       "amb_free_flow_time_s": 78.91,
-      "amb_excess_delay_s": 118.09,
-      "amb_stops": 6,
-      "amb_waiting_s": 66,
+      "amb_excess_delay_s": 85.09,
+      "amb_stops": 3,
+      "amb_waiting_s": 30,
       "route_revisions": 1,
       "revision_triggers": [
         "closure"
       ],
-      "route_compute_ms_max": 0.096,
+      "route_compute_ms_max": 0.052,
       "driven_route": [
         "left0A0",
         "A0B0",
@@ -134,14 +135,29 @@
         "C1C2",
         "C2top2"
       ],
-      "mission_window_queue_mean_veh": 120.193,
-      "corridor_activations": 6,
-      "corridor_served": 6,
-      "corridor_cancelled": 2,
-      "corridor_timeouts": 1,
-      "recovery_time_mean_s": 16,
-      "recovery_time_max_s": 47,
-      "recovery_unfinished": 1
+      "amb_signal_crossings": 5,
+      "amb_red_crossings": 0,
+      "amb_yellow_crossings": 0,
+      "amb_stop_reasons": {
+        "queue_at_green": 30
+      },
+      "amb_stopped_other_s": 0,
+      "amb_stopped_queue_s": 30,
+      "amb_stopped_red_corridor_s": 0,
+      "amb_stopped_red_no_corridor_s": 0,
+      "amb_stopped_red_outside_lookahead_s": 0,
+      "mission_window_queue_mean_veh": 124.073,
+      "cross_street_wait_veh_s": 9354,
+      "cross_street_approaches": 10,
+      "fixed_window_queue_mean_veh": 124.073,
+      "amb_speed_mode": 31,
+      "corridor_activations": 7,
+      "corridor_served": 7,
+      "corridor_cancelled": 3,
+      "corridor_timeouts": 2,
+      "recovery_time_mean_s": 14.5,
+      "recovery_time_max_s": 48,
+      "recovery_unfinished": 0
     }
   }
 }

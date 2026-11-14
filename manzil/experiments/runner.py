@@ -183,6 +183,13 @@ def run(config: RunConfig, out_dir: Path | None = None) -> RunResult:
         # Insert them anyway; the adapter reroutes every new vehicle around closures at once.
         sumo_args += ["--ignore-route-errors", "true"]  # fmt: skip
 
+    safety_cfg = timing.safety
+    if config.mission and config.mission.corridor_min_green_s is not None:
+        # An experiment arm may override the scenario's emergency min-green truncation.
+        safety_cfg = dataclasses.replace(
+            safety_cfg, corridor_min_green_s=config.mission.corridor_min_green_s
+        )
+
     manifest = {
         "run_id": run_id,
         "created_at_utc": stamp,
@@ -198,14 +205,15 @@ def run(config: RunConfig, out_dir: Path | None = None) -> RunResult:
         "network": {"id": network.network_id, "content_sha256": content_sha256(net_file)},
         "demand": json.loads(demand.manifest.read_text()),
         "signal_timing": {"version": timing.version, "safety": asdict(timing.safety)},
+        "safety_applied": asdict(safety_cfg),  # after any per-run override
         "controller": controller.describe(),
         "sumo_args": [a if not a.startswith(str(REPO_ROOT)) else
                       Path(a).relative_to(REPO_ROOT).as_posix() for a in sumo_args],
         "termination": "not started",
     }  # fmt: skip
 
-    safety = SafetyFilter(network, timing.safety)
-    monitor = SafetyMonitor(network, timing.safety)
+    safety = SafetyFilter(network, safety_cfg)
+    monitor = SafetyMonitor(network, safety_cfg)
     queues = QueueCollector(config.warmup_s)
     sim = SimulationAdapter(network, config.backend)
     driver = MissionDriver(config.mission, network, safety, sim) if config.mission else None
@@ -231,7 +239,7 @@ def run(config: RunConfig, out_dir: Path | None = None) -> RunResult:
             states = safety.tick(now, step)
             for tls, s in states.items():
                 sim.set_signal_state(tls, s)
-            monitor.observe(now, states)
+            monitor.observe(now, states, safety.owners())
             queues.record(snap)
         manifest["termination"] = "completed"
     except Exception as exc:  # recorded, then re-raised: failed runs are kept (D2)

@@ -62,7 +62,7 @@ These numbers only check the demand. They are **not** controller results: there 
 
 ## Signal timing and fixed-time plans (PLAN tasks 1.5 and 1.6)
 
-`signals.json` is versioned with the scenario (now version 3: the safety timing and fixed-time plans are unchanged since version 1; versions 2 and 3 added and then froze the adaptive controller's parameters). All controllers share the same safety timing: **minimum green 10 s, yellow 3 s, all-red 2 s**. On this grid, green phase 0 is north-south and phase 1 is east-west at every junction (`tests/test_fixed_time.py` checks this).
+`signals.json` is versioned with the scenario (now version 6; see its `notes` for each change). All controllers share the same safety timing: **minimum green 10 s, yellow 3 s, all-red 2 s**. Since version 6 (task 3.7) a green-corridor request may end the current green after **5 s** instead of 10 s (`corridor_min_green_s`, emergency truncation); yellow and all-red are never shortened, and normal control always keeps the full 10 s. On this grid, green phase 0 is north-south and phase 1 is east-west at every junction (`tests/test_fixed_time.py` checks this).
 
 **Fixed-time plans.** D2 requires a credible baseline, not a deliberately weak one, with splits chosen from the declared demand. Plans were therefore tuned per profile by a sweep on **dev seeds 100 and 101**, never on the evaluation seeds (0–4), using the full 900 s warm-up + 3,600 s measurement. Mean travel time over the two dev seeds:
 
