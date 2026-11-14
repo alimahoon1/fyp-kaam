@@ -144,6 +144,7 @@ One line per session or cloud task, newest last: date, who/where, what changed, 
 | 12 Nov | Ibrahim + Claude (laptop) | Kaggle token setup; V.6 deferred; cloud told to merge its own PRs and save every figure | `CLAUDE.md`, this file |
 | 14 Nov | Ibrahim + Claude (laptop) | Laptop demo check: torch installed, dashboard built, 140 tests pass; Ibrahim saw the ambulance stop at red lights → task 3.7 added; session-log rule added | this file, `CLAUDE.md`, context §50.14 |
 | 14 Nov | cloud | Task 3.7 corridor v2: stop-reason diagnostics, reroute bug fix, 5 s corridor min-green truncation (D2 deviation), give-way and early activation tested and rejected; Phase 3 + Phase 5 reruns | `results/phase3/corridor_v2/`, `results/phase3/`, `results/phase5/`, context §50.15, `tests/test_corridor_v2.py` |
+| 15 Nov | Ibrahim + Claude (laptop) | Reviewed task 3.7 (PR #13, merged by the cloud): results and notes checked; full suite on the laptop 147 passed | this file |
 
 ## FYP-2 backlog (goes into the Chapter 10 plan)
 
