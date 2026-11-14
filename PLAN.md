@@ -126,7 +126,7 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 ### Phase 6 — Deliverable III report and demo
 | ID | Task | Status | Done when |
 |---|---|---|---|
-| 6.1 | Light update of Chapters 1–6 to match the real implementation | todo | Compiles |
+| 6.1 | Light update of Chapters 1–6 to match the real implementation | in progress (Ibrahim + Claude, laptop, 15 Nov; includes the D2 formatting feedback: numbered headings, intro text under every heading, no bold in paragraphs) | Compiles |
 | 6.2 | Chapter 7: Implementation and Test Cases (modules, key code, test-case tables) | todo | Compiles |
 | 6.3 | Chapter 9: Experimental Results and Discussion (controllers, emergency, vision) | todo | Real numbers only |
 | 6.4 | Chapter 10: Conclusion + FYP-2 plan | todo | Compiles |
