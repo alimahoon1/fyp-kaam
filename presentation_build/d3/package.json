@@ -1,0 +1,6 @@
+{
+  "name": "manzil-d3-deck",
+  "private": true,
+  "description": "Builds the Deliverable III slides: node build_d3_deck.js",
+  "dependencies": { "pptxgenjs": "3.12.0" }
+}

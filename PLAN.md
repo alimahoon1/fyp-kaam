@@ -131,7 +131,7 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 | 6.3 | Chapter 9: Experimental Results and Discussion (controllers, emergency, vision) | done (Ibrahim + Claude, laptop, 15 Nov): detection, counting/queue, controllers, routing, corridor, corridor variants, discussion and limits; corridor v2 called a development-stage estimate | Real numbers only |
 | 6.4 | Chapter 10: Conclusion + FYP-2 plan | done (Ibrahim + Claude, laptop, 15 Nov): conclusion, objective status table, work completed, FYP-II plan table (8 items, Jan–May 2027, no owners yet) | Compiles |
 | 6.4b | Full report review against `FYPFast` template rules and sample headings | done (Ibrahim + Claude, laptop, 15 Nov): template-format test cases, Ch 10 headings as in samples, tense and stale-statement fixes in Ch 1–6, duplicate label fixed, bibliography capitals + 4 new references, `Manzil_D2_Report/check_report.py` added; 149 pages, all checks pass (context §50.18) | Script passes |
-| 6.5 | Demo script + presentation | todo | Rehearsed |
+| 6.5 | Demo script + presentation | done (Ibrahim + Claude, laptop, 15 Nov): `presentation_output/Manzil_D3_Presentation.pptx` (15 slides, speaker notes, real numbers from Ch 7–10), built by `presentation_build/d3/build_d3_deck.js`; `docs/demo_script.md`. To rehearse | Rehearsed |
 
 ### Phase 7 — FYP-II workstreams (parallel; rules in `docs/workstreams/README.md`, prompts in `docs/workstreams/PROMPTS.md`)
 Each workstream edits only the paths it owns and keeps its notes in `docs/workstreams/W<n>.md`; only the coordinator (or the session merging) edits this file and the context file.
@@ -162,6 +162,7 @@ One line per session or cloud task, newest last: date, who/where, what changed, 
 | 15 Nov | Ibrahim + Claude (laptop) | Tasks 6.2–6.4: Ch 1–6 trimmed (no new sections, no change wording, date 22 Nov); Ch 7, 8, 9, 10 written after reviewing the R&D sample reports; 147 tests pass; report 142 pages, 0 errors/overfull/undefined | `Manzil_D2_Report/chapters/07–10`, context §50.17 |
 | 15 Nov | Ibrahim + Claude (laptop) | Task 6.4b: full report review against FYPFast template and sample headings; fixes in Ch 1–10 and bibliography; `check_report.py` added; 149 pages, all checks pass | context §50.18, `Manzil_D2_Report/check_report.py` |
 | 15 Nov | Ibrahim + Claude (laptop) | FYP-II parallel setup: workstreams W1–W6 with file ownership, merge rules, video/label rules and prompts; Phase 7 added | `docs/workstreams/`, context §50.19 |
+| 15 Nov | Ibrahim + Claude (laptop) | Task 6.5: D3 slides (15) + demo script; D3 snapshot copy `fyp-kaam-D3` made outside the repo; pip cache purged (disk was full) | context §50.21 |
 
 ## FYP-2 backlog (goes into the Chapter 10 plan)
 
