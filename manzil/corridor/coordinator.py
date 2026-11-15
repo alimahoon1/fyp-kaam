@@ -32,8 +32,9 @@ Additions from workstream W4 (all off by default; see ``results/fyp2/corridor/``
   move), for at most ``downstream_max_defer_s``. ``"flush"``: the next signalised junction at
   the end of that blocked exit is activated at once (it may be one beyond the look-ahead), so
   the exit drains before the ambulance arrives. ``"both"`` does both.
-- Bounded compensation in recovery (``compensation``). After passage or a cancellation of an
-  activated junction the coordinator keeps ownership and serves the phase with the longest
+- Bounded compensation in recovery (``compensation``). After confirmed passage (not after a
+  cancellation or timeout, when the ambulance may still need the junction) the coordinator
+  keeps ownership and serves the phase with the longest
   queue among the phases the ambulance's phase denied, for as long as the junction was held
   (at most ``compensation_max_s``) and only after a full normal minimum green (no truncation),
   then hands the junction back to normal control. Recovery time is still measured from passage.
@@ -359,11 +360,12 @@ class CorridorCoordinator:
             self._event(now, step, req, "RECOVERY")
 
     def _cancel(self, req: _Request, now, step, reason, snap=None) -> None:
+        # No compensation after a cancellation: the ambulance may still have to cross this
+        # junction (e.g. after a timeout), and a compensating junction is not served for it.
         self._event(now, step, req, "CANCELLED", reason=reason)
         self._active.pop(req.tls, None)
         if self.safety.owner(req.tls) is Owner.CORRIDOR:
-            if not self._start_compensation(req, now, step, snap):
-                self.safety.set_owner(req.tls, Owner.NORMAL, now, step)
+            self.safety.set_owner(req.tls, Owner.NORMAL, now, step)
             self._recovering[req.tls] = (now, req.queue_at_activation)
 
     def status(self) -> dict[str, str]:
