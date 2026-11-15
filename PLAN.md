@@ -127,9 +127,9 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 | ID | Task | Status | Done when |
 |---|---|---|---|
 | 6.1 | Light update of Chapters 1–6 to match the real implementation | done (Ibrahim + Claude, laptop, 15 Nov): D2 formatting feedback fixed (continued captions on multi-page tables, intro text under 14 headings, no bold labels in paragraphs); Ch 1–6 + abstract/executive summary updated to FYP-I facts; new objective-status table, FR status column, real hardware/software, real dashboard screenshot, D2-deviation table (5.9), implementation mapping (6.3.6); builds clean, 110 pages. Full list: `Manzil_D2_Report/D3_CHANGES.md`. Open: D3 date on title page | Compiles |
-| 6.2 | Chapter 7: Implementation and Test Cases (modules, key code, test-case tables) | todo | Compiles |
-| 6.3 | Chapter 9: Experimental Results and Discussion (controllers, emergency, vision) | todo | Real numbers only |
-| 6.4 | Chapter 10: Conclusion + FYP-2 plan | todo | Compiles |
+| 6.2 | Chapter 7: Implementation and Test Cases (modules, key code, test-case tables) + short Ch 8 User Manual | in progress (Ibrahim + Claude, laptop) | Compiles |
+| 6.3 | Chapter 9: Experimental Results and Discussion (controllers, emergency, vision) | in progress (Ibrahim + Claude, laptop) | Real numbers only |
+| 6.4 | Chapter 10: Conclusion + FYP-2 plan | in progress (Ibrahim + Claude, laptop) | Compiles |
 | 6.5 | Demo script + presentation | todo | Rehearsed |
 
 ## Session log
