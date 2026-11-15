@@ -610,6 +610,17 @@ class _Run:
             "route": list(plan.edge_ids) if plan else [],
             "route_version": m.version,
             "route_triggers": [x.trigger for x in m.plans],
+            "route_versions": [
+                {
+                    "version": x.route_version,
+                    "edge_ids": list(x.edge_ids),
+                    "cost_s": _jsonable(round(x.cost_s, 1)),
+                    "trigger": x.trigger,
+                    "snapshot_step": x.snapshot_step,
+                }
+                for x in m.plans
+            ],  # fmt: skip
+            "routing_log": _jsonable(m.log[-10:]),
             "stops": d.stops,
             "corridor": d.corridor.status() if d.corridor else {},
             "corridor_events": _jsonable(d.corridor.events[-8:]) if d.corridor else [],

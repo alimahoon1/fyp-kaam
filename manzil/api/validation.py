@@ -127,7 +127,8 @@ def validate_live_config(cfg: dict) -> list[dict]:
                     _check(
                         "mission",
                         "ok",
-                        f"route {o} -> {d}: {len(path)} roads, free-flow {cost:.0f} s",
+                        f"route {o} -> {d}: {len(path)} roads,"
+                        f" free-flow {cost:.0f} s after the first road",
                     )
                 )
                 if closed:
