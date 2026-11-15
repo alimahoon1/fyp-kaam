@@ -3,7 +3,7 @@
 The frames themselves live on Kaggle (kernel `manzil-lahore-frames`) and are pulled into a scratch
 folder for review only; they are not committed. Steps (run from the repository root):
 
-    python -m manzil.perception.lahore_review prelabel RAW.json OUT_DIR
+    python -m manzil.perception.lahore_review prelabel RAW.json OUT_DIR [BOOT.json]
         merge the raw detections of kernel `manzil-lahore-prelabel` into pre-labels
         (OUT_DIR/prelabels.json: kept labels + lower-confidence "candidates" per image)
     python -m manzil.perception.lahore_review render FRAMES_DIR OUT_DIR [IMAGE ...]
@@ -61,16 +61,20 @@ def far_default(img: str, all_images) -> float:
     return round(y0 + t * (y1 - y0), 1)
 
 
+SIX = {i: i for i in range(len(ll.CLASS_NAMES))}
+
+
 def detections(raw_one: dict) -> list[ll.Det]:
     return (ll.map_dets(raw_one.get("manzil4", []), ll.MANZIL4_MAP, "manzil4")
             + ll.map_dets(raw_one.get("coco_x", []), ll.COCO_MAP, "coco_x")
-            + ll.map_dets(raw_one.get("world", []), ll.WORLD_MAP, "world"))
+            + ll.map_dets(raw_one.get("world", []), ll.WORLD_MAP, "world")
+            + ll.map_dets(raw_one.get("boot", []), SIX, "boot"))
 
 
-def prelabel_one(raw_one: dict) -> tuple[list[ll.Label], list[ll.Label]]:
+def prelabel_one(raw_one: dict, cfg=None, cand_cfg=None) -> tuple[list[ll.Label], list[ll.Label]]:
     dets = detections(raw_one)
-    labels = ll.merge(dets)
-    cands = [c for c in ll.merge(dets, CAND_CFG)
+    labels = ll.merge(dets, cfg)
+    cands = [c for c in ll.merge(dets, cand_cfg or CAND_CFG)
              if all(ll.iou(c.box, lab.box) < 0.3 for lab in labels)]
     return labels, cands
 
@@ -80,14 +84,25 @@ def _lab(d):
             "sources": d.sources}
 
 
-def cmd_prelabel(raw_path, out_dir):
+def cmd_prelabel(raw_path, out_dir, boot_path=None):
+    """Round 1: three detectors. Round 2 (``boot_path`` given): plus the bootstrap six-class
+    model, which then decides the class of any cluster it is confident about."""
     raw = json.load(open(raw_path))
+    cfg, cand_cfg = ll.MergeConfig(), CAND_CFG
+    if boot_path:
+        boot = json.load(open(boot_path))
+        for img, r in boot["detections"].items():
+            raw["detections"][img]["boot"] = r["boot"]
+        raw["meta"]["boot"] = boot["meta"]
+        cfg = ll.MergeConfig(prefer_source="boot", prefer_conf=0.25)
+        cand_cfg = ll.MergeConfig(keep_conf=0.15, agree_conf=0.08, new_class_conf=0.15,
+                                  prefer_source="boot", prefer_conf=0.15)
     out = {}
     for img, r in sorted(raw["detections"].items()):
-        labels, cands = prelabel_one(r)
+        labels, cands = prelabel_one(r, cfg, cand_cfg)
         out[img] = {"labels": [_lab(x) for x in labels], "candidates": [_lab(x) for x in cands]}
     Path(out_dir).mkdir(parents=True, exist_ok=True)
-    json.dump({"meta": raw["meta"], "merge": vars(ll.MergeConfig()), "candidates": vars(CAND_CFG),
+    json.dump({"meta": raw["meta"], "merge": vars(cfg), "candidates": vars(cand_cfg),
                "images": out}, open(Path(out_dir) / "prelabels.json", "w"))
     c = Counter(lab["cls"] for v in out.values() for lab in v["labels"])
     print(len(out), "images;", {ll.CLASS_NAMES[k]: c[k] for k in sorted(c)},
@@ -228,7 +243,7 @@ def cmd_manifest(frames_csv, shots_json, out_csv):
 def main(argv=None):
     a = argv or sys.argv[1:]
     if a[0] == "prelabel":
-        cmd_prelabel(a[1], a[2])
+        cmd_prelabel(a[1], a[2], a[3] if len(a) > 3 else None)
     elif a[0] == "render":
         cmd_render(a[1], a[2], a[3:] or None)
     elif a[0] == "manifest":

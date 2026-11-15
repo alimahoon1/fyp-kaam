@@ -88,6 +88,8 @@ class MergeConfig:
     agree_conf: float = 0.15  # ... or if >= 2 sources agree with at least this confidence
     new_class_conf: float = 0.2  # an open-vocabulary rickshaw/van this sure overrides car etc.
     min_side_px: float = 12.0  # boxes smaller than this (both sides) are ignored
+    prefer_source: str = ""  # if set, a detection from this source decides the class ...
+    prefer_conf: float = 0.25  # ... when it is at least this confident
 
 
 def merge(dets: list[Det], cfg: MergeConfig | None = None) -> list[Label]:
@@ -95,8 +97,10 @@ def merge(dets: list[Det], cfg: MergeConfig | None = None) -> list[Label]:
 
     Detections are sorted by confidence; each seeds a cluster that absorbs every remaining
     detection with IoU >= ``iou_thr``. The box is the confidence-weighted mean of the cluster.
-    Class: if the cluster holds a rickshaw/van (from the open-vocabulary detector) with
-    confidence >= ``new_class_conf``, the more confident of the two wins; otherwise the class
+    Class: if ``prefer_source`` is set and that source has a detection in the cluster with
+    confidence >= ``prefer_conf``, its class wins. Otherwise, if the cluster holds a rickshaw/van
+    (from the open-vocabulary detector) with confidence >= ``new_class_conf``, the more
+    confident of the two wins; otherwise the class
     with the largest summed confidence. These are *pre-labels*; review decides the final label.
     """
     cfg = cfg or MergeConfig()
@@ -119,7 +123,11 @@ def merge(dets: list[Det], cfg: MergeConfig | None = None) -> list[Label]:
         if best < cfg.keep_conf and len(agreeing) < 2:
             continue
         new = [d for d in cluster if d.cls in NEW_CLASSES and d.conf >= cfg.new_class_conf]
-        if new:
+        pref = [d for d in cluster if cfg.prefer_source and d.source == cfg.prefer_source
+                and d.conf >= cfg.prefer_conf]
+        if pref:
+            cls = max(pref, key=lambda d: d.conf).cls
+        elif new:
             cls = max(new, key=lambda d: d.conf).cls
         else:
             score: dict[int, float] = {}

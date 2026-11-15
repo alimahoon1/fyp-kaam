@@ -1,5 +1,6 @@
 """Tests for the W2 six-class label tools (manzil/perception/lahore_labels.py)."""
 
+import json
 from pathlib import Path
 
 import pytest
@@ -117,3 +118,36 @@ def test_committed_manifest_is_valid_if_present():
     assert all(r["split"] == "test" for r in rows if r["video"] == "v2")
     assert {r["split"] for r in rows} <= {*ll.SPLITS, ll.UNUSED}
     assert 0.2 <= len(test_v1) / len(used_v1) <= 0.35
+
+
+def test_merge_prefer_source_decides_class():
+    dets = [ll.Det(0, 0.9, (0, 0, 40, 40), "coco_x"), ll.Det(5, 0.6, (0, 0, 40, 40), "world"),
+            ll.Det(4, 0.3, (1, 0, 41, 40), "boot")]
+    (lab,) = ll.merge(dets, ll.MergeConfig(prefer_source="boot", prefer_conf=0.25))
+    assert lab.cls == 4
+    (lab,) = ll.merge(dets, ll.MergeConfig(prefer_source="boot", prefer_conf=0.5))
+    assert lab.cls == 5  # boot too unsure -> the open-vocabulary van wins
+
+
+def test_review_prelabel_and_apply_roundtrip(tmp_path):
+    from PIL import Image
+
+    from manzil.perception import lahore_review as lr
+
+    img = "v1_s1_f00010.jpg"
+    Image.new("RGB", (200, 100)).save(tmp_path / img)
+    raw = {"meta": {}, "detections": {img: {
+        "manzil4": [[0, 0.9, 10, 50, 50, 90], [3, 0.2, 120, 50, 140, 90]],
+        "coco_x": [[2, 0.8, 11, 50, 51, 90], [3, 0.2, 121, 50, 141, 90]],
+        "world": [[4, 0.5, 10, 51, 50, 90]]}}}
+    (tmp_path / "raw.json").write_text(json.dumps(raw))
+    lr.cmd_prelabel(tmp_path / "raw.json", tmp_path / "rev")
+    pre = json.loads((tmp_path / "rev" / "prelabels.json").read_text())
+    labs = pre["images"][img]["labels"]
+    assert [x["cls"] for x in labs] == [4, 3]  # rickshaw override; weak moto kept by agreement
+    ops = [{"op": "far", "y": 0}, {"op": "cls", "id": 1, "to": 0},
+           {"op": "add", "cls": 5, "box": [60, 60, 90, 95]}]
+    (tmp_path / "review.jsonl").write_text(json.dumps({"image": img, "ops": ops}) + "\n")
+    lr.cmd_apply(tmp_path, tmp_path / "rev", tmp_path / "review.jsonl")
+    lines = (tmp_path / "rev" / "labels" / "v1_s1_f00010.txt").read_text().split("\n")
+    assert [ln.split()[0] for ln in lines if ln] == ["4", "0", "5"]
