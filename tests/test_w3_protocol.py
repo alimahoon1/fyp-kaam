@@ -227,3 +227,23 @@ def test_protocol_runs_on_another_network(tmp_path):
     assert summary["totals"] == {"runs": 8, "failed": 0, "safety_violations": 0,
                                  "teleports": 0, "collisions": 0}  # fmt: skip
     assert (out / "plan_selection.csv").is_file() and (out / "tables.md").is_file()
+
+
+def test_corridor_confirmation_refuses_development_seeds(tmp_path):
+    from manzil.experiments import protocol_corridor as C
+
+    with pytest.raises(SystemExit):
+        C.main(["--seeds", "3", "20", "--out", str(tmp_path)])
+
+
+def test_corridor_contrasts_on_development_results():
+    """The development table of task 3.7 (seeds 0-4) is reproduced by the contrast code."""
+    from manzil.experiments import protocol_corridor as C
+
+    rows = [r for r in P.read_table(C.DEV_DIR / "fixed_time" / "results.csv")
+            if r["arm"] in C.ARMS]  # fmt: skip
+    table = C.contrast_rows(rows, "development", "fixed_time")
+    r = next(x for x in table if (x["profile"], x["contrast"], x["metric"])
+             == ("heavy", "v2 - v1", "amb_travel_time_s"))  # fmt: skip
+    assert r["mean_diff"] == pytest.approx(-8.2) and r["seeds_better"] == 4  # key_table.md
+    assert "fixed_time background, heavy: v2 - v1" in C.markdown(table)
