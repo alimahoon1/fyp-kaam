@@ -155,6 +155,7 @@ class TrafficEnv:
         for tls, s in states.items():
             self.sim.set_signal_state(tls, s)
         self.snap = snap
+        self.last_starving = 0  # junctions that got the starvation penalty in the last step
         self._last_green = {t: [0.0] * lay.n_phases for t, lay in self.layouts.items()}
         return self._observe()
 
@@ -192,11 +193,13 @@ class TrafficEnv:
                 w_sum[tls] += sum(a.wait_s for a in apps) / len(apps) / 100.0
         t = self.snap.sim_time_s
         rewards = {}
+        self.last_starving = 0
         for tls in self.layouts:
             sig_phase = self.safety.showing(tls)
             if sig_phase is not None:
                 self._last_green[tls][sig_phase] = t
             starving = any(t - last > rp.max_red_s for last in self._last_green[tls])
+            self.last_starving += int(starving)
             rewards[tls] = (
                 -(rp.a * p_sum[tls] + rp.b * w_sum[tls]) / rp.decision_s
                 - rp.c * float(starving)

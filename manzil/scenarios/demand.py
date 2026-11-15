@@ -1,10 +1,16 @@
-"""Seeded demand profiles: light, medium, heavy, uneven (PLAN task 1.2).
+"""Seeded demand profiles: light, medium, heavy, uneven (PLAN task 1.2) + held-out patterns.
 
 Network-agnostic: entry and exit roads are found from the ``.net.xml`` (edges that start or end at
 a dead-end fringe node), never from hard-coded IDs. Each entry road gets a Poisson arrival
 stream at the profile's rate; each trip goes to a uniformly chosen exit (no U-turn back to the
 same fringe node). ``duarouter`` turns the trips into explicit routes so every run with the same
 seed loads exactly the same vehicles.
+
+Held-out profiles (W3, FYP-II): ``HELDOUT_PROFILES`` holds demand patterns that are **never used
+in DQN training, checkpoint selection or controller tuning**: the opposite uneven axis, a tidal
+(one-sided) pattern and a time-varying peak. They are kept out of ``PROFILES`` on purpose, so
+code that iterates over ``PROFILES`` (training, dev evaluation, tuning) cannot see them.
+``ALL_PROFILES`` holds both sets; ``build_demand`` accepts any of them.
 
 Usage::
 
@@ -48,6 +54,30 @@ class DemandProfile:
     major_rate_vph: float
     minor_rate_vph: float
     description: str
+    # Optional per-heading rates (direction of travel on the entry road: "N", "E", "S", "W");
+    # when set they replace major/minor for the headings listed (others keep major/minor).
+    heading_rates: tuple[tuple[str, float], ...] = ()
+    # Optional time-varying demand: piecewise-linear rate multiplier over the demand window,
+    # as (fraction of the window in [0, 1], multiplier) points. Empty = constant rate.
+    schedule: tuple[tuple[float, float], ...] = ()
+
+    def rate_for(self, entry: FringeEdge) -> float:
+        per = dict(self.heading_rates)
+        if entry.heading in per:
+            return per[entry.heading]
+        return self.major_rate_vph if entry.north_south else self.minor_rate_vph
+
+    def multiplier(self, frac: float) -> float:
+        """Rate multiplier at ``frac`` of the window (1.0 when there is no schedule)."""
+        pts = self.schedule
+        if not pts:
+            return 1.0
+        if frac <= pts[0][0]:
+            return pts[0][1]
+        for (x0, y0), (x1, y1) in zip(pts, pts[1:], strict=False):
+            if frac <= x1:
+                return y0 + (y1 - y0) * (frac - x0) / (x1 - x0) if x1 > x0 else y1
+        return pts[-1][1]
 
 
 PROFILES: dict[str, DemandProfile] = {
@@ -60,12 +90,36 @@ PROFILES: dict[str, DemandProfile] = {
     )
 }
 
+# Held-out evaluation patterns (W3). Fixed on 15 Nov 2026 before any evaluation run; never used
+# for training, checkpoint selection or tuning of any controller.
+HELDOUT_PROFILES: dict[str, DemandProfile] = {
+    p.name: p
+    for p in (
+        DemandProfile(
+            "uneven_ew", 100, 800,
+            "Held out: heavy east-west, light north-south (training saw only the reverse).",
+        ),
+        DemandProfile(
+            "tidal", 150, 150,
+            "Held out: one-sided flow, 650 veh/h on roads heading north or east, 150 on the rest.",
+            heading_rates=(("N", 650.0), ("E", 650.0)),
+        ),
+        DemandProfile(
+            "peak", 650, 650,
+            "Held out: time-varying peak, 40 % of 650 veh/h at start and end, 100 % at mid-run.",
+            schedule=((0.0, 0.4), (0.5, 1.0), (1.0, 0.4)),
+        ),
+    )
+}  # fmt: skip
+ALL_PROFILES: dict[str, DemandProfile] = {**PROFILES, **HELDOUT_PROFILES}
+
 
 @dataclass(frozen=True)
 class FringeEdge:
     edge_id: str
     node_id: str  # the dead-end fringe node at the outer end of the road
     north_south: bool  # heading mainly along the y axis
+    heading: str = ""  # compass direction of travel: "N", "E", "S" or "W"
 
 
 def _is_dead_end(node) -> bool:
@@ -77,6 +131,13 @@ def _north_south(edge) -> bool:
     return abs(y1 - y0) > abs(x1 - x0)
 
 
+def _heading(edge) -> str:
+    (x0, y0), (x1, y1) = edge.getFromNode().getCoord(), edge.getToNode().getCoord()
+    if abs(y1 - y0) > abs(x1 - x0):
+        return "N" if y1 > y0 else "S"
+    return "E" if x1 > x0 else "W"
+
+
 def fringe_edges(net) -> tuple[list[FringeEdge], list[FringeEdge]]:
     """Return (entry, exit) roads: edges leaving / entering a dead-end node, sorted by ID."""
     entries, exits = [], []
@@ -84,9 +145,11 @@ def fringe_edges(net) -> tuple[list[FringeEdge], list[FringeEdge]]:
         if not edge.allows("passenger"):
             continue
         if _is_dead_end(edge.getFromNode()):
-            entries.append(FringeEdge(edge.getID(), edge.getFromNode().getID(), _north_south(edge)))
+            entries.append(FringeEdge(edge.getID(), edge.getFromNode().getID(),
+                                      _north_south(edge), _heading(edge)))  # fmt: skip
         if _is_dead_end(edge.getToNode()):
-            exits.append(FringeEdge(edge.getID(), edge.getToNode().getID(), _north_south(edge)))
+            exits.append(FringeEdge(edge.getID(), edge.getToNode().getID(),
+                                    _north_south(edge), _heading(edge)))  # fmt: skip
     if not entries or not exits:
         raise ValueError("network has no dead-end fringe roads to insert or remove traffic")
     key = lambda f: f.edge_id  # noqa: E731
@@ -102,20 +165,30 @@ class Trip:
 
 
 def generate_trips(net, profile: DemandProfile, seed: int, duration_s: float) -> list[Trip]:
-    """Poisson arrivals per entry road over [0, duration_s), seeded and deterministic."""
+    """Poisson arrivals per entry road over [0, duration_s), seeded and deterministic.
+
+    Constant-rate profiles use a homogeneous Poisson stream (the random stream is unchanged
+    from Phase 1, so earlier results reproduce exactly). Time-varying profiles use thinning:
+    candidates at the peak rate, each kept with probability multiplier(t) / peak multiplier.
+    """
     rng = np.random.default_rng(seed)
     entries, exits = fringe_edges(net)
     raw: list[tuple[float, str, str]] = []
+    peak = max((m for _, m in profile.schedule), default=1.0)
     for entry in entries:  # sorted order keeps the random stream stable
-        rate = profile.major_rate_vph if entry.north_south else profile.minor_rate_vph
+        rate = profile.rate_for(entry) * (peak if profile.schedule else 1.0)
         if rate <= 0:
             continue
         mean_gap = 3600.0 / rate
         targets = [x for x in exits if x.node_id != entry.node_id]
         t = rng.exponential(mean_gap)
         while t < duration_s:
-            dest = targets[rng.integers(len(targets))]
-            raw.append((round(t, 2), entry.edge_id, dest.edge_id))
+            keep = True
+            if profile.schedule:
+                keep = rng.random() < profile.multiplier(t / duration_s) / peak
+            if keep:
+                dest = targets[rng.integers(len(targets))]
+                raw.append((round(t, 2), entry.edge_id, dest.edge_id))
             t += rng.exponential(mean_gap)
     raw.sort()
     return [Trip(f"{profile.name}_{i}", d, f, to) for i, (d, f, to) in enumerate(raw)]
@@ -200,7 +273,7 @@ def build_demand(
     out_dir: Path | None = None,
 ) -> DemandFiles:
     """Write trips, routes, a runnable ``.sumocfg`` and a small JSON manifest for one profile."""
-    profile = PROFILES[profile_name]
+    profile = ALL_PROFILES[profile_name]
     net_file = Path(net_file)
     out_dir = Path(out_dir) if out_dir else net_file.parent / "demand"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -224,7 +297,8 @@ def build_demand(
                 "duration_s": duration_s,
                 "vehicles": len(trips),
                 "network": net_file.name,
-                "generator": "manzil.scenarios.demand (Poisson per entry road, numpy PCG64)",
+                "generator": "manzil.scenarios.demand (Poisson per entry road, numpy PCG64)"
+                + (" + thinning" if profile.schedule else ""),
             },
             indent=2,
         )
@@ -237,7 +311,7 @@ def build_demand(
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument("--profile", choices=sorted(PROFILES))
+    group.add_argument("--profile", choices=sorted(ALL_PROFILES))
     group.add_argument("--all", action="store_true", help="build every profile")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--duration", type=float, default=3600.0, help="demand window in s")
