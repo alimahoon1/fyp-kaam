@@ -1742,3 +1742,30 @@ Laptop session (Ibrahim + Claude). The D2 LaTeX in `Manzil_D2_Report/` was edite
 - **Honesty note recorded in 5.9:** the corridor v2 minimum-green change was selected on seeds 0–4, the same seeds used to report the corridor result. Chapter 9 must call that result a development-stage estimate, to be confirmed on new seeds in FYP-II.
 - **Build:** `build.ps1` stops in PowerShell on the MiKTeX "not checked for updates" notice (stderr). Run the same pdflatex → bibtex → pdflatex ×2 steps from bash instead. Result: 110 pages, 0 overfull boxes, 0 undefined references.
 - **Open:** the title page and declaration date (still 10 Oct 2026) needs the D3 submission date. Chapters 7, 9 and 10 are next.
+
+## 50.17 Report Chapters 7–10 written; Chapters 1–6 trimmed (tasks 6.2–6.4, 15 Nov 2026)
+
+Laptop session (Ibrahim + Claude). Build: 142 pages, 0 LaTeX errors, 0 overfull boxes, 0 undefined references or citations. Full test suite on the laptop: **147 passed**.
+
+**Ibrahim's instructions for the report (15 Nov):**
+- Title page and declaration date: **22 November 2026**.
+- Do **not** add new sections to the old chapters and do not add much extra text: update the existing chapters and put the new material in the new chapters.
+- The report must not talk about "changes" or "deviations from D2"; it states the current facts. (Deviations are still recorded here in the context file.)
+- Review the R&D sample reports before writing the new chapters, and adapt their format.
+- Chapter 8: a short User Manual (keeps the numbering 7, 8, 9, 10 that the D3 instructions use).
+- Test-case tables: no "QA Test Engineer" / "Reviewed By" names.
+
+**Samples reviewed** (`FYP Sample Reports/`): R&D ones are Phishing (DINAP) and JobLens (no user manual; implementation → results → conclusion), and SynapSure, FictionGenie, ParkEase, Recruit Ease (Ch 7 Implementation and Test Cases with 7.1 Implementation, 7.2 Test case design (one table per case), 7.3 Test metrics, 7.4 Conclusion; Ch 8 User Manual; Ch 9 Results per model + Discussion; Ch 10 Conclusion). Our chapters follow this structure.
+
+**Chapters 1–6 trimmed:**
+- Removed: old 5.6.1 (corridor v2 → now in Ch 7.1 Green Corridor), old 5.9 deviation table (dropped; the facts are stated plainly in Ch 5/7 and the seed caveat in Ch 9), old 6.3.6 mapping table (→ Table 7.1), Table 2.1 objective status (→ Table 10.1), FR status column in Table 4.1 (→ traceability Table 7.20), dashboard screenshot Fig 4.8 (→ Ch 8), risk-outcome sentences in 4.10.
+- The extra "realized value" paragraphs in Ch 5 were cut to 1–3 sentences each. Wording such as "Deliverable 2 planned …", "FYP-I confirmed …", "deviation" was removed from Ch 1, 2, 5, 6.
+- `Manzil_D2_Report/D3_CHANGES.md` was deleted: the user asked not to present the update as a change list, and it was out of date after the trim. Git history keeps it.
+
+**New chapters (all numbers from `results/`, `models/dqn/grid3x3/`, context §50.4–50.15):**
+- Ch 7: implementation per module (Table 7.1 component → module, demand profiles, DQN settings, vision data splits); test suite table (17 files, 147 tests); 13 test-case tables TC-01..TC-13, each tied to named pytest tests and checked against the test code; test metrics; FR traceability (13 implemented, 6 partial, FR-16 planned; 17 of 20 FRs covered by a documented test case).
+- Ch 8: install/start, run, dispatch + close road, experiment commands; screenshots from `results/phase5/`.
+- Ch 9: detection, counting/queue, controller comparison, routing, corridor off/on, corridor variants, discussion, limits. The corridor v2 figures are called **development-stage estimates** (chosen on seeds 0–4); v1 (designed before those runs) already gave −34 % / −57 % on the same seeds.
+- Ch 10: conclusion, objective status, work completed, FYP-II plan (8 items, January–May 2027). **Open:** the plan has no owners per item; the team should add them if wanted.
+- Figures copied to `Manzil_D2_Report/figures/results/` (sources: `results/phase3/`, `results/phase4/`, `results/phase5/`, `results/vision/`, `models/dqn/grid3x3/training_curve.png`).
+

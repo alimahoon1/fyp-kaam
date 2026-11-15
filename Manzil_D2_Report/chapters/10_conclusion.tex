@@ -1,0 +1,72 @@
+\chapter{Conclusion and Future Work}
+\label{ch:conclusion}
+
+This chapter concludes the FYP-I phase of Manzil. It summarizes what the project has shown, records the work completed against the objectives of Chapter \ref{ch:vision}, and sets out the plan for FYP-II.
+
+\section{Conclusion}
+
+Manzil set out to study, in a controlled and repeatable setting, how observable traffic conditions can support signal control, how an ambulance route can respond to current delay, and how an ambulance can receive temporary signal priority without unreasonable harm to ordinary traffic. During FYP-I the team built a working prototype around SUMO in which every signal change passes through one safety filter, and measured each component against a matched baseline on held-out seeds.
+
+The results are encouraging within their limits. On the synthetic grid, the parameter-sharing DQN reduced mean travel time by 9 to 11 percent and waiting time by 24 to 40 percent against tuned fixed-time control, at the cost of longer red times for minor phases. Live travel-time routing roughly halved the ambulance's travel time around an obstruction, and the moving corridor reduced it by 34 to 59 percent while ordinary-traffic queues rose by about 3 percent. The fine-tuned detector reached 0.799 mAP50 on UA-DETRAC test data, and the counting chain had a mean error of 2.60 vehicles per clip. No experiment produced an unsafe signal state, and the ambulance never crossed a red light. The work also showed the value of measuring before claiming: a misleading travel-time metric, a starved phase under the DQN, and a corridor defect that made the ambulance meet red lights were each found through recorded evidence and fixed. The evidence is from a synthetic grid and public video, so it shows that the approach works on a controlled test track; showing that it holds on Lahore roads is the task of FYP-II.
+
+\section{Work Completed in FYP-I}
+
+Table \ref{tab:objective-status} gives the status of each objective at the end of FYP-I. An objective is marked implemented only when code, automated tests, and recorded results exist in the project repository.
+
+\begin{table}[htbp]
+\centering
+\caption{Status of the objectives at the end of FYP-I}
+\label{tab:objective-status}
+\begin{tabularx}{\textwidth}{p{0.07\textwidth}p{0.16\textwidth}Y}
+\toprule
+\textbf{ID} & \textbf{Status} & \textbf{Evidence and remaining work}\\
+\midrule
+O1 & Implemented & Typed snapshot, signal, request, and applied-control contracts shared by all controllers, routing, and the corridor\\
+O2 & Implemented & YOLO11s fine-tuned on UA-DETRAC and COCO motorcycles, ByteTrack tracking, line counting, and count error on 40 test sequences; Lahore clips remain\\
+O3 & Partial & Synthetic 3$\times$3 signalized grid with four seeded demand profiles; Lahore network remains\\
+O4 & Implemented & Fixed-time, adaptive, and DQN controllers compared on held-out seeds\\
+O5 & Implemented & Time-cost Dijkstra and A* routing with closure and improvement rerouting\\
+O6 & Implemented & Moving corridor with bounded look-ahead, passage detection, and recovery\\
+O7 & Partial & FastAPI service and single-page dashboard for live runs; five-screen dashboard with analytics remains\\
+O8 & Implemented & Run manifests with configuration, seed, versions, commit, and checksums; reproducibility tested\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+In summary, the following work was completed:
+\begin{itemize}[itemsep=0pt]
+\item a reproducible 3$\times$3 SUMO grid with four seeded demand profiles and a network reader that works on any SUMO network;
+\item a single simulation adapter, a safety filter with a maximum-red guard, and an independent safety monitor;
+\item fixed-time, pressure-based adaptive, and parameter-sharing Double DQN controllers, with the DQN trained in 17 minutes on CPU;
+\item time-based ambulance routing with Dijkstra and an admissible A*, and closure- and improvement-triggered rerouting;
+\item a moving green corridor with a 5 s corridor minimum green, and a per-second record of why the ambulance stands still;
+\item a vehicle detection, tracking, counting, and queue-estimation pipeline trained and evaluated on Kaggle GPUs;
+\item a FastAPI service and a React dashboard for live runs with ambulance dispatch and road closure;
+\item batch and comparison tools with paired statistics, and 147 automated tests, all passing.
+\end{itemize}
+
+\section{Plan for FYP-II}
+
+FYP-II moves Manzil from the synthetic grid to Lahore and completes the parts of the specification that are still partial. Table \ref{tab:fyp2-plan} lists the planned work in order. The order follows the dependencies: the Lahore network must exist before the experiments can be repeated on it, and the database must exist before the analytics screens can use it. The months assume a semester from January to May 2027.
+
+\begin{longtable}{P{0.05\textwidth}P{0.27\textwidth}P{0.42\textwidth}P{0.14\textwidth}}
+\caption{FYP-II work plan}\label{tab:fyp2-plan}\\
+\toprule
+\textbf{No.} & \textbf{Work item} & \textbf{Description and expected output} & \textbf{Months}\\
+\midrule\endfirsthead
+\caption[]{FYP-II work plan (continued)}\\
+\toprule
+\textbf{No.} & \textbf{Work item} & \textbf{Description and expected output} & \textbf{Months}\\
+\midrule\endhead
+1 & Lahore road network & Select a Lahore area with a hospital, export it from OpenStreetMap, correct lanes, connections, and signal programs, and validate it with the existing network reader and tests & January--February\\
+2 & Local video and new classes & Record a few Lahore traffic clips with permission, label a sample including rickshaws and vans, fine-tune the detector, and measure the count error on local video & January--March\\
+3 & Full evaluation protocol & Ten matched seeds, held-out demand patterns, and the full warm-up and measurement on the Lahore network for all controllers, routing, and the corridor; confirm the corridor result on new seeds & February--April\\
+4 & Controller improvements & Retrain the DQN on the Lahore network with several training seeds, add a fairness term or tighter guard, and compare again & March--April\\
+5 & Corridor completion & Downstream-capacity check, compensation plan during recovery, and vehicles giving way to the ambulance with SUMO's sublane model & March--April\\
+6 & Dashboard and database & Five-screen dashboard (G01--G05), stale and fallback warnings (FR-16), pause and resume (FR-02), export (FR-19), and a database behind the existing repository boundary & February--April\\
+7 & Video-to-simulation study & Feed camera counts and queue estimates into a simulated junction and measure how observation error affects control & April\\
+8 & Report and demonstration & Final report chapters, results with the full protocol, and the final demonstration & May\\
+\bottomrule
+\end{longtable}
+
+The guiding rule for FYP-II stays the same as in FYP-I: a result is claimed only when the code, the configuration, and the recorded runs behind it exist in the repository, and the cost of each improvement is reported next to its benefit.
