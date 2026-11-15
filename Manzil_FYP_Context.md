@@ -1766,6 +1766,6 @@ Laptop session (Ibrahim + Claude). Build: 142 pages, 0 LaTeX errors, 0 overfull 
 - Ch 7: implementation per module (Table 7.1 component → module, demand profiles, DQN settings, vision data splits); test suite table (17 files, 147 tests); 13 test-case tables TC-01..TC-13, each tied to named pytest tests and checked against the test code; test metrics; FR traceability (13 implemented, 6 partial, FR-16 planned; 17 of 20 FRs covered by a documented test case).
 - Ch 8: install/start, run, dispatch + close road, experiment commands; screenshots from `results/phase5/`.
 - Ch 9: detection, counting/queue, controller comparison, routing, corridor off/on, corridor variants, discussion, limits. The corridor v2 figures are called **development-stage estimates** (chosen on seeds 0–4); v1 (designed before those runs) already gave −34 % / −57 % on the same seeds.
-- Ch 10: conclusion, objective status, work completed, FYP-II plan (8 items, January–May 2027). **Open:** the plan has no owners per item; the team should add them if wanted.
+- Ch 10: conclusion, objective status, work completed, FYP-II plan (8 items, January–May 2027). Owners per item: Ibrahim decided (15 Nov) to leave the plan without names for now.
 - Figures copied to `Manzil_D2_Report/figures/results/` (sources: `results/phase3/`, `results/phase4/`, `results/phase5/`, `results/vision/`, `models/dqn/grid3x3/training_curve.png`).
 

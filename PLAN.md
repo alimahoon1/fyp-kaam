@@ -5,7 +5,7 @@ Before starting a task, set it to `in progress (Name)` and push. When finished, 
 
 ## Current stage
 
-Planning is finished (10 Nov 2026). **Phase 0 done. Phases 1–5 done; vision V.1–V.5 done (V.6 deferred).** Laptop demo check done 14 Nov (140 tests pass on the laptop, dashboard runs). Task 3.7 (corridor v2) done 14 Nov in the cloud: route-index bug fixed + 5 s emergency min-green truncation; Phase 3 corridor results and Phase 5 screenshots rerun. Report tasks 6.1–6.4 done 15 Nov: Ch 1–6 updated and Ch 7–10 written; report builds clean, 142 pages, dated 22 Nov 2026. Next: team review of the PDF, owners for the FYP-II plan, then 6.5 demo script + presentation. Coding phases 1–5 mostly run as Claude Code cloud sessions (claude.ai/code), with Ibrahim checking from the phone app. The vision track (V) can run in parallel at any time after Phase 0 step 0.4.
+Planning is finished (10 Nov 2026). **Phase 0 done. Phases 1–5 done; vision V.1–V.5 done (V.6 deferred).** Laptop demo check done 14 Nov (140 tests pass on the laptop, dashboard runs). Task 3.7 (corridor v2) done 14 Nov in the cloud: route-index bug fixed + 5 s emergency min-green truncation; Phase 3 corridor results and Phase 5 screenshots rerun. Report tasks 6.1–6.4 done 15 Nov: Ch 1–6 updated and Ch 7–10 written; report builds clean, 142 pages, dated 22 Nov 2026. Next: team review of the PDF (FYP-II plan stays without owner names for now), then 6.5 demo script + presentation. Coding phases 1–5 mostly run as Claude Code cloud sessions (claude.ai/code), with Ibrahim checking from the phone app. The vision track (V) can run in parallel at any time after Phase 0 step 0.4.
 
 ## Deliverable III requirements (from the university)
 
