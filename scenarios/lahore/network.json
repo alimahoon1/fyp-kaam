@@ -80,13 +80,15 @@
     "5",
     "--tls.unset",
     "1884436500,2461996090,2954611575,303559980,3207009519,3212601164,3303447895,3360332127,7917646129,9379997737,9379997740,9379997746",
+    "--remove-edges.explicit",
+    "-178064754,-571083974,13678242#0,178064738#0,618211752",
     "--output-file",
     "lahore.net.xml"
   ],
-  "traffic_lights": 11,
+  "traffic_lights": 10,
   "osm_signal_nodes_in_box": 0,
   "signals_origin": "guessed by netconvert (--tls.guess); OSM has no signal tags here",
-  "removed_by_cleanup": {
+  "signals_removed_by_cleanup": {
     "1884436500": "merge",
     "2461996090": "merge",
     "2954611575": "merge",
@@ -100,6 +102,13 @@
     "9379997740": "merge",
     "9379997746": "merge"
   },
-  "edges": 165,
-  "content_sha256": "41e8a93d4c31a5d88a75a94b601c37252894763e833f75daf08578730f095ba8"
+  "edges_removed_by_cleanup": [
+    "-178064754",
+    "-571083974",
+    "13678242#0",
+    "178064738#0",
+    "618211752"
+  ],
+  "edges": 161,
+  "content_sha256": "2986a3bf72209e3fa02da3ec39655ebf5121a13d66f7aaf306e0c85e19ac1d48"
 }

@@ -29,6 +29,7 @@ import gzip
 import hashlib
 import json
 import math
+import re
 import subprocess
 import time
 import urllib.request
@@ -307,6 +308,7 @@ def netconvert_command(
     net_file: Path,
     typemap: Path = TYPEMAP,
     unset_tls: list[str] | tuple[str, ...] = (),
+    remove_edges: list[str] | tuple[str, ...] = (),
 ) -> list[str]:
     cmd = [
         sumo_binary("netconvert"),
@@ -332,6 +334,8 @@ def netconvert_command(
     ]  # fmt: skip
     if unset_tls:
         cmd += ["--tls.unset", ",".join(unset_tls)]
+    if remove_edges:
+        cmd += ["--remove-edges.explicit", ",".join(remove_edges)]
     return cmd + ["--output-file", str(net_file)]
 
 
@@ -373,20 +377,101 @@ def tls_cleanup_reasons(net_file: Path) -> dict[str, str]:
     return reasons
 
 
+def _strong_core(edges: dict[str, list[str]]) -> set[str]:
+    """Largest strongly connected component of a directed edge graph (iterative Kosaraju)."""
+    order, seen = [], set()
+    for start in sorted(edges):
+        if start in seen:
+            continue
+        seen.add(start)
+        stack = [(start, iter(edges[start]))]
+        while stack:
+            node, it = stack[-1]
+            nxt = next((n for n in it if n not in seen), None)
+            if nxt is None:
+                order.append(node)
+                stack.pop()
+            else:
+                seen.add(nxt)
+                stack.append((nxt, iter(edges[nxt])))
+    reverse: dict[str, list[str]] = {e: [] for e in edges}
+    for e, outs in edges.items():
+        for o in outs:
+            reverse[o].append(e)
+    best, assigned = set(), set()
+    for root in reversed(order):
+        if root in assigned:
+            continue
+        comp, todo = {root}, [root]
+        assigned.add(root)
+        while todo:
+            for p in reverse[todo.pop()]:
+                if p not in assigned:
+                    assigned.add(p)
+                    comp.add(p)
+                    todo.append(p)
+        if len(comp) > len(best):
+            best = comp
+    return best
+
+
+def _closure(start: set[str], step: dict[str, list[str]]) -> set[str]:
+    out, todo = set(start), list(start)
+    while todo:
+        for n in step[todo.pop()]:
+            if n not in out:
+                out.add(n)
+                todo.append(n)
+    return out
+
+
+def connectivity_removals(net_file: Path) -> set[str]:
+    """Edges that cannot be part of a trip through the network's main core.
+
+    The core is the largest strongly connected set of edges (following lane connections for
+    passenger cars). Feeders can reach the core (e.g. entry roads), drains can be reached from
+    it (e.g. exit roads). An edge is kept if it lies on a path from a feeder to a drain. Then
+    every kept entry road is a feeder and every kept exit road a drain, so every entry reaches
+    every exit (through the core), and every entry reaches the hospital if its street is kept.
+    Clipping at the bounding box leaves a few one-way fragments that fail this test.
+    """
+    import sumolib
+
+    net = sumolib.net.readNet(str(net_file))
+    graph = {
+        e.getID(): sorted(o.getID() for o in e.getOutgoing() if o.allows("passenger"))
+        for e in net.getEdges()
+        if e.allows("passenger")
+    }
+    core = _strong_core(graph)
+    reverse: dict[str, list[str]] = {e: [] for e in graph}
+    for e, outs in graph.items():
+        for o in outs:
+            reverse[o].append(e)
+    feeders = _closure(core, reverse)  # can reach the core
+    drains = _closure(core, graph)  # reachable from the core
+    # Keep every edge on some path feeder -> ... -> drain (this includes through roads that
+    # bypass the core, such as one carriageway of a dual road between two kept junctions).
+    keep = _closure(feeders, graph) & _closure(drains, reverse)
+    return {e.getID() for e in net.getEdges()} - keep
+
+
 @dataclass
 class BuildResult:
     net_file: Path
     command: list[str]  # final netconvert command, paths relative to the scenario folder
     removed_tls: dict[str, str]  # junction id -> cleanup reason
+    removed_edges: list[str]  # edges removed by the connectivity cleanup
     osm_signal_nodes: int  # highway=traffic_signals nodes inside the box
 
 
 def build_network(area: Area, raw_osm: Path, out_dir: Path, net_name: str) -> BuildResult:
-    """Filter + clip ``raw_osm``, run netconvert, then remove non-junction signals.
+    """Filter + clip ``raw_osm``, run netconvert, then clean up signals and connectivity.
 
-    The cleanup repeats netconvert with ``--tls.unset`` until no traffic light is left that
-    :func:`tls_cleanup_reasons` rejects (at most 4 passes), so the result is reproducible from
-    the raw file alone.
+    The cleanup repeats netconvert with ``--tls.unset`` and ``--remove-edges.explicit`` until
+    no rejected traffic light (:func:`tls_cleanup_reasons`) or disconnected edge
+    (:func:`connectivity_removals`) is left (at most 6 passes), so the result is reproducible
+    from the raw file alone.
     """
     out_dir.mkdir(parents=True, exist_ok=True)
     root = filter_and_clip(read_osm(raw_osm), area.bbox)
@@ -394,16 +479,30 @@ def build_network(area: Area, raw_osm: Path, out_dir: Path, net_name: str) -> Bu
     write_osm(root, filtered)
     net_file = out_dir / f"{net_name}.net.xml"
     removed: dict[str, str] = {}
+    removed_edges: set[str] = set()
     try:
-        for _ in range(4):
-            cmd = netconvert_command(area, filtered, net_file, unset_tls=sorted(removed))
-            subprocess.run(cmd, capture_output=True, text=True, check=True)
-            new = {k: v for k, v in tls_cleanup_reasons(net_file).items() if k not in removed}
-            if not new:
+        for _ in range(6):
+            while True:
+                unset = sorted(k for k, v in removed.items() if "junction removed" not in v)
+                cmd = netconvert_command(area, filtered, net_file, unset_tls=unset,
+                                         remove_edges=sorted(removed_edges))  # fmt: skip
+                proc = subprocess.run(cmd, capture_output=True, text=True)
+                gone = re.search(r"junction '([^']+)' to set as not-controlled is not known",
+                                 proc.stderr)  # fmt: skip
+                if proc.returncode == 0:
+                    break
+                if not gone:
+                    raise RuntimeError(f"netconvert failed: {proc.stderr[-2000:]}")
+                # The junction vanished with removed edges; nothing left to unset there.
+                removed[gone.group(1)] += "; junction removed with its edges"
+            new_tls = {k: v for k, v in tls_cleanup_reasons(net_file).items() if k not in removed}
+            new_edges = connectivity_removals(net_file) - removed_edges
+            if not new_tls and not new_edges:
                 break
-            removed.update(new)
+            removed.update(new_tls)
+            removed_edges |= new_edges
         else:
-            raise RuntimeError("traffic-light cleanup did not converge")
+            raise RuntimeError("network cleanup did not converge")
     finally:
         filtered.unlink(missing_ok=True)
 
@@ -414,7 +513,120 @@ def build_network(area: Area, raw_osm: Path, out_dir: Path, net_name: str) -> Bu
         return p.name if p.is_absolute() else arg
 
     return BuildResult(net_file, [rel(a) for a in cmd], dict(sorted(removed.items())),
-                       len(signal_nodes(root)))  # fmt: skip
+                       sorted(removed_edges), len(signal_nodes(root)))  # fmt: skip
+
+
+# --------------------------------------------------------------------------- hospital
+
+
+def bridge_way_ids(root: ET.Element) -> set[str]:
+    return {w.get("id") for w in root.findall("way") if _tags(w).get("bridge") not in (None, "no")}
+
+
+def _way_of(edge_id: str) -> str:
+    return edge_id.lstrip("-").split("#")[0]
+
+
+def hospital_edge(net, area: Area, bridges: set[str], radius_m: float = 200.0) -> str:
+    """The drivable street edge nearest to the hospital point, excluding bridges/flyovers.
+
+    The ambulance ends its trip at the end of this edge. Flyovers are excluded because the
+    hospital gate is at street level.
+    """
+    x, y = lonlat_to_net_xy(net, area.hospital.lat, area.hospital.lon)
+    near = sorted(net.getNeighboringEdges(x, y, radius_m), key=lambda t: (t[1], t[0].getID()))
+    for edge, _ in near:
+        if _way_of(edge.getID()) not in bridges and edge.allows("emergency"):
+            return edge.getID()
+    raise ValueError(f"no street edge within {radius_m} m of {area.hospital.name}")
+
+
+# --------------------------------------------------------------------------- demand
+
+# Seeded demand for the Lahore network. Same file layout and manifest as
+# manzil.scenarios.demand (routes, sumocfg, json), so experiment code can use either. Rates are
+# per *lane* of the entry road (a 2-lane primary gets twice the rate of a 1-lane tertiary);
+# "major" entries are those on the Ferozpur Road axis (heading mainly north-south). These
+# numbers are a planning assumption, not calibrated to Lahore counts (W6 compares with video).
+LAHORE_PROFILES: dict[str, tuple[float, float, str]] = {
+    "light": (150, 150, "Free-flowing traffic."),
+    "medium": (300, 300, "Busy but stable traffic."),
+    "heavy": (450, 450, "Near saturation; long queues."),
+    "uneven": (500, 100, "Heavy on the Ferozpur Road axis, light on cross streets."),
+}  # fmt: skip
+
+
+def lahore_trips(net, profile: str, seed: int, duration_s: float):
+    """Poisson arrivals per entry road (rate x lanes); exits weighted by their lane count."""
+    import numpy as np
+
+    from manzil.scenarios.demand import Trip, fringe_edges
+
+    major, minor, _ = LAHORE_PROFILES[profile]
+    rng = np.random.default_rng(seed)
+    entries, exits = fringe_edges(net)
+    raw = []
+    for entry in entries:
+        lanes = net.getEdge(entry.edge_id).getLaneNumber()
+        rate = (major if entry.north_south else minor) * lanes
+        targets = [x for x in exits if x.node_id != entry.node_id]
+        weights = np.array([net.getEdge(x.edge_id).getLaneNumber() for x in targets], float)
+        weights /= weights.sum()
+        mean_gap = 3600.0 / rate
+        t = rng.exponential(mean_gap)
+        while t < duration_s:
+            dest = targets[rng.choice(len(targets), p=weights)]
+            raw.append((round(t, 2), entry.edge_id, dest.edge_id))
+            t += rng.exponential(mean_gap)
+    raw.sort()
+    return [Trip(f"{profile}_{i}", d, f, to) for i, (d, f, to) in enumerate(raw)]
+
+
+def build_lahore_demand(
+    profile_name: str,
+    seed: int,
+    duration_s: float = 3600.0,
+    net_file: Path | None = None,
+    out_dir: Path | None = None,
+):
+    """Drop-in for ``manzil.scenarios.demand.build_demand`` on the Lahore network."""
+    import sumolib
+
+    from manzil.scenarios.demand import DemandFiles, route_trips, write_sumocfg, write_trips
+
+    if profile_name not in LAHORE_PROFILES:
+        raise KeyError(f"unknown Lahore profile {profile_name!r}")
+    net_file = Path(net_file) if net_file else LAHORE_DIR / "lahore.net.xml"
+    out_dir = Path(out_dir) if out_dir else net_file.parent / "demand"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    stem = f"{profile_name}_seed{seed}"
+    net = sumolib.net.readNet(str(net_file))
+    trips = lahore_trips(net, profile_name, seed, duration_s)
+    trips_file, routes_file = out_dir / f"{stem}.trips.xml", out_dir / f"{stem}.rou.xml"
+    write_trips(trips, trips_file)
+    route_trips(net_file, trips_file, routes_file)
+    cfg_file = out_dir / f"{stem}.sumocfg"
+    write_sumocfg(net_file, routes_file, cfg_file, seed, end_s=duration_s)
+    major, minor, desc = LAHORE_PROFILES[profile_name]
+    manifest = out_dir / f"{stem}.json"
+    manifest.write_text(
+        json.dumps(
+            {
+                "profile": {"name": profile_name, "major_rate_vph_per_lane": major,
+                            "minor_rate_vph_per_lane": minor, "description": desc},
+                "seed": seed,
+                "duration_s": duration_s,
+                "vehicles": len(trips),
+                "network": net_file.name,
+                "generator": "manzil.scenarios.osm.build_lahore_demand "
+                "(Poisson per entry lane, numpy PCG64)",
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )  # fmt: skip
+    return DemandFiles(profile_name, seed, duration_s, len(trips), routes_file, cfg_file, manifest)
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -468,13 +680,14 @@ def main(argv: list[str] | None = None) -> None:
         "signals_origin": "guessed by netconvert (--tls.guess); OSM has no signal tags here"
         if result.osm_signal_nodes == 0
         else "OSM traffic_signals tags plus netconvert guesses",
-        "removed_by_cleanup": result.removed_tls,
+        "signals_removed_by_cleanup": result.removed_tls,
+        "edges_removed_by_cleanup": result.removed_edges,
         "edges": len(net.getEdges()),
         "content_sha256": content_sha256(result.net_file),
     }
     (out_dir / "network.json").write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
-    print(f"wrote {result.net_file}: {record['traffic_lights']} traffic lights, "
-          f"{len(result.removed_tls)} removed by cleanup, {record['content_sha256'][:12]}")  # fmt: skip
+    n_tls, n_removed = record["traffic_lights"], len(result.removed_tls)
+    print(f"wrote {result.net_file}: {n_tls} traffic lights, {n_removed} removed by cleanup")
 
 
 if __name__ == "__main__":
