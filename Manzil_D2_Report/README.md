@@ -16,12 +16,17 @@ The build PDF is written to `build/main.pdf` (git-ignored). The submitted copy i
 
 If PowerShell stops on MiKTeX's "not checked for updates" notice, run the same pdflatex/bibtex steps from bash. The build requires MiKTeX with automatic package installation enabled, `pdflatex`, and `bibtex`. Run LaTeX, BibTeX, and two further LaTeX passes if compiling manually.
 
+## Checks after every edit
+
+After a full build, run `..\.venv\Scripts\python check_report.py` from this folder. It checks the abstract length, labels and references, citations, empty headings, chapter conclusions, leftover change wording, and the LaTeX log. The editing guide (where each number comes from, the test-case macro, writing rules) is in `../Manzil_FYP_Context.md` §50.18.
+
 ## Source layout
 
 - `main.tex`: metadata, front matter, package configuration, appendices
 - `chapters/`: Chapters 1 through 10 (7 implementation and test cases, 8 user manual, 9 results, 10 conclusion and FYP-II plan)
 - `figures/results/`: copies of figures from `../results/` and `../models/dqn/` used in Chapters 7–9
-- `references.bib`: verified academic and official sources used by the report
+- `references.bib`: verified academic and official sources used by the report (27 entries, all cited)
+- `check_report.py`: consistency checks described above
 - `REVIEW_NOTES.md`: completeness, sample comparison, validation, and unresolved facts
 - `build/`: generated on demand by `build.ps1`; not tracked in git
 

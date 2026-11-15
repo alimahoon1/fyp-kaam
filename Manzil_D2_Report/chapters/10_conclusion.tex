@@ -9,7 +9,7 @@ Manzil set out to study, in a controlled and repeatable setting, how observable 
 
 The results are encouraging within their limits. On the synthetic grid, the parameter-sharing DQN reduced mean travel time by 9 to 11 percent and waiting time by 24 to 40 percent against tuned fixed-time control, at the cost of longer red times for minor phases. Live travel-time routing roughly halved the ambulance's travel time around an obstruction, and the moving corridor reduced it by 34 to 59 percent while ordinary-traffic queues rose by about 3 percent. The fine-tuned detector reached 0.799 mAP50 on UA-DETRAC test data, and the counting chain had a mean error of 2.60 vehicles per clip. No experiment produced an unsafe signal state, and the ambulance never crossed a red light. The work also showed the value of measuring before claiming: a misleading travel-time metric, a starved phase under the DQN, and a corridor defect that made the ambulance meet red lights were each found through recorded evidence and fixed. The evidence is from a synthetic grid and public video, so it shows that the approach works on a controlled test track; showing that it holds on Lahore roads is the task of FYP-II.
 
-\section{Work Completed in FYP-I}
+\section{Work Completed}
 
 Table \ref{tab:objective-status} gives the status of each objective at the end of FYP-I. An objective is marked implemented only when code, automated tests, and recorded results exist in the project repository.
 
@@ -45,9 +45,9 @@ In summary, the following work was completed:
 \item batch and comparison tools with paired statistics, and 147 automated tests, all passing.
 \end{itemize}
 
-\section{Plan for FYP-II}
+\section{Future Work}
 
-FYP-II moves Manzil from the synthetic grid to Lahore and completes the parts of the specification that are still partial. Table \ref{tab:fyp2-plan} lists the planned work in order. The order follows the dependencies: the Lahore network must exist before the experiments can be repeated on it, and the database must exist before the analytics screens can use it. The months assume a semester from January to May 2027.
+The future work is the plan for FYP-II, which is mandatory for FYP-I. FYP-II moves Manzil from the synthetic grid to Lahore and completes the parts of the specification that are still partial. Table \ref{tab:fyp2-plan} lists the planned work in order. The order follows the dependencies: the Lahore network must exist before the experiments can be repeated on it, and the database must exist before the analytics screens can use it. The months assume a semester from January to May 2027.
 
 \begin{longtable}{P{0.05\textwidth}P{0.27\textwidth}P{0.42\textwidth}P{0.14\textwidth}}
 \caption{FYP-II work plan}\label{tab:fyp2-plan}\\

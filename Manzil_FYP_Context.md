@@ -1769,3 +1769,36 @@ Laptop session (Ibrahim + Claude). Build: 142 pages, 0 LaTeX errors, 0 overfull 
 - Ch 10: conclusion, objective status, work completed, FYP-II plan (8 items, January–May 2027). Owners per item: Ibrahim decided (15 Nov) to leave the plan without names for now.
 - Figures copied to `Manzil_D2_Report/figures/results/` (sources: `results/phase3/`, `results/phase4/`, `results/phase5/`, `results/vision/`, `models/dqn/grid3x3/training_curve.png`).
 
+## 50.18 Full report review against the FAST template and samples (15 Nov 2026)
+
+Laptop session (Ibrahim + Claude), on Ibrahim's request: check every formatting guideline in `FYPFast/main.tex`, match the Ch 7–10 headings to the sample reports, and review the whole report (text, figures, tables, references). Result: 149 pages; 0 LaTeX errors, 0 overfull boxes, 0 undefined or duplicate labels; 27 references, all cited; `check_report.py` passes; 147 tests pass.
+
+**Template rules found in `FYPFast/main.tex` and how the report meets them:**
+- Abstract 50–125 words → trimmed to 122.
+- Last paragraph of Ch 1 = outline of the report, one line per chapter → added to 1.4.
+- Every chapter: intro paragraph + closing conclusion; no heading directly followed by a heading → Ch 8 got 8.5 Conclusion; checked by script.
+- Ch 2 headings as in the template → renamed to "Sustainable Development Goal (SDG)", "Constraints", "Business Opportunity", "Stakeholders Description/User Characteristics".
+- Literature summary table: research format, ≥ 15 studies → 18 rows (unchanged).
+- Test cases in the template's table format (ID, version, date, use-case reference, revision history, objective, product/module, environment, assumptions, pre-requisite, steps with procedure result, comments, Passed). QA engineer / reviewer names omitted (Ibrahim's decision).
+- Test metrics with the template's rows (number of test cases, passed, failed, defect density, effectiveness, traceability matrix). Effectiveness is "not computed" (defects were not logged per test case); this is stated, not invented.
+- Figures and tables numbered by LaTeX with `\label`/`\ref`, never hard-coded.
+
+**Headings matched to the samples:** Ch 7 = Implementation / Test Case Design and Description / Test Metrics / Conclusion (FictionGenie, JobLens, ParkEase, SynapSure). Ch 9 ends with Discussion / Conclusion (SynapSure). Ch 10 = Conclusion / Work Completed / Future Work (EduVerse, ImageSense "Conclusion, Future Work"; JobLens "Work Completed"); the Future Work section is the mandatory FYP-II plan.
+
+**Content fixes from the review:**
+- Duplicate label `tab:experiments` (Ch 5 and Ch 9) made Ch 5 cite "Table 9.1" → the Ch 9 label is now `tab:fyp1-experiments`.
+- Tense: implemented items in Ch 1, 2, 3, 5, 6 changed from "will …" to present tense; FYP-II items (Lahore network, database, noise study) stay future.
+- Stale or wrong statements corrected: "no defensible hardware benchmark" (4.4), "traceability matrix was removed" (4.3.6, now Table 7.20), "Python is implied by the planned …" (4.5), RL fallback to baseline (6.7.5, now "hold the current phase", as in FR-20), "structured logging" (6.7.7; the code has none), scenario tests that do not exist (6.7.6), routing thresholds "configured on development scenarios" (5.5; they are declared initial values), corridor limits "selected by sensitivity analysis" (5.6; now points to Ch 9), "PostgreSQL is proposed" (6.7.5), "the proposed architecture" (6.3.4), "version 2" (6.7.1).
+- "Proposed"/"Planned" removed from captions of things that exist (workflow, perception pipeline, use-case diagram, experiments table). The GUI wireframes stay labelled as the FYP-II target, and 4.8 now points to the real dashboard in Ch 8.
+- Ch 1 definitions sorted alphabetically; added MAE, mAP50, YOLO11s.
+- Bibliography: capitals protected (ByteTrack, UA-DETRAC, BDD100K, PressLight, CoLight, CityFlow, SUMO, TraCI, FastAPI, OpenStreetMap, React); added van Hasselt 2016 (Double DQN), Lin 2014 (COCO), Paszke 2019 (PyTorch), Ultralytics YOLO11 (2024); cited in Ch 1 and Ch 7.
+
+### How to edit the report later (maintenance guide)
+
+- **Files:** `Manzil_D2_Report/main.tex` (title page, date, declaration, abstract, executive summary, chapter list), `chapters/01_introduction.tex` … `10_conclusion.tex`, `references.bib`, figures in `figures/results/` (copies of files in `results/` and `models/dqn/grid3x3/`; README of the report folder lists sources).
+- **Build:** from bash in `Manzil_D2_Report/`: `pdflatex -output-directory=build main.tex`, copy `references.bib` into `build/`, `bibtex main` inside `build/`, then `pdflatex` twice. (`build.ps1` stops on MiKTeX's update notice in PowerShell.) Then run `..\.venv\Scripts\python check_report.py`; it must print "report checks passed".
+- **Numbers:** every number in Ch 7–10, the abstract and the executive summary comes from `results/*/README.md`, `results/*/summary.md`, `results/vision/tracking/mae_table.md`, `results/phase3/corridor_v2/key_table.md`, `models/dqn/grid3x3/` and context §50.4–50.15. If an experiment is rerun, update the README there first, then the report tables (Ch 9 tables 9.2–9.7, Ch 7 tables 7.2–7.4, abstract, executive summary, Ch 10.1). Test counts appear in Ch 6.7.6, Table 7.5, Table 7.19 and Ch 7.4.
+- **Test cases:** use the `\testcase{label}{caption}{ID}{UC/FR refs}{objective}{module}{pre-requisite}{steps}{comments}` macro defined at the start of the test-case part of Ch 7 (environment, version, date and assumptions are fixed inside the macro; change the date there when the suite is rerun for a new deliverable). Each step row is `n & description & \tcres{result. Passed}\\ \hline`. Keep Table 7.20 (traceability) in step with Table 4.1.
+- **Writing rules (Ibrahim, 15 Nov):** no new sections inside Ch 1–6, little extra text there; the report states the current facts and never says "changed", "deviation from D2" or "version 2" (deviations live only in this context file); implemented work in present tense, FYP-II work in future tense; real numbers only; the corridor 5 s result is always called a development-stage estimate (chosen on seeds 0–4).
+- **Template rules:** see the list above; keep headings as in the template and samples.
+

@@ -68,7 +68,7 @@ All controllers implement the same interface in \path{manzil/control/base.py}: t
 
 The adaptive controller implements Equation \ref{eq:rule-score}. For each phase it adds the queues of the incoming lanes it serves, subtracts $\alpha$ times the queues of the lanes it feeds, and adds $\beta$ times the longest waiting time among its approaches. Each incoming lane is counted once per phase even when it feeds two movements. The controller keeps the current phase until a minimum hold has passed, switches only when another phase scores higher by a margin, and forces a switch at maximum green. One parameter set was selected from 60 settings on the development seeds and is used for every profile: $\alpha=0.5$, $\beta=0.02$, maximum green 40 s, maximum red 90 s, switching margin 3, and minimum hold 15 s. Every request carries its scores, so each switch can be explained afterwards.
 
-The learned controller is a parameter-sharing Double DQN. It is implemented in PyTorch, with the agent in \path{manzil/control/dqn.py} and the environment in \path{manzil/control/rl_env.py}. One network serves all nine junctions. Each junction builds a 26-value observation: for up to four approaches in compass order the halting vehicles, vehicles, waiting time, and whether the approach has green; for each phase a current-phase flag and its pressure; and the elapsed green time and a transition flag. Actions are masked so that the agent can only keep the phase before the minimum green and cannot interrupt a transition. The reward is
+The learned controller is a parameter-sharing Double DQN \cite{vanhasselt2016double}. It is implemented in PyTorch \cite{paszke2019pytorch}, with the agent in \path{manzil/control/dqn.py} and the environment in \path{manzil/control/rl_env.py}. One network serves all nine junctions. Each junction builds a 26-value observation: for up to four approaches in compass order the halting vehicles, vehicles, waiting time, and whether the approach has green; for each phase a current-phase flag and its pressure; and the elapsed green time and a transition flag. Actions are masked so that the agent can only keep the phase before the minimum green and cannot interrupt a transition. The reward is
 \begin{equation}
 r_t = -\left(a\,\bar{q}_t + b\,\frac{\bar{w}_t}{100}\right) - c\,s_t - d\,u_t,
 \label{eq:implemented-reward}
@@ -122,7 +122,7 @@ Four further changes were then tested on medium and heavy demand with five seeds
 
 \subsection{Vehicle Detection, Tracking, and Counting}
 
-Perception runs as three Kaggle jobs on two Tesla T4 GPUs. The first job, \path{kaggle/yolo_data}, builds the training data. UA-DETRAC labels four vehicle types, which are mapped to the project classes: car and van to car, bus to bus, and others to truck. Every tenth frame is used to avoid near-duplicates, regions that UA-DETRAC marks as ignored are filled grey, and the validation set consists of six whole training sequences, so frames of one sequence never appear in two splits. UA-DETRAC has no motorcycle labels, so COCO 2017 images that contain a motorcycle are added, with all four classes labelled, to stop the detector from forgetting that class. Table \ref{tab:vision-data} gives the resulting splits.
+Perception runs as three Kaggle jobs on two Tesla T4 GPUs. The first job, \path{kaggle/yolo_data}, builds the training data. UA-DETRAC labels four vehicle types, which are mapped to the project classes: car and van to car, bus to bus, and others to truck. Every tenth frame is used to avoid near-duplicates, regions that UA-DETRAC marks as ignored are filled grey, and the validation set consists of six whole training sequences, so frames of one sequence never appear in two splits. UA-DETRAC has no motorcycle labels, so COCO 2017 \cite{lin2014coco} images that contain a motorcycle are added, with all four classes labelled, to stop the detector from forgetting that class. Table \ref{tab:vision-data} gives the resulting splits.
 
 \begin{table}[htbp]
 \centering
@@ -140,7 +140,7 @@ Motorcycle test & -- & 159 images from COCO val2017\\
 \end{tabularx}
 \end{table}
 
-The second job, \path{kaggle/yolo_train}, fine-tunes the COCO-pretrained YOLO11s for 50 epochs at 640 pixels with batch size 32 and seed 0. Training took 1.8 h and the best validation epoch was 40. The 19 MB weights are kept in the repository with their SHA-256 checksum. The third job, \path{kaggle/yolo_track}, runs the fine-tuned detector with ByteTrack at the full 25 frames per second on all 40 test sequences, which is 56,340 frames, at 40 to 66 frames per second.
+The second job, \path{kaggle/yolo_train}, fine-tunes the COCO-pretrained YOLO11s \cite{ultralytics2024yolo11} for 50 epochs at 640 pixels with batch size 32 and seed 0. Training took 1.8 h and the best validation epoch was 40. The 19 MB weights are kept in the repository with their SHA-256 checksum. The third job, \path{kaggle/yolo_track}, runs the fine-tuned detector with ByteTrack \cite{zhang2022bytetrack} at the full 25 frames per second on all 40 test sequences, which is 56,340 frames, at 40 to 66 frames per second.
 
 The counting logic in \path{manzil/perception/counting.py} is shared between the Kaggle job and the local tests. A full-width line is placed at 60 percent of the image height, and a track is counted once, when its box centre crosses the line, with its class taken as the majority over the track. Crossings inside ignored regions are dropped. Because UA-DETRAC gives true track identities, true counts are produced by passing the annotated boxes through the same counter, so the count error measures detection and tracking only. UA-DETRAC has no stop lines, so the queue indicator is a proxy: the number of tracked vehicles that moved less than a quarter of their box height in one second. A Kaggle script job must be a single file, so a build script copies the counting module into the job, and a test fails if that copy is out of date.
 
@@ -189,280 +189,145 @@ Manzil is a research prototype, so its tests serve two purposes: they check that
 \bottomrule
 \end{longtable}
 
-The test cases below describe the most important behaviours in the format used for the project: each case states its objective, the requirement it verifies, the preconditions, the steps, and the expected and actual results. Every case corresponds to one or more automated tests, named in the last row, so the result can be reproduced by running those tests.
+The documented test cases follow the test-case format of the FAST template. All of them share the same environment and assumptions, which are therefore stated once in every table header row: the team laptop with Windows 11, Python 3.10, SUMO 1.28.0 from the pinned package list, and pytest; the committed 3$\times$3 grid unless stated otherwise; and a fixed random seed so that each run is repeatable. Each case lists the use case of Chapter \ref{ch:srs} and the functional requirements it verifies, the steps with their individual results, and the automated tests that execute it, so the result can be reproduced by running those tests. Tables \ref{tab:tc01} to \ref{tab:tc13} present the thirteen cases.
 
-\begin{table}[htbp]
+\newcommand{\tcspan}[1]{\multicolumn{3}{p{\dimexpr 0.68\textwidth+4\tabcolsep\relax}|}{#1}}
+\newcommand{\tcres}[1]{\multicolumn{2}{p{\dimexpr 0.36\textwidth+2\tabcolsep\relax}|}{#1}}
+\newcommand{\testcase}[9]{%
+\begin{table}[H]
 \centering
-\caption{TC-01: Invalid run configurations are rejected}
-\label{tab:tc01}
-\begin{tabularx}{\textwidth}{p{0.22\textwidth}Y}
-\toprule
-\textbf{Field} & \textbf{Description}\\
-\midrule
-Objective & Verify that a run with a missing or invalid setting never starts.\\
-Requirement & FR-01\\
-Module & Experiment runner and API\\
-Precondition & SUMO installed; no run active.\\
-Steps & 1. Submit six run configurations, each with one invalid field: an unknown profile, controller, or scenario, a negative seed, a zero measurement length, or a fractional warm-up.\newline 2. Submit five invalid start requests to the API (unknown controller or profile, negative seed or speed, too short a duration).\\
-Expected result & Each configuration is refused with an ``invalid run config'' error and no manifest is written; the API answers with HTTP 422 and stays idle.\\
-Actual result & As expected for all eleven inputs.\\
-Status & Passed\\
-Automated tests & \path{test_runner.py::test_bad_config_rejected_before_start}, \path{test_api.py::test_bad_start_requests_are_rejected}\\
-\bottomrule
-\end{tabularx}
-\end{table}
+\small
+\caption{#2}
+\label{#1}
+\begin{tabular}{|p{0.18\textwidth}|p{0.32\textwidth}|p{0.20\textwidth}|p{0.16\textwidth}|}
+\hline
+\multicolumn{4}{|c|}{\textbf{#6}}\\ \hline
+\textbf{Test Case ID:} & #3 & \textbf{Test case Version:} & 1.0\\ \hline
+\textbf{Test Date:} & 15-11-2026 & \textbf{Use Case Reference(s):} & #4\\ \hline
+\textbf{Revision History:} & \tcspan{None}\\ \hline
+\textbf{Objective:} & \tcspan{#5}\\ \hline
+\textbf{Product/Ver/ Module:} & \tcspan{Manzil FYP-I prototype / #6}\\ \hline
+\textbf{Environment:} & \tcspan{Team laptop, Windows 11, Python 3.10, SUMO 1.28.0, pytest}\\ \hline
+\textbf{Assumptions:} & \tcspan{Committed 3$\times$3 grid and fixed seeds unless stated otherwise}\\ \hline
+\textbf{Pre-Requisite:} & \tcspan{#7}\\ \hline
+\textbf{Step No.} & \textbf{Execution description} & \tcres{\textbf{Procedure result}}\\ \hline
+#8
+\multicolumn{4}{|p{\dimexpr 0.86\textwidth+6\tabcolsep\relax}|}{\textbf{Comments:} #9}\\ \hline
+\multicolumn{4}{|c|}{\textbf{Passed}}\\ \hline
+\end{tabular}
+\end{table}}
 
-\begin{table}[htbp]
-\centering
-\caption{TC-02: The adapter is the sole owner of SUMO}
-\label{tab:tc02}
-\begin{tabularx}{\textwidth}{p{0.22\textwidth}Y}
-\toprule
-\textbf{Field} & \textbf{Description}\\
-\midrule
-Objective & Verify that no module other than the adapter can step SUMO or change a signal.\\
-Requirement & FR-03\\
-Module & Simulation adapter\\
-Precondition & Source code of the \texttt{manzil} package.\\
-Steps & 1. Scan every Python file in the package for an import of \texttt{traci} or \texttt{libsumo}.\newline 2. Run the grid with both back ends and compare the lane states.\\
-Expected result & Only \path{adapter.py} imports SUMO, and both back ends report identical states.\\
-Actual result & No other module imports SUMO; states are identical.\\
-Status & Passed\\
-Automated tests & \path{test_adapter.py::test_adapter_is_sole_owner_of_sumo}, \path{test_adapter.py::test_both_backends_agree}\\
-\bottomrule
-\end{tabularx}
-\end{table}
+\testcase{tab:tc01}{TC-01: Invalid run configurations are rejected}{TC-01}{UC-01; FR-01}
+{Verify that a run with a missing or invalid setting never starts.}
+{Experiment runner and API}
+{SUMO installed; no run active.}
+{1 & Submit six run configurations, each with one invalid field: an unknown profile, controller, or scenario, a negative seed, a zero measurement length, or a fractional warm-up. & \tcres{Each is refused with an ``invalid run config'' error and no manifest is written. Passed}\\ \hline
+2 & Submit five invalid start requests to the API (unknown controller or profile, negative seed or speed, too short a duration). & \tcres{Each is refused with HTTP 422 and the API stays idle. Passed}\\ \hline}
+{All eleven invalid inputs were refused before SUMO started. Tests: \path{test_runner.py::test_bad_config_rejected_before_start}, \path{test_api.py::test_bad_start_requests_are_rejected}.}
 
-\begin{table}[htbp]
-\centering
-\caption{TC-03: Signal changes follow the legal transition}
-\label{tab:tc03}
-\begin{tabularx}{\textwidth}{p{0.22\textwidth}Y}
-\toprule
-\textbf{Field} & \textbf{Description}\\
-\midrule
-Objective & Verify that a requested phase change passes through minimum green, yellow, and all-red, and that it is recorded.\\
-Requirement & FR-07, FR-08\\
-Module & Safety filter\\
-Precondition & Safety filter reset on the grid; current phase green since time 0.\\
-Steps & 1. Request phase 1 after 5 s of green.\newline 2. Request phase 1 after 10 s of green.\newline 3. Read the shown signal state for each second from 10 s to 16 s.\\
-Expected result & The first request is held (minimum-green hold) and phase 0 stays green; the second is applied with 3 s of yellow, 2 s of all-red, and the new green at 15 s, and is stored as an applied-control record.\\
-Actual result & As expected.\\
-Status & Passed\\
-Automated tests & \path{test_safety.py::test_switch_held_until_min_green}, \path{test_safety.py::test_full_switch_sequence}\\
-\bottomrule
-\end{tabularx}
-\end{table}
+\testcase{tab:tc02}{TC-02: The adapter is the sole owner of SUMO}{TC-02}{UC-02; FR-03}
+{Verify that no module other than the adapter can step SUMO or change a signal.}
+{Simulation adapter}
+{Source code of the \texttt{manzil} package.}
+{1 & Scan every Python file of the package for an import of \texttt{traci} or \texttt{libsumo}. & \tcres{Only \path{adapter.py} imports SUMO. Passed}\\ \hline
+2 & Run the grid with the libsumo and TraCI back ends and compare the lane states. & \tcres{The states are identical. Passed}\\ \hline}
+{Tests: \path{test_adapter.py::test_adapter_is_sole_owner_of_sumo}, \path{test_adapter.py::test_both_backends_agree}.}
 
-\begin{table}[htbp]
-\centering
-\caption{TC-04: A random controller cannot produce an unsafe signal}
-\label{tab:tc04}
-\begin{tabularx}{\textwidth}{p{0.22\textwidth}Y}
-\toprule
-\textbf{Field} & \textbf{Description}\\
-\midrule
-Objective & Verify that the safety filter keeps every shown state legal whatever a controller requests.\\
-Requirement & FR-08\\
-Module & Safety filter and safety monitor\\
-Precondition & Light demand on the grid.\\
-Steps & 1. Let a controller request random phases at random times for 5,000 steps without SUMO.\newline 2. Repeat for 600 steps in real SUMO, with the monitor reading the states SUMO reports.\\
-Expected result & No conflicting greens, no green without a preceding yellow, no short yellow or green; more than 50 yellow intervals occur, so the filter is actually exercised.\\
-Actual result & Zero violations in both runs.\\
-Status & Passed\\
-Automated tests & \path{test_safety.py::test_random_requests_never_unsafe_without_sumo}, \path{test_safety.py::test_random_requests_never_unsafe_in_sumo}\\
-\bottomrule
-\end{tabularx}
-\end{table}
+\testcase{tab:tc03}{TC-03: Signal changes follow the legal transition}{TC-03}{UC-02; FR-07, FR-08}
+{Verify that a requested phase change passes through minimum green, yellow, and all-red, and that it is recorded.}
+{Safety filter}
+{Safety filter reset on the grid; current phase green since time 0.}
+{1 & Request phase 1 after 5 s of green. & \tcres{Held as a minimum-green hold; phase 0 stays green. Passed}\\ \hline
+2 & Request phase 1 after 10 s of green. & \tcres{Applied and stored as an applied-control record. Passed}\\ \hline
+3 & Read the shown signal state for each second from 10 s to 16 s. & \tcres{3 s of yellow, 2 s of all-red, new green at 15 s. Passed}\\ \hline}
+{Tests: \path{test_safety.py::test_switch_held_until_min_green}, \path{test_safety.py::test_full_switch_sequence}.}
 
-\begin{table}[htbp]
-\centering
-\caption{TC-05: The maximum-red guard serves a starved phase}
-\label{tab:tc05}
-\begin{tabularx}{\textwidth}{p{0.22\textwidth}Y}
-\toprule
-\textbf{Field} & \textbf{Description}\\
-\midrule
-Objective & Verify that the safety layer, not the controller, has the last word on maximum red, and that it does not override an active corridor.\\
-Requirement & FR-08; NFR on fairness\\
-Module & Safety filter\\
-Precondition & Maximum red set to 40 s for the test.\\
-Steps & 1. Let a controller request phase 0 for 200 s.\newline 2. Repeat while the corridor owns the junction.\\
-Expected result & The filter forces phase 1 at 35 s (40 s minus 5 s clearance) and no phase waits longer than 45 s; under corridor ownership the guard does not act.\\
-Actual result & As expected; zero monitor violations.\\
-Status & Passed\\
-Automated tests & \path{test_safety.py::test_max_red_guard_forces_service}, \path{test_safety.py::test_max_red_guard_does_not_override_the_corridor}\\
-\bottomrule
-\end{tabularx}
-\end{table}
+\testcase{tab:tc04}{TC-04: A random controller cannot produce an unsafe signal}{TC-04}{UC-02; FR-08}
+{Verify that the safety filter keeps every shown state legal whatever a controller requests.}
+{Safety filter and safety monitor}
+{Light demand on the grid.}
+{1 & Let a controller request random phases at random times for 5,000 steps without SUMO. & \tcres{Zero monitor violations. Passed}\\ \hline
+2 & Repeat for 600 steps in real SUMO, with the monitor reading the states SUMO reports. & \tcres{Zero violations; more than 50 yellow intervals, so the filter was exercised. Passed}\\ \hline}
+{No conflicting greens, no green without yellow, and no short yellow or green occurred. Tests: \path{test_safety.py::test_random_requests_never_unsafe_without_sumo}, \path{test_safety.py::test_random_requests_never_unsafe_in_sumo}.}
 
-\begin{table}[htbp]
-\centering
-\caption{TC-06: A* returns optimal routes}
-\label{tab:tc06}
-\begin{tabularx}{\textwidth}{p{0.22\textwidth}Y}
-\toprule
-\textbf{Field} & \textbf{Description}\\
-\midrule
-Objective & Verify that A* with the scaled heuristic finds the same cost as Dijkstra and never expands more nodes.\\
-Requirement & FR-10\\
-Module & Routing graph\\
-Precondition & Routing graph built from the grid.\\
-Steps & 1. Draw 200 random cost sets and random origin and destination edges.\newline 2. Solve each with Dijkstra and with A*.\newline 3. Check the heuristic against the true cost for all 48$\times$48 edge pairs.\\
-Expected result & Equal path costs, A* expands no more nodes, and the heuristic never exceeds the true cost.\\
-Actual result & As expected for all 200 cases and all pairs.\\
-Status & Passed\\
-Automated tests & \path{test_routing.py::test_astar_matches_dijkstra_on_random_costs}, \path{test_routing.py::test_heuristic_is_admissible}\\
-\bottomrule
-\end{tabularx}
-\end{table}
+\testcase{tab:tc05}{TC-05: The maximum-red guard serves a starved phase}{TC-05}{UC-02; FR-08}
+{Verify that the safety layer, not the controller, has the last word on maximum red, and that it does not override an active corridor.}
+{Safety filter}
+{Maximum red set to 40 s for the test.}
+{1 & Let a controller request phase 0 for 200 s. & \tcres{Phase 1 is forced at 35 s (40 s minus 5 s clearance) and never waits more than 45 s. Passed}\\ \hline
+2 & Repeat while the corridor owns the junction. & \tcres{The guard does not act. Passed}\\ \hline}
+{Zero monitor violations. Tests: \path{test_safety.py::test_max_red_guard_forces_service}, \path{test_safety.py::test_max_red_guard_does_not_override_the_corridor}.}
 
-\begin{table}[htbp]
-\centering
-\caption{TC-07: Invalid ambulance missions are reported}
-\label{tab:tc07}
-\begin{tabularx}{\textwidth}{p{0.22\textwidth}Y}
-\toprule
-\textbf{Field} & \textbf{Description}\\
-\midrule
-Objective & Verify that an invalid origin or destination is refused and that a disconnected destination is reported.\\
-Requirement & FR-09\\
-Module & Routing mission and API\\
-Precondition & Routing graph built from the grid.\\
-Steps & 1. Dispatch from a road that does not exist.\newline 2. Dispatch a valid mission, then close every road into the destination.\newline 3. Send dispatches to the API with an unknown origin and with the same origin and destination.\\
-Expected result & Step 1 is refused; step 2 sets the mission to NO\_ROUTE; both requests in step 3 are refused with HTTP 409.\\
-Actual result & As expected.\\
-Status & Passed\\
-Automated tests & \path{test_routing.py::test_dispatch_rejects_bad_endpoints}, \path{test_routing.py::test_no_route_reported}, \path{test_api.py::test_bad_dispatch_is_rejected}\\
-\bottomrule
-\end{tabularx}
-\end{table}
+\testcase{tab:tc06}{TC-06: A* returns optimal routes}{TC-06}{UC-05; FR-10}
+{Verify that A* with the scaled heuristic finds the same cost as Dijkstra and never expands more nodes.}
+{Routing graph}
+{Routing graph built from the grid.}
+{1 & Draw 200 random cost sets with random origin and destination edges and solve each with Dijkstra and A*. & \tcres{Equal path costs; A* expands no more nodes. Passed}\\ \hline
+2 & Compare the heuristic with the true cost for all 48$\times$48 edge pairs. & \tcres{The heuristic never exceeds the true cost. Passed}\\ \hline}
+{Tests: \path{test_routing.py::test_astar_matches_dijkstra_on_random_costs}, \path{test_routing.py::test_heuristic_is_admissible}.}
 
-\begin{table}[htbp]
-\centering
-\caption{TC-08: A road closure triggers a new route and cancels obsolete priority}
-\label{tab:tc08}
-\begin{tabularx}{\textwidth}{p{0.22\textwidth}Y}
-\toprule
-\textbf{Field} & \textbf{Description}\\
-\midrule
-Objective & Verify that closing a road on the ambulance's route produces a new route version, that the ambulance avoids the road, and that corridor requests on the old route are cancelled.\\
-Requirement & FR-11, FR-14\\
-Module & Routing mission and corridor coordinator\\
-Precondition & Medium demand; ambulance dispatched with the corridor on.\\
-Steps & 1. Run the mission once without a closure to obtain route 1.\newline 2. Repeat with the same seed and close the fourth road of route 1 shortly after dispatch.\\
-Expected result & The mission arrives; the first revision has trigger ``closure''; the closed road is not driven; route versions are numbered 1, 2, \ldots; a corridor request is cancelled with reason route\_v2; no safety violation or teleport.\\
-Actual result & As expected.\\
-Status & Passed\\
-Automated tests & \path{test_emergency.py::test_closure_triggers_new_route_version_and_cancels_priority}\\
-\bottomrule
-\end{tabularx}
-\end{table}
+\testcase{tab:tc07}{TC-07: Invalid ambulance missions are reported}{TC-07}{UC-05; FR-09}
+{Verify that an invalid origin or destination is refused and that a disconnected destination is reported.}
+{Routing mission and API}
+{Routing graph built from the grid.}
+{1 & Dispatch from a road that does not exist. & \tcres{Refused. Passed}\\ \hline
+2 & Dispatch a valid mission, then close every road into the destination. & \tcres{Mission status becomes NO\_ROUTE. Passed}\\ \hline
+3 & Send dispatches to the API with an unknown origin and with the same origin and destination. & \tcres{Both refused with HTTP 409. Passed}\\ \hline}
+{Tests: \path{test_routing.py::test_dispatch_rejects_bad_endpoints}, \path{test_routing.py::test_no_route_reported}, \path{test_api.py::test_bad_dispatch_is_rejected}.}
 
-\begin{table}[htbp]
-\centering
-\caption{TC-09: The corridor follows its lifecycle and releases safely}
-\label{tab:tc09}
-\begin{tabularx}{\textwidth}{p{0.22\textwidth}Y}
-\toprule
-\textbf{Field} & \textbf{Description}\\
-\midrule
-Objective & Verify that each corridor junction passes through the states of Algorithm \ref{alg:corridor} in order and returns to normal control, also when priority times out.\\
-Requirement & FR-12, FR-13\\
-Module & Corridor coordinator\\
-Precondition & Ambulance mission with the corridor on.\\
-Steps & 1. Run a mission and collect the corridor events of every junction.\newline 2. Repeat with a maximum priority of only 2 s to force timeouts.\\
-Expected result & States appear in the order REQUESTED, SAFE TRANSITION, ACTIVE PRIORITY, PASSAGE, RECOVERY, IDLE; normal requests are held while the corridor owns a junction; after a timeout the ambulance still arrives and no violation occurs.\\
-Actual result & As expected.\\
-Status & Passed\\
-Automated tests & \path{test_emergency.py::test_corridor_lifecycle_order_and_safety}, \path{test_emergency.py::test_priority_timeout_releases_safely}\\
-\bottomrule
-\end{tabularx}
-\end{table}
+\testcase{tab:tc08}{TC-08: A road closure triggers a new route and cancels obsolete priority}{TC-08}{UC-07; FR-11, FR-14}
+{Verify that closing a road on the ambulance's route produces a new route version that avoids it, and that corridor requests on the old route are cancelled.}
+{Routing mission and corridor coordinator}
+{Medium demand; ambulance dispatched with the corridor on.}
+{1 & Run the mission without a closure to obtain route 1. & \tcres{Route 1 recorded. Passed}\\ \hline
+2 & Repeat with the same seed and close the fourth road of route 1 shortly after dispatch. & \tcres{The mission arrives; the first revision has trigger ``closure''; the closed road is not driven; versions are numbered 1, 2, \ldots; a corridor request is cancelled with reason route\_v2. Passed}\\ \hline}
+{No safety violation or teleport. Test: \path{test_emergency.py::test_closure_triggers_new_route_version_and_cancels_priority}.}
 
-\begin{table}[htbp]
-\centering
-\caption{TC-10: The 5 s corridor minimum applies only to the corridor}
-\label{tab:tc10}
-\begin{tabularx}{\textwidth}{p{0.22\textwidth}Y}
-\toprule
-\textbf{Field} & \textbf{Description}\\
-\midrule
-Objective & Verify that only a corridor request may end a green after 5 s, that clearance is never shortened, and that the ambulance never crosses a red light.\\
-Requirement & FR-08\\
-Module & Safety filter, safety monitor, and ambulance driver\\
-Precondition & Corridor minimum green set to 5 s.\\
-Steps & 1. Submit a normal request after 6 s of green.\newline 2. Submit corridor requests after 4 s and after 6 s of green.\newline 3. Show the monitor a 6 s green under normal ownership and a 4 s green under corridor ownership.\newline 4. Run an ambulance mission without the corridor and record the signal at every stop line it crosses.\\
-Expected result & The normal request and the 4 s corridor request are held; the 6 s corridor request switches with 3 s yellow and 2 s all-red; the monitor flags both short greens; the ambulance crosses at least four stop lines and none on red.\\
-Actual result & As expected.\\
-Status & Passed\\
-Automated tests & \path{test_corridor_v2.py::test_truncation_only_for_the_corridor_and_never_clearance}, \path{test_corridor_v2.py::test_monitor_flags_truncation_without_corridor_ownership}, \path{test_corridor_v2.py::test_plain_ambulance_never_crosses_on_red}\\
-\bottomrule
-\end{tabularx}
-\end{table}
+\testcase{tab:tc09}{TC-09: The corridor follows its lifecycle and releases safely}{TC-09}{UC-06; FR-12, FR-13}
+{Verify that each corridor junction passes through the states of Algorithm \ref{alg:corridor} in order and returns to normal control, also when priority times out.}
+{Corridor coordinator}
+{Ambulance mission with the corridor on.}
+{1 & Run a mission and collect the corridor events of every junction. & \tcres{States in the order REQUESTED, SAFE\_TRANSITION, ACTIVE\_PRIORITY, PASSAGE, RECOVERY, IDLE; normal requests held while the corridor owns a junction. Passed}\\ \hline
+2 & Repeat with a maximum priority of only 2 s to force timeouts. & \tcres{Timeouts occur; the ambulance still arrives. Passed}\\ \hline}
+{Zero safety violations. Tests: \path{test_emergency.py::test_corridor_lifecycle_order_and_safety}, \path{test_emergency.py::test_priority_timeout_releases_safely}.}
 
-\begin{table}[htbp]
-\centering
-\caption{TC-11: Runs are reproducible and incompatible runs are not compared}
-\label{tab:tc11}
-\begin{tabularx}{\textwidth}{p{0.22\textwidth}Y}
-\toprule
-\textbf{Field} & \textbf{Description}\\
-\midrule
-Objective & Verify that the same configuration gives the same metrics and that the comparison tool refuses runs with different settings.\\
-Requirement & FR-17, FR-18\\
-Module & Experiment runner, batch, and comparison tools\\
-Precondition & Short medium-demand runs.\\
-Steps & 1. Run the same configuration twice, and once more with the TraCI back end.\newline 2. Run a batch in parallel and the same run serially.\newline 3. Change the measurement length of one row and request a comparison.\\
-Expected result & Identical metrics in steps 1 and 2; the manifest records every reproducing setting; step 3 is refused as incompatible.\\
-Actual result & As expected.\\
-Status & Passed\\
-Automated tests & \path{test_runner.py::test_same_seed_same_metrics}, \path{test_runner.py::test_traci_backend_gives_the_same_metrics}, \path{test_batch_compare.py::test_parallel_batch_matches_a_serial_run}, \path{test_batch_compare.py::test_incompatible_runs_refused}\\
-\bottomrule
-\end{tabularx}
-\end{table}
+\testcase{tab:tc10}{TC-10: The 5 s corridor minimum applies only to the corridor}{TC-10}{UC-06; FR-08}
+{Verify that only a corridor request may end a green after 5 s, that clearance is never shortened, and that the ambulance never crosses a red light.}
+{Safety filter, safety monitor, and ambulance driver}
+{Corridor minimum green set to 5 s.}
+{1 & Submit a normal request after 6 s of green. & \tcres{Held. Passed}\\ \hline
+2 & Submit corridor requests after 4 s and after 6 s of green. & \tcres{The 4 s request is held; the 6 s request switches with 3 s yellow and 2 s all-red. Passed}\\ \hline
+3 & Show the monitor a 6 s green under normal ownership and a 4 s green under corridor ownership. & \tcres{Both flagged as violations. Passed}\\ \hline
+4 & Run a mission without the corridor and record the signal at every stop line the ambulance crosses. & \tcres{At least four stop lines crossed, none on red. Passed}\\ \hline}
+{Tests: \path{test_corridor_v2.py::test_truncation_only_for_the_corridor_and_never_clearance}, \path{test_corridor_v2.py::test_monitor_flags_truncation_without_corridor_ownership}, \path{test_corridor_v2.py::test_plain_ambulance_never_crosses_on_red}.}
 
-\begin{table}[htbp]
-\centering
-\caption{TC-12: Vehicles are counted once at the counting line}
-\label{tab:tc12}
-\begin{tabularx}{\textwidth}{p{0.22\textwidth}Y}
-\toprule
-\textbf{Field} & \textbf{Description}\\
-\midrule
-Objective & Verify the counting rule used for the count-error results.\\
-Requirement & FR-04, FR-05\\
-Module & Perception counting\\
-Precondition & Counting line defined on a synthetic frame sequence.\\
-Steps & 1. Move a tracked box down across the line with jitter back over it.\newline 2. Move a box back and forth across the line inside an ignored region.\newline 3. Track stopped and moving boxes for the queue proxy.\\
-Expected result & Step 1 gives exactly one ``down'' event at the first crossing; step 2 gives no event; only stopped vehicles count towards the queue.\\
-Actual result & As expected.\\
-Status & Passed\\
-Automated tests & \path{test_counting.py::test_vehicle_moving_down_is_counted_once}, \path{test_counting.py::test_crossing_in_ignored_region_dropped_and_not_recounted}, \path{test_counting.py::test_queue_estimator_stopped_vs_moving}\\
-\bottomrule
-\end{tabularx}
-\end{table}
+\testcase{tab:tc11}{TC-11: Runs are reproducible and incompatible runs are not compared}{TC-11}{UC-08; FR-17, FR-18}
+{Verify that the same configuration gives the same metrics and that the comparison tool refuses runs with different settings.}
+{Experiment runner, batch, and comparison tools}
+{Short medium-demand runs.}
+{1 & Run the same configuration twice, and once more with the TraCI back end. & \tcres{Identical metrics. Passed}\\ \hline
+2 & Run a batch in parallel and the same run serially. & \tcres{Identical metrics. Passed}\\ \hline
+3 & Change the measurement length of one row and request a comparison. & \tcres{Refused as incompatible. Passed}\\ \hline}
+{Tests: \path{test_runner.py::test_same_seed_same_metrics}, \path{test_runner.py::test_traci_backend_gives_the_same_metrics}, \path{test_batch_compare.py::test_parallel_batch_matches_a_serial_run}, \path{test_batch_compare.py::test_incompatible_runs_refused}.}
 
-\begin{table}[htbp]
-\centering
-\caption{TC-13: Dashboard session from dispatch to rerouting}
-\label{tab:tc13}
-\begin{tabularx}{\textwidth}{p{0.22\textwidth}Y}
-\toprule
-\textbf{Field} & \textbf{Description}\\
-\midrule
-Objective & Verify the operator workflow through the API used by the dashboard.\\
-Requirement & FR-02, FR-15\\
-Module & FastAPI service and live session\\
-Precondition & API started; no run active.\\
-Steps & 1. Start a medium-demand run and slow it to three times real time.\newline 2. Dispatch an ambulance from left0A0 to C2top2 with the corridor on; send a second dispatch.\newline 3. Close the fourth road of the route; close it again; close a road that does not exist.\newline 4. Wait for a new route version.\\
-Expected result & The first dispatch is accepted and the second refused (one mission at a time); the first closure is accepted and the repeated and unknown closures refused; route version 2 avoids the closed road.\\
-Actual result & As expected.\\
-Status & Passed\\
-Automated tests & \path{test_api.py::test_dispatch_close_road_reroute_and_corridor}\\
-\bottomrule
-\end{tabularx}
-\end{table}
+\testcase{tab:tc12}{TC-12: Vehicles are counted once at the counting line}{TC-12}{UC-03; FR-04, FR-05}
+{Verify the counting rule used for the count-error results.}
+{Perception counting}
+{Counting line defined on a synthetic sequence of tracked boxes.}
+{1 & Move a tracked box down across the line with jitter back over it. & \tcres{Exactly one ``down'' event at the first crossing. Passed}\\ \hline
+2 & Move a box back and forth across the line inside an ignored region. & \tcres{No event. Passed}\\ \hline
+3 & Track stopped and moving boxes for the queue proxy. & \tcres{Only stopped vehicles are counted. Passed}\\ \hline}
+{Tests: \path{test_counting.py::test_vehicle_moving_down_is_counted_once}, \path{test_counting.py::test_crossing_in_ignored_region_dropped_and_not_recounted}, \path{test_counting.py::test_queue_estimator_stopped_vs_moving}.}
+
+\testcase{tab:tc13}{TC-13: Dashboard session from dispatch to rerouting}{TC-13}{UC-02, UC-05, UC-07; FR-02, FR-15}
+{Verify the operator workflow through the API used by the dashboard.}
+{FastAPI service and live session}
+{API started; no run active.}
+{1 & Start a medium-demand run and slow it to three times real time. & \tcres{Run starts. Passed}\\ \hline
+2 & Dispatch an ambulance from left0A0 to C2top2 with the corridor on, then send a second dispatch. & \tcres{First accepted; second refused (one mission at a time). Passed}\\ \hline
+3 & Close the fourth road of the route, close it again, and close a road that does not exist. & \tcres{First accepted; the other two refused. Passed}\\ \hline
+4 & Wait for a new route version. & \tcres{Route version 2 avoids the closed road. Passed}\\ \hline}
+{Test: \path{test_api.py::test_dispatch_close_road_reroute_and_corridor}.}
 
 \section{Test Metrics}
 
@@ -472,16 +337,16 @@ Table \ref{tab:test-metrics} summarizes the result of the last full test run on 
 \centering
 \caption{Test metrics}
 \label{tab:test-metrics}
-\begin{tabularx}{\textwidth}{Yp{0.30\textwidth}}
+\begin{tabularx}{\textwidth}{p{0.34\textwidth}Y}
 \toprule
 \textbf{Metric} & \textbf{Value}\\
 \midrule
-Automated tests & 147 in 17 files\\
-Tests passed & 147\\
-Tests failed or skipped & 0\\
-Documented test cases (TC-01 to TC-13) & 13, all passed\\
-Functional requirements covered by a documented test case & 17 of 20\\
-Safety violations in all reported experiment runs & 0\\
+Number of test cases & 13 documented test cases (TC-01 to TC-13), executed by 147 automated tests in 17 files\\
+Number of test cases passed & 13 test cases; 147 automated tests\\
+Number of test cases failed & 0 (no automated test failed or was skipped)\\
+Test case defect density & 0 percent (0 failed $\times$ 100 / 13 executed)\\
+Test case effectiveness & Not computed: defects found during development were fixed as they appeared and each received a regression test, but they were not logged per test case\\
+Traceability matrix & Table \ref{tab:traceability}; 17 of 20 functional requirements are covered by a documented test case\\
 \bottomrule
 \end{tabularx}
 \end{table}

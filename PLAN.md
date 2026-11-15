@@ -5,7 +5,7 @@ Before starting a task, set it to `in progress (Name)` and push. When finished, 
 
 ## Current stage
 
-Planning is finished (10 Nov 2026). **Phase 0 done. Phases 1–5 done; vision V.1–V.5 done (V.6 deferred).** Laptop demo check done 14 Nov (140 tests pass on the laptop, dashboard runs). Task 3.7 (corridor v2) done 14 Nov in the cloud: route-index bug fixed + 5 s emergency min-green truncation; Phase 3 corridor results and Phase 5 screenshots rerun. Report tasks 6.1–6.4 done 15 Nov: Ch 1–6 updated and Ch 7–10 written; report builds clean, 142 pages, dated 22 Nov 2026. Next: team review of the PDF (FYP-II plan stays without owner names for now), then 6.5 demo script + presentation. Coding phases 1–5 mostly run as Claude Code cloud sessions (claude.ai/code), with Ibrahim checking from the phone app. The vision track (V) can run in parallel at any time after Phase 0 step 0.4.
+Planning is finished (10 Nov 2026). **Phase 0 done. Phases 1–5 done; vision V.1–V.5 done (V.6 deferred).** Laptop demo check done 14 Nov (140 tests pass on the laptop, dashboard runs). Task 3.7 (corridor v2) done 14 Nov in the cloud: route-index bug fixed + 5 s emergency min-green truncation; Phase 3 corridor results and Phase 5 screenshots rerun. Report tasks 6.1–6.4 and the full template review (6.4b) done 15 Nov: report builds clean, 149 pages, dated 22 Nov 2026; edit guide in context §50.18. Next: team review of the PDF (FYP-II plan stays without owner names for now), then 6.5 demo script + presentation. Coding phases 1–5 mostly run as Claude Code cloud sessions (claude.ai/code), with Ibrahim checking from the phone app. The vision track (V) can run in parallel at any time after Phase 0 step 0.4.
 
 ## Deliverable III requirements (from the university)
 
@@ -130,6 +130,7 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 | 6.2 | Chapter 7: Implementation and Test Cases + short Ch 8 User Manual | done (Ibrahim + Claude, laptop, 15 Nov): Ch 7 = implementation per module, 13 test-case tables (TC-01..TC-13, checked against the test code), test metrics, FR traceability; Ch 8 = install, run, dispatch, close road, experiment commands, real screenshots | Compiles |
 | 6.3 | Chapter 9: Experimental Results and Discussion (controllers, emergency, vision) | done (Ibrahim + Claude, laptop, 15 Nov): detection, counting/queue, controllers, routing, corridor, corridor variants, discussion and limits; corridor v2 called a development-stage estimate | Real numbers only |
 | 6.4 | Chapter 10: Conclusion + FYP-2 plan | done (Ibrahim + Claude, laptop, 15 Nov): conclusion, objective status table, work completed, FYP-II plan table (8 items, Jan–May 2027, no owners yet) | Compiles |
+| 6.4b | Full report review against `FYPFast` template rules and sample headings | done (Ibrahim + Claude, laptop, 15 Nov): template-format test cases, Ch 10 headings as in samples, tense and stale-statement fixes in Ch 1–6, duplicate label fixed, bibliography capitals + 4 new references, `Manzil_D2_Report/check_report.py` added; 149 pages, all checks pass (context §50.18) | Script passes |
 | 6.5 | Demo script + presentation | todo | Rehearsed |
 
 ## Session log

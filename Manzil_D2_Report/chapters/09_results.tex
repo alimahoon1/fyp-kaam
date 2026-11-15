@@ -5,12 +5,12 @@ This chapter reports the experiments conducted during FYP-I and discusses what t
 
 \section{Experimental Setup}
 
-All simulation experiments use the 3$\times$3 grid and the demand profiles of Chapter \ref{ch:implementation}, with the timing of the safety filter shared by every arm: 10 s minimum green, 3 s yellow, 2 s all-red, and a 90 s maximum red. Controller comparisons use a 900 s warm-up followed by a 3,600 s measurement interval. Emergency experiments dispatch one ambulance at 1,200 s from road left0A0 in the south-west to road C2top2 at the north-east exit, a trip of about 79 s at free flow. The ambulance obeys red lights in every arm. Each comparison is repeated on evaluation seeds 0 to 4, which were never used for tuning the fixed-time plans, the adaptive parameters, or the DQN. Results are reported as the mean over the five seeds, the paired difference against the reference arm with a 95 percent confidence interval, and the number of seeds on which the arm was better. Five seeds are fewer than the ten of the full protocol, so the intervals are wide where variation between seeds is large. Table \ref{tab:experiments} lists the experiments.
+All simulation experiments use the 3$\times$3 grid and the demand profiles of Chapter \ref{ch:implementation}, with the timing of the safety filter shared by every arm: 10 s minimum green, 3 s yellow, 2 s all-red, and a 90 s maximum red. Controller comparisons use a 900 s warm-up followed by a 3,600 s measurement interval. Emergency experiments dispatch one ambulance at 1,200 s from road left0A0 in the south-west to road C2top2 at the north-east exit, a trip of about 79 s at free flow. The ambulance obeys red lights in every arm. Each comparison is repeated on evaluation seeds 0 to 4, which were never used for tuning the fixed-time plans, the adaptive parameters, or the DQN. Results are reported as the mean over the five seeds, the paired difference against the reference arm with a 95 percent confidence interval, and the number of seeds on which the arm was better. Five seeds are fewer than the ten of the full protocol, so the intervals are wide where variation between seeds is large. Table \ref{tab:fyp1-experiments} lists the experiments.
 
 \begin{table}[htbp]
 \centering
 \caption{Experiments conducted in FYP-I}
-\label{tab:experiments}
+\label{tab:fyp1-experiments}
 \begin{tabularx}{\textwidth}{p{0.24\textwidth}p{0.30\textwidth}Y}
 \toprule
 \textbf{Experiment} & \textbf{Arms compared} & \textbf{Data and runs}\\
