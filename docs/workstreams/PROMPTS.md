@@ -58,7 +58,8 @@ Ask Ibrahim only blocking questions, one at a time. End with a plain-language su
 Goal: a validated SUMO network of a Lahore area with 10-20 signalised junctions that contains
 a hospital, built from OpenStreetMap (attribution per OSM licence). If Ibrahim has not chosen
 the area yet, propose 2-3 candidate areas (bounding box, hospital, number of signals, why) and
-ask him to choose. Record bounding box, extraction date, source checksum and the netconvert
+ask him to choose. Prefer areas that include the stretch of Ferozpur Road seen in the W2
+videos (data/lahore_video/SOURCES.md), so the W6 video-to-SUMO study can use the same place. Record bounding box, extraction date, source checksum and the netconvert
 command. Clean lanes, turns, traffic-light programs and joined signals (network.py currently
 raises NotImplementedError for joined TLS; implement it). Validate with the existing network
 reader, conflict rule, safety monitor and a route check from every entry to the hospital.
