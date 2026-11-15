@@ -1802,3 +1802,31 @@ Laptop session (Ibrahim + Claude), on Ibrahim's request: check every formatting 
 - **Writing rules (Ibrahim, 15 Nov):** no new sections inside Ch 1–6, little extra text there; the report states the current facts and never says "changed", "deviation from D2" or "version 2" (deviations live only in this context file); implemented work in present tense, FYP-II work in future tense; real numbers only; the corridor 5 s result is always called a development-stage estimate (chosen on seeds 0–4).
 - **Template rules:** see the list above; keep headings as in the template and samples.
 
+
+## 50.19 FYP-II parallel workstreams set up (15 Nov 2026)
+
+Ibrahim asked for FYP-II work to run in parallel with several Claude agents, with Lahore video taken from the internet and labelled by Claude.
+
+- **Workstreams:** W1 Lahore network, W2 Lahore video + labels + rickshaw/van, W3 full protocol + DQN robustness, W4 corridor completion, W5 dashboard v2 + database, W6 video-to-SUMO (after W1 and W2). Status is in PLAN.md Phase 7.
+- **How conflicts are avoided** (`docs/workstreams/README.md`):
+  - Each workstream owns fixed paths.
+  - Shared files are edited only by the coordinator: PLAN, context, CLAUDE, README, pyproject, setup script, .gitignore, and the report.
+  - Each workstream writes its notes to its own `docs/workstreams/W<n>.md`.
+  - Tests and results go in new files.
+  - Before merging, each branch is rebased and must pass ruff and the full pytest. Branches are merged one at a time, and the full pytest is rerun on main after each merge.
+- **Two ways to run** (`docs/workstreams/PROMPTS.md`):
+  - A: one coordinator session that spawns one sub-agent per workstream, each in its own git worktree.
+  - B (recommended for long work): one cloud session per workstream, which merges its own PR.
+  - Start W3, W4 and W5 now; W2 as soon as possible; W1 after the area decision; W6 last.
+- **Video decision.** Reason: copyright, and the report's NFR on licensed video.
+  - Only clips whose licence allows reuse (Creative Commons, Pexels/Pixabay licence, Wikimedia Commons), or team-filmed footage.
+  - Source, licence and sha256 for each clip are recorded in `data/lahore_video/SOURCES.md`.
+  - Clips are downloaded inside a Kaggle kernel and kept in a private Kaggle dataset.
+  - No readable number plates or faces go into the repo or report without blurring.
+- **Labelling decision.** Reason: an LLM cannot place exact boxes reliably by eye.
+  - A model pre-labels on Kaggle, and Claude reviews and corrects the labels.
+  - Every label set is recorded as "model-assisted, Claude-reviewed".
+  - A test subset is checked by a team member before it counts as ground truth; until then, Lahore test numbers are preliminary.
+- **Still open:**
+  - the Lahore area and hospital (blocks W1);
+  - who checks the labelled test subset (W2).

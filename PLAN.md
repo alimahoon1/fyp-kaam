@@ -133,6 +133,18 @@ results/                small result summaries/plots kept in git (raw bulk outpu
 | 6.4b | Full report review against `FYPFast` template rules and sample headings | done (Ibrahim + Claude, laptop, 15 Nov): template-format test cases, Ch 10 headings as in samples, tense and stale-statement fixes in Ch 1–6, duplicate label fixed, bibliography capitals + 4 new references, `Manzil_D2_Report/check_report.py` added; 149 pages, all checks pass (context §50.18) | Script passes |
 | 6.5 | Demo script + presentation | todo | Rehearsed |
 
+### Phase 7 — FYP-II workstreams (parallel; rules in `docs/workstreams/README.md`, prompts in `docs/workstreams/PROMPTS.md`)
+Each workstream edits only the paths it owns and keeps its notes in `docs/workstreams/W<n>.md`; only the coordinator (or the session merging) edits this file and the context file.
+
+| ID | Workstream | Status | Done when |
+|---|---|---|---|
+| W1 | Lahore road network (OSM, cleanup, joined signals, hospital routes) | todo (needs Lahore area + hospital from Ibrahim) | Network loads, all controllers run with 0 safety violations, README with map |
+| W2 | Lahore video (licensed clips only), model-assisted + Claude-reviewed labels, rickshaw/van classes, Lahore count error | todo | SOURCES.md complete, labels/weights on Kaggle with sha256, real numbers with label status |
+| W3 | Full evaluation protocol (10 seeds, held-out demand), DQN training-seed variance, fairness variant, corridor v2 on new seeds | todo | Protocol tables with CIs in `results/fyp2/protocol/` |
+| W4 | Corridor completion: downstream check, recovery compensation, sublane give-way | todo | Comparison vs corridor v2 on new seeds in `results/fyp2/corridor/` |
+| W5 | Dashboard v2 (G01–G05) + SQLite store + pause (FR-02), warnings (FR-16), export (FR-19) | todo | Screenshots of 5 screens, API tests pass |
+| W6 | Video-to-SUMO study | todo (after W1 + W2 merged) | Real numbers in `results/fyp2/video_sim/` |
+
 ## Session log
 
 One line per session or cloud task, newest last: date, who/where, what changed, evidence. Every session adds its line before its final push (see `CLAUDE.md`).
@@ -148,6 +160,8 @@ One line per session or cloud task, newest last: date, who/where, what changed, 
 | 15 Nov | Ibrahim + Claude (laptop) | Reviewed task 3.7 (PR #13, merged by the cloud): results and notes checked; full suite on the laptop 147 passed | this file |
 | 15 Nov | Ibrahim + Claude (laptop) | Task 6.1: Ch 1–6 updated for D3 + D2 formatting feedback fixed; report builds clean (110 pages) | context §50.16 |
 | 15 Nov | Ibrahim + Claude (laptop) | Tasks 6.2–6.4: Ch 1–6 trimmed (no new sections, no change wording, date 22 Nov); Ch 7, 8, 9, 10 written after reviewing the R&D sample reports; 147 tests pass; report 142 pages, 0 errors/overfull/undefined | `Manzil_D2_Report/chapters/07–10`, context §50.17 |
+| 15 Nov | Ibrahim + Claude (laptop) | Task 6.4b: full report review against FYPFast template and sample headings; fixes in Ch 1–10 and bibliography; `check_report.py` added; 149 pages, all checks pass | context §50.18, `Manzil_D2_Report/check_report.py` |
+| 15 Nov | Ibrahim + Claude (laptop) | FYP-II parallel setup: workstreams W1–W6 with file ownership, merge rules, video/label rules and prompts; Phase 7 added | `docs/workstreams/`, context §50.19 |
 
 ## FYP-2 backlog (goes into the Chapter 10 plan)
 
@@ -163,4 +177,4 @@ One line per session or cloud task, newest last: date, who/where, what changed, 
 
 - Lahore area + hospital (decide before FYP-2)
 - Who films the Lahore clips, and where
-- Is Chapter 8 (User Manual) required for Deliverable III? Assumed **no**.
+- Chapter 8 (User Manual): decided 15 Nov to include a short one (done).

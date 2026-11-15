@@ -23,6 +23,10 @@ Several team members work on this repo from **different machines, each with thei
 - Secrets (the Kaggle `kaggle.json` and any API keys) never go into the repo or into chat.
 - The user prefers simple explanations, and questions asked one at a time.
 
+## Parallel work (several agents or sessions)
+
+FYP-II work runs as parallel workstreams W1–W6. Before working on one, read `docs/workstreams/README.md`. Edit only the paths your workstream owns; never edit the shared files (`PLAN.md`, `Manzil_FYP_Context.md`, `CLAUDE.md`, root `README.md`, `pyproject.toml`, `scripts/cloud_setup.sh`, `.gitignore`, `Manzil_D2_Report/`) unless you are the coordinator or the task is not a workstream. Keep your notes in `docs/workstreams/W<n>.md`. Before merging: rebase on `origin/main`, ruff and the full pytest pass; merge one branch at a time. Prompts are in `docs/workstreams/PROMPTS.md`.
+
 ## Environment notes
 
 - Ibrahim's laptop: i7-8650U, 16 GB RAM, **no NVIDIA GPU**. GPU training runs on **Kaggle** through the Kaggle CLI (`kaggle kernels push/status/output`).
