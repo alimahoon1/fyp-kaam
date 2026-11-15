@@ -8,13 +8,6 @@ FYP-II work is split into independent **workstreams** (W1–W6) so several Claud
 2. **Shared files belong to the coordinator only:** `PLAN.md`, `Manzil_FYP_Context.md`, `CLAUDE.md`, root `README.md`, `pyproject.toml`, `scripts/cloud_setup.sh`, `Manzil_D2_Report/`, `.gitignore`. Workers put everything the coordinator must copy into those files (status, decisions, results, new dependencies) into their own `docs/workstreams/W<n>.md`.
 3. **New files over edits.** Tests go in new files (`tests/test_w<n>_*.py`); results go in `results/fyp2/<workstream>/`; new code goes in new modules where possible.
 
-## Deliverable III is frozen
-
-What the evaluators see for Deliverable III is the git tag `d3-candidate` (final tag `d3-submission` once submitted) and `F26-104_Deliverable-3_Report.pdf`. To keep it reproducible:
-- Never modify or delete existing results (`results/phase*/`, `results/vision/`), models (`models/dqn/grid3x3/`, `models/yolo/`) or the report. Write new results only under `results/fyp2/` and new models in new folders.
-- Existing commands and the existing dashboard workflow must keep working (their tests must still pass).
-- The report (`Manzil_D2_Report/`) is not changed for FYP-II work until Ibrahim says Deliverable III is submitted; FYP-II report text comes later.
-
 ## Ownership
 
 | ID | Workstream | Owns (may edit) | Depends on |
