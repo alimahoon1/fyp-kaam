@@ -23,6 +23,21 @@ Per junction the state runs::
 - A route revision cancels requests for junctions no longer on the route before new ones are
   made (FR-14); NO_ROUTE or a timeout cancels and releases safely (FR-13).
 
+Additions from workstream W4 (all off by default; see ``results/fyp2/corridor/``):
+
+- Downstream-capacity check (``downstream``). The exit edge of the ambulance's movement is
+  *blocked* when its vehicles fill at least ``downstream_occupancy`` of its storage
+  (lanes x length / ``vehicle_space_m``) and some of them are halting. ``"defer"``: a due
+  activation waits while the exit is blocked (green would only serve a movement that cannot
+  move), for at most ``downstream_max_defer_s``. ``"flush"``: the next signalised junction at
+  the end of that blocked exit is activated at once (it may be one beyond the look-ahead), so
+  the exit drains before the ambulance arrives. ``"both"`` does both.
+- Bounded compensation in recovery (``compensation``). After passage or a cancellation of an
+  activated junction the coordinator keeps ownership and serves the phase with the longest
+  queue among the phases the ambulance's phase denied, for as long as the junction was held
+  (at most ``compensation_max_s``) and only after a full normal minimum green (no truncation),
+  then hands the junction back to normal control. Recovery time is still measured from passage.
+
 The coordinator never actuates SUMO: it only sets ownership and submits requests to the filter.
 """
 
@@ -44,6 +59,20 @@ class CorridorParams:
     max_priority_s: float = 60.0  # longest a junction may be held for the ambulance
     recovery_cap_s: float = 300.0
     baseline_s: int = 120  # window for a junction's typical queue before activation
+    downstream: str = "off"  # "off", "defer", "flush", "both" (W4)
+    downstream_occupancy: float = 0.75  # exit blocked at this share of its storage
+    downstream_max_defer_s: float = 20.0
+    vehicle_space_m: float = 7.5  # storage per vehicle (5 m car + 2.5 m gap)
+    compensation: bool = False  # W4: bounded compensation plan in recovery
+    compensation_max_s: float = 20.0
+
+    def __post_init__(self):
+        if self.downstream not in ("off", "defer", "flush", "both"):
+            raise ValueError(f"unknown downstream mode {self.downstream!r}")
+        if not 0 < self.downstream_occupancy <= 1:
+            raise ValueError("downstream occupancy must be in (0, 1]")
+        if self.compensation_max_s <= 0 or self.downstream_max_defer_s < 0:
+            raise ValueError("compensation and defer limits must be positive")
 
 
 @dataclass
@@ -59,6 +88,17 @@ class _Request:
     served_s: float | None = None
     passed_s: float | None = None
     queue_at_activation: float = 0.0
+    deferred_s: float | None = None  # first time a due activation waited for the exit (W4)
+    flush: bool = False  # activated early to drain a blocked exit upstream (W4)
+
+
+@dataclass
+class _Compensation:
+    tls: str
+    phase: int  # phase served in compensation
+    green_s: float  # how long it is served
+    started_s: float
+    green_since: float | None = None
 
 
 @dataclass
@@ -74,22 +114,35 @@ class CorridorCoordinator:
     _recovering: dict[str, tuple[float, float]] = field(default_factory=dict)
     _history: dict[str, list[int]] = field(default_factory=dict)  # recent queue per junction
     _last_edge: str = ""  # last normal (non-junction) edge the ambulance was on
+    _compensating: dict[str, _Compensation] = field(default_factory=dict)
+    compensation_green_s: list[float] = field(default_factory=list)  # served per plan
+    deferrals: int = 0
+    flushes: int = 0
+    _snap: TrafficSnapshot | None = None
 
     # ----- per step --------------------------------------------------------------------------
     def step(self, snap: TrafficSnapshot, amb: VehicleState | None, plan: RoutePlan | None):
         now, step = snap.sim_time_s, snap.effective_step
+        self._snap = snap
         for tls in self.network.intersections:
             h = self._history.setdefault(tls, [])
             h.append(_queue(snap, tls))
             if len(h) > self.params.baseline_s:
                 del h[0]
         self._track_recovery(snap)
+        self._compensate(snap)
         if plan is None or amb is None:
             return
         if not amb.edge_id.startswith(":"):
             self._last_edge = amb.edge_id
         upcoming = self._upcoming(plan, amb)
-        wanted = {tls for tls, *_ in upcoming[: self.params.lookahead]}
+        flush = self._flush_targets(snap, upcoming)
+        considered = upcoming[: self.params.lookahead] + [
+            u
+            for u in upcoming[self.params.lookahead : self.params.lookahead + 1]
+            if u[0] in flush or u[0] in self._active
+        ]  # once requested there, a junction stays in the set until passage or timeout
+        wanted = {tls for tls, *_ in considered}
 
         # Passage: the ambulance is no longer on (or before) the approach edge.
         for tls, req in list(self._active.items()):
@@ -99,13 +152,22 @@ class CorridorCoordinator:
             elif tls not in wanted and req.state == "REQUESTED":
                 self._cancel(req, now, step, "out_of_lookahead")
 
-        for tls, approach, exit_, phase, eta in upcoming[: self.params.lookahead]:
+        for tls, approach, exit_, phase, eta in considered:
+            if tls in self._compensating:  # route revisited a junction still compensating
+                continue
             req = self._active.get(tls)
             if req is None:
                 req = _Request(tls, approach, exit_, phase, plan.route_version, created_s=now)
                 self._active[tls] = req
                 self._event(now, step, req, "REQUESTED", eta=eta)
-            if req.state == "REQUESTED" and eta <= self._activation_eta(snap, tls, approach):
+            due = eta <= self._activation_eta(snap, tls, approach)
+            if req.state == "REQUESTED" and tls in flush:  # activated because of the exit
+                due, req.flush = True, True
+                self.flushes += 1
+                self._event(now, step, req, "DOWNSTREAM_FLUSH", eta=eta)
+            if req.state == "REQUESTED" and due and self._defer(req, snap, now, step, eta):
+                continue
+            if req.state == "REQUESTED" and due:
                 req.state, req.activated_s = "SAFE_TRANSITION", now
                 h = self._history.get(tls) or [0]
                 req.queue_at_activation = max(_queue(snap, tls), sum(h) / len(h))
@@ -114,7 +176,7 @@ class CorridorCoordinator:
             if req.state in ("SAFE_TRANSITION", "ACTIVE_PRIORITY"):
                 held_for = now - req.activated_s
                 if held_for > self.params.max_priority_s:
-                    self._cancel(req, now, step, "timeout")
+                    self._cancel(req, now, step, "timeout", snap)
                     continue
                 why = f"corridor {self.mission_id} v{req.route_version} eta={eta:.0f}s"
                 self.safety.submit(
@@ -139,6 +201,97 @@ class CorridorCoordinator:
     def cancel_all(self, now: float, step: int, reason: str) -> None:
         for req in list(self._active.values()):
             self._cancel(req, now, step, reason)
+
+    # ----- W4: downstream check and compensation ---------------------------------------------
+    def exit_blocked(self, snap: TrafficSnapshot, exit_: str) -> bool:
+        """The exit edge is (nearly) full of vehicles and some of them are halting."""
+        e = snap.edges.get(exit_)
+        if e is None:
+            return False
+        edge = self.network.net.getEdge(exit_)
+        storage = edge.getLaneNumber() * edge.getLength() / self.params.vehicle_space_m
+        return e.halting > 0 and e.vehicles >= self.params.downstream_occupancy * storage
+
+    def _defer(self, req: _Request, snap, now, step, eta) -> bool:
+        if self.params.downstream not in ("defer", "both") or req.flush:
+            return False
+        if not self.exit_blocked(snap, req.exit):
+            return False
+        if req.deferred_s is None:
+            req.deferred_s = now
+            self.deferrals += 1
+            self._event(now, step, req, "DOWNSTREAM_DEFER", eta=eta)
+        return now - req.deferred_s < self.params.downstream_max_defer_s
+
+    def _flush_targets(self, snap: TrafficSnapshot, upcoming) -> set[str]:
+        """Junctions to activate early because the ambulance's exit before them is blocked."""
+        if self.params.downstream not in ("flush", "both"):
+            return set()
+        out = set()
+        la = self.params.lookahead
+        for (tls, approach, exit_, _ph, eta), nxt in zip(upcoming[:la], upcoming[1 : la + 1],
+                                                          strict=False):  # fmt: skip
+            # Only when this junction is (nearly) due, and the next one sits at that exit.
+            soon = eta <= self._activation_eta(snap, tls, approach) + self.params.activate_eta_s
+            if soon and nxt[1] == exit_ and self.exit_blocked(snap, exit_):
+                out.add(nxt[0])
+        return out
+
+    def _start_compensation(self, req: _Request, now: float, step: int, snap) -> bool:
+        """Keep ownership and serve the most-queued phase the priority denied (bounded)."""
+        if not self.params.compensation or req.activated_s is None:
+            return False
+        x = self.network.intersections[req.tls]
+        amb_state = x.green_phases[req.phase].state
+        best, best_q = None, 0
+        snap = snap or self._snap
+        queues = {a.approach_id: a.queue for a in snap.approaches.get(req.tls, ())} if snap else {}
+        for g in x.green_phases:
+            if g.index == req.phase:
+                continue
+            gained = {lk.from_edge for lk in x.links
+                      if g.state[lk.index] in "Gg" and amb_state[lk.index] not in "Gg"}  # fmt: skip
+            q = sum(queues.get(e, 0) for e in gained)
+            if q > best_q:
+                best, best_q = g.index, q
+        if best is None:  # nobody is waiting for another phase: plain release
+            return False
+        held = now - req.activated_s
+        green = min(max(held, self.safety.config.min_green_s), self.params.compensation_max_s)
+        self._compensating[req.tls] = _Compensation(req.tls, best, green, now)
+        self.events.append({"time_s": now, "step": step, "tls": req.tls,
+                            "state": "COMPENSATION", "phase": best,
+                            "green_s": round(green, 1), "queue": best_q})  # fmt: skip
+        return True
+
+    def _compensate(self, snap: TrafficSnapshot) -> None:
+        now, step = snap.sim_time_s, snap.effective_step
+        for tls, c in list(self._compensating.items()):
+            showing = self.safety.showing(tls)
+            if showing == c.phase and c.green_since is None:
+                c.green_since = now
+            # Green shown so far (the filter's own clock: the phase began at its last tick).
+            served = (
+                self.safety.signal_state(tls, now).phase_elapsed_s if showing == c.phase else 0.0
+            )
+            # Hard cap: the served green plus time to finish min green and clearance.
+            cap = c.green_s + self.safety.config.min_green_s + self.safety.config.clearance_s
+            if served >= c.green_s or now - c.started_s >= cap:
+                del self._compensating[tls]
+                self.compensation_green_s.append(served)
+                self.safety.set_owner(tls, Owner.NORMAL, now, step)
+                self.events.append({"time_s": now, "step": step, "tls": tls,
+                                    "state": "COMPENSATION_DONE", "served_s": served})  # fmt: skip
+                continue
+            if showing != c.phase and self.safety.can_switch(tls, now):  # full min green
+                self.safety.submit(
+                    ControlRequest(CORRIDOR_ID, tls, c.phase, step, "corridor compensation"),
+                    now, step,
+                )  # fmt: skip
+
+    @property
+    def compensating(self) -> int:
+        return len(self._compensating)
 
     # ----- internals -------------------------------------------------------------------------
     def _plan_index(self, plan: RoutePlan, amb: VehicleState) -> int:
@@ -200,20 +353,23 @@ class CorridorCoordinator:
         self._event(now, step, req, state)
         self._active.pop(req.tls, None)
         if self.safety.owner(req.tls) is Owner.CORRIDOR:
-            self.safety.set_owner(req.tls, Owner.NORMAL, now, step)
+            if not self._start_compensation(req, now, step, snap):
+                self.safety.set_owner(req.tls, Owner.NORMAL, now, step)
             self._recovering[req.tls] = (now, req.queue_at_activation)
             self._event(now, step, req, "RECOVERY")
 
-    def _cancel(self, req: _Request, now, step, reason) -> None:
+    def _cancel(self, req: _Request, now, step, reason, snap=None) -> None:
         self._event(now, step, req, "CANCELLED", reason=reason)
         self._active.pop(req.tls, None)
         if self.safety.owner(req.tls) is Owner.CORRIDOR:
-            self.safety.set_owner(req.tls, Owner.NORMAL, now, step)
+            if not self._start_compensation(req, now, step, snap):
+                self.safety.set_owner(req.tls, Owner.NORMAL, now, step)
             self._recovering[req.tls] = (now, req.queue_at_activation)
 
     def status(self) -> dict[str, str]:
         """Current corridor state per junction that takes part (for display only)."""
         out = {tls: "RECOVERY" for tls in self._recovering}
+        out.update({tls: "COMPENSATION" for tls in self._compensating})
         out.update({tls: req.state for tls, req in self._active.items()})
         return out
 

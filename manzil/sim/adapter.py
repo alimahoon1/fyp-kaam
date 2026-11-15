@@ -89,6 +89,9 @@ class SimulationAdapter:
         self.backend = backend
         self.gui = gui
         self.track_positions = track_positions  # x/y of every vehicle (for a live map)
+        # Extra SUMO options appended at start, e.g. the sublane model for give-way (task W4).
+        # Set before :meth:`start`; recorded by the caller (MissionConfig is in the manifest).
+        self.extra_args: list[str] = []
         self._positions: dict[str, tuple[float, float, float, float]] = {}
         self._conn = None
         self._step = 0
@@ -113,7 +116,7 @@ class SimulationAdapter:
         """Start SUMO with the given options (e.g. ``["-c", cfg, "--seed", "0"]``)."""
         if self._conn is not None:
             raise RuntimeError("simulation already running")
-        cmd = [sumo_binary("sumo-gui" if self.gui else "sumo"), *sumo_args]
+        cmd = [sumo_binary("sumo-gui" if self.gui else "sumo"), *sumo_args, *self.extra_args]
         if self.backend == "libsumo":
             if SimulationAdapter._libsumo_in_use:
                 raise RuntimeError("libsumo allows one simulation per process; use traci")
@@ -222,6 +225,15 @@ class SimulationAdapter:
             if give_way:
                 vt.setParameter(type_id, "has.bluelight.device", "true")
         return type_id
+
+    def sublane_model(self, lateral_resolution_m: float = 0.8) -> None:
+        """Use SUMO's sublane model (needed for a rescue lane: vehicles move aside within their
+        lane instead of only changing lanes). Must be called before :meth:`start`."""
+        if self._conn is not None:
+            raise RuntimeError("the sublane model must be chosen before start")
+        if lateral_resolution_m <= 0:
+            raise ValueError("lateral resolution must be > 0")
+        self.extra_args += ["--lateral-resolution", str(lateral_resolution_m)]
 
     def add_vehicle(self, vehicle_id: str, edges: Sequence[str], type_id: str) -> None:
         """Insert a vehicle now on the given route and track its state in every snapshot."""
