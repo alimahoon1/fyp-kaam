@@ -54,7 +54,10 @@ for name, s in src.items():
     sections = re.findall(r"\\section\{([^}]+)\}", s)
     if name not in ("10_conclusion.tex",) and (not sections or sections[-1] != "Conclusion"):
         problems.append(f"{name}: last section is not 'Conclusion'")
-    for phrase in ("Deliverable 2", "deviation from", "Deviation from", "was changed", "in version 2"):
+    change_words = (
+        "Deliverable 2", "deviation from", "Deviation from", "was changed", "in version 2",
+    )
+    for phrase in change_words:
         if phrase in s:
             problems.append(f"{name}: change wording '{phrase}'")
 
