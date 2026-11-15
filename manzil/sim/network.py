@@ -33,6 +33,7 @@ class Link:
     to_edge: str
     direction: str  # SUMO direction code: s, l, r, t, L, R
     junction_index: int  # index into the junction's request matrix
+    junction_id: str = ""  # junction whose request matrix ``junction_index`` refers to
 
 
 @dataclass(frozen=True)
@@ -62,10 +63,12 @@ class Intersection:
     approaches: tuple[Approach, ...]
     green_phases: tuple[GreenPhase, ...]
     outgoing_lanes: tuple[str, ...]
-    # Junction request matrices, by junction index: foes[i] = links in conflict with i,
-    # yields[i] = links that i must give way to.
-    _foes: dict[int, frozenset[int]] = field(default_factory=dict, repr=False)
-    _yields: dict[int, frozenset[int]] = field(default_factory=dict, repr=False)
+    # Junction request matrices, keyed by (junction id, junction index): foes[k] = junction
+    # indices in conflict with k, yields[k] = junction indices that k must give way to. A joined
+    # traffic light (one TLS over several junctions) has one matrix per junction; links at
+    # different junctions never conflict inside the junction (they are separated by an edge).
+    _foes: dict[tuple[str, int], frozenset[int]] = field(default_factory=dict, repr=False)
+    _yields: dict[tuple[str, int], frozenset[int]] = field(default_factory=dict, repr=False)
 
     @property
     def num_links(self) -> int:
@@ -75,14 +78,23 @@ class Intersection:
     def incoming_lanes(self) -> tuple[str, ...]:
         return tuple(lane for a in self.approaches for lane in a.lanes)
 
+    @property
+    def joined(self) -> bool:
+        """True if this traffic light controls several junctions (a joined TLS)."""
+        return len(self.junction_ids) > 1
+
     def are_foes(self, link_a: int, link_b: int) -> bool:
-        ja, jb = self.links[link_a].junction_index, self.links[link_b].junction_index
-        return jb in self._foes.get(ja, frozenset())
+        a, b = self.links[link_a], self.links[link_b]
+        if a.junction_id != b.junction_id:
+            return False
+        return b.junction_index in self._foes.get((a.junction_id, a.junction_index), frozenset())
 
     def must_yield(self, link_a: int, link_b: int) -> bool:
         """True if link ``a`` has to give way to link ``b`` (SUMO request "response" bit)."""
-        ja, jb = self.links[link_a].junction_index, self.links[link_b].junction_index
-        return jb in self._yields.get(ja, frozenset())
+        a, b = self.links[link_a], self.links[link_b]
+        if a.junction_id != b.junction_id:
+            return False
+        return b.junction_index in self._yields.get((a.junction_id, a.junction_index), frozenset())
 
     def conflicts_in(self, state: str) -> list[tuple[int, int]]:
         """Pairs of conflicting links that are green together without a legal yield.
@@ -175,19 +187,17 @@ def _build_intersection(net, tls, requests) -> Intersection:
             to_edge=to_lane.getEdge().getID(),
             direction=conn.getDirection(),
             junction_index=conn.getJunctionIndex(),
+            junction_id=junction,
         )
     if sorted(links) != list(range(len(links))):
         raise ValueError(f"{tls.getID()}: link indices are not 0..n-1")
-    if len(junctions) != 1:
-        # Joined traffic lights spanning several junctions are not supported yet; the
-        # request matrix lookup below assumes one junction per traffic light.
-        raise NotImplementedError(f"{tls.getID()}: controls several junctions {sorted(junctions)}")
-    (junction,) = junctions
-
+    # A joined traffic light (netconvert --tls.join, typical for OSM dual carriageways) controls
+    # several junctions; each keeps its own request matrix, keyed by junction id.
     foes, yields = {}, {}
-    for j_idx, (response, foe_bits) in requests.get(junction, {}).items():
-        foes[j_idx] = _bits_to_set(foe_bits)
-        yields[j_idx] = _bits_to_set(response)
+    for junction in sorted(junctions):
+        for j_idx, (response, foe_bits) in requests.get(junction, {}).items():
+            foes[(junction, j_idx)] = _bits_to_set(foe_bits)
+            yields[(junction, j_idx)] = _bits_to_set(response)
 
     approach_lanes: dict[str, list[str]] = {}
     for link in links.values():
@@ -213,7 +223,7 @@ def _build_intersection(net, tls, requests) -> Intersection:
 
     return Intersection(
         tls_id=tls.getID(),
-        junction_ids=(junction,),
+        junction_ids=tuple(sorted(junctions)),
         program_id=program_id,
         links=tuple(links[i] for i in range(len(links))),
         approaches=approaches,

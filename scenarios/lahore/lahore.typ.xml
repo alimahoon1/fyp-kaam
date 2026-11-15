@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Manzil W1: urban road types for Lahore OSM networks.
+     Same classes, lane counts and priorities as SUMO's osmNetconvert.typ.xml, but with urban
+     speeds (primary/trunk 60 km/h, secondary 50 km/h, tertiary and links 40 km/h) instead of
+     SUMO's rural defaults (80-100 km/h). Explicit OSM maxspeed tags still override these.
+     netconvert only guesses a traffic light where no road is faster than 79 km/h, so the
+     rural defaults would leave the network with almost no signals. Motor vehicles only. -->
+<types>
+    <type id="highway.trunk"          numLanes="2" speed="16.67" priority="13" oneway="false" allow="passenger taxi bus coach delivery truck motorcycle moped emergency authority private"/>
+    <type id="highway.primary"        numLanes="2" speed="16.67" priority="12" oneway="false" allow="passenger taxi bus coach delivery truck motorcycle moped emergency authority private"/>
+    <type id="highway.secondary"      numLanes="1" speed="13.89" priority="11" oneway="false" allow="passenger taxi bus coach delivery truck motorcycle moped emergency authority private"/>
+    <type id="highway.tertiary"       numLanes="1" speed="11.11" priority="10" oneway="false" allow="passenger taxi bus coach delivery truck motorcycle moped emergency authority private"/>
+    <type id="highway.trunk_link"     numLanes="1" speed="11.11" priority="8"  oneway="false" allow="passenger taxi bus coach delivery truck motorcycle moped emergency authority private"/>
+    <type id="highway.primary_link"   numLanes="1" speed="11.11" priority="7"  oneway="false" allow="passenger taxi bus coach delivery truck motorcycle moped emergency authority private"/>
+    <type id="highway.secondary_link" numLanes="1" speed="11.11" priority="6"  oneway="false" allow="passenger taxi bus coach delivery truck motorcycle moped emergency authority private"/>
+    <type id="highway.tertiary_link"  numLanes="1" speed="11.11" priority="5"  oneway="false" allow="passenger taxi bus coach delivery truck motorcycle moped emergency authority private"/>
+</types>
