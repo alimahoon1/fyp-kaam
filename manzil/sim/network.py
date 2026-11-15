@@ -94,9 +94,7 @@ class Intersection:
         a, b = self.links[link_a], self.links[link_b]
         if a.junction_id != b.junction_id:
             return False
-        return b.junction_index in self._yields.get(
-            (a.junction_id, a.junction_index), frozenset()
-        )
+        return b.junction_index in self._yields.get((a.junction_id, a.junction_index), frozenset())
 
     def conflicts_in(self, state: str) -> list[tuple[int, int]]:
         """Pairs of conflicting links that are green together without a legal yield.

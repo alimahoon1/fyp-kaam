@@ -135,8 +135,9 @@ def utm_forward(lat: float, lon: float, zone: int) -> tuple[float, float]:
     t = math.sinh(math.atanh(math.sin(phi)) - e * math.atanh(e * math.sin(phi)))
     xi = math.atan2(t, math.cos(lam))
     eta = math.atanh(math.sin(lam) / math.sqrt(1 + t * t))
-    x = eta + sum(al * math.cos(2 * j * xi) * math.sinh(2 * j * eta) for j, al in enumerate(alpha, 1))
-    y = xi + sum(al * math.sin(2 * j * xi) * math.cosh(2 * j * eta) for j, al in enumerate(alpha, 1))
+    terms = list(enumerate(alpha, 1))
+    x = eta + sum(al * math.cos(2 * j * xi) * math.sinh(2 * j * eta) for j, al in terms)
+    y = xi + sum(al * math.sin(2 * j * xi) * math.cosh(2 * j * eta) for j, al in terms)
     return 500000.0 + 0.9996 * big_a * x, 0.9996 * big_a * y
 
 
@@ -281,7 +282,9 @@ def filter_and_clip(root: ET.Element, bbox: BBox, keep=MAJOR_HIGHWAYS) -> ET.Ele
 
 
 def signal_nodes(root: ET.Element) -> list[str]:
-    return [n.get("id") for n in root.findall("node") if _tags(n).get("highway") == "traffic_signals"]
+    return [
+        n.get("id") for n in root.findall("node") if _tags(n).get("highway") == "traffic_signals"
+    ]
 
 
 def file_sha256(path: Path) -> str:
@@ -350,7 +353,7 @@ def main(argv: list[str] | None = None) -> None:
                 {
                     "source": OSM_API,
                     "bbox": asdict(area.bbox),
-                    "extracted_utc": dt.datetime.now(dt.UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "extracted_utc": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "raw_file": raw.name,
                     "raw_sha256": file_sha256(raw),
                     "licence": "ODbL; (c) OpenStreetMap contributors",
