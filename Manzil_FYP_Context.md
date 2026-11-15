@@ -1830,3 +1830,12 @@ Ibrahim asked for FYP-II work to run in parallel with several Claude agents, wit
 - **Still open:**
   - the Lahore area and hospital (blocks W1);
   - who checks the labelled test subset (W2).
+
+## 50.20 Deliverable III frozen while FYP-II work runs (15 Nov 2026)
+
+Ibrahim asked how the Deliverable III version shown to evaluators stays stable while parallel FYP-II work changes the repo.
+- The built report is saved as `F26-104_Deliverable-3_Report.pdf` at the repo root (149 pages, dated 22 Nov 2026). Git tag `d3-candidate` marks the matching code, results and report source. If the report changes before submission, rebuild, replace the PDF and move the tag; on submission, tag `d3-submission`.
+- Freeze rule for every workstream (docs/workstreams/README.md): existing results and models are never modified, new results go only to `results/fyp2/`, the existing dashboard workflow and commands must keep working, and the report is not touched by FYP-II work until Deliverable III is submitted.
+- The demo for evaluators runs from a separate clone checked out at the tag, with its own `.venv` and built dashboard, so later merges on main cannot change it.
+- W2 (Lahore video) is on hold: Ibrahim will provide a video himself.
+

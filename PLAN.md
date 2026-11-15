@@ -139,7 +139,7 @@ Each workstream edits only the paths it owns and keeps its notes in `docs/workst
 | ID | Workstream | Status | Done when |
 |---|---|---|---|
 | W1 | Lahore road network (OSM, cleanup, joined signals, hospital routes) | todo (needs Lahore area + hospital from Ibrahim) | Network loads, all controllers run with 0 safety violations, README with map |
-| W2 | Lahore video (licensed clips only), model-assisted + Claude-reviewed labels, rickshaw/van classes, Lahore count error | todo | SOURCES.md complete, labels/weights on Kaggle with sha256, real numbers with label status |
+| W2 | Lahore video (licensed clips only), model-assisted + Claude-reviewed labels, rickshaw/van classes, Lahore count error | on hold (Ibrahim will provide a Lahore video; 15 Nov) | SOURCES.md complete, labels/weights on Kaggle with sha256, real numbers with label status |
 | W3 | Full evaluation protocol (10 seeds, held-out demand), DQN training-seed variance, fairness variant, corridor v2 on new seeds | todo | Protocol tables with CIs in `results/fyp2/protocol/` |
 | W4 | Corridor completion: downstream check, recovery compensation, sublane give-way | todo | Comparison vs corridor v2 on new seeds in `results/fyp2/corridor/` |
 | W5 | Dashboard v2 (G01–G05) + SQLite store + pause (FR-02), warnings (FR-16), export (FR-19) | todo | Screenshots of 5 screens, API tests pass |
