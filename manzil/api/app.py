@@ -6,12 +6,20 @@ Endpoints (all JSON)::
     GET  /api/options                controllers (and whether each can run), profiles, defaults
     GET  /api/network                road geometry, junctions and signal links from the .net.xml
     GET  /api/state                  latest live state (signals, vehicles, ambulance, corridor)
-    POST /api/run/start              {controller, profile, seed, duration_s, speed}
+    POST /api/run/validate           G01: check a config field by field (FR-01)
+    POST /api/run/start              {controller, profile, seed, duration_s, speed,
+                                      mission?, incident?}; refused if validation has errors
+    POST /api/run/pause | resume     FR-02
+    POST /api/run/fault              {kind: "rl_loss"}: operator fault injection (FR-20 demo)
     POST /api/run/stop
     POST /api/run/speed              {speed}
     POST /api/ambulance              {origin, destination, corridor}
     POST /api/roads/close            {edge_id}
     WS   /ws/state                   pushes the state about 10 times a second
+
+The state carries ``warnings`` (FR-16: stale, invalid, disconnected, fallback), ``age_s`` and
+``produced_at``. The store, perception, analytics and export endpoints are in
+``manzil.api.store_api``; finished live runs are imported into the store automatically.
 
 If the built dashboard exists (``dashboard/dist``), it is served at ``/``.
 
@@ -34,12 +42,23 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
-from manzil.api.live import CommandError, LiveConfig, LiveSession
+from manzil.api.live import (
+    FAULTS,
+    CommandError,
+    LiveConfig,
+    LiveSession,
+    PlannedIncident,
+    PlannedMission,
+)
+from manzil.api.store_api import store_router
+from manzil.api.validation import has_errors, validate_live_config
 from manzil.control.fixed_time import SignalTiming
 from manzil.experiments.emergency import MissionConfig
 from manzil.experiments.runner import REPO_ROOT
 from manzil.scenarios.demand import PROFILES, fringe_edges
 from manzil.sim.network import NetworkModel
+from manzil.store.importer import import_all, import_runs
+from manzil.store.repository import SqliteRepository
 
 DASHBOARD_DIST = REPO_ROOT / "dashboard" / "dist"
 CONTROLLER_LABELS = {
@@ -49,12 +68,30 @@ CONTROLLER_LABELS = {
 }
 
 
+class MissionPlan(BaseModel):
+    origin: str
+    destination: str
+    corridor: bool = True
+    dispatch_s: float = Field(60.0, ge=0)
+
+
+class IncidentPlan(BaseModel):
+    edge_id: str
+    time_s: float = Field(120.0, ge=0)
+
+
 class StartRequest(BaseModel):
     controller: Literal["fixed_time", "adaptive", "dqn"] = "fixed_time"
     profile: Literal["light", "medium", "heavy", "uneven"] = "medium"
     seed: int = Field(0, ge=0)
     duration_s: int = Field(3600, ge=60, le=4 * 3600)
     speed: float = Field(10.0, ge=0, le=1000)  # sim seconds per wall second; 0 = max
+    mission: MissionPlan | None = None
+    incident: IncidentPlan | None = None
+
+
+class FaultRequest(BaseModel):
+    kind: str
 
 
 class SpeedRequest(BaseModel):
@@ -149,8 +186,21 @@ def controller_options() -> list[dict]:
     return out
 
 
-def create_app(runs_dir: Path | None = None, serve_dashboard: bool = True) -> FastAPI:
-    session = LiveSession(runs_dir)
+def create_app(
+    runs_dir: Path | None = None,
+    serve_dashboard: bool = True,
+    store_path: Path | str | None = None,
+    import_results: bool = True,
+) -> FastAPI:
+    """``store_path`` defaults to ``manzil.sqlite`` next to the live runs folder
+    (``runs/manzil.sqlite``); ``":memory:"`` keeps it in memory. With
+    ``import_results`` an empty store is filled from ``results/`` and the tracking results."""
+    if store_path is None:  # next to the live runs folder: runs/manzil.sqlite by default
+        store_path = (Path(runs_dir).parent if runs_dir else REPO_ROOT / "runs") / "manzil.sqlite"
+    repo = SqliteRepository(store_path)
+    if import_results and repo.summary()["runs"] == 0:
+        import_all(repo, REPO_ROOT)
+    session = LiveSession(runs_dir, on_run_closed=lambda d: import_runs(repo, Path(d), REPO_ROOT))
 
     @asynccontextmanager
     async def lifespan(_app):
@@ -162,6 +212,7 @@ def create_app(runs_dir: Path | None = None, serve_dashboard: bool = True) -> Fa
     app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"],
                        allow_headers=["*"])  # fmt: skip
     app.state.session = session
+    app.state.repo = repo
 
     def _guard(fn, *args):
         try:
@@ -174,6 +225,18 @@ def create_app(runs_dir: Path | None = None, serve_dashboard: bool = True) -> Fa
     @app.get("/api/health")
     def health():
         return {"ok": True, "status": session.status}
+
+    def _live_config(req: StartRequest) -> LiveConfig:
+        return LiveConfig(
+            req.controller, req.profile, req.seed, float(req.duration_s), req.speed,
+            mission=PlannedMission(**req.mission.model_dump()) if req.mission else None,
+            incident=PlannedIncident(**req.incident.model_dump()) if req.incident else None,
+        )  # fmt: skip
+
+    @app.post("/api/run/validate")
+    def validate(req: StartRequest):
+        checks = validate_live_config(req.model_dump())
+        return {"ok": not has_errors(checks), "checks": checks}
 
     @app.get("/api/options")
     def options():
@@ -193,15 +256,32 @@ def create_app(runs_dir: Path | None = None, serve_dashboard: bool = True) -> Fa
 
     @app.get("/api/state")
     def state():
-        return session.state
+        return session.view()
 
     @app.post("/api/run/start")
     def start(req: StartRequest):
         avail = {c["id"]: c for c in controller_options()}[req.controller]
         if not avail["available"]:
             raise HTTPException(422, f"controller {req.controller} unavailable: {avail['note']}")
-        cfg = LiveConfig(req.controller, req.profile, req.seed, float(req.duration_s), req.speed)
-        return _guard(session.start, cfg)
+        checks = validate_live_config(req.model_dump())
+        if has_errors(checks):
+            errs = "; ".join(c["message"] for c in checks if c["level"] == "error")
+            raise HTTPException(422, f"invalid configuration: {errs}")
+        return _guard(session.start, _live_config(req))
+
+    @app.post("/api/run/pause")
+    def pause():
+        return _guard(session.pause)
+
+    @app.post("/api/run/resume")
+    def resume():
+        return _guard(session.resume)
+
+    @app.post("/api/run/fault")
+    def fault(req: FaultRequest):
+        if req.kind not in FAULTS:
+            raise HTTPException(422, f"unknown fault {req.kind!r}; known: {list(FAULTS)}")
+        return _guard(session.inject_fault, req.kind)
 
     @app.post("/api/run/stop")
     def stop():
@@ -223,16 +303,19 @@ def create_app(runs_dir: Path | None = None, serve_dashboard: bool = True) -> Fa
     @app.websocket("/ws/state")
     async def ws_state(ws: WebSocket):
         await ws.accept()
-        sent = -1
+        sent, stale_sent = -1, False
         try:
             while True:
-                s = session.state
-                if s["version"] != sent:
+                s = session.view()
+                stale = any(w["code"] == "stale" for w in s.get("warnings", []))
+                if s["version"] != sent or stale != stale_sent:  # also push "became stale"
                     await ws.send_json(s)
-                    sent = s["version"]
+                    sent, stale_sent = s["version"], stale
                 await asyncio.sleep(0.1)
         except (WebSocketDisconnect, RuntimeError):
             return
+
+    app.include_router(store_router(repo))
 
     if serve_dashboard and (DASHBOARD_DIST / "index.html").is_file():
         app.mount("/", StaticFiles(directory=DASHBOARD_DIST, html=True), name="dashboard")
