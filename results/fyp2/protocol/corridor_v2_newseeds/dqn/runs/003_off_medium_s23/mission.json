@@ -1,0 +1,365 @@
+{
+  "config": {
+    "origin": "left0A0",
+    "destination": "C2top2",
+    "dispatch_s": 1200.0,
+    "routing": "dynamic",
+    "corridor": false,
+    "incident": "none",
+    "incident_edge": "",
+    "incident_s": 0.0,
+    "incident_speed_mps": 2.0,
+    "lookahead": 2,
+    "activate_eta_s": 15.0,
+    "max_priority_s": 60.0,
+    "delta_s": 10.0,
+    "persistence_s": 10.0,
+    "cooldown_s": 30.0,
+    "corridor_min_green_s": 10.0,
+    "give_way": false
+  },
+  "route_versions": [
+    {
+      "mission_id": "m1",
+      "route_version": 1,
+      "edge_ids": [
+        "left0A0",
+        "A0B0",
+        "B0B1",
+        "B1B2",
+        "B2C2",
+        "C2top2"
+      ],
+      "cost_s": 105.256,
+      "snapshot_step": 1200,
+      "trigger": "dispatch",
+      "compute_ms": 0.097
+    }
+  ],
+  "routing_log": [
+    {
+      "time_s": 1200.0,
+      "event": "route_v1",
+      "route_version": 1,
+      "saving_s": null,
+      "reason": "dispatch",
+      "nodes_expanded": 25,
+      "compute_ms": 0.097
+    }
+  ],
+  "corridor_events": [],
+  "stop_log": [
+    {
+      "time_s": 1231.0,
+      "edge": "A0B0",
+      "reason": "queue_at_red",
+      "tls": "B0",
+      "tls_state": "r",
+      "tls_dist_m": 8.5,
+      "leader_gap_m": 0.0,
+      "corridor_state": null,
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1232.0,
+      "edge": "A0B0",
+      "reason": "queue_at_red",
+      "tls": "B0",
+      "tls_state": "r",
+      "tls_dist_m": 8.5,
+      "leader_gap_m": 0.0,
+      "corridor_state": null,
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1233.0,
+      "edge": "A0B0",
+      "reason": "queue_at_red",
+      "tls": "B0",
+      "tls_state": "r",
+      "tls_dist_m": 8.5,
+      "leader_gap_m": 0.0,
+      "corridor_state": null,
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1234.0,
+      "edge": "A0B0",
+      "reason": "queue_at_red",
+      "tls": "B0",
+      "tls_state": "r",
+      "tls_dist_m": 8.5,
+      "leader_gap_m": 0.0,
+      "corridor_state": null,
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1235.0,
+      "edge": "A0B0",
+      "reason": "queue_at_red",
+      "tls": "B0",
+      "tls_state": "r",
+      "tls_dist_m": 8.5,
+      "leader_gap_m": 0.0,
+      "corridor_state": null,
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1236.0,
+      "edge": "A0B0",
+      "reason": "queue_at_red",
+      "tls": "B0",
+      "tls_state": "r",
+      "tls_dist_m": 8.5,
+      "leader_gap_m": 0.0,
+      "corridor_state": null,
+      "filter_mode": "yellow"
+    },
+    {
+      "time_s": 1237.0,
+      "edge": "A0B0",
+      "reason": "queue_at_red",
+      "tls": "B0",
+      "tls_state": "r",
+      "tls_dist_m": 8.5,
+      "leader_gap_m": 0.0,
+      "corridor_state": null,
+      "filter_mode": "yellow"
+    },
+    {
+      "time_s": 1238.0,
+      "edge": "A0B0",
+      "reason": "queue_at_red",
+      "tls": "B0",
+      "tls_state": "r",
+      "tls_dist_m": 8.5,
+      "leader_gap_m": 0.0,
+      "corridor_state": null,
+      "filter_mode": "yellow"
+    },
+    {
+      "time_s": 1239.0,
+      "edge": "A0B0",
+      "reason": "queue_at_red",
+      "tls": "B0",
+      "tls_state": "r",
+      "tls_dist_m": 8.5,
+      "leader_gap_m": 0.0,
+      "corridor_state": null,
+      "filter_mode": "all_red"
+    },
+    {
+      "time_s": 1240.0,
+      "edge": "A0B0",
+      "reason": "queue_at_red",
+      "tls": "B0",
+      "tls_state": "r",
+      "tls_dist_m": 8.5,
+      "leader_gap_m": 0.0,
+      "corridor_state": null,
+      "filter_mode": "all_red"
+    },
+    {
+      "time_s": 1241.0,
+      "edge": "A0B0",
+      "reason": "queue_at_green",
+      "tls": "B0",
+      "tls_state": "g",
+      "tls_dist_m": 8.5,
+      "leader_gap_m": 2.5,
+      "corridor_state": null,
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1245.0,
+      "edge": "A0B0",
+      "reason": "queue_at_green",
+      "tls": "B0",
+      "tls_state": "g",
+      "tls_dist_m": 2.6,
+      "leader_gap_m": 0.0,
+      "corridor_state": null,
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1246.0,
+      "edge": "A0B0",
+      "reason": "queue_at_green",
+      "tls": "B0",
+      "tls_state": "g",
+      "tls_dist_m": 2.6,
+      "leader_gap_m": 0.0,
+      "corridor_state": null,
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1247.0,
+      "edge": "A0B0",
+      "reason": "queue_at_green",
+      "tls": "B0",
+      "tls_state": "g",
+      "tls_dist_m": 2.6,
+      "leader_gap_m": 0.0,
+      "corridor_state": null,
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1248.0,
+      "edge": "A0B0",
+      "reason": "queue_at_green",
+      "tls": "B0",
+      "tls_state": "g",
+      "tls_dist_m": 2.6,
+      "leader_gap_m": 0.0,
+      "corridor_state": null,
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1249.0,
+      "edge": "A0B0",
+      "reason": "queue_at_green",
+      "tls": "B0",
+      "tls_state": "g",
+      "tls_dist_m": 2.6,
+      "leader_gap_m": 0.0,
+      "corridor_state": null,
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1250.0,
+      "edge": "A0B0",
+      "reason": "queue_at_green",
+      "tls": "B0",
+      "tls_state": "g",
+      "tls_dist_m": 2.6,
+      "leader_gap_m": 0.0,
+      "corridor_state": null,
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1251.0,
+      "edge": "A0B0",
+      "reason": "queue_at_green",
+      "tls": "B0",
+      "tls_state": "g",
+      "tls_dist_m": 2.6,
+      "leader_gap_m": 0.0,
+      "corridor_state": null,
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1252.0,
+      "edge": "A0B0",
+      "reason": "queue_at_green",
+      "tls": "B0",
+      "tls_state": "g",
+      "tls_dist_m": 2.6,
+      "leader_gap_m": 0.0,
+      "corridor_state": null,
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1253.0,
+      "edge": "A0B0",
+      "reason": "queue_at_green",
+      "tls": "B0",
+      "tls_state": "g",
+      "tls_dist_m": 2.6,
+      "leader_gap_m": 2.5,
+      "corridor_state": null,
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1272.0,
+      "edge": "B0B1",
+      "reason": "queue_at_red",
+      "tls": "B1",
+      "tls_state": "r",
+      "tls_dist_m": 8.5,
+      "leader_gap_m": 0.0,
+      "corridor_state": null,
+      "filter_mode": "yellow"
+    },
+    {
+      "time_s": 1273.0,
+      "edge": "B0B1",
+      "reason": "queue_at_red",
+      "tls": "B1",
+      "tls_state": "r",
+      "tls_dist_m": 8.5,
+      "leader_gap_m": 0.0,
+      "corridor_state": null,
+      "filter_mode": "yellow"
+    },
+    {
+      "time_s": 1274.0,
+      "edge": "B0B1",
+      "reason": "queue_at_red",
+      "tls": "B1",
+      "tls_state": "r",
+      "tls_dist_m": 8.5,
+      "leader_gap_m": 0.0,
+      "corridor_state": null,
+      "filter_mode": "all_red"
+    },
+    {
+      "time_s": 1275.0,
+      "edge": "B0B1",
+      "reason": "queue_at_red",
+      "tls": "B1",
+      "tls_state": "r",
+      "tls_dist_m": 8.5,
+      "leader_gap_m": 0.0,
+      "corridor_state": null,
+      "filter_mode": "all_red"
+    },
+    {
+      "time_s": 1276.0,
+      "edge": "B0B1",
+      "reason": "queue_at_green",
+      "tls": "B1",
+      "tls_state": "G",
+      "tls_dist_m": 8.5,
+      "leader_gap_m": 1.7,
+      "corridor_state": null,
+      "filter_mode": "green"
+    }
+  ],
+  "signal_crossings": [
+    {
+      "time_s": 1215.0,
+      "tls": "A0",
+      "approach": "left0A0",
+      "link": 14,
+      "state": "G"
+    },
+    {
+      "time_s": 1255.0,
+      "tls": "B0",
+      "approach": "A0B0",
+      "link": 15,
+      "state": "g"
+    },
+    {
+      "time_s": 1279.0,
+      "tls": "B1",
+      "approach": "B0B1",
+      "link": 9,
+      "state": "G"
+    },
+    {
+      "time_s": 1298.0,
+      "tls": "B2",
+      "approach": "B1B2",
+      "link": 8,
+      "state": "G"
+    },
+    {
+      "time_s": 1314.0,
+      "tls": "C2",
+      "approach": "B2C2",
+      "link": 15,
+      "state": "g"
+    }
+  ]
+}
