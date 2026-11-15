@@ -1,0 +1,13 @@
+{
+  "source": "https://api.openstreetmap.org/api/0.6/map",
+  "bbox": {
+    "south": 31.514,
+    "west": 74.313,
+    "north": 31.531,
+    "east": 74.333
+  },
+  "extracted_utc": "2026-11-15T21:56:27Z",
+  "raw_file": "ichhra.raw.osm.xml.gz",
+  "raw_sha256": "6b83f676d073d9bc32c6c6a8a705fe863b54947b51c5b2e361ff6c74006a6773",
+  "licence": "ODbL; (c) OpenStreetMap contributors"
+}
