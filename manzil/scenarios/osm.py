@@ -353,7 +353,7 @@ def main(argv: list[str] | None = None) -> None:
                 {
                     "source": OSM_API,
                     "bbox": asdict(area.bbox),
-                    "extracted_utc": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    "extracted_utc": f"{dt.datetime.now(dt.timezone.utc):%Y-%m-%dT%H:%M:%SZ}",
                     "raw_file": raw.name,
                     "raw_sha256": file_sha256(raw),
                     "licence": "ODbL; (c) OpenStreetMap contributors",
