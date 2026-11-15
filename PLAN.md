@@ -5,7 +5,7 @@ Before starting a task, set it to `in progress (Name)` and push. When finished, 
 
 ## Current stage
 
-Planning is finished (10 Nov 2026). **Phase 0 done. Phases 1–5 done; vision V.1–V.5 done (V.6 deferred).** Laptop demo check done 14 Nov (140 tests pass on the laptop, dashboard runs). Task 3.7 (corridor v2) done 14 Nov in the cloud: route-index bug fixed + 5 s emergency min-green truncation; Phase 3 corridor results and Phase 5 screenshots rerun. Report tasks 6.1–6.4 and the full template review (6.4b) done 15 Nov: report builds clean, 149 pages, dated 22 Nov 2026; edit guide in context §50.18. Next: team review of the PDF (FYP-II plan stays without owner names for now), then 6.5 demo script + presentation. Coding phases 1–5 mostly run as Claude Code cloud sessions (claude.ai/code), with Ibrahim checking from the phone app. The vision track (V) can run in parallel at any time after Phase 0 step 0.4.
+Planning is finished (10 Nov 2026). **Phase 0 done. Phases 1–5 done; vision V.1–V.5 done (V.6 deferred).** Laptop demo check done 14 Nov (140 tests pass on the laptop, dashboard runs). Task 3.7 (corridor v2) done 14 Nov in the cloud: route-index bug fixed + 5 s emergency min-green truncation; Phase 3 corridor results and Phase 5 screenshots rerun. Report tasks 6.1–6.4 and the full template review (6.4b) done 15 Nov: report builds clean, 149 pages, dated 22 Nov 2026; edit guide in context §50.18. Next: team review of the PDF (FYP-II plan stays without owner names for now), then 6.5 demo script + presentation (done 15 Nov). **FYP-II:** W2 ready since 16 Nov (two Lahore videos on Kaggle); W3–W5 can start; W1 waits for the area choice. Coding phases 1–5 mostly run as Claude Code cloud sessions (claude.ai/code), with Ibrahim checking from the phone app. The vision track (V) can run in parallel at any time after Phase 0 step 0.4.
 
 ## Deliverable III requirements (from the university)
 
@@ -139,7 +139,7 @@ Each workstream edits only the paths it owns and keeps its notes in `docs/workst
 | ID | Workstream | Status | Done when |
 |---|---|---|---|
 | W1 | Lahore road network (OSM, cleanup, joined signals, hospital routes) | todo (needs Lahore area + hospital from Ibrahim) | Network loads, all controllers run with 0 safety violations, README with map |
-| W2 | Lahore video (licensed clips only), model-assisted + Claude-reviewed labels, rickshaw/van classes, Lahore count error | on hold (Ibrahim will give a video) | SOURCES.md complete, labels/weights on Kaggle with sha256, real numbers with label status |
+| W2 | Lahore video (licensed clips only), model-assisted + Claude-reviewed labels, rickshaw/van classes, Lahore count error | ready: 2 videos on Kaggle (16 Nov), prompt updated; start a cloud session with the W2 prompt | SOURCES.md complete, labels/weights on Kaggle with sha256, real numbers with label status |
 | W3 | Full evaluation protocol (10 seeds, held-out demand), DQN training-seed variance, fairness variant, corridor v2 on new seeds | todo | Protocol tables with CIs in `results/fyp2/protocol/` |
 | W4 | Corridor completion: downstream check, recovery compensation, sublane give-way | todo | Comparison vs corridor v2 on new seeds in `results/fyp2/corridor/` |
 | W5 | Dashboard v2 (G01–G05) + SQLite store + pause (FR-02), warnings (FR-16), export (FR-19) | todo | Screenshots of 5 screens, API tests pass |
@@ -163,6 +163,7 @@ One line per session or cloud task, newest last: date, who/where, what changed, 
 | 15 Nov | Ibrahim + Claude (laptop) | Task 6.4b: full report review against FYPFast template and sample headings; fixes in Ch 1–10 and bibliography; `check_report.py` added; 149 pages, all checks pass | context §50.18, `Manzil_D2_Report/check_report.py` |
 | 15 Nov | Ibrahim + Claude (laptop) | FYP-II parallel setup: workstreams W1–W6 with file ownership, merge rules, video/label rules and prompts; Phase 7 added | `docs/workstreams/`, context §50.19 |
 | 15 Nov | Ibrahim + Claude (laptop) | Task 6.5: D3 slides (15) + demo script; D3 snapshot copy `fyp-kaam-D3` made outside the repo; pip cache purged (disk was full) | context §50.21 |
+| 16 Nov | Ibrahim + Claude (laptop) | W2 unblocked: 2 Lahore videos (Ferozpur Road, from a friend, use allowed) checked and recorded with sha256; W2 prompt rewritten for these videos (labelling by the cloud session) | `data/lahore_video/SOURCES.md`, `docs/workstreams/PROMPTS.md`, context §50.22 |
 
 ## FYP-2 backlog (goes into the Chapter 10 plan)
 

@@ -1839,3 +1839,10 @@ Ibrahim asked for FYP-II work to run in parallel with several Claude agents, wit
 - **Snapshot copy (Ibrahim's choice, after reverting the git-tag freeze):** `..yp-kaam-D3` is a plain copy of this folder made on 15 Nov, without `.git` and with its own `.venv`. It holds the D3 report PDF and `START_DEMO.ps1` (sets `SUMO_HOME` to its own SUMO). It is not under version control; use it only to show the evaluators, and copy the final slides into it.
 - **Disk:** the laptop's C: drive was full (0.33 GB free); the pip cache (1.9 GB) was purged with Ibrahim's approval. Installs now use `--no-cache-dir`. Free more space before large downloads.
 
+## 50.22 Lahore videos received; W2 ready (16 Nov 2026)
+
+- Ibrahim uploaded two Lahore videos to the private Kaggle dataset `mibrahimsalman022/manzil-lahore-videos`. Location given as Ferozpur Road; filming date unknown; provided by a friend, who says use in the project is allowed. The original filming details are not recorded, so results are described as from "team-provided footage, one location".
+- Checked on the laptop (OpenCV): video 1 is 125.6 s, 1280x720, very dense mixed traffic (many rickshaws), steady high camera, but edited into about 4-5 shots; video 2 is 13.2 s, 3294x2058, one steady shot, light traffic. Checksums in `data/lahore_video/SOURCES.md`.
+- Decision: split train/test by shot (last shot(s) of video 1 + all of video 2 are test), classes car, bus, truck, motorcycle, rickshaw, van. Labelling is done by a cloud Claude session (pre-label on Kaggle, Claude reviews every frame); labels are "model-assisted, Claude-reviewed", and test numbers stay preliminary until a team member checks the test labels.
+- Limitation: about 2 minutes of footage from one place; 2-3 more continuous 2-3 minute clips from other junctions would make the result solid.
+- PLAN Phase 7 W2 is ready; the W2 prompt in `docs/workstreams/PROMPTS.md` was rewritten for these videos.

@@ -69,16 +69,45 @@ pass, and results/fyp2/lahore_network/README.md documents it with a map figure.
 
 ### W2 Lahore video, labels, rickshaw and van classes
 ```
-Goal: a small, legally usable Lahore traffic-video set, labels for car, bus, truck,
-motorcycle, rickshaw and van, a detector fine-tuned for those classes, and count error on
-Lahore clips. Follow the W2 rules in docs/workstreams/README.md exactly (licences, SOURCES.md,
-download inside Kaggle, private Kaggle dataset, privacy, "model-assisted, Claude-reviewed"
-labels, a team-checked test subset). Search the web for suitable clips; if fewer than about
-10 usable clips exist, report that and ask Ibrahim whether the team will film. Pre-label on
-Kaggle GPU, review frames yourself, fine-tune on Kaggle, and evaluate detection and counting
-as in results/vision/. Done when: SOURCES.md is complete, labels and weights are on Kaggle
-with sha256 recorded, results/fyp2/vision_lahore/README.md reports real numbers with their
-label status, and tests for any new code pass.
+Goal: labels for car, bus, truck, motorcycle, rickshaw and van on the team's Lahore videos, a
+detector fine-tuned for those classes, and detection + count results on held-out Lahore footage.
+Follow the W2 rules in docs/workstreams/README.md (privacy, "model-assisted, Claude-reviewed"
+labels, a team-checked test subset, nothing large in git).
+
+Data: the private Kaggle dataset mibrahimsalman022/manzil-lahore-videos (2 videos; details,
+checksums and use conditions in data/lahore_video/SOURCES.md). Use these; do not search the web.
+Do not download the videos into the cloud session: all video work runs in Kaggle kernels
+(dataset_sources), and only small outputs (CSV/JSON, a few frames, plots, weights < 50 MB) come back.
+
+Steps:
+1. Check Kaggle access (kaggle kernels list --mine). If KAGGLE_API_TOKEN is missing or kaggle.com
+   is blocked, stop and say so.
+2. Kernel lahore_frames: detect shot boundaries in video 1 (it is edited, ~4-5 shots), then
+   extract frames at about 2 fps from each shot (dedupe near-identical frames). Record the shot
+   list (start/end seconds) and frame counts in results/fyp2/vision_lahore/.
+3. Split BY SHOT, never by frame: the last shot(s) of video 1 (about 25-30% of frames) and all of
+   video 2 are TEST; the rest is train/val. Write the split to a manifest in data/lahore_video/.
+4. Kernel lahore_prelabel (GPU): pre-label with models/yolo/manzil_yolo11s_best.pt plus an
+   open-vocabulary detector (e.g. YOLO-World or Grounding DINO with prompts "auto rickshaw",
+   "loader rickshaw", "van") for the new classes. Classes: 0 car, 1 bus, 2 truck, 3 motorcycle,
+   4 rickshaw (auto/chingchi/loader three-wheelers), 5 van. Render each frame with its boxes.
+5. Review: pull the rendered frames back in batches, look at every one, and correct the labels
+   (accept, delete, change class, add clearly missing boxes for vehicles larger than ~12 px).
+   Keep a review log (frames seen, boxes changed per class). Label status: "model-assisted,
+   Claude-reviewed"; the test split stays "preliminary" until a team member checks it.
+   Store the label set as a private Kaggle dataset (manzil-lahore-labels) with sha256.
+6. Kernel lahore_train (GPU): fine-tune from manzil_yolo11s_best.pt on train (+ a replay sample
+   of the existing UA-DETRAC/motorcycle training data so old classes are not forgotten).
+   Evaluate the old and the new model on the Lahore TEST split: mAP50, mAP50-95, per-class AP,
+   confusion matrix. Also run ByteTrack line counting on the test shot(s) vs counts from the
+   reviewed labels, as in results/vision/.
+7. Write results/fyp2/vision_lahore/README.md with real numbers, label status, the small-data
+   caveat (one location, ~2 minutes of footage) and a recommendation for more footage.
+   Put a short "For the coordinator" section in docs/workstreams/W2.md (PLAN/context updates,
+   report text for Ch 9/10).
+Done when: SOURCES.md and the split manifest are complete, labels and weights are on Kaggle with
+sha256 recorded, the README reports real numbers with their label status, and tests for any new
+code (e.g. a class-map or manifest loader in manzil/perception/) pass.
 ```
 
 ### W3 Full evaluation protocol and DQN robustness
