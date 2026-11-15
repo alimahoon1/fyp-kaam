@@ -1,0 +1,41 @@
+{
+  "network": {
+    "network_id": "lahore.net.xml#2986a3bf7220",
+    "traffic_lights": 10,
+    "joined_traffic_lights": 0,
+    "green_phases_per_tls": {
+      "272370993": 2,
+      "272371492": 2,
+      "2871948030": 2,
+      "cluster_12236536697_3212600240_3219130814_3360332118": 3,
+      "cluster_272369988_3651474381": 4,
+      "cluster_272370559_272370982": 2,
+      "cluster_272372368_7633458205": 2,
+      "cluster_303052038_3212600245": 2,
+      "cluster_3219261931_3360332121": 2,
+      "cluster_639654511_86090047": 2
+    },
+    "approaches_per_tls": {
+      "272370993": 2,
+      "272371492": 2,
+      "2871948030": 4,
+      "cluster_12236536697_3212600240_3219130814_3360332118": 4,
+      "cluster_272369988_3651474381": 4,
+      "cluster_272370559_272370982": 4,
+      "cluster_272372368_7633458205": 4,
+      "cluster_303052038_3212600245": 3,
+      "cluster_3219261931_3360332121": 4,
+      "cluster_639654511_86090047": 3
+    },
+    "phases_with_conflicts": {},
+    "sumo_headless_load_ok": true
+  },
+  "hospital_edge": "25036926",
+  "entries": 17,
+  "entries_reaching_hospital": 17,
+  "mission_origin": "314653435",
+  "runs": 18,
+  "runs_with_safety_violations": 0,
+  "total_safety_violations": 0,
+  "total_collisions": 0
+}

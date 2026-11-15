@@ -802,7 +802,15 @@ def mission_origin(routes: list[dict]) -> str:
     return max(reachable, key=key)["entry_edge"]
 
 
-def controller_runs(profiles, seeds, controllers, missions: bool, work_dir: Path) -> list[dict]:
+def controller_runs(
+    profiles,
+    seeds,
+    controllers,
+    missions: bool,
+    work_dir: Path,
+    warmup_s: float = 900.0,
+    measure_s: float = 3600.0,
+) -> list[dict]:
     """All controllers through the normal experiment runner, with Lahore demand.
 
     The runner builds demand with ``manzil.scenarios.demand.build_demand`` (grid profiles);
@@ -829,7 +837,8 @@ def controller_runs(profiles, seeds, controllers, missions: bool, work_dir: Path
                 mission = MissionConfig(origin=origin, destination=hospital, corridor=corridor)
                 label = "mission_corridor_on" if corridor else "mission_corridor_off"
             cfg = runner.RunConfig(scenario="lahore", profile=profile, seed=seed,
-                                   controller=controller, mission=mission, label=label)  # fmt: skip
+                                   controller=controller, mission=mission, label=label,
+                                   warmup_s=warmup_s, measure_s=measure_s)  # fmt: skip
             run_dir = work_dir / f"{controller}_{profile}_s{seed}_{label}"
             result = runner.run(cfg, run_dir)
             row = {"controller": controller, "profile": profile, "seed": seed, "arm": label}
@@ -855,10 +864,76 @@ def write_rows(rows: list[dict], path: Path) -> None:
         w.writerows(rows)
 
 
+def draw_map(net_file: Path, out_png: Path) -> None:
+    """Map of the Lahore network: signals, entries, hospital and the mission route."""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    import sumolib
+
+    net = sumolib.net.readNet(str(net_file), withPrograms=True)
+    record = json.loads((net_file.parent / "network.json").read_text(encoding="utf-8"))
+    area = AREAS[record["area"]["name"]]
+    routes = hospital_routes(net_file)
+    origin, hospital = mission_origin(routes), routes[0]["hospital_edge"]
+    path, _ = net.getShortestPath(net.getEdge(origin), net.getEdge(hospital), vClass="emergency")
+
+    fig, ax = plt.subplots(figsize=(9, 9), dpi=110)
+    for e in net.getEdges():
+        xs, ys = zip(*e.getShape(), strict=True)
+        ax.plot(xs, ys, color="#9a9a9a", lw=0.5 + 0.7 * e.getLaneNumber(), zorder=1)
+    for e in path:
+        xs, ys = zip(*e.getShape(), strict=True)
+        ax.plot(xs, ys, color="#2ca02c", lw=4, alpha=0.6, zorder=2)
+    xs, ys = zip(*net.getEdge(hospital).getShape(), strict=True)
+    ax.plot(xs, ys, color="#1f77b4", lw=5, zorder=3)
+    tls_nodes = sorted(
+        {c[0].getEdge().getToNode() for t in net.getTrafficLights() for c in t.getConnections()},
+        key=lambda n: n.getID(),
+    )
+    for k, n in enumerate(tls_nodes, 1):
+        x, y = n.getCoord()
+        ax.scatter([x], [y], s=60, c="#d62728", zorder=4, edgecolors="white")
+        ax.annotate(f"S{k}", (x, y), xytext=(5, 4), textcoords="offset points", fontsize=8,
+                    color="#d62728", weight="bold")  # fmt: skip
+    from manzil.scenarios.demand import fringe_edges
+
+    entries, _ = fringe_edges(net)
+    ex = [net.getEdge(en.edge_id).getShape()[0] for en in entries]
+    ax.scatter(*zip(*ex, strict=True), marker="^", s=40, c="#ff7f0e", zorder=4)
+    hx, hy = lonlat_to_net_xy(net, area.hospital.lat, area.hospital.lon)
+    ax.scatter([hx], [hy], marker="*", s=380, c="#1f77b4", zorder=5, edgecolors="white")
+    ax.annotate(area.hospital.name, (hx, hy), xytext=(8, 8), textcoords="offset points",
+                fontsize=9, color="#1f77b4", weight="bold")  # fmt: skip
+    handles = [
+        plt.Line2D([], [], color="#d62728", marker="o", ls="", label="signalised junction"),
+        plt.Line2D([], [], color="#ff7f0e", marker="^", ls="", label="entry road (demand source)"),
+        plt.Line2D([], [], color="#1f77b4", marker="*", ms=12, ls="", label="hospital"),
+        plt.Line2D([], [], color="#1f77b4", lw=4, label="hospital street (ambulance target)"),
+        plt.Line2D([], [], color="#2ca02c", lw=4, alpha=0.6, label="ambulance test route"),
+    ]  # fmt: skip
+    ax.legend(handles=handles, loc="lower left", fontsize=8, framealpha=0.9)
+    b = area.bbox
+    ax.set_title(f"Manzil Lahore network: {area.title}\n{len(tls_nodes)} signalised junctions, "
+                 f"{len(net.getEdges())} edges; bbox S{b.south} W{b.west} N{b.north} E{b.east}",
+                 fontsize=10)  # fmt: skip
+    ax.set_aspect("equal")
+    ax.set_xlabel("x (m)")
+    ax.set_ylabel("y (m)")
+    fig.text(0.5, 0.01, "Map data (c) OpenStreetMap contributors, ODbL. Extracted "
+             f"{record['extract']['extracted_utc'][:10]}; built with SUMO netconvert, left-hand "
+             "traffic.", ha="center", fontsize=7)  # fmt: skip
+    fig.tight_layout(rect=(0, 0.02, 1, 1))
+    fig.savefig(out_png)
+    plt.close(fig)
+
+
 def validate(out_dir: Path = RESULTS_DIR, seeds=(0,), missions: bool = True) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
     net_file = LAHORE_DIR / "lahore.net.xml"
     checks = network_checks(net_file)
+    draw_map(net_file, out_dir / "map.png")
     routes = hospital_routes(net_file)
     write_rows(routes, out_dir / "routes_to_hospital.csv")
     calib = demand_calibration(net_file)
