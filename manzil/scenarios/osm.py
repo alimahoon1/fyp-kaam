@@ -17,8 +17,8 @@ Map data (c) OpenStreetMap contributors, available under the Open Database Licen
 
 Usage::
 
-    python -m manzil.scenarios.osm --area <name> --fetch   # download raw OSM (needs internet)
-    python -m manzil.scenarios.osm --area <name>           # rebuild the network from the raw file
+    python -m manzil.scenarios.osm --fetch   # download raw OSM for the area (needs internet)
+    python -m manzil.scenarios.osm           # rebuild scenarios/lahore/ from the committed raw file
 """
 
 from __future__ import annotations
@@ -85,6 +85,12 @@ class Area:
     bbox: BBox
     hospital: Hospital
     tls_guess_threshold: float = 40.0  # min. sum of incoming lane speeds (m/s) for a guessed TLS
+    junction_join_dist_m: float = 25.0  # nodes closer than this become one junction
+    # Join neighbouring traffic lights into one TLS (netconvert --tls.join). Off by default:
+    # the DQN observation layout allows at most 4 approaches and 4 green phases per traffic
+    # light, and the joined Ichhra lights have up to 10 approaches. The network reader supports
+    # joined lights either way.
+    join_tls: bool = False
 
 
 # Candidate areas measured on 15 Nov 2026 (see results/fyp2/lahore_network/README.md).
@@ -110,6 +116,7 @@ AREAS: dict[str, Area] = {
         Hospital("WAPDA Hospital", 31.52382, 74.32281, "osm node: Wapda Hospital"),
     ),
 }  # fmt: skip
+SELECTED_AREA = "ichhra"  # chosen by Ibrahim on 15 Nov 2026 (W1)
 
 
 # --------------------------------------------------------------------------- projection
@@ -294,8 +301,14 @@ def file_sha256(path: Path) -> str:
 # --------------------------------------------------------------------------- netconvert
 
 
-def netconvert_command(area: Area, osm_file: Path, net_file: Path, typemap: Path = TYPEMAP):
-    return [
+def netconvert_command(
+    area: Area,
+    osm_file: Path,
+    net_file: Path,
+    typemap: Path = TYPEMAP,
+    unset_tls: list[str] | tuple[str, ...] = (),
+) -> list[str]:
+    cmd = [
         sumo_binary("netconvert"),
         "--osm-files", str(osm_file),
         "--type-files", str(typemap),
@@ -306,65 +319,162 @@ def netconvert_command(area: Area, osm_file: Path, net_file: Path, typemap: Path
         "--ramps.guess", "true",
         "--roundabouts.guess", "true",
         "--junctions.join", "true",
+        "--junctions.join-dist", str(area.junction_join_dist_m),
         "--tls.guess-signals", "true",
         "--tls.guess", "true",
-        "--tls.guess.joining", "true",
         "--tls.guess.threshold", str(area.tls_guess_threshold),
-        "--tls.join", "true",
+        "--tls.guess.joining", str(area.join_tls).lower(),
+        "--tls.join", str(area.join_tls).lower(),
         "--tls.default-type", "static",
         "--lefthand", "true",  # Pakistan drives on the left
         "--no-turnarounds", "true",
         "--osm.layer-elevation", "5",
-        "--output-file", str(net_file),
     ]  # fmt: skip
+    if unset_tls:
+        cmd += ["--tls.unset", ",".join(unset_tls)]
+    return cmd + ["--output-file", str(net_file)]
 
 
-def build_network(area: Area, raw_osm: Path, out_dir: Path) -> Path:
-    """Filter + clip ``raw_osm`` to ``area`` and run netconvert; writes net + record."""
+def tls_cleanup_reasons(net_file: Path) -> dict[str, str]:
+    """Traffic lights the cleanup removes, with the reason.
+
+    - ``merge``: at most two approaches and only straight movements. These are points where
+      two roads merge (e.g. a slip road joining a carriageway); netconvert guesses a signal
+      there because the speed sum is high, but they are not signalised junctions.
+    - ``one_green``: the program has fewer than two green phases, so there is nothing to
+      control (Manzil controllers choose between at least two green phases).
+    Only single-junction traffic lights are judged; a joined one is kept as a whole.
+    """
+    import sumolib
+
+    net = sumolib.net.readNet(str(net_file), withPrograms=True)
+    reasons = {}
+    for tls in net.getTrafficLights():
+        conns = tls.getConnections()
+        nodes = {from_lane.getEdge().getToNode().getID() for from_lane, _, _ in conns}
+        if len(nodes) != 1:
+            continue
+        approaches = {from_lane.getEdge().getID() for from_lane, _, _ in conns}
+        directions = set()
+        for from_lane, to_lane, _ in conns:
+            for c in from_lane.getOutgoing():
+                if c.getToLane() is to_lane:
+                    directions.add(c.getDirection())
+        program = next(iter(tls.getPrograms().values()))
+        greens = [
+            p.state
+            for p in program.getPhases()
+            if "y" not in p.state.lower() and any(ch in "Gg" for ch in p.state)
+        ]
+        if len(approaches) <= 2 and directions <= {"s"}:
+            reasons[next(iter(nodes))] = "merge"
+        elif len(greens) < 2:
+            reasons[next(iter(nodes))] = "one_green"
+    return reasons
+
+
+@dataclass
+class BuildResult:
+    net_file: Path
+    command: list[str]  # final netconvert command, paths relative to the scenario folder
+    removed_tls: dict[str, str]  # junction id -> cleanup reason
+    osm_signal_nodes: int  # highway=traffic_signals nodes inside the box
+
+
+def build_network(area: Area, raw_osm: Path, out_dir: Path, net_name: str) -> BuildResult:
+    """Filter + clip ``raw_osm``, run netconvert, then remove non-junction signals.
+
+    The cleanup repeats netconvert with ``--tls.unset`` until no traffic light is left that
+    :func:`tls_cleanup_reasons` rejects (at most 4 passes), so the result is reproducible from
+    the raw file alone.
+    """
     out_dir.mkdir(parents=True, exist_ok=True)
     root = filter_and_clip(read_osm(raw_osm), area.bbox)
-    filtered = out_dir / f"{area.name}.filtered.osm.xml"
+    filtered = out_dir / f"{net_name}.filtered.osm.xml"
     write_osm(root, filtered)
-    net_file = out_dir / f"{area.name}.net.xml"
-    cmd = netconvert_command(area, filtered, net_file)
-    subprocess.run(cmd, capture_output=True, text=True, check=True)
-    filtered.unlink()
-    return net_file
+    net_file = out_dir / f"{net_name}.net.xml"
+    removed: dict[str, str] = {}
+    try:
+        for _ in range(4):
+            cmd = netconvert_command(area, filtered, net_file, unset_tls=sorted(removed))
+            subprocess.run(cmd, capture_output=True, text=True, check=True)
+            new = {k: v for k, v in tls_cleanup_reasons(net_file).items() if k not in removed}
+            if not new:
+                break
+            removed.update(new)
+        else:
+            raise RuntimeError("traffic-light cleanup did not converge")
+    finally:
+        filtered.unlink(missing_ok=True)
+
+    def rel(arg: str) -> str:
+        if arg == cmd[0]:
+            return "netconvert"
+        p = Path(arg)
+        return p.name if p.is_absolute() else arg
+
+    return BuildResult(net_file, [rel(a) for a in cmd], dict(sorted(removed.items())),
+                       len(signal_nodes(root)))  # fmt: skip
 
 
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--area", choices=sorted(AREAS), required=True)
+    parser.add_argument("--area", choices=sorted(AREAS), default=SELECTED_AREA)
     parser.add_argument("--fetch", action="store_true", help="download raw OSM from the OSM API")
-    parser.add_argument("--out-dir", type=Path, default=None)
+    parser.add_argument("--out-dir", type=Path, default=LAHORE_DIR)
     args = parser.parse_args(argv)
     area = AREAS[args.area]
-    out_dir = args.out_dir or LAHORE_DIR / area.name
-    out_dir.mkdir(parents=True, exist_ok=True)
-    raw = out_dir / f"{area.name}.raw.osm.xml.gz"
+    out_dir: Path = args.out_dir
+    osm_dir = out_dir / "osm"
+    osm_dir.mkdir(parents=True, exist_ok=True)
+    raw = osm_dir / f"{area.name}.raw.osm.xml.gz"
+    extract_file = osm_dir / f"{area.name}.extract.json"
     if args.fetch:
-        tiles = fetch_tiles(area.bbox, out_dir / "_tiles")
+        tiles = fetch_tiles(area.bbox, osm_dir / "_tiles")
         write_osm(merge_osm(tiles), raw)
         for t in tiles:
             t.unlink()
-        (out_dir / "_tiles").rmdir()
-        (out_dir / "extract.json").write_text(
-            json.dumps(
-                {
-                    "source": OSM_API,
-                    "bbox": asdict(area.bbox),
-                    "extracted_utc": f"{dt.datetime.now(dt.timezone.utc):%Y-%m-%dT%H:%M:%SZ}",
-                    "raw_file": raw.name,
-                    "raw_sha256": file_sha256(raw),
-                    "licence": "ODbL; (c) OpenStreetMap contributors",
-                },
-                indent=2,
-            )
-            + "\n",
-            encoding="utf-8",
-        )
-    net_file = build_network(area, raw, out_dir)
-    print(f"wrote {net_file} ({content_sha256(net_file)[:12]}), {sumo_version()}")
+        (osm_dir / "_tiles").rmdir()
+        extract = {
+            "source": OSM_API,
+            "bbox": asdict(area.bbox),
+            "extracted_utc": f"{dt.datetime.now(dt.timezone.utc):%Y-%m-%dT%H:%M:%SZ}",
+            "raw_file": f"osm/{raw.name}",
+            "raw_sha256": file_sha256(raw),
+            "licence": "ODbL; (c) OpenStreetMap contributors",
+        }
+        extract_file.write_text(json.dumps(extract, indent=2) + "\n", encoding="utf-8")
+    extract = json.loads(extract_file.read_text(encoding="utf-8"))
+    if file_sha256(raw) != extract["raw_sha256"]:
+        raise RuntimeError(f"{raw} does not match the checksum in {extract_file}")
+
+    result = build_network(area, raw, out_dir, out_dir.name)
+    import sumolib
+
+    net = sumolib.net.readNet(str(result.net_file), withPrograms=True)
+    record = {
+        "network": result.net_file.name,
+        "synthetic": False,
+        "source": "OpenStreetMap",
+        "licence": "Map data (c) OpenStreetMap contributors, ODbL",
+        "area": {**asdict(area), "bbox": asdict(area.bbox), "hospital": asdict(area.hospital)},
+        "extract": extract,
+        "generator": "manzil.scenarios.osm (filter + clip, netconvert, signal cleanup)",
+        "typemap": TYPEMAP.name,
+        "sumo_version": sumo_version(),
+        "command": result.command,
+        "traffic_lights": len(net.getTrafficLights()),
+        "osm_signal_nodes_in_box": result.osm_signal_nodes,
+        "signals_origin": "guessed by netconvert (--tls.guess); OSM has no signal tags here"
+        if result.osm_signal_nodes == 0
+        else "OSM traffic_signals tags plus netconvert guesses",
+        "removed_by_cleanup": result.removed_tls,
+        "edges": len(net.getEdges()),
+        "content_sha256": content_sha256(result.net_file),
+    }
+    (out_dir / "network.json").write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
+    print(f"wrote {result.net_file}: {record['traffic_lights']} traffic lights, "
+          f"{len(result.removed_tls)} removed by cleanup, {record['content_sha256'][:12]}")  # fmt: skip
 
 
 if __name__ == "__main__":
