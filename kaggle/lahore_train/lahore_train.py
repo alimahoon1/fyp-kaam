@@ -355,8 +355,9 @@ class GreedyLinker:
         self._next = 1
 
     def update(self, boxes) -> list[tuple]:
-        boxes = [(int(c), float(x1), float(y1), float(x2), float(y2))
-                 for c, x1, y1, x2, y2 in boxes]
+        boxes = [
+            (int(c), float(x1), float(y1), float(x2), float(y2)) for c, x1, y1, x2, y2 in boxes
+        ]
         pairs = []
         for tid, (tb, _missed) in self._tracks.items():
             tc, td = _centre(tb), _diag(tb)
@@ -498,8 +499,10 @@ def merge(dets: list[Det], cfg: MergeConfig | None = None) -> list[Label]:
     with the largest summed confidence. These are *pre-labels*; review decides the final label.
     """
     cfg = cfg or MergeConfig()
-    pool = sorted((d for d in dets if max(d.box[2] - d.box[0], d.box[3] - d.box[1])
-                   >= cfg.min_side_px), key=lambda d: -d.conf)
+    pool = sorted(
+        (d for d in dets if max(d.box[2] - d.box[0], d.box[3] - d.box[1]) >= cfg.min_side_px),
+        key=lambda d: -d.conf,
+    )
     used = [False] * len(pool)
     labels = []
     for i, seed in enumerate(pool):
@@ -517,8 +520,11 @@ def merge(dets: list[Det], cfg: MergeConfig | None = None) -> list[Label]:
         if best < cfg.keep_conf and len(agreeing) < 2:
             continue
         new = [d for d in cluster if d.cls in NEW_CLASSES and d.conf >= cfg.new_class_conf]
-        pref = [d for d in cluster if cfg.prefer_source and d.source == cfg.prefer_source
-                and d.conf >= cfg.prefer_conf]
+        pref = [
+            d
+            for d in cluster
+            if cfg.prefer_source and d.source == cfg.prefer_source and d.conf >= cfg.prefer_conf
+        ]
         if pref:
             cls = max(pref, key=lambda d: d.conf).cls
         elif new:
@@ -539,8 +545,10 @@ def merge(dets: list[Det], cfg: MergeConfig | None = None) -> list[Label]:
 
 def to_yolo_line(lab: Label, w: float, h: float) -> str:
     x1, y1, x2, y2 = (max(0.0, min(v, lim)) for v, lim in zip(lab.box, (w, h, w, h), strict=True))
-    return (f"{lab.cls} {(x1 + x2) / 2 / w:.6f} {(y1 + y2) / 2 / h:.6f} "
-            f"{(x2 - x1) / w:.6f} {(y2 - y1) / h:.6f}")
+    return (
+        f"{lab.cls} {(x1 + x2) / 2 / w:.6f} {(y1 + y2) / 2 / h:.6f} "
+        f"{(x2 - x1) / w:.6f} {(y2 - y1) / h:.6f}"
+    )
 
 
 def from_yolo_line(line: str, w: float, h: float) -> Label:
@@ -562,9 +570,15 @@ def apply_review(labels: list[Label], ops: list[dict]) -> tuple[list[Label], dic
     """
     out = [Label(lab.cls, lab.box, list(lab.sources), lab.conf) for lab in labels]
     dead = set()
-    log = {"deleted": 0, "reclassed": 0, "added": 0,
-           "by_class": {n: {"deleted": 0, "reclassed_from": 0, "reclassed_to": 0, "added": 0}
-                        for n in CLASS_NAMES}}
+    log = {
+        "deleted": 0,
+        "reclassed": 0,
+        "added": 0,
+        "by_class": {
+            n: {"deleted": 0, "reclassed_from": 0, "reclassed_to": 0, "added": 0}
+            for n in CLASS_NAMES
+        },
+    }
     added = []
     for op in ops:
         kind = op["op"]
@@ -626,8 +640,13 @@ def check_manifest(rows: list[dict]) -> None:
             raise ValueError(f"shot {key} appears in more than one split")
 
 
-def split_by_shot(frames: list[dict], test_shots: set, val_shots: set,
-                  boundaries: dict | None = None, guard_s: float = 0.0) -> list[dict]:
+def split_by_shot(
+    frames: list[dict],
+    test_shots: set,
+    val_shots: set,
+    boundaries: dict | None = None,
+    guard_s: float = 0.0,
+) -> list[dict]:
     """Assign every frame row (``video``, ``shot``, ``image``, ``time_s``...) to a split by its
     shot key ``(video, shot)``; shots in neither set are train.
 
@@ -646,9 +665,9 @@ def split_by_shot(frames: list[dict], test_shots: set, val_shots: set,
             t = float(r["time_s"])
             start, end = boundaries[key]
             prev_key, next_key = (key[0], key[1] - 1), (key[0], key[1] + 1)
-            if (prev_key in boundaries and split_of(prev_key) != split and t - start < guard_s) \
-                    or (next_key in boundaries and split_of(next_key) != split
-                        and end - t < guard_s):
+            if (prev_key in boundaries and split_of(prev_key) != split and t - start < guard_s) or (
+                next_key in boundaries and split_of(next_key) != split and end - t < guard_s
+            ):
                 split = UNUSED
         out.append({**r, "split": split})
     check_manifest(out)

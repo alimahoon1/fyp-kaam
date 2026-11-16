@@ -33,8 +33,9 @@ class GreedyLinker:
         self._next = 1
 
     def update(self, boxes) -> list[tuple]:
-        boxes = [(int(c), float(x1), float(y1), float(x2), float(y2))
-                 for c, x1, y1, x2, y2 in boxes]
+        boxes = [
+            (int(c), float(x1), float(y1), float(x2), float(y2)) for c, x1, y1, x2, y2 in boxes
+        ]
         pairs = []
         for tid, (tb, _missed) in self._tracks.items():
             tc, td = _centre(tb), _diag(tb)

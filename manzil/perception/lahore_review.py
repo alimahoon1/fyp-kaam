@@ -33,16 +33,28 @@ from manzil.perception import lahore_labels as ll
 
 # candidate settings: clusters that missed the label thresholds but are still plausible
 CAND_CFG = ll.MergeConfig(keep_conf=0.15, agree_conf=0.08, new_class_conf=0.15)
-COLORS = {0: (60, 220, 60), 1: (255, 160, 0), 2: (60, 140, 255), 3: (255, 60, 255),
-          4: (255, 255, 0), 5: (0, 255, 255)}
+COLORS = {
+    0: (60, 220, 60),
+    1: (255, 160, 0),
+    2: (60, 140, 255),
+    3: (255, 60, 255),
+    4: (255, 255, 0),
+    5: (0, 255, 255),
+}
 SHORT = ["car", "bus", "trk", "moto", "rick", "van"]
 
 # Far field: above this image row the vehicles are too small (under ~16 px) and too dense to label
 # reliably, so that band is not labelled and is filled grey for training and evaluation alike.
 # Per segment (video, shot): the row at the first and the last frame, linearly interpolated in
 # between (the camera drifts slowly); a review op {"op": "far", "y": Y} overrides one frame.
-FAR_DEFAULT = {("v1", 0): (200, 330), ("v1", 1): (330, 380), ("v1", 2): (360, 400),
-               ("v1", 3): (380, 380), ("v1", 4): (220, 220), ("v2", 0): (760, 760)}
+FAR_DEFAULT = {
+    ("v1", 0): (200, 330),
+    ("v1", 1): (330, 380),
+    ("v1", 2): (360, 400),
+    ("v1", 3): (380, 380),
+    ("v1", 4): (220, 220),
+    ("v2", 0): (760, 760),
+}
 
 
 def seg_of(img: str) -> tuple[str, int, int]:
@@ -65,23 +77,27 @@ SIX = {i: i for i in range(len(ll.CLASS_NAMES))}
 
 
 def detections(raw_one: dict) -> list[ll.Det]:
-    return (ll.map_dets(raw_one.get("manzil4", []), ll.MANZIL4_MAP, "manzil4")
-            + ll.map_dets(raw_one.get("coco_x", []), ll.COCO_MAP, "coco_x")
-            + ll.map_dets(raw_one.get("world", []), ll.WORLD_MAP, "world")
-            + ll.map_dets(raw_one.get("boot", []), SIX, "boot"))
+    return (
+        ll.map_dets(raw_one.get("manzil4", []), ll.MANZIL4_MAP, "manzil4")
+        + ll.map_dets(raw_one.get("coco_x", []), ll.COCO_MAP, "coco_x")
+        + ll.map_dets(raw_one.get("world", []), ll.WORLD_MAP, "world")
+        + ll.map_dets(raw_one.get("boot", []), SIX, "boot")
+    )
 
 
 def prelabel_one(raw_one: dict, cfg=None, cand_cfg=None) -> tuple[list[ll.Label], list[ll.Label]]:
     dets = detections(raw_one)
     labels = ll.merge(dets, cfg)
-    cands = [c for c in ll.merge(dets, cand_cfg or CAND_CFG)
-             if all(ll.iou(c.box, lab.box) < 0.3 for lab in labels)]
+    cands = [
+        c
+        for c in ll.merge(dets, cand_cfg or CAND_CFG)
+        if all(ll.iou(c.box, lab.box) < 0.3 for lab in labels)
+    ]
     return labels, cands
 
 
 def _lab(d):
-    return {"cls": d.cls, "box": [round(v, 1) for v in d.box], "conf": d.conf,
-            "sources": d.sources}
+    return {"cls": d.cls, "box": [round(v, 1) for v in d.box], "conf": d.conf, "sources": d.sources}
 
 
 def cmd_prelabel(raw_path, out_dir, boot_path=None):
@@ -95,18 +111,30 @@ def cmd_prelabel(raw_path, out_dir, boot_path=None):
             raw["detections"][img]["boot"] = r["boot"]
         raw["meta"]["boot"] = boot["meta"]
         cfg = ll.MergeConfig(prefer_source="boot", prefer_conf=0.25)
-        cand_cfg = ll.MergeConfig(keep_conf=0.15, agree_conf=0.08, new_class_conf=0.15,
-                                  prefer_source="boot", prefer_conf=0.15)
+        cand_cfg = ll.MergeConfig(
+            keep_conf=0.15,
+            agree_conf=0.08,
+            new_class_conf=0.15,
+            prefer_source="boot",
+            prefer_conf=0.15,
+        )
     out = {}
     for img, r in sorted(raw["detections"].items()):
         labels, cands = prelabel_one(r, cfg, cand_cfg)
         out[img] = {"labels": [_lab(x) for x in labels], "candidates": [_lab(x) for x in cands]}
     Path(out_dir).mkdir(parents=True, exist_ok=True)
-    json.dump({"meta": raw["meta"], "merge": vars(cfg), "candidates": vars(cand_cfg),
-               "images": out}, open(Path(out_dir) / "prelabels.json", "w"))
+    json.dump(
+        {"meta": raw["meta"], "merge": vars(cfg), "candidates": vars(cand_cfg), "images": out},
+        open(Path(out_dir) / "prelabels.json", "w"),
+    )
     c = Counter(lab["cls"] for v in out.values() for lab in v["labels"])
-    print(len(out), "images;", {ll.CLASS_NAMES[k]: c[k] for k in sorted(c)},
-          "candidates", sum(len(v["candidates"]) for v in out.values()))
+    print(
+        len(out),
+        "images;",
+        {ll.CLASS_NAMES[k]: c[k] for k in sorted(c)},
+        "candidates",
+        sum(len(v["candidates"]) for v in out.values()),
+    )
 
 
 def render(img_path, labels, cands, out_path, scale=1.0, far_y=None):
@@ -169,13 +197,20 @@ def cmd_apply(frames_dir, out_dir, review_path):
     review = load_review(review_path)
     ldir = Path(out_dir) / "labels"
     ldir.mkdir(parents=True, exist_ok=True)
-    totals = {"images_reviewed": 0, "images_not_reviewed": [], "prelabels": Counter(),
-              "final": Counter(), "deleted": 0, "reclassed": 0, "added": 0,
-              "accepted_candidates": 0, "by_class": {}}
+    totals = {
+        "images_reviewed": 0,
+        "images_not_reviewed": [],
+        "prelabels": Counter(),
+        "final": Counter(),
+        "deleted": 0,
+        "reclassed": 0,
+        "added": 0,
+        "accepted_candidates": 0,
+        "by_class": {},
+    }
     far_rows = {}
     for img, p in sorted(pre.items()):
-        labels = [ll.Label(x["cls"], tuple(x["box"]), x["sources"], x["conf"])
-                  for x in p["labels"]]
+        labels = [ll.Label(x["cls"], tuple(x["box"]), x["sources"], x["conf"]) for x in p["labels"]]
         totals["prelabels"].update(ll.CLASS_NAMES[x.cls] for x in labels)
         far_rows[img] = far_default(img, pre)
         if img not in review:
@@ -187,8 +222,9 @@ def cmd_apply(frames_dir, out_dir, review_path):
             if op["op"] == "far":
                 far = float(op["y"])
             elif op["op"] == "acc":
-                ops.append({"op": "add", "cls": op["cls"],
-                            "box": p["candidates"][int(op["cand"])]["box"]})
+                ops.append(
+                    {"op": "add", "cls": op["cls"], "box": p["candidates"][int(op["cand"])]["box"]}
+                )
                 totals["accepted_candidates"] += 1
             else:
                 ops.append(op)
@@ -206,7 +242,8 @@ def cmd_apply(frames_dir, out_dir, review_path):
         totals["final"].update(ll.CLASS_NAMES[x.cls] for x in final)
         w, h = Image.open(Path(frames_dir) / img).size
         (ldir / (Path(img).stem + ".txt")).write_text(
-            "".join(ll.to_yolo_line(x, w, h) + "\n" for x in final))
+            "".join(ll.to_yolo_line(x, w, h) + "\n" for x in final)
+        )
     json.dump(far_rows, open(Path(out_dir) / "far_field.json", "w"), indent=0)
     totals["added_by_hand"] = totals["added"] - totals["accepted_candidates"]
     totals = {k: (dict(v) if isinstance(v, Counter) else v) for k, v in totals.items()}
@@ -232,8 +269,9 @@ def cmd_manifest(frames_csv, shots_json, out_csv):
 
     frames = list(csv.DictReader(open(frames_csv)))
     shots = json.load(open(shots_json))["videos"]
-    bounds = {(v, s["shot"]): (s["start_s"], s["end_s"]) for v, x in shots.items()
-              for s in x["shots"]}
+    bounds = {
+        (v, s["shot"]): (s["start_s"], s["end_s"]) for v, x in shots.items() for s in x["shots"]
+    }
     rows = ll.split_by_shot(frames, TEST_SHOTS, VAL_SHOTS, bounds, GUARD_S)
     for r in rows:
         if float(r["time_s"]) < OVERLAY_UNTIL_S.get((r["video"], int(r["shot"])), -1.0):
