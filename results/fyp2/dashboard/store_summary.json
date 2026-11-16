@@ -1,0 +1,184 @@
+{
+  "path": "(in memory, built from the committed results/ folder only)",
+  "schema_version": 1,
+  "runs": 1575,
+  "metric_samples": 56130,
+  "missions": 895,
+  "route_versions": 932,
+  "priority_events": 24645,
+  "video_jobs": 40,
+  "observations": 2477,
+  "artifacts": 4049,
+  "studies": [
+    {
+      "study": "results/fyp2/corridor/dqn",
+      "source": "batch",
+      "runs": 180,
+      "completed": 180,
+      "not_completed": 0,
+      "controllers": "dqn",
+      "profiles": "medium,heavy",
+      "labels": "off,v2,ds_defer,ds_flush,ds_both,comp,sublane,giveway_sl,all"
+    },
+    {
+      "study": "results/fyp2/corridor/dqn/extra_comp_exit",
+      "source": "batch",
+      "runs": 40,
+      "completed": 40,
+      "not_completed": 0,
+      "controllers": "dqn",
+      "profiles": "medium,heavy",
+      "labels": "v2,comp_exit"
+    },
+    {
+      "study": "results/fyp2/corridor/fixed_time",
+      "source": "batch",
+      "runs": 180,
+      "completed": 180,
+      "not_completed": 0,
+      "controllers": "fixed_time",
+      "profiles": "medium,heavy",
+      "labels": "off,v2,ds_defer,ds_flush,ds_both,comp,sublane,giveway_sl,all"
+    },
+    {
+      "study": "results/fyp2/corridor/fixed_time/extra_comp_exit",
+      "source": "batch",
+      "runs": 40,
+      "completed": 40,
+      "not_completed": 0,
+      "controllers": "fixed_time",
+      "profiles": "medium,heavy",
+      "labels": "v2,comp_exit"
+    },
+    {
+      "study": "results/fyp2/corridor/stress_spillback",
+      "source": "batch",
+      "runs": 60,
+      "completed": 60,
+      "not_completed": 0,
+      "controllers": "fixed_time",
+      "profiles": "heavy",
+      "labels": "off,v2,ds_defer,ds_flush,ds_both,comp"
+    },
+    {
+      "study": "results/fyp2/corridor/stress_spillback/extra_comp_exit",
+      "source": "batch",
+      "runs": 20,
+      "completed": 20,
+      "not_completed": 0,
+      "controllers": "fixed_time",
+      "profiles": "heavy",
+      "labels": "v2,comp_exit"
+    },
+    {
+      "study": "results/fyp2/protocol/corridor_v2_newseeds/dqn",
+      "source": "batch",
+      "runs": 60,
+      "completed": 60,
+      "not_completed": 0,
+      "controllers": "dqn",
+      "profiles": "medium,heavy",
+      "labels": "off,v1,v2"
+    },
+    {
+      "study": "results/fyp2/protocol/corridor_v2_newseeds/fixed_time",
+      "source": "batch",
+      "runs": 60,
+      "completed": 60,
+      "not_completed": 0,
+      "controllers": "fixed_time",
+      "profiles": "medium,heavy",
+      "labels": "off,v1,v2"
+    },
+    {
+      "study": "results/fyp2/protocol/main",
+      "source": "batch",
+      "runs": 560,
+      "completed": 560,
+      "not_completed": 0,
+      "controllers": "fixed_time,adaptive,dqn",
+      "profiles": "light,medium,heavy,uneven,uneven_ew,tidal,peak",
+      "labels": "fixed_time,adaptive,dqn_s0,dqn_s1,dqn_s2,dqn_fair_s0,dqn_fair_s1,dqn_fair_s2"
+    },
+    {
+      "study": "results/phase2/comparison",
+      "source": "batch",
+      "runs": 60,
+      "completed": 60,
+      "not_completed": 0,
+      "controllers": "fixed_time,adaptive",
+      "profiles": "heavy,light,medium,uneven",
+      "labels": null
+    },
+    {
+      "study": "results/phase3/corridor",
+      "source": "batch",
+      "runs": 20,
+      "completed": 20,
+      "not_completed": 0,
+      "controllers": "fixed_time",
+      "profiles": "medium,heavy",
+      "labels": "corridor_off,corridor_on"
+    },
+    {
+      "study": "results/phase3/corridor_v2/demo_scenario",
+      "source": "batch",
+      "runs": 15,
+      "completed": 15,
+      "not_completed": 0,
+      "controllers": "dqn",
+      "profiles": "heavy",
+      "labels": "off,v1,v2"
+    },
+    {
+      "study": "results/phase3/corridor_v2/dqn",
+      "source": "batch",
+      "runs": 90,
+      "completed": 90,
+      "not_completed": 0,
+      "controllers": "dqn",
+      "profiles": "medium,heavy",
+      "labels": "off,v1,early25,early30,trunc5,giveway,early30_trunc5,combined,v2"
+    },
+    {
+      "study": "results/phase3/corridor_v2/dqn_before_fix",
+      "source": "batch",
+      "runs": 20,
+      "completed": 20,
+      "not_completed": 0,
+      "controllers": "dqn",
+      "profiles": "medium,heavy",
+      "labels": "off,v1"
+    },
+    {
+      "study": "results/phase3/corridor_v2/fixed_time",
+      "source": "batch",
+      "runs": 90,
+      "completed": 90,
+      "not_completed": 0,
+      "controllers": "fixed_time",
+      "profiles": "medium,heavy",
+      "labels": "off,v1,early25,early30,trunc5,giveway,early30_trunc5,combined,v2"
+    },
+    {
+      "study": "results/phase3/routing",
+      "source": "batch",
+      "runs": 20,
+      "completed": 20,
+      "not_completed": 0,
+      "controllers": "fixed_time",
+      "profiles": "medium,heavy",
+      "labels": "static,dynamic"
+    },
+    {
+      "study": "results/phase4/comparison",
+      "source": "batch",
+      "runs": 60,
+      "completed": 60,
+      "not_completed": 0,
+      "controllers": "fixed_time,adaptive,dqn",
+      "profiles": "heavy,light,medium,uneven",
+      "labels": null
+    }
+  ]
+}

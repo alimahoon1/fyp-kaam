@@ -72,9 +72,14 @@ interface Props {
   state: LiveState;
   selected: string | null;
   onSelect: (edgeId: string | null) => void;
+  /** G03: highlight one junction and let the user pick another by clicking it. */
+  selectedTls?: string | null;
+  onSelectTls?: (tls: string) => void;
+  /** G04: earlier route versions, drawn dashed under the current one. */
+  oldRoutes?: string[][];
 }
 
-export function MapView({ net, state, selected, onSelect }: Props) {
+export function MapView({ net, state, selected, onSelect, selectedTls, onSelectTls, oldRoutes = [] }: Props) {
   const bars = useMemo(() => stopBars(net), [net]);
   const [xmin, ymin, xmax, ymax] = net.bounds;
   const pad = 20;
@@ -102,6 +107,13 @@ export function MapView({ net, state, selected, onSelect }: Props) {
           <polyline key={l.id} points={poly(l.shape)} className={cls} strokeWidth={l.width - 0.4} />
         ));
       })}
+
+      {/* earlier route versions (G04) */}
+      {oldRoutes.map((r, k) =>
+        net.edges
+          .filter((e) => r.includes(e.id) && !route.has(e.id))
+          .map((e) => e.lanes.map((l) => <polyline key={`o${k}-${l.id}`} points={poly(l.shape)} className="old-route" />)),
+      )}
 
       {/* the ambulance's current route */}
       {net.edges
@@ -181,14 +193,23 @@ export function MapView({ net, state, selected, onSelect }: Props) {
         </g>
       )}
 
-      {/* junction labels */}
+      {/* junction labels (and the G03 junction picker) */}
       {net.tls.map((t) => {
         const j = junctions.get(t.junction);
-        return j ? (
-          <text key={`t-${t.id}`} x={j.x + 11} y={-j.y - 11} className="label">
-            {t.id}
-          </text>
-        ) : null;
+        if (!j) return null;
+        return (
+          <g key={`t-${t.id}`}>
+            {selectedTls === t.id && <circle cx={j.x} cy={-j.y} r={20} className="tls-selected" />}
+            <text x={j.x + 11} y={-j.y - 11} className={`label ${selectedTls === t.id ? "on" : ""}`}>
+              {t.id}
+            </text>
+            {onSelectTls && (
+              <circle cx={j.x} cy={-j.y} r={14} className="tls-hit" onClick={() => onSelectTls(t.id)}>
+                <title>{`junction ${t.id}`}</title>
+              </circle>
+            )}
+          </g>
+        );
       })}
 
       {/* wide invisible hit areas for picking a road */}

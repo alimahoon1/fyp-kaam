@@ -1,0 +1,3406 @@
+{
+  "format": "manzil.export",
+  "format_version": 1,
+  "store_schema_version": 1,
+  "exported_at_utc": "2026-11-15T23:33:53Z",
+  "run_count": 15,
+  "comparability_warnings": [],
+  "runs": [
+    {
+      "run_key": "results/phase4/comparison/runs/000_fixed_time_heavy_s0",
+      "run_id": "grid3x3_fixed_time_heavy_s0",
+      "study": "results/phase4/comparison",
+      "source": "batch",
+      "status": "completed",
+      "termination": "completed",
+      "created_at": "20261110T004615Z",
+      "versions": {
+        "git_commit": "74372cfcf19077b23cbc69377bbb6113bf7e411e",
+        "git_dirty": 1,
+        "sumo": "Eclipse SUMO sumo 1.28.0"
+      },
+      "config_digest": "e3d6461fc1",
+      "config": {
+        "backend": "libsumo",
+        "checkpoint": "",
+        "controller": "fixed_time",
+        "controller_params": [],
+        "label": "",
+        "measure_s": 3600.0,
+        "mission": null,
+        "plan": "auto",
+        "profile": "heavy",
+        "scenario": "grid3x3",
+        "seed": 0,
+        "time_to_teleport_s": 300.0,
+        "warmup_s": 900.0
+      },
+      "metrics": {
+        "collisions": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "completed_trips": {
+          "value": 6877.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "corridor_held_requests": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "emergency_braking": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "max_red_s": {
+          "value": 55.0,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "phase_changes": {
+          "value": 648.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_max_veh": {
+          "value": 37.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_mean_veh": {
+          "value": 4.146,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "safety_violations": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports_jam": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "throughput_veh": {
+          "value": 7179.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "time_loss_mean_s": {
+          "value": 112.2386,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_all_mean_s": {
+          "value": 170.6179,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_mean_s": {
+          "value": 172.4915,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "unfinished_veh": {
+          "value": 351.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_inserted": {
+          "value": 9043.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_loaded": {
+          "value": 9060.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "waiting_time_mean_s": {
+          "value": 75.3656,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        }
+      },
+      "other_results": {
+        "controller_decisions": {},
+        "safety_interventions": {
+          "none": 810
+        }
+      },
+      "missions": [],
+      "files": [
+        {
+          "type": "manifest",
+          "uri": "results/phase4/comparison/runs/000_fixed_time_heavy_s0/manifest.json",
+          "sha256": "781cd570b435e5553edb6354de381f2e240b30691629c210f20205c63ef5a3ff",
+          "provenance": "written by manzil.experiments.runner"
+        },
+        {
+          "type": "metrics",
+          "uri": "results/phase4/comparison/runs/000_fixed_time_heavy_s0/metrics.json",
+          "sha256": "b29060d65095e2cd2511d8f372434e197bea771e5e4f35c542bbf1e4781c55f9",
+          "provenance": "written by manzil.experiments.runner"
+        }
+      ]
+    },
+    {
+      "run_key": "results/phase4/comparison/runs/001_fixed_time_heavy_s1",
+      "run_id": "grid3x3_fixed_time_heavy_s1",
+      "study": "results/phase4/comparison",
+      "source": "batch",
+      "status": "completed",
+      "termination": "completed",
+      "created_at": "20261110T004615Z",
+      "versions": {
+        "git_commit": "74372cfcf19077b23cbc69377bbb6113bf7e411e",
+        "git_dirty": 1,
+        "sumo": "Eclipse SUMO sumo 1.28.0"
+      },
+      "config_digest": "c95a60fa61",
+      "config": {
+        "backend": "libsumo",
+        "checkpoint": "",
+        "controller": "fixed_time",
+        "controller_params": [],
+        "label": "",
+        "measure_s": 3600.0,
+        "mission": null,
+        "plan": "auto",
+        "profile": "heavy",
+        "scenario": "grid3x3",
+        "seed": 1,
+        "time_to_teleport_s": 300.0,
+        "warmup_s": 900.0
+      },
+      "metrics": {
+        "collisions": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "completed_trips": {
+          "value": 6828.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "corridor_held_requests": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "emergency_braking": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "max_red_s": {
+          "value": 55.0,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "phase_changes": {
+          "value": 648.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_max_veh": {
+          "value": 38.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_mean_veh": {
+          "value": 4.2813,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "safety_violations": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports_jam": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "throughput_veh": {
+          "value": 7150.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "time_loss_mean_s": {
+          "value": 116.5096,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_all_mean_s": {
+          "value": 174.5045,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_mean_s": {
+          "value": 176.378,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "unfinished_veh": {
+          "value": 321.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_inserted": {
+          "value": 9008.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_loaded": {
+          "value": 9099.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "waiting_time_mean_s": {
+          "value": 78.0934,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        }
+      },
+      "other_results": {
+        "controller_decisions": {},
+        "safety_interventions": {
+          "none": 810
+        }
+      },
+      "missions": [],
+      "files": [
+        {
+          "type": "manifest",
+          "uri": "results/phase4/comparison/runs/001_fixed_time_heavy_s1/manifest.json",
+          "sha256": "bc819ac9aa72f6545f2e949de566a0aa2f52b3f77e3245a3d907985d06bb4d7e",
+          "provenance": "written by manzil.experiments.runner"
+        },
+        {
+          "type": "metrics",
+          "uri": "results/phase4/comparison/runs/001_fixed_time_heavy_s1/metrics.json",
+          "sha256": "1e219c11ae9c2b18db0242b57735d929908fe7df850032be69cbef90d05500b2",
+          "provenance": "written by manzil.experiments.runner"
+        }
+      ]
+    },
+    {
+      "run_key": "results/phase4/comparison/runs/002_fixed_time_heavy_s2",
+      "run_id": "grid3x3_fixed_time_heavy_s2",
+      "study": "results/phase4/comparison",
+      "source": "batch",
+      "status": "completed",
+      "termination": "completed",
+      "created_at": "20261110T004615Z",
+      "versions": {
+        "git_commit": "74372cfcf19077b23cbc69377bbb6113bf7e411e",
+        "git_dirty": 1,
+        "sumo": "Eclipse SUMO sumo 1.28.0"
+      },
+      "config_digest": "947b04c5af",
+      "config": {
+        "backend": "libsumo",
+        "checkpoint": "",
+        "controller": "fixed_time",
+        "controller_params": [],
+        "label": "",
+        "measure_s": 3600.0,
+        "mission": null,
+        "plan": "auto",
+        "profile": "heavy",
+        "scenario": "grid3x3",
+        "seed": 2,
+        "time_to_teleport_s": 300.0,
+        "warmup_s": 900.0
+      },
+      "metrics": {
+        "collisions": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "completed_trips": {
+          "value": 6925.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "corridor_held_requests": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "emergency_braking": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "max_red_s": {
+          "value": 55.0,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "phase_changes": {
+          "value": 648.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_max_veh": {
+          "value": 34.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_mean_veh": {
+          "value": 4.0152,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "safety_violations": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports_jam": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "throughput_veh": {
+          "value": 7215.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "time_loss_mean_s": {
+          "value": 107.7129,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_all_mean_s": {
+          "value": 165.4094,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_mean_s": {
+          "value": 167.6647,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "unfinished_veh": {
+          "value": 356.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_inserted": {
+          "value": 9093.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_loaded": {
+          "value": 9102.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "waiting_time_mean_s": {
+          "value": 72.4601,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        }
+      },
+      "other_results": {
+        "controller_decisions": {},
+        "safety_interventions": {
+          "none": 810
+        }
+      },
+      "missions": [],
+      "files": [
+        {
+          "type": "manifest",
+          "uri": "results/phase4/comparison/runs/002_fixed_time_heavy_s2/manifest.json",
+          "sha256": "f7b7ce0045d50036f47e372b92b4ef150df3941bf41faf01f307107ac13fed70",
+          "provenance": "written by manzil.experiments.runner"
+        },
+        {
+          "type": "metrics",
+          "uri": "results/phase4/comparison/runs/002_fixed_time_heavy_s2/metrics.json",
+          "sha256": "9bb09c10055b8961136fc40b2601a4e455c204fbfb3a91d8f0e8487a4e5e3fdd",
+          "provenance": "written by manzil.experiments.runner"
+        }
+      ]
+    },
+    {
+      "run_key": "results/phase4/comparison/runs/003_fixed_time_heavy_s3",
+      "run_id": "grid3x3_fixed_time_heavy_s3",
+      "study": "results/phase4/comparison",
+      "source": "batch",
+      "status": "completed",
+      "termination": "completed",
+      "created_at": "20261110T004615Z",
+      "versions": {
+        "git_commit": "74372cfcf19077b23cbc69377bbb6113bf7e411e",
+        "git_dirty": 1,
+        "sumo": "Eclipse SUMO sumo 1.28.0"
+      },
+      "config_digest": "a82d817781",
+      "config": {
+        "backend": "libsumo",
+        "checkpoint": "",
+        "controller": "fixed_time",
+        "controller_params": [],
+        "label": "",
+        "measure_s": 3600.0,
+        "mission": null,
+        "plan": "auto",
+        "profile": "heavy",
+        "scenario": "grid3x3",
+        "seed": 3,
+        "time_to_teleport_s": 300.0,
+        "warmup_s": 900.0
+      },
+      "metrics": {
+        "collisions": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "completed_trips": {
+          "value": 6879.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "corridor_held_requests": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "emergency_braking": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "max_red_s": {
+          "value": 55.0,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "phase_changes": {
+          "value": 648.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_max_veh": {
+          "value": 38.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_mean_veh": {
+          "value": 4.1828,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "safety_violations": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports_jam": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "throughput_veh": {
+          "value": 7193.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "time_loss_mean_s": {
+          "value": 112.9047,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_all_mean_s": {
+          "value": 170.4092,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_mean_s": {
+          "value": 172.9827,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "unfinished_veh": {
+          "value": 371.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_inserted": {
+          "value": 9051.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_loaded": {
+          "value": 9069.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "waiting_time_mean_s": {
+          "value": 76.0866,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        }
+      },
+      "other_results": {
+        "controller_decisions": {},
+        "safety_interventions": {
+          "none": 810
+        }
+      },
+      "missions": [],
+      "files": [
+        {
+          "type": "manifest",
+          "uri": "results/phase4/comparison/runs/003_fixed_time_heavy_s3/manifest.json",
+          "sha256": "e58d58064b089bd516675767a6bf98094500af043d9008e36d1516401e9bacbf",
+          "provenance": "written by manzil.experiments.runner"
+        },
+        {
+          "type": "metrics",
+          "uri": "results/phase4/comparison/runs/003_fixed_time_heavy_s3/metrics.json",
+          "sha256": "966e7803d132d996a67a3ede0e9ab6745d40e27d1cb1644e7ec0ac5ed14c2cdc",
+          "provenance": "written by manzil.experiments.runner"
+        }
+      ]
+    },
+    {
+      "run_key": "results/phase4/comparison/runs/004_fixed_time_heavy_s4",
+      "run_id": "grid3x3_fixed_time_heavy_s4",
+      "study": "results/phase4/comparison",
+      "source": "batch",
+      "status": "completed",
+      "termination": "completed",
+      "created_at": "20261110T004623Z",
+      "versions": {
+        "git_commit": "74372cfcf19077b23cbc69377bbb6113bf7e411e",
+        "git_dirty": 1,
+        "sumo": "Eclipse SUMO sumo 1.28.0"
+      },
+      "config_digest": "e420b72158",
+      "config": {
+        "backend": "libsumo",
+        "checkpoint": "",
+        "controller": "fixed_time",
+        "controller_params": [],
+        "label": "",
+        "measure_s": 3600.0,
+        "mission": null,
+        "plan": "auto",
+        "profile": "heavy",
+        "scenario": "grid3x3",
+        "seed": 4,
+        "time_to_teleport_s": 300.0,
+        "warmup_s": 900.0
+      },
+      "metrics": {
+        "collisions": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "completed_trips": {
+          "value": 6820.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "corridor_held_requests": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "emergency_braking": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "max_red_s": {
+          "value": 55.0,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "phase_changes": {
+          "value": 648.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_max_veh": {
+          "value": 37.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_mean_veh": {
+          "value": 4.2786,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "safety_violations": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports_jam": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "throughput_veh": {
+          "value": 7156.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "time_loss_mean_s": {
+          "value": 114.8623,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_all_mean_s": {
+          "value": 172.7968,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_mean_s": {
+          "value": 175.09,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "unfinished_veh": {
+          "value": 379.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_inserted": {
+          "value": 9046.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_loaded": {
+          "value": 9116.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "waiting_time_mean_s": {
+          "value": 77.4452,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        }
+      },
+      "other_results": {
+        "controller_decisions": {},
+        "safety_interventions": {
+          "none": 810
+        }
+      },
+      "missions": [],
+      "files": [
+        {
+          "type": "manifest",
+          "uri": "results/phase4/comparison/runs/004_fixed_time_heavy_s4/manifest.json",
+          "sha256": "06685375c6b7faae83a2da34e438a0cc9b08a4e6f9e89a4e6a74fe2930148618",
+          "provenance": "written by manzil.experiments.runner"
+        },
+        {
+          "type": "metrics",
+          "uri": "results/phase4/comparison/runs/004_fixed_time_heavy_s4/metrics.json",
+          "sha256": "30a007e41fa0cee9cbe8357e61fa1524328ffbf3ba76253e2c8e4924a1b4d7c0",
+          "provenance": "written by manzil.experiments.runner"
+        }
+      ]
+    },
+    {
+      "run_key": "results/phase4/comparison/runs/005_adaptive_heavy_s0",
+      "run_id": "grid3x3_adaptive_heavy_s0",
+      "study": "results/phase4/comparison",
+      "source": "batch",
+      "status": "completed",
+      "termination": "completed",
+      "created_at": "20261110T004623Z",
+      "versions": {
+        "git_commit": "74372cfcf19077b23cbc69377bbb6113bf7e411e",
+        "git_dirty": 1,
+        "sumo": "Eclipse SUMO sumo 1.28.0"
+      },
+      "config_digest": "41f8def98b",
+      "config": {
+        "backend": "libsumo",
+        "checkpoint": "",
+        "controller": "adaptive",
+        "controller_params": [],
+        "label": "",
+        "measure_s": 3600.0,
+        "mission": null,
+        "plan": "auto",
+        "profile": "heavy",
+        "scenario": "grid3x3",
+        "seed": 0,
+        "time_to_teleport_s": 300.0,
+        "warmup_s": 900.0
+      },
+      "metrics": {
+        "collisions": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "completed_trips": {
+          "value": 6881.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "corridor_held_requests": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "emergency_braking": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "max_red_s": {
+          "value": 50.0,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "phase_changes": {
+          "value": 1537.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_max_veh": {
+          "value": 27.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_mean_veh": {
+          "value": 3.651,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "safety_violations": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports_jam": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "throughput_veh": {
+          "value": 7185.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "time_loss_mean_s": {
+          "value": 113.3292,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_all_mean_s": {
+          "value": 171.4333,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_mean_s": {
+          "value": 173.4835,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "unfinished_veh": {
+          "value": 364.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_inserted": {
+          "value": 9060.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_loaded": {
+          "value": 9060.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "waiting_time_mean_s": {
+          "value": 66.6299,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        }
+      },
+      "other_results": {
+        "controller_decisions": {
+          "extend": 2201,
+          "max_green": 8,
+          "pressure": 1904
+        },
+        "safety_interventions": {
+          "none": 1912
+        }
+      },
+      "missions": [],
+      "files": [
+        {
+          "type": "manifest",
+          "uri": "results/phase4/comparison/runs/005_adaptive_heavy_s0/manifest.json",
+          "sha256": "03fc2960f2dbb0c7ef914cfceec52ebb33b3a0cc24f3f881bd096718929ee6d0",
+          "provenance": "written by manzil.experiments.runner"
+        },
+        {
+          "type": "metrics",
+          "uri": "results/phase4/comparison/runs/005_adaptive_heavy_s0/metrics.json",
+          "sha256": "61652c3a07ea4710662e2874e6a6d325e5fc9cda6dbc49ea9d263490e4740438",
+          "provenance": "written by manzil.experiments.runner"
+        }
+      ]
+    },
+    {
+      "run_key": "results/phase4/comparison/runs/006_adaptive_heavy_s1",
+      "run_id": "grid3x3_adaptive_heavy_s1",
+      "study": "results/phase4/comparison",
+      "source": "batch",
+      "status": "completed",
+      "termination": "completed",
+      "created_at": "20261110T004623Z",
+      "versions": {
+        "git_commit": "74372cfcf19077b23cbc69377bbb6113bf7e411e",
+        "git_dirty": 1,
+        "sumo": "Eclipse SUMO sumo 1.28.0"
+      },
+      "config_digest": "011397f0fa",
+      "config": {
+        "backend": "libsumo",
+        "checkpoint": "",
+        "controller": "adaptive",
+        "controller_params": [],
+        "label": "",
+        "measure_s": 3600.0,
+        "mission": null,
+        "plan": "auto",
+        "profile": "heavy",
+        "scenario": "grid3x3",
+        "seed": 1,
+        "time_to_teleport_s": 300.0,
+        "warmup_s": 900.0
+      },
+      "metrics": {
+        "collisions": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "completed_trips": {
+          "value": 6855.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "corridor_held_requests": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "emergency_braking": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "max_red_s": {
+          "value": 50.0,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "phase_changes": {
+          "value": 1522.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_max_veh": {
+          "value": 27.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_mean_veh": {
+          "value": 3.8118,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "safety_violations": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports_jam": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "throughput_veh": {
+          "value": 7195.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "time_loss_mean_s": {
+          "value": 117.9014,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_all_mean_s": {
+          "value": 175.5214,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_mean_s": {
+          "value": 177.7488,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "unfinished_veh": {
+          "value": 370.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_inserted": {
+          "value": 9098.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_loaded": {
+          "value": 9099.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "waiting_time_mean_s": {
+          "value": 68.7504,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        }
+      },
+      "other_results": {
+        "controller_decisions": {
+          "extend": 2554,
+          "max_green": 12,
+          "pressure": 1883
+        },
+        "safety_interventions": {
+          "none": 1895
+        }
+      },
+      "missions": [],
+      "files": [
+        {
+          "type": "manifest",
+          "uri": "results/phase4/comparison/runs/006_adaptive_heavy_s1/manifest.json",
+          "sha256": "273effbe991624db685186eb102ba46f00f2519052253e7715bb57b740521ba2",
+          "provenance": "written by manzil.experiments.runner"
+        },
+        {
+          "type": "metrics",
+          "uri": "results/phase4/comparison/runs/006_adaptive_heavy_s1/metrics.json",
+          "sha256": "2ca17c26168751b932cc39abcfe7abdab011c0522467cd5579e73da6803232c7",
+          "provenance": "written by manzil.experiments.runner"
+        }
+      ]
+    },
+    {
+      "run_key": "results/phase4/comparison/runs/007_adaptive_heavy_s2",
+      "run_id": "grid3x3_adaptive_heavy_s2",
+      "study": "results/phase4/comparison",
+      "source": "batch",
+      "status": "completed",
+      "termination": "completed",
+      "created_at": "20261110T004626Z",
+      "versions": {
+        "git_commit": "74372cfcf19077b23cbc69377bbb6113bf7e411e",
+        "git_dirty": 1,
+        "sumo": "Eclipse SUMO sumo 1.28.0"
+      },
+      "config_digest": "151f199f10",
+      "config": {
+        "backend": "libsumo",
+        "checkpoint": "",
+        "controller": "adaptive",
+        "controller_params": [],
+        "label": "",
+        "measure_s": 3600.0,
+        "mission": null,
+        "plan": "auto",
+        "profile": "heavy",
+        "scenario": "grid3x3",
+        "seed": 2,
+        "time_to_teleport_s": 300.0,
+        "warmup_s": 900.0
+      },
+      "metrics": {
+        "collisions": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "completed_trips": {
+          "value": 6921.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "corridor_held_requests": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "emergency_braking": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "max_red_s": {
+          "value": 50.0,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "phase_changes": {
+          "value": 1546.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_max_veh": {
+          "value": 32.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_mean_veh": {
+          "value": 3.5391,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "safety_violations": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports_jam": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "throughput_veh": {
+          "value": 7218.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "time_loss_mean_s": {
+          "value": 110.2901,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_all_mean_s": {
+          "value": 167.8133,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_mean_s": {
+          "value": 170.2045,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "unfinished_veh": {
+          "value": 369.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_inserted": {
+          "value": 9102.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_loaded": {
+          "value": 9102.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "waiting_time_mean_s": {
+          "value": 64.239,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        }
+      },
+      "other_results": {
+        "controller_decisions": {
+          "extend": 1975,
+          "max_green": 5,
+          "pressure": 1919
+        },
+        "safety_interventions": {
+          "none": 1924
+        }
+      },
+      "missions": [],
+      "files": [
+        {
+          "type": "manifest",
+          "uri": "results/phase4/comparison/runs/007_adaptive_heavy_s2/manifest.json",
+          "sha256": "3de9f1d79ef3e6bc9f8e833778156d41889e773078a372c14d9e0f67ec6a51df",
+          "provenance": "written by manzil.experiments.runner"
+        },
+        {
+          "type": "metrics",
+          "uri": "results/phase4/comparison/runs/007_adaptive_heavy_s2/metrics.json",
+          "sha256": "a494767a69a8408bb530d66de9f12c446248d20cbce28640e40c9d5b688af95b",
+          "provenance": "written by manzil.experiments.runner"
+        }
+      ]
+    },
+    {
+      "run_key": "results/phase4/comparison/runs/008_adaptive_heavy_s3",
+      "run_id": "grid3x3_adaptive_heavy_s3",
+      "study": "results/phase4/comparison",
+      "source": "batch",
+      "status": "completed",
+      "termination": "completed",
+      "created_at": "20261110T004631Z",
+      "versions": {
+        "git_commit": "74372cfcf19077b23cbc69377bbb6113bf7e411e",
+        "git_dirty": 1,
+        "sumo": "Eclipse SUMO sumo 1.28.0"
+      },
+      "config_digest": "205b94cbd6",
+      "config": {
+        "backend": "libsumo",
+        "checkpoint": "",
+        "controller": "adaptive",
+        "controller_params": [],
+        "label": "",
+        "measure_s": 3600.0,
+        "mission": null,
+        "plan": "auto",
+        "profile": "heavy",
+        "scenario": "grid3x3",
+        "seed": 3,
+        "time_to_teleport_s": 300.0,
+        "warmup_s": 900.0
+      },
+      "metrics": {
+        "collisions": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "completed_trips": {
+          "value": 6889.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "corridor_held_requests": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "emergency_braking": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "max_red_s": {
+          "value": 50.0,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "phase_changes": {
+          "value": 1537.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_max_veh": {
+          "value": 30.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_mean_veh": {
+          "value": 3.8499,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "safety_violations": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports_jam": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "throughput_veh": {
+          "value": 7196.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "time_loss_mean_s": {
+          "value": 119.2523,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_all_mean_s": {
+          "value": 176.4661,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_mean_s": {
+          "value": 179.3154,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "unfinished_veh": {
+          "value": 376.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_inserted": {
+          "value": 9066.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_loaded": {
+          "value": 9069.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "waiting_time_mean_s": {
+          "value": 70.3731,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        }
+      },
+      "other_results": {
+        "controller_decisions": {
+          "extend": 2118,
+          "max_green": 11,
+          "pressure": 1905
+        },
+        "safety_interventions": {
+          "none": 1916
+        }
+      },
+      "missions": [],
+      "files": [
+        {
+          "type": "manifest",
+          "uri": "results/phase4/comparison/runs/008_adaptive_heavy_s3/manifest.json",
+          "sha256": "b2e779df53abc50042088fe208308af43f6df609bdeedc9bdbafa8d85707fd56",
+          "provenance": "written by manzil.experiments.runner"
+        },
+        {
+          "type": "metrics",
+          "uri": "results/phase4/comparison/runs/008_adaptive_heavy_s3/metrics.json",
+          "sha256": "ccd273d89fe9253f08a7b38c11e48e02a091285e957c2e7a5390e393590c493d",
+          "provenance": "written by manzil.experiments.runner"
+        }
+      ]
+    },
+    {
+      "run_key": "results/phase4/comparison/runs/009_adaptive_heavy_s4",
+      "run_id": "grid3x3_adaptive_heavy_s4",
+      "study": "results/phase4/comparison",
+      "source": "batch",
+      "status": "completed",
+      "termination": "completed",
+      "created_at": "20261110T004632Z",
+      "versions": {
+        "git_commit": "74372cfcf19077b23cbc69377bbb6113bf7e411e",
+        "git_dirty": 1,
+        "sumo": "Eclipse SUMO sumo 1.28.0"
+      },
+      "config_digest": "c8bd5407fa",
+      "config": {
+        "backend": "libsumo",
+        "checkpoint": "",
+        "controller": "adaptive",
+        "controller_params": [],
+        "label": "",
+        "measure_s": 3600.0,
+        "mission": null,
+        "plan": "auto",
+        "profile": "heavy",
+        "scenario": "grid3x3",
+        "seed": 4,
+        "time_to_teleport_s": 300.0,
+        "warmup_s": 900.0
+      },
+      "metrics": {
+        "collisions": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "completed_trips": {
+          "value": 6806.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "corridor_held_requests": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "emergency_braking": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "max_red_s": {
+          "value": 50.0,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "phase_changes": {
+          "value": 1535.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_max_veh": {
+          "value": 29.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_mean_veh": {
+          "value": 3.8552,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "safety_violations": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports_jam": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "throughput_veh": {
+          "value": 7144.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "time_loss_mean_s": {
+          "value": 117.8477,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_all_mean_s": {
+          "value": 175.7193,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_mean_s": {
+          "value": 177.989,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "unfinished_veh": {
+          "value": 458.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_inserted": {
+          "value": 9111.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_loaded": {
+          "value": 9116.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "waiting_time_mean_s": {
+          "value": 69.1043,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        }
+      },
+      "other_results": {
+        "controller_decisions": {
+          "extend": 2165,
+          "max_green": 14,
+          "pressure": 1900
+        },
+        "safety_interventions": {
+          "none": 1914
+        }
+      },
+      "missions": [],
+      "files": [
+        {
+          "type": "manifest",
+          "uri": "results/phase4/comparison/runs/009_adaptive_heavy_s4/manifest.json",
+          "sha256": "cf5c0854b6d4af3659185c83a4b2c179499e8be723741466ebbac352100c28ca",
+          "provenance": "written by manzil.experiments.runner"
+        },
+        {
+          "type": "metrics",
+          "uri": "results/phase4/comparison/runs/009_adaptive_heavy_s4/metrics.json",
+          "sha256": "7e564a2ffaf21d22044df5c0190a49436cfe15ff5f1ce16bf08edd52c05c11ff",
+          "provenance": "written by manzil.experiments.runner"
+        }
+      ]
+    },
+    {
+      "run_key": "results/phase4/comparison/runs/010_dqn_heavy_s0",
+      "run_id": "grid3x3_dqn_heavy_s0",
+      "study": "results/phase4/comparison",
+      "source": "batch",
+      "status": "completed",
+      "termination": "completed",
+      "created_at": "20261110T004633Z",
+      "versions": {
+        "git_commit": "74372cfcf19077b23cbc69377bbb6113bf7e411e",
+        "git_dirty": 1,
+        "sumo": "Eclipse SUMO sumo 1.28.0"
+      },
+      "config_digest": "d1b8367bf5",
+      "config": {
+        "backend": "libsumo",
+        "checkpoint": "",
+        "controller": "dqn",
+        "controller_params": [],
+        "label": "",
+        "measure_s": 3600.0,
+        "mission": null,
+        "plan": "auto",
+        "profile": "heavy",
+        "scenario": "grid3x3",
+        "seed": 0,
+        "time_to_teleport_s": 300.0,
+        "warmup_s": 900.0
+      },
+      "metrics": {
+        "collisions": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "completed_trips": {
+          "value": 6938.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "corridor_held_requests": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "emergency_braking": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "max_red_s": {
+          "value": 65.0,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "phase_changes": {
+          "value": 1540.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_max_veh": {
+          "value": 25.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_mean_veh": {
+          "value": 2.903,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "safety_violations": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports_jam": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "throughput_veh": {
+          "value": 7234.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "time_loss_mean_s": {
+          "value": 89.8046,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_all_mean_s": {
+          "value": 147.8316,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_mean_s": {
+          "value": 150.0007,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "unfinished_veh": {
+          "value": 307.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_inserted": {
+          "value": 9060.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_loaded": {
+          "value": 9060.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "waiting_time_mean_s": {
+          "value": 53.4323,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        }
+      },
+      "other_results": {
+        "controller_decisions": {
+          "fallback": 0,
+          "greedy": 6159
+        },
+        "safety_interventions": {
+          "none": 1933
+        }
+      },
+      "missions": [],
+      "files": [
+        {
+          "type": "manifest",
+          "uri": "results/phase4/comparison/runs/010_dqn_heavy_s0/manifest.json",
+          "sha256": "31bf5f0ba98d5c6eb447bdc92797c2a94f39f69d3b5ab4265881bae59bcf4ea0",
+          "provenance": "written by manzil.experiments.runner"
+        },
+        {
+          "type": "metrics",
+          "uri": "results/phase4/comparison/runs/010_dqn_heavy_s0/metrics.json",
+          "sha256": "9151620597a9a0e389fa53e29aa850d12f5e3fa2435c64b5de0c6016c3ba1812",
+          "provenance": "written by manzil.experiments.runner"
+        }
+      ]
+    },
+    {
+      "run_key": "results/phase4/comparison/runs/011_dqn_heavy_s1",
+      "run_id": "grid3x3_dqn_heavy_s1",
+      "study": "results/phase4/comparison",
+      "source": "batch",
+      "status": "completed",
+      "termination": "completed",
+      "created_at": "20261110T004634Z",
+      "versions": {
+        "git_commit": "74372cfcf19077b23cbc69377bbb6113bf7e411e",
+        "git_dirty": 1,
+        "sumo": "Eclipse SUMO sumo 1.28.0"
+      },
+      "config_digest": "ffd8d44784",
+      "config": {
+        "backend": "libsumo",
+        "checkpoint": "",
+        "controller": "dqn",
+        "controller_params": [],
+        "label": "",
+        "measure_s": 3600.0,
+        "mission": null,
+        "plan": "auto",
+        "profile": "heavy",
+        "scenario": "grid3x3",
+        "seed": 1,
+        "time_to_teleport_s": 300.0,
+        "warmup_s": 900.0
+      },
+      "metrics": {
+        "collisions": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "completed_trips": {
+          "value": 6925.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "corridor_held_requests": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "emergency_braking": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "max_red_s": {
+          "value": 89.0,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "phase_changes": {
+          "value": 1513.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_max_veh": {
+          "value": 29.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_mean_veh": {
+          "value": 3.1041,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "safety_violations": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports_jam": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "throughput_veh": {
+          "value": 7235.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "time_loss_mean_s": {
+          "value": 94.5855,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_all_mean_s": {
+          "value": 152.3239,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_mean_s": {
+          "value": 154.4653,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "unfinished_veh": {
+          "value": 300.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_inserted": {
+          "value": 9098.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_loaded": {
+          "value": 9099.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "waiting_time_mean_s": {
+          "value": 56.7617,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        }
+      },
+      "other_results": {
+        "controller_decisions": {
+          "fallback": 0,
+          "greedy": 6198
+        },
+        "safety_interventions": {
+          "max_red_forced": 1,
+          "none": 1893
+        }
+      },
+      "missions": [],
+      "files": [
+        {
+          "type": "manifest",
+          "uri": "results/phase4/comparison/runs/011_dqn_heavy_s1/manifest.json",
+          "sha256": "a929e60b1a2e27f19d810b467a9897b02f1778f629592c67028edb086514f5e0",
+          "provenance": "written by manzil.experiments.runner"
+        },
+        {
+          "type": "metrics",
+          "uri": "results/phase4/comparison/runs/011_dqn_heavy_s1/metrics.json",
+          "sha256": "7847b0db20f33114393626e4f6cb850d2c039a23a0cef74dd0e74617cf3d0d3a",
+          "provenance": "written by manzil.experiments.runner"
+        }
+      ]
+    },
+    {
+      "run_key": "results/phase4/comparison/runs/012_dqn_heavy_s2",
+      "run_id": "grid3x3_dqn_heavy_s2",
+      "study": "results/phase4/comparison",
+      "source": "batch",
+      "status": "completed",
+      "termination": "completed",
+      "created_at": "20261110T004642Z",
+      "versions": {
+        "git_commit": "74372cfcf19077b23cbc69377bbb6113bf7e411e",
+        "git_dirty": 1,
+        "sumo": "Eclipse SUMO sumo 1.28.0"
+      },
+      "config_digest": "a7d0f93936",
+      "config": {
+        "backend": "libsumo",
+        "checkpoint": "",
+        "controller": "dqn",
+        "controller_params": [],
+        "label": "",
+        "measure_s": 3600.0,
+        "mission": null,
+        "plan": "auto",
+        "profile": "heavy",
+        "scenario": "grid3x3",
+        "seed": 2,
+        "time_to_teleport_s": 300.0,
+        "warmup_s": 900.0
+      },
+      "metrics": {
+        "collisions": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "completed_trips": {
+          "value": 6980.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "corridor_held_requests": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "emergency_braking": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "max_red_s": {
+          "value": 65.0,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "phase_changes": {
+          "value": 1553.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_max_veh": {
+          "value": 33.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_mean_veh": {
+          "value": 2.9667,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "safety_violations": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports_jam": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "throughput_veh": {
+          "value": 7246.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "time_loss_mean_s": {
+          "value": 91.3526,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_all_mean_s": {
+          "value": 149.0342,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_mean_s": {
+          "value": 151.2521,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "unfinished_veh": {
+          "value": 310.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_inserted": {
+          "value": 9102.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_loaded": {
+          "value": 9102.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "waiting_time_mean_s": {
+          "value": 54.4701,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        }
+      },
+      "other_results": {
+        "controller_decisions": {
+          "fallback": 0,
+          "greedy": 6153
+        },
+        "safety_interventions": {
+          "none": 1939
+        }
+      },
+      "missions": [],
+      "files": [
+        {
+          "type": "manifest",
+          "uri": "results/phase4/comparison/runs/012_dqn_heavy_s2/manifest.json",
+          "sha256": "edad5654f5e479cc5ccbb503ba3412a5a9db581beb2df93568c44068ce14ac88",
+          "provenance": "written by manzil.experiments.runner"
+        },
+        {
+          "type": "metrics",
+          "uri": "results/phase4/comparison/runs/012_dqn_heavy_s2/metrics.json",
+          "sha256": "a2ac8eb37c1a9754b88e117f32de2459925f95f3c5c26c3ddf8ee9ab7facf287",
+          "provenance": "written by manzil.experiments.runner"
+        }
+      ]
+    },
+    {
+      "run_key": "results/phase4/comparison/runs/013_dqn_heavy_s3",
+      "run_id": "grid3x3_dqn_heavy_s3",
+      "study": "results/phase4/comparison",
+      "source": "batch",
+      "status": "completed",
+      "termination": "completed",
+      "created_at": "20261110T004645Z",
+      "versions": {
+        "git_commit": "74372cfcf19077b23cbc69377bbb6113bf7e411e",
+        "git_dirty": 1,
+        "sumo": "Eclipse SUMO sumo 1.28.0"
+      },
+      "config_digest": "564863da94",
+      "config": {
+        "backend": "libsumo",
+        "checkpoint": "",
+        "controller": "dqn",
+        "controller_params": [],
+        "label": "",
+        "measure_s": 3600.0,
+        "mission": null,
+        "plan": "auto",
+        "profile": "heavy",
+        "scenario": "grid3x3",
+        "seed": 3,
+        "time_to_teleport_s": 300.0,
+        "warmup_s": 900.0
+      },
+      "metrics": {
+        "collisions": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "completed_trips": {
+          "value": 6954.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "corridor_held_requests": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "emergency_braking": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "max_red_s": {
+          "value": 80.0,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "phase_changes": {
+          "value": 1531.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_max_veh": {
+          "value": 31.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_mean_veh": {
+          "value": 3.1983,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "safety_violations": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports_jam": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "throughput_veh": {
+          "value": 7233.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "time_loss_mean_s": {
+          "value": 98.3837,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_all_mean_s": {
+          "value": 156.057,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_mean_s": {
+          "value": 158.5237,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "unfinished_veh": {
+          "value": 312.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_inserted": {
+          "value": 9067.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_loaded": {
+          "value": 9069.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "waiting_time_mean_s": {
+          "value": 59.2013,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        }
+      },
+      "other_results": {
+        "controller_decisions": {
+          "fallback": 0,
+          "greedy": 6157
+        },
+        "safety_interventions": {
+          "none": 1936
+        }
+      },
+      "missions": [],
+      "files": [
+        {
+          "type": "manifest",
+          "uri": "results/phase4/comparison/runs/013_dqn_heavy_s3/manifest.json",
+          "sha256": "d670c98153f23985772e3ea69c5085ad75b3d3e36d6b7b5e1e590d900672c265",
+          "provenance": "written by manzil.experiments.runner"
+        },
+        {
+          "type": "metrics",
+          "uri": "results/phase4/comparison/runs/013_dqn_heavy_s3/metrics.json",
+          "sha256": "9156c3141359784f33a8e68a9b5bb98dc77dcc0d5f8bf81bce9bf6d9bdb10aa1",
+          "provenance": "written by manzil.experiments.runner"
+        }
+      ]
+    },
+    {
+      "run_key": "results/phase4/comparison/runs/014_dqn_heavy_s4",
+      "run_id": "grid3x3_dqn_heavy_s4",
+      "study": "results/phase4/comparison",
+      "source": "batch",
+      "status": "completed",
+      "termination": "completed",
+      "created_at": "20261110T004645Z",
+      "versions": {
+        "git_commit": "74372cfcf19077b23cbc69377bbb6113bf7e411e",
+        "git_dirty": 1,
+        "sumo": "Eclipse SUMO sumo 1.28.0"
+      },
+      "config_digest": "e06895ba9a",
+      "config": {
+        "backend": "libsumo",
+        "checkpoint": "",
+        "controller": "dqn",
+        "controller_params": [],
+        "label": "",
+        "measure_s": 3600.0,
+        "mission": null,
+        "plan": "auto",
+        "profile": "heavy",
+        "scenario": "grid3x3",
+        "seed": 4,
+        "time_to_teleport_s": 300.0,
+        "warmup_s": 900.0
+      },
+      "metrics": {
+        "collisions": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "completed_trips": {
+          "value": 6862.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "corridor_held_requests": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "emergency_braking": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "max_red_s": {
+          "value": 70.0,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "phase_changes": {
+          "value": 1495.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_max_veh": {
+          "value": 33.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "queue_mean_veh": {
+          "value": 3.4751,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "safety_violations": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "teleports_jam": {
+          "value": 0.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "throughput_veh": {
+          "value": 7177.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "time_loss_mean_s": {
+          "value": 103.9426,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_all_mean_s": {
+          "value": 161.8413,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "travel_time_mean_s": {
+          "value": 164.1392,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "unfinished_veh": {
+          "value": 402.0,
+          "unit": "veh",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_inserted": {
+          "value": 9111.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "vehicles_loaded": {
+          "value": 9116.0,
+          "unit": "count",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        },
+        "waiting_time_mean_s": {
+          "value": 62.9595,
+          "unit": "s",
+          "metric_version": 1,
+          "interval_s": [
+            900.0,
+            4500.0
+          ]
+        }
+      },
+      "other_results": {
+        "controller_decisions": {
+          "fallback": 0,
+          "greedy": 6214
+        },
+        "safety_interventions": {
+          "none": 1881
+        }
+      },
+      "missions": [],
+      "files": [
+        {
+          "type": "manifest",
+          "uri": "results/phase4/comparison/runs/014_dqn_heavy_s4/manifest.json",
+          "sha256": "391156cc637e788619e408e43196cefc1d5aad3caa46798143a06611c558def5",
+          "provenance": "written by manzil.experiments.runner"
+        },
+        {
+          "type": "metrics",
+          "uri": "results/phase4/comparison/runs/014_dqn_heavy_s4/metrics.json",
+          "sha256": "b00fc208d7baf52d087ecd335a0bc0649e279f5df17dccb9bcdad4d2089ea0f1",
+          "provenance": "written by manzil.experiments.runner"
+        }
+      ]
+    }
+  ]
+}
