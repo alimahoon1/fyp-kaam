@@ -1,0 +1,13 @@
+{
+  "id": "mibrahimsalman022/manzil-lahore-train",
+  "title": "manzil-lahore-train",
+  "code_file": "lahore_train.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": ["mibrahimsalman022/manzil-lahore-labels", "mibrahimsalman022/manzil-lahore-videos"],
+  "competition_sources": [],
+  "kernel_sources": ["mibrahimsalman022/manzil-lahore-frames", "mibrahimsalman022/manzil-yolo-train", "mibrahimsalman022/manzil-yolo-data"]
+}
