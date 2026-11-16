@@ -1,0 +1,94 @@
+{
+  "path": "(in memory, built from the committed results/ folder only)",
+  "schema_version": 1,
+  "runs": 375,
+  "metric_samples": 13690,
+  "missions": 255,
+  "route_versions": 274,
+  "priority_events": 5769,
+  "video_jobs": 40,
+  "observations": 2477,
+  "artifacts": 1009,
+  "studies": [
+    {
+      "study": "results/phase2/comparison",
+      "source": "batch",
+      "runs": 60,
+      "completed": 60,
+      "not_completed": 0,
+      "controllers": "fixed_time,adaptive",
+      "profiles": "heavy,light,medium,uneven",
+      "labels": null
+    },
+    {
+      "study": "results/phase3/corridor",
+      "source": "batch",
+      "runs": 20,
+      "completed": 20,
+      "not_completed": 0,
+      "controllers": "fixed_time",
+      "profiles": "medium,heavy",
+      "labels": "corridor_off,corridor_on"
+    },
+    {
+      "study": "results/phase3/corridor_v2/demo_scenario",
+      "source": "batch",
+      "runs": 15,
+      "completed": 15,
+      "not_completed": 0,
+      "controllers": "dqn",
+      "profiles": "heavy",
+      "labels": "off,v1,v2"
+    },
+    {
+      "study": "results/phase3/corridor_v2/dqn",
+      "source": "batch",
+      "runs": 90,
+      "completed": 90,
+      "not_completed": 0,
+      "controllers": "dqn",
+      "profiles": "medium,heavy",
+      "labels": "off,v1,early25,early30,trunc5,giveway,early30_trunc5,combined,v2"
+    },
+    {
+      "study": "results/phase3/corridor_v2/dqn_before_fix",
+      "source": "batch",
+      "runs": 20,
+      "completed": 20,
+      "not_completed": 0,
+      "controllers": "dqn",
+      "profiles": "medium,heavy",
+      "labels": "off,v1"
+    },
+    {
+      "study": "results/phase3/corridor_v2/fixed_time",
+      "source": "batch",
+      "runs": 90,
+      "completed": 90,
+      "not_completed": 0,
+      "controllers": "fixed_time",
+      "profiles": "medium,heavy",
+      "labels": "off,v1,early25,early30,trunc5,giveway,early30_trunc5,combined,v2"
+    },
+    {
+      "study": "results/phase3/routing",
+      "source": "batch",
+      "runs": 20,
+      "completed": 20,
+      "not_completed": 0,
+      "controllers": "fixed_time",
+      "profiles": "medium,heavy",
+      "labels": "static,dynamic"
+    },
+    {
+      "study": "results/phase4/comparison",
+      "source": "batch",
+      "runs": 60,
+      "completed": 60,
+      "not_completed": 0,
+      "controllers": "fixed_time,adaptive,dqn",
+      "profiles": "heavy,light,medium,uneven",
+      "labels": null
+    }
+  ]
+}

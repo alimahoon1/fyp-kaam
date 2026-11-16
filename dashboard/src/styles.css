@@ -186,10 +186,10 @@ nav a.on small { color: var(--accent); }
 .pill.finished, .pill.stopped { background: var(--panel-2); color: var(--muted); }
 
 .warnings { display: flex; flex-direction: column; gap: 2px; }
-.warning { display: flex; gap: 12px; align-items: baseline; padding: 7px 18px; font-size: 13px; }
-.warning.error { background: #3d1517; color: #ffc9ca; border-bottom: 1px solid var(--st-critical); }
-.warning.warning { background: #3a2c0c; color: #ffe2a3; border-bottom: 1px solid var(--st-warning); }
-.warning.info { background: var(--panel-2); color: var(--text); }
+.wbar { display: flex; gap: 12px; align-items: baseline; padding: 7px 18px; font-size: 13px; }
+.wbar.error { background: #3d1517; color: #ffc9ca; border-bottom: 1px solid var(--st-critical); }
+.wbar.warning { background: #3a2c0c; color: #ffe2a3; border-bottom: 1px solid var(--st-warning); }
+.wbar.info { background: var(--panel-2); color: var(--text); }
 .wcode { font-size: 12px; letter-spacing: 0.06em; white-space: nowrap; }
 .alert.top, .notice.top { border-radius: 0; border-left: none; border-right: none; }
 

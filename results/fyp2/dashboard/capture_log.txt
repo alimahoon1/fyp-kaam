@@ -1,0 +1,23 @@
+saved 01b_g01_validation_error.png
+saved 01_g01_configuration.png
+run 20261115T233630Z_grid3x3_dqn_heavy_s0 started
+route v1 left0A0 > A0B0 > B0B1 > B1B2 > B2C2 > C2top2; ambulance on left0A0; closing B0B1 at 121 s
+sim 123 s: route v2 (dispatch > closure), corridor {"A0":"ACTIVE_PRIORITY","A1":"REQUESTED"}
+saved 02_g02_traffic_overview.png
+saved 04_g04_emergency_dispatch.png
+ambulance arrived at 234 s: 114 s travel, 2 stops
+saved 04b_g04_mission_arrived.png
+saved 03_g03_perception_intersection.png
+saved 06_fr02_paused.png
+fallback: {"code":"fallback","level":"error","since_s":515,"message":"DQN unavailable (fault injected at 510 s): 52 decisions so far held the current legal phase (FR-20 safe fallback)"}
+saved 07_fr16_fallback.png
+invalid: [{"code":"invalid","level":"warning","message":"ambulance_2: no route from left0A0 to C2top2 (NO_ROUTE); no corridor was activated"}]
+saved 10_fr16_invalid_no_route.png
+freezing SUMO pids 611,612
+stale: age 3.39 s, {"code":"stale","level":"error","message":"no new simulation state for 3.4 s (limit 2 s); the values shown are old"}
+saved 08_fr16_stale.png
+stopped at 701 s; safety violations 0
+saved 05_g05_comparative_analytics.png
+saved 05b_g05_comparability_warning.png
+stopping the API process 473
+saved 09_fr16_disconnected.png

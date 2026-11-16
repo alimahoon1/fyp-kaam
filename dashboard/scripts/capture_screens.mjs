@@ -17,14 +17,21 @@ const post = (p, b = {}) => fetch(`${BASE}${p}`, { method: "POST", headers: { "C
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 async function until(pred, what, timeout = 180000) {
   const end = Date.now() + timeout;
-  while (Date.now() < end) { const s = await state(); if (pred(s)) return s; await sleep(200); }
+  while (Date.now() < end) {
+    const s = await state().catch(() => null); // a dropped poll is retried, not fatal
+    if (s && pred(s)) return s;
+    await sleep(200);
+  }
   throw new Error(`timeout waiting for ${what}`);
 }
-const sumoPids = (runId) => execSync(`pgrep -f "sumo .*${runId}" || true`).toString().trim().split("\n").filter(Boolean);
+// "[s]umo" so the shell running pgrep does not match itself
+const sumoPids = (runId) => execSync(`pgrep -f "[s]umo .*${runId}" || true`).toString().trim().split("\n").filter(Boolean);
 
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 });
-const shot = async (name, full = false) => { await sleep(700); await page.screenshot({ path: `${out}/${name}.png`, fullPage: full }); note(`saved ${name}.png`); };
+const shot = async (name, full = false) => {
+  await page.locator(".notice").click().catch(() => {}); // hide the last "done" message
+  await sleep(700); await page.screenshot({ path: `${out}/${name}.png`, fullPage: full }); note(`saved ${name}.png`); };
 const go = async (screen) => { await page.evaluate((s) => { location.hash = `#/${s}`; }, screen); await sleep(500); };
 
 await page.goto(`${BASE}/#/config`);

@@ -49,7 +49,7 @@ export function WarningBanner({ warnings }: { warnings: Warning[] }) {
   return (
     <div className="warnings" role="alert" data-testid="warnings">
       {warnings.map((w, i) => (
-        <div key={`${w.code}-${i}`} className={`warning ${w.level} code-${w.code}`}>
+        <div key={`${w.code}-${i}`} className={`wbar ${w.level} code-${w.code}`}>
           <b className="wcode">{LEVEL_ICON[w.level] ?? "!"} {WARNING_TITLE[w.code] ?? w.code.toUpperCase()}</b>
           <span>{w.message}{w.since_s != null ? ` (since ${fmtTime(w.since_s)})` : ""}</span>
         </div>

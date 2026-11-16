@@ -104,10 +104,10 @@ export function OverviewScreen({ net, opts, state, conn, config, act, busy, go }
             <div><small>sim rate</small><b>{st?.sim_rate != null ? `${st.sim_rate}×` : "–"}</b></div>
           </div>
           <LineChart ariaLabel="Vehicles in the network and halting vehicles over simulated time"
-            xLabel="sim time (min)" yLabel="vehicles" xFormat={(x) => (x / 60).toFixed(0)} height={160}
+            xLabel="sim time (min)" yLabel="vehicles" xFormat={(x) => (x % 1 ? x.toFixed(1) : x.toFixed(0))} height={160}
             series={[
-              { name: "in network", points: history.map((h) => [h[0], h[1]]) },
-              { name: "halting", points: history.map((h) => [h[0], h[2]]) },
+              { name: "in network", points: history.map((h) => [h[0] / 60, h[1]]) },
+              { name: "halting", points: history.map((h) => [h[0] / 60, h[2]]) },
             ]} />
         </div>
 
