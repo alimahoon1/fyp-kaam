@@ -1,0 +1,91 @@
+{
+  "images_reviewed": 247,
+  "images_not_reviewed": [
+    "v1_s0_f00022.jpg",
+    "v1_s0_f00037.jpg",
+    "v1_s0_f00052.jpg",
+    "v1_s0_f00067.jpg",
+    "v1_s0_f00082.jpg",
+    "v1_s0_f00097.jpg",
+    "v1_s0_f00112.jpg",
+    "v1_s0_f00127.jpg",
+    "v1_s0_f00142.jpg",
+    "v1_s0_f00157.jpg",
+    "v1_s0_f00172.jpg",
+    "v1_s0_f00187.jpg",
+    "v1_s0_f00412.jpg",
+    "v1_s0_f00427.jpg",
+    "v1_s0_f00442.jpg",
+    "v1_s0_f00457.jpg",
+    "v1_s1_f00472.jpg",
+    "v1_s1_f00487.jpg",
+    "v1_s1_f00517.jpg",
+    "v1_s2_f02555.jpg",
+    "v1_s2_f02570.jpg",
+    "v1_s2_f02585.jpg",
+    "v1_s3_f02614.jpg",
+    "v1_s3_f02629.jpg",
+    "v1_s3_f02644.jpg",
+    "v1_s3_f02659.jpg"
+  ],
+  "prelabels": {
+    "car": 6149,
+    "rickshaw": 2325,
+    "motorcycle": 3383,
+    "truck": 437,
+    "van": 314,
+    "bus": 331
+  },
+  "final": {
+    "car": 5040,
+    "rickshaw": 2060,
+    "motorcycle": 3000,
+    "truck": 349,
+    "van": 553,
+    "bus": 148
+  },
+  "deleted": 241,
+  "reclassed": 924,
+  "added": 483,
+  "accepted_candidates": 430,
+  "by_class": {
+    "car": {
+      "deleted": 70,
+      "reclassed_from": 376,
+      "reclassed_to": 60,
+      "added": 141
+    },
+    "bus": {
+      "deleted": 6,
+      "reclassed_from": 67,
+      "reclassed_to": 51,
+      "added": 0
+    },
+    "truck": {
+      "deleted": 20,
+      "reclassed_from": 105,
+      "reclassed_to": 110,
+      "added": 11
+    },
+    "motorcycle": {
+      "deleted": 35,
+      "reclassed_from": 12,
+      "reclassed_to": 1,
+      "added": 106
+    },
+    "rickshaw": {
+      "deleted": 104,
+      "reclassed_from": 279,
+      "reclassed_to": 363,
+      "added": 141
+    },
+    "van": {
+      "deleted": 6,
+      "reclassed_from": 85,
+      "reclassed_to": 339,
+      "added": 84
+    }
+  },
+  "far_field_dropped": 415,
+  "added_by_hand": 53
+}

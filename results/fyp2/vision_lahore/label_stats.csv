@@ -1,0 +1,6 @@
+split,frames,frames_with_reviewed_labels,prelabels,deleted,class_changed,candidates_accepted,added_by_hand,car,bus,truck,motorcycle,rickshaw,van,boxes
+train,134,134,6435,140,566,415,33,3026,76,200,1599,1313,317,6531
+val,14,14,951,14,31,0,0,324,6,45,280,230,43,928
+test_v1,72,72,3407,76,249,3,1,1443,65,101,1021,377,178,3185
+test_v2,25,25,421,6,67,0,17,210,0,0,66,102,11,389
+unused,28,2,1725,5,14,12,2,37,1,3,34,38,4,117
