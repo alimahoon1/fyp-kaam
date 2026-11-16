@@ -1,0 +1,35 @@
+{
+  "metric_version": 1,
+  "run_id": "grid3x3_adaptive_light_s20",
+  "window_s": [
+    900.0,
+    4500.0
+  ],
+  "throughput_veh": 2410,
+  "completed_trips": 2335,
+  "unfinished_veh": 60,
+  "travel_time_mean_s": 98.3323,
+  "travel_time_all_mean_s": 97.3353,
+  "waiting_time_mean_s": 22.3392,
+  "time_loss_mean_s": 38.4577,
+  "queue_mean_veh": 0.4076,
+  "queue_max_veh": 8,
+  "phase_changes": 1092,
+  "max_red_s": 50.0,
+  "vehicles_loaded": 3004,
+  "vehicles_inserted": 3004,
+  "teleports": 0,
+  "teleports_jam": 0,
+  "collisions": 0,
+  "emergency_braking": 0,
+  "safety_violations": 0,
+  "safety_interventions": {
+    "none": 1359
+  },
+  "controller_decisions": {
+    "extend": 13249,
+    "max_green": 225,
+    "pressure": 1134
+  },
+  "corridor_held_requests": 0
+}

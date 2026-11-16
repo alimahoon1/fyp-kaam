@@ -1,0 +1,34 @@
+{
+  "metric_version": 1,
+  "run_id": "grid3x3_dqn_tidal_s25",
+  "window_s": [
+    900.0,
+    4500.0
+  ],
+  "throughput_veh": 4894,
+  "completed_trips": 4772,
+  "unfinished_veh": 134,
+  "travel_time_mean_s": 101.9449,
+  "travel_time_all_mean_s": 100.7599,
+  "waiting_time_mean_s": 21.5966,
+  "time_loss_mean_s": 41.593,
+  "queue_mean_veh": 0.7804,
+  "queue_max_veh": 13,
+  "phase_changes": 1776,
+  "max_red_s": 65.0,
+  "vehicles_loaded": 6113,
+  "vehicles_inserted": 6113,
+  "teleports": 0,
+  "teleports_jam": 0,
+  "collisions": 0,
+  "emergency_braking": 0,
+  "safety_violations": 0,
+  "safety_interventions": {
+    "none": 2211
+  },
+  "controller_decisions": {
+    "fallback": 0,
+    "greedy": 5883
+  },
+  "corridor_held_requests": 0
+}

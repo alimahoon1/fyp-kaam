@@ -1,0 +1,16 @@
+{
+  "fixed_time": {
+    "safety_violations": 0,
+    "amb_red_crossings": 0,
+    "teleports": 0,
+    "collisions": 0,
+    "runs": 60
+  },
+  "dqn": {
+    "safety_violations": 0,
+    "amb_red_crossings": 0,
+    "teleports": 0,
+    "collisions": 0,
+    "runs": 60
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "scenario": "grid3x3",
+  "scenario_root": "",
+  "arms": [
+    {
+      "name": "fixed_time",
+      "controller": "fixed_time",
+      "plan": "auto",
+      "checkpoint": ""
+    },
+    {
+      "name": "adaptive",
+      "controller": "adaptive",
+      "plan": "auto",
+      "checkpoint": ""
+    },
+    {
+      "name": "dqn_s0",
+      "controller": "dqn",
+      "plan": "auto",
+      "checkpoint": "models/dqn/grid3x3/best.pt"
+    },
+    {
+      "name": "dqn_s1",
+      "controller": "dqn",
+      "plan": "auto",
+      "checkpoint": "models/dqn/grid3x3_base_s1/best.pt"
+    },
+    {
+      "name": "dqn_s2",
+      "controller": "dqn",
+      "plan": "auto",
+      "checkpoint": "models/dqn/grid3x3_base_s2/best.pt"
+    },
+    {
+      "name": "dqn_fair_s0",
+      "controller": "dqn",
+      "plan": "auto",
+      "checkpoint": "models/dqn/grid3x3_fair_s0/best.pt"
+    },
+    {
+      "name": "dqn_fair_s1",
+      "controller": "dqn",
+      "plan": "auto",
+      "checkpoint": "models/dqn/grid3x3_fair_s1/best.pt"
+    },
+    {
+      "name": "dqn_fair_s2",
+      "controller": "dqn",
+      "plan": "auto",
+      "checkpoint": "models/dqn/grid3x3_fair_s2/best.pt"
+    }
+  ],
+  "profiles": [
+    "light",
+    "medium",
+    "heavy",
+    "uneven",
+    "uneven_ew",
+    "tidal",
+    "peak"
+  ],
+  "seeds": [
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29
+  ],
+  "warmup_s": 900.0,
+  "measure_s": 3600.0,
+  "fixed_time_plans": {
+    "light": "light",
+    "medium": "medium",
+    "heavy": "heavy",
+    "uneven": "uneven",
+    "uneven_ew": "equal",
+    "tidal": "medium",
+    "peak": "medium"
+  },
+  "heldout_profiles": [
+    "uneven_ew",
+    "tidal",
+    "peak"
+  ],
+  "dev_seeds_for_plan_selection": [
+    100,
+    101
+  ]
+}
