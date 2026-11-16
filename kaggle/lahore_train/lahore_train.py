@@ -42,6 +42,11 @@ import time
 
 ULTRALYTICS = "ultralytics==8.4.210"
 WEIGHTS_SHA256 = "0022c8a0394bf8a583ef0d21e324853a73251ca86a3ac6caab656fd65ae8dc2f"
+# Six-class weights trained by version 1 of this kernel (16 Nov 2026), stored in the private dataset
+# manzil-lahore-weights. When that dataset is attached, training is skipped and only steps 3-5 run
+# (version 1 crashed in step 3; see results/fyp2/vision_lahore/README.md).
+WEIGHTS6_NAME = "manzil_yolo11s_lahore6_best.pt"
+WEIGHTS6_SHA256 = "0bdad8c2e2d29138a106e14790ecf393726e3fc65a0a5c1e57067d8af7f683cb"
 VIDEOS = {"v1": "manzil-lahore-video.mp4", "v2": "manzil-lahore-video-2.mov"}
 IMGSZ = 1280
 EPOCHS = int(os.environ.get("MANZIL_EPOCHS", 60))
@@ -815,10 +820,14 @@ def main():
     # label variants for the old four-class model
     for variant in ("old4", "oldconv"):
         for t in ("test", "test_v1", "test_v2"):
-            os.makedirs(f"{W}/{variant}/images", exist_ok=True)
+            # hard links, not a symlinked folder: Ultralytics resolves symlinks and would then
+            # read the six-class labels next to the original images (the version-1 crash)
+            os.makedirs(f"{W}/{variant}/images/{t}", exist_ok=True)
             os.makedirs(f"{W}/{variant}/labels/{t}", exist_ok=True)
-            if not os.path.exists(f"{W}/{variant}/images/{t}"):
-                os.symlink(f"{D}/images/{t}", f"{W}/{variant}/images/{t}")
+            for img in glob.glob(f"{D}/images/{t}/*.jpg"):
+                dst = f"{W}/{variant}/images/{t}/{os.path.basename(img)}"
+                if not os.path.exists(dst):
+                    os.link(img, dst)
             for p in glob.glob(f"{D}/labels/{t}/*.txt"):
                 rows = []
                 for c, *xywh in read_labels(p):
@@ -852,17 +861,26 @@ def main():
         print(name, json.dumps(s), flush=True)
         return s
 
-    # ---- 2. train
-    t0 = time.time()
-    model = YOLO(base)
-    model.train(data=yamls["test"], epochs=EPOCHS, imgsz=IMGSZ, batch=BATCH_PER_GPU * max(1, gpus),
-                seed=SEED, deterministic=True, patience=PATIENCE, workers=4,
-                device=list(range(gpus)) if gpus > 1 else 0,
-                project=f"{W}/runs", name="lahore6", exist_ok=True, plots=True)
-    results["train_seconds"] = round(time.time() - t0, 1)
-    run = f"{W}/runs/lahore6"
-    shutil.copy(f"{run}/weights/best.pt", f"{OUT}/manzil_yolo11s_lahore6_best.pt")
-    results["weights_sha256"] = sha256(f"{OUT}/manzil_yolo11s_lahore6_best.pt")
+    # ---- 2. train (skipped when the version-1 weights are attached)
+    pre6 = sorted(glob.glob(f"{INPUT}/**/{WEIGHTS6_NAME}", recursive=True))
+    if pre6:
+        if sha256(pre6[0]) != WEIGHTS6_SHA256:
+            raise RuntimeError("six-class weights checksum")
+        new_path = pre6[0]
+        run = os.path.dirname(new_path)  # results.csv and args.yaml of the training run sit beside
+        results["training"] = "kernel manzil-lahore-train version 1 (16 Nov 2026); reused here"
+    else:
+        t0 = time.time()
+        model = YOLO(base)
+        model.train(data=yamls["test"], epochs=EPOCHS, imgsz=IMGSZ,
+                    batch=BATCH_PER_GPU * max(1, gpus), seed=SEED, deterministic=True,
+                    patience=PATIENCE, workers=4, device=list(range(gpus)) if gpus > 1 else 0,
+                    project=f"{W}/runs", name="lahore6", exist_ok=True, plots=True)
+        results["train_seconds"] = round(time.time() - t0, 1)
+        run = f"{W}/runs/lahore6"
+        new_path = f"{OUT}/{WEIGHTS6_NAME}"
+        shutil.copy(f"{run}/weights/best.pt", new_path)
+    results["weights_sha256"] = sha256(new_path)
     with open(f"{run}/results.csv") as f:
         rows = list(csv.DictReader(f))
     key = next(k for k in rows[0] if "mAP50-95" in k)
@@ -871,7 +889,7 @@ def main():
     results["epochs_run"] = len(rows)
 
     # ---- 3. Lahore test
-    new = YOLO(f"{OUT}/manzil_yolo11s_lahore6_best.pt")
+    new = YOLO(new_path)
     old = YOLO(base)
     results["lahore_test"] = {"new_six_class": {}, "old_model_old4": {}, "old_model_oldconv": {},
                               "confusion": {}}
@@ -939,7 +957,7 @@ def main():
             counter.update(int(r["frame"]), keep(linker.update([(g.cls, *g.box) for g in labs])))
         record("labels_linked_2fps", "reviewed labels", counter.finalize())
 
-        for mname, mpath in (("new6", f"{OUT}/manzil_yolo11s_lahore6_best.pt"), ("old4", base)):
+        for mname, mpath in (("new6", new_path), ("old4", base)):
             # detections on the labelled frames, linked the same way as the reference
             m = YOLO(mpath)
             linker, counter = GreedyLinker(), LineCounter(*line)

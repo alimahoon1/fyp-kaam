@@ -7,7 +7,15 @@
   "is_private": true,
   "enable_gpu": true,
   "enable_internet": true,
-  "dataset_sources": ["mibrahimsalman022/manzil-lahore-labels", "mibrahimsalman022/manzil-lahore-videos"],
+  "dataset_sources": [
+    "mibrahimsalman022/manzil-lahore-labels",
+    "mibrahimsalman022/manzil-lahore-videos",
+    "mibrahimsalman022/manzil-lahore-weights"
+  ],
   "competition_sources": [],
-  "kernel_sources": ["mibrahimsalman022/manzil-lahore-frames", "mibrahimsalman022/manzil-yolo-train", "mibrahimsalman022/manzil-yolo-data"]
+  "kernel_sources": [
+    "mibrahimsalman022/manzil-lahore-frames",
+    "mibrahimsalman022/manzil-yolo-train",
+    "mibrahimsalman022/manzil-yolo-data"
+  ]
 }
