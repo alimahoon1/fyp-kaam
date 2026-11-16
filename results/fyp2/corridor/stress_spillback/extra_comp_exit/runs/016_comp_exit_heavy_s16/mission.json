@@ -1,0 +1,783 @@
+{
+  "config": {
+    "origin": "left0A0",
+    "destination": "C2top2",
+    "dispatch_s": 1200.0,
+    "routing": "static",
+    "corridor": true,
+    "incident": "slowdown",
+    "incident_edge": "A2B2",
+    "incident_s": 900.0,
+    "incident_speed_mps": 3.0,
+    "lookahead": 2,
+    "activate_eta_s": 15.0,
+    "max_priority_s": 60.0,
+    "delta_s": 10.0,
+    "persistence_s": 10.0,
+    "cooldown_s": 30.0,
+    "corridor_min_green_s": 5.0,
+    "give_way": false,
+    "sublane": false,
+    "lateral_resolution_m": 0.8,
+    "downstream": "off",
+    "downstream_occupancy": 0.75,
+    "compensation": true,
+    "compensation_max_s": 20.0,
+    "compensation_start": "exit_clear"
+  },
+  "route_versions": [
+    {
+      "mission_id": "m1",
+      "route_version": 1,
+      "edge_ids": [
+        "left0A0",
+        "A0A1",
+        "A1A2",
+        "A2B2",
+        "B2C2",
+        "C2top2"
+      ],
+      "cost_s": 65.256,
+      "snapshot_step": -1,
+      "trigger": "dispatch",
+      "compute_ms": 0.054
+    }
+  ],
+  "routing_log": [
+    {
+      "time_s": 1200.0,
+      "event": "route_v1",
+      "route_version": 1,
+      "saving_s": null,
+      "reason": "dispatch",
+      "nodes_expanded": 15,
+      "compute_ms": 0.054
+    }
+  ],
+  "corridor_events": [
+    {
+      "time_s": 1201.0,
+      "step": 1201,
+      "tls": "A0",
+      "state": "REQUESTED",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 13.3
+    },
+    {
+      "time_s": 1201.0,
+      "step": 1201,
+      "tls": "A0",
+      "state": "SAFE_TRANSITION",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 13.3
+    },
+    {
+      "time_s": 1201.0,
+      "step": 1201,
+      "tls": "A1",
+      "state": "REQUESTED",
+      "route_version": 1,
+      "phase": 0,
+      "eta": 26.2
+    },
+    {
+      "time_s": 1201.0,
+      "step": 1201,
+      "tls": "A1",
+      "state": "SAFE_TRANSITION",
+      "route_version": 1,
+      "phase": 0,
+      "eta": 26.2
+    },
+    {
+      "time_s": 1201.0,
+      "step": 1201,
+      "tls": "A1",
+      "state": "ACTIVE_PRIORITY",
+      "route_version": 1,
+      "phase": 0,
+      "eta": 26.2
+    },
+    {
+      "time_s": 1211.0,
+      "step": 1211,
+      "tls": "A0",
+      "state": "ACTIVE_PRIORITY",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 10.0
+    },
+    {
+      "time_s": 1262.0,
+      "step": 1262,
+      "tls": "A0",
+      "state": "CANCELLED",
+      "route_version": 1,
+      "phase": 1,
+      "reason": "timeout"
+    },
+    {
+      "time_s": 1262.0,
+      "step": 1262,
+      "tls": "A1",
+      "state": "CANCELLED",
+      "route_version": 1,
+      "phase": 0,
+      "reason": "timeout"
+    },
+    {
+      "time_s": 1263.0,
+      "tls": "A1",
+      "state": "IDLE",
+      "recovery_s": 1.0
+    },
+    {
+      "time_s": 1263.0,
+      "step": 1263,
+      "tls": "A0",
+      "state": "REQUESTED",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 5.1
+    },
+    {
+      "time_s": 1263.0,
+      "step": 1263,
+      "tls": "A0",
+      "state": "SAFE_TRANSITION",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 5.1
+    },
+    {
+      "time_s": 1263.0,
+      "step": 1263,
+      "tls": "A0",
+      "state": "ACTIVE_PRIORITY",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 5.1
+    },
+    {
+      "time_s": 1263.0,
+      "step": 1263,
+      "tls": "A1",
+      "state": "REQUESTED",
+      "route_version": 1,
+      "phase": 0,
+      "eta": 18.0
+    },
+    {
+      "time_s": 1270.0,
+      "step": 1270,
+      "tls": "A1",
+      "state": "SAFE_TRANSITION",
+      "route_version": 1,
+      "phase": 0,
+      "eta": 17.6
+    },
+    {
+      "time_s": 1278.0,
+      "step": 1278,
+      "tls": "A1",
+      "state": "ACTIVE_PRIORITY",
+      "route_version": 1,
+      "phase": 0,
+      "eta": 15.8
+    },
+    {
+      "time_s": 1298.0,
+      "step": 1298,
+      "tls": "A0",
+      "state": "PASSAGE",
+      "route_version": 1,
+      "phase": 1
+    },
+    {
+      "time_s": 1298.0,
+      "step": 1298,
+      "tls": "A0",
+      "state": "RECOVERY",
+      "route_version": 1,
+      "phase": 1
+    },
+    {
+      "time_s": 1298.0,
+      "step": 1298,
+      "tls": "A2",
+      "state": "REQUESTED",
+      "route_version": 1,
+      "phase": 0,
+      "eta": 25.8
+    },
+    {
+      "time_s": 1298.0,
+      "step": 1298,
+      "tls": "A2",
+      "state": "SAFE_TRANSITION",
+      "route_version": 1,
+      "phase": 0,
+      "eta": 25.8
+    },
+    {
+      "time_s": 1301.0,
+      "step": 1301,
+      "tls": "A2",
+      "state": "ACTIVE_PRIORITY",
+      "route_version": 1,
+      "phase": 0,
+      "eta": 25.2
+    },
+    {
+      "time_s": 1306.0,
+      "tls": "A0",
+      "state": "IDLE",
+      "recovery_s": 8.0
+    },
+    {
+      "time_s": 1314.0,
+      "step": 1314,
+      "tls": "A0",
+      "state": "COMPENSATION",
+      "phase": 0,
+      "green_s": 20.0,
+      "queue": 4
+    },
+    {
+      "time_s": 1314.0,
+      "step": 1314,
+      "tls": "A1",
+      "state": "PASSAGE",
+      "route_version": 1,
+      "phase": 0
+    },
+    {
+      "time_s": 1314.0,
+      "step": 1314,
+      "tls": "A1",
+      "state": "RECOVERY",
+      "route_version": 1,
+      "phase": 0
+    },
+    {
+      "time_s": 1314.0,
+      "step": 1314,
+      "tls": "B2",
+      "state": "REQUESTED",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 25.8
+    },
+    {
+      "time_s": 1314.0,
+      "step": 1314,
+      "tls": "B2",
+      "state": "SAFE_TRANSITION",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 25.8
+    },
+    {
+      "time_s": 1320.0,
+      "step": 1320,
+      "tls": "B2",
+      "state": "ACTIVE_PRIORITY",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 20.7
+    },
+    {
+      "time_s": 1323.0,
+      "step": 1323,
+      "tls": "A0",
+      "state": "COMPENSATION_DONE",
+      "served_s": 20.0
+    },
+    {
+      "time_s": 1338.0,
+      "step": 1338,
+      "tls": "A1",
+      "state": "COMPENSATION",
+      "phase": 1,
+      "green_s": 20.0,
+      "queue": 53
+    },
+    {
+      "time_s": 1338.0,
+      "step": 1338,
+      "tls": "A2",
+      "state": "PASSAGE",
+      "route_version": 1,
+      "phase": 0
+    },
+    {
+      "time_s": 1338.0,
+      "step": 1338,
+      "tls": "A2",
+      "state": "RECOVERY",
+      "route_version": 1,
+      "phase": 0
+    },
+    {
+      "time_s": 1338.0,
+      "step": 1338,
+      "tls": "C2",
+      "state": "REQUESTED",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 25.8
+    },
+    {
+      "time_s": 1339.0,
+      "tls": "A2",
+      "state": "IDLE",
+      "recovery_s": 1.0
+    },
+    {
+      "time_s": 1342.0,
+      "step": 1342,
+      "tls": "C2",
+      "state": "SAFE_TRANSITION",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 25.1
+    },
+    {
+      "time_s": 1348.0,
+      "step": 1348,
+      "tls": "C2",
+      "state": "ACTIVE_PRIORITY",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 24.0
+    },
+    {
+      "time_s": 1364.0,
+      "step": 1364,
+      "tls": "A1",
+      "state": "COMPENSATION_DONE",
+      "served_s": 20.0
+    },
+    {
+      "time_s": 1375.0,
+      "step": 1375,
+      "tls": "B2",
+      "state": "CANCELLED",
+      "route_version": 1,
+      "phase": 1,
+      "reason": "timeout"
+    },
+    {
+      "time_s": 1376.0,
+      "step": 1376,
+      "tls": "B2",
+      "state": "REQUESTED",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 7.9
+    },
+    {
+      "time_s": 1376.0,
+      "step": 1376,
+      "tls": "B2",
+      "state": "SAFE_TRANSITION",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 7.9
+    },
+    {
+      "time_s": 1376.0,
+      "step": 1376,
+      "tls": "B2",
+      "state": "ACTIVE_PRIORITY",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 7.9
+    },
+    {
+      "time_s": 1403.0,
+      "step": 1403,
+      "tls": "C2",
+      "state": "CANCELLED",
+      "route_version": 1,
+      "phase": 1,
+      "reason": "timeout"
+    },
+    {
+      "time_s": 1404.0,
+      "step": 1404,
+      "tls": "C2",
+      "state": "REQUESTED",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 17.9
+    },
+    {
+      "time_s": 1412.0,
+      "tls": "C2",
+      "state": "IDLE",
+      "recovery_s": 9.0
+    },
+    {
+      "time_s": 1413.0,
+      "step": 1413,
+      "tls": "C2",
+      "state": "SAFE_TRANSITION",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 16.9
+    },
+    {
+      "time_s": 1419.0,
+      "step": 1419,
+      "tls": "C2",
+      "state": "ACTIVE_PRIORITY",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 16.0
+    },
+    {
+      "time_s": 1437.0,
+      "step": 1437,
+      "tls": "B2",
+      "state": "PASSAGE",
+      "route_version": 1,
+      "phase": 1
+    },
+    {
+      "time_s": 1437.0,
+      "step": 1437,
+      "tls": "B2",
+      "state": "RECOVERY",
+      "route_version": 1,
+      "phase": 1
+    },
+    {
+      "time_s": 1454.0,
+      "tls": "B2",
+      "state": "IDLE",
+      "recovery_s": 17.0
+    },
+    {
+      "time_s": 1467.0,
+      "tls": "A1",
+      "state": "IDLE",
+      "recovery_s": 153.0
+    },
+    {
+      "time_s": 1467.0,
+      "step": 1467,
+      "tls": "B2",
+      "state": "COMPENSATION",
+      "phase": 0,
+      "green_s": 20.0,
+      "queue": 32
+    },
+    {
+      "time_s": 1467.0,
+      "step": 1467,
+      "tls": "C2",
+      "state": "PASSAGE",
+      "route_version": 1,
+      "phase": 1
+    },
+    {
+      "time_s": 1467.0,
+      "step": 1467,
+      "tls": "C2",
+      "state": "RECOVERY",
+      "route_version": 1,
+      "phase": 1
+    },
+    {
+      "time_s": 1485.0,
+      "step": 1485,
+      "tls": "C2",
+      "state": "COMPENSATION",
+      "phase": 0,
+      "green_s": 20.0,
+      "queue": 58
+    },
+    {
+      "time_s": 1493.0,
+      "step": 1493,
+      "tls": "B2",
+      "state": "COMPENSATION_DONE",
+      "served_s": 20.0
+    },
+    {
+      "time_s": 1511.0,
+      "step": 1511,
+      "tls": "C2",
+      "state": "COMPENSATION_DONE",
+      "served_s": 20.0
+    },
+    {
+      "time_s": 1612.0,
+      "tls": "C2",
+      "state": "IDLE",
+      "recovery_s": 145.0
+    }
+  ],
+  "stop_log": [
+    {
+      "time_s": 1224.0,
+      "edge": "left0A0",
+      "reason": "queue_at_green",
+      "tls": "A0",
+      "tls_state": "g",
+      "tls_dist_m": 128.6,
+      "leader_gap_m": 0.1,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1225.0,
+      "edge": "left0A0",
+      "reason": "queue_at_green",
+      "tls": "A0",
+      "tls_state": "g",
+      "tls_dist_m": 128.5,
+      "leader_gap_m": 0.0,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1226.0,
+      "edge": "left0A0",
+      "reason": "queue_at_green",
+      "tls": "A0",
+      "tls_state": "g",
+      "tls_dist_m": 128.5,
+      "leader_gap_m": 0.0,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1227.0,
+      "edge": "left0A0",
+      "reason": "queue_at_green",
+      "tls": "A0",
+      "tls_state": "g",
+      "tls_dist_m": 128.5,
+      "leader_gap_m": 0.0,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1228.0,
+      "edge": "left0A0",
+      "reason": "queue_at_green",
+      "tls": "A0",
+      "tls_state": "g",
+      "tls_dist_m": 128.5,
+      "leader_gap_m": 0.1,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1239.0,
+      "edge": "left0A0",
+      "reason": "queue_at_green",
+      "tls": "A0",
+      "tls_state": "g",
+      "tls_dist_m": 122.7,
+      "leader_gap_m": 0.0,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1240.0,
+      "edge": "left0A0",
+      "reason": "queue_at_green",
+      "tls": "A0",
+      "tls_state": "g",
+      "tls_dist_m": 122.6,
+      "leader_gap_m": 0.0,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1241.0,
+      "edge": "left0A0",
+      "reason": "queue_at_green",
+      "tls": "A0",
+      "tls_state": "g",
+      "tls_dist_m": 122.6,
+      "leader_gap_m": 0.1,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1266.0,
+      "edge": "left0A0",
+      "reason": "queue_at_green",
+      "tls": "A0",
+      "tls_state": "g",
+      "tls_dist_m": 70.1,
+      "leader_gap_m": 0.1,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1267.0,
+      "edge": "left0A0",
+      "reason": "queue_at_green",
+      "tls": "A0",
+      "tls_state": "g",
+      "tls_dist_m": 70.1,
+      "leader_gap_m": 0.9,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1284.0,
+      "edge": "left0A0",
+      "reason": "queue_at_green",
+      "tls": "A0",
+      "tls_state": "g",
+      "tls_dist_m": 32.7,
+      "leader_gap_m": 0.0,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1285.0,
+      "edge": "left0A0",
+      "reason": "queue_at_green",
+      "tls": "A0",
+      "tls_state": "g",
+      "tls_dist_m": 32.6,
+      "leader_gap_m": 1.1,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1293.0,
+      "edge": "left0A0",
+      "reason": "queue_at_green",
+      "tls": "A0",
+      "tls_state": "g",
+      "tls_dist_m": 17.6,
+      "leader_gap_m": 0.9,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1455.0,
+      "edge": "B2C2",
+      "reason": "queue_at_green",
+      "tls": "C2",
+      "tls_state": "g",
+      "tls_dist_m": 10.1,
+      "leader_gap_m": 0.9,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1460.0,
+      "edge": "B2C2",
+      "reason": "queue_at_green",
+      "tls": "C2",
+      "tls_state": "g",
+      "tls_dist_m": 2.6,
+      "leader_gap_m": 0.0,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1461.0,
+      "edge": "B2C2",
+      "reason": "queue_at_green",
+      "tls": "C2",
+      "tls_state": "g",
+      "tls_dist_m": 2.6,
+      "leader_gap_m": 0.0,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1462.0,
+      "edge": "B2C2",
+      "reason": "queue_at_green",
+      "tls": "C2",
+      "tls_state": "g",
+      "tls_dist_m": 2.6,
+      "leader_gap_m": 0.0,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1463.0,
+      "edge": "B2C2",
+      "reason": "queue_at_green",
+      "tls": "C2",
+      "tls_state": "g",
+      "tls_dist_m": 2.6,
+      "leader_gap_m": 0.0,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1464.0,
+      "edge": "B2C2",
+      "reason": "queue_at_green",
+      "tls": "C2",
+      "tls_state": "g",
+      "tls_dist_m": 2.6,
+      "leader_gap_m": 0.0,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1465.0,
+      "edge": "B2C2",
+      "reason": "queue_at_green",
+      "tls": "C2",
+      "tls_state": "g",
+      "tls_dist_m": 2.6,
+      "leader_gap_m": 1.8,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    }
+  ],
+  "signal_crossings": [
+    {
+      "time_s": 1298.0,
+      "tls": "A0",
+      "approach": "left0A0",
+      "link": 15,
+      "state": "g"
+    },
+    {
+      "time_s": 1314.0,
+      "tls": "A1",
+      "approach": "A0A1",
+      "link": 9,
+      "state": "G"
+    },
+    {
+      "time_s": 1338.0,
+      "tls": "A2",
+      "approach": "A1A2",
+      "link": 8,
+      "state": "G"
+    },
+    {
+      "time_s": 1437.0,
+      "tls": "B2",
+      "approach": "A2B2",
+      "link": 13,
+      "state": "G"
+    },
+    {
+      "time_s": 1467.0,
+      "tls": "C2",
+      "approach": "B2C2",
+      "link": 15,
+      "state": "g"
+    }
+  ]
+}

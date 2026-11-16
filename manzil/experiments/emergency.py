@@ -58,9 +58,24 @@ class MissionConfig:
     corridor_min_green_s: float | None = None
     # Ordinary vehicles give way (SUMO bluelight device); the ambulance still obeys red lights.
     give_way: bool = False
+    # W4: SUMO's sublane model for the whole run (vehicles can move aside within a lane, so
+    # with ``give_way`` they form a rescue lane). Changes every vehicle's lane-change model.
+    sublane: bool = False
+    lateral_resolution_m: float = 0.8
+    # W4: downstream-capacity check ("off", "defer", "flush", "both") and bounded
+    # compensation in recovery; see manzil/corridor/coordinator.py.
+    downstream: str = "off"
+    downstream_occupancy: float = 0.75
+    compensation: bool = False
+    compensation_max_s: float = 20.0
+    compensation_start: str = "passage"  # or "exit_clear"
 
     def validate(self) -> list[str]:
         problems = []
+        if self.downstream not in ("off", "defer", "flush", "both"):
+            problems.append(f"unknown downstream mode {self.downstream!r}")
+        if self.sublane and self.lateral_resolution_m <= 0:
+            problems.append("lateral resolution must be > 0")
         if self.routing not in ("static", "dynamic"):
             problems.append(f"unknown routing {self.routing!r}")
         if self.incident not in ("none", "closure", "slowdown"):
@@ -98,6 +113,11 @@ class MissionDriver:
                     lookahead=c.lookahead,
                     activate_eta_s=c.activate_eta_s,
                     max_priority_s=c.max_priority_s,
+                    downstream=c.downstream,
+                    downstream_occupancy=c.downstream_occupancy,
+                    compensation=c.compensation,
+                    compensation_max_s=c.compensation_max_s,
+                    compensation_start=c.compensation_start,
                 ),
             )  # fmt: skip
             if c.corridor
@@ -118,6 +138,8 @@ class MissionDriver:
         # Decision 11 check: the signal shown when the ambulance crossed each stop line.
         self.crossings: list[dict] = []
         self._ahead: tuple[str, str, int] | None = None  # (approach edge, tls, link index)
+        if c.sublane and not self.sim.running:  # the runner creates the driver before start
+            self.sim.sublane_model(c.lateral_resolution_m)
 
     def step(self, snap: TrafficSnapshot) -> None:
         c, now, step = self.config, snap.sim_time_s, snap.effective_step
@@ -157,6 +179,9 @@ class MissionDriver:
             return
 
         if self.mission.status != "ACTIVE":
+            if self.corridor and self.mission.status != "PENDING":
+                # Keep finishing recovery and compensation after arrival / cancellation (W4).
+                self.corridor.step(snap, None, None)
             return
         if self.vehicle_id in snap.arrived_ids:
             self.mission.arrived(now)
@@ -311,6 +336,15 @@ class MissionDriver:
                 recovery_time_mean_s=round(sum(rec) / len(rec), 1) if rec else None,
                 recovery_time_max_s=max(rec) if rec else None,
                 recovery_unfinished=self.corridor.open_recoveries,
+                downstream_deferrals=self.corridor.deferrals,
+                downstream_flushes=self.corridor.flushes,
+                compensations=len(self.corridor.compensation_green_s),
+                compensation_green_mean_s=(
+                    round(sum(cg) / len(cg), 1)
+                    if (cg := self.corridor.compensation_green_s)
+                    else None
+                ),
+                compensation_unfinished=self.corridor.compensating,
             )
         return out
 

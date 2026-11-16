@@ -1,0 +1,2320 @@
+{
+  "profiles": [
+    "heavy"
+  ],
+  "controllers": [
+    "v2",
+    "comp",
+    "comp_exit",
+    "ds_both",
+    "ds_defer",
+    "ds_flush",
+    "off"
+  ],
+  "reference": "v2",
+  "metrics": [
+    "amb_travel_time_s",
+    "amb_excess_delay_s",
+    "amb_waiting_s",
+    "amb_stops",
+    "amb_stopped_red_corridor_s",
+    "amb_stopped_red_outside_lookahead_s",
+    "amb_stopped_queue_s",
+    "amb_stopped_other_s",
+    "amb_stopped_red_no_corridor_s",
+    "amb_red_crossings",
+    "mission_window_queue_mean_veh",
+    "fixed_window_queue_mean_veh",
+    "cross_street_wait_veh_s",
+    "waiting_time_mean_s",
+    "recovery_time_mean_s",
+    "safety_violations",
+    "teleports",
+    "collisions",
+    "downstream_deferrals",
+    "downstream_flushes",
+    "compensations",
+    "compensation_green_mean_s",
+    "corridor_timeouts"
+  ],
+  "summary": {
+    "heavy": {
+      "v2": {
+        "seeds": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "amb_travel_time_s": {
+          "mean": 233.9,
+          "sd": 42.94298545746442,
+          "n": 10
+        },
+        "amb_excess_delay_s": {
+          "mean": 154.99,
+          "sd": 42.94298545746442,
+          "n": 10
+        },
+        "amb_waiting_s": {
+          "mean": 22.7,
+          "sd": 14.847745807211124,
+          "n": 10
+        },
+        "amb_stops": {
+          "mean": 4.3,
+          "sd": 2.406010991015812,
+          "n": 10
+        },
+        "amb_stopped_red_corridor_s": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "amb_stopped_red_outside_lookahead_s": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "amb_stopped_queue_s": {
+          "mean": 21.3,
+          "sd": 16.303033119296817,
+          "n": 10
+        },
+        "amb_stopped_other_s": {
+          "mean": 1.4,
+          "sd": 2.4585451886114367,
+          "n": 10
+        },
+        "amb_stopped_red_no_corridor_s": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "amb_red_crossings": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "mission_window_queue_mean_veh": {
+          "mean": 158.92149999999998,
+          "sd": 19.763418447278347,
+          "n": 10
+        },
+        "fixed_window_queue_mean_veh": {
+          "mean": 160.95589999999999,
+          "sd": 19.466112831448058,
+          "n": 10
+        },
+        "cross_street_wait_veh_s": {
+          "mean": 33985.2,
+          "sd": 7748.083057548278,
+          "n": 10
+        },
+        "waiting_time_mean_s": {
+          "mean": 79.56989999999999,
+          "sd": 5.73913229446171,
+          "n": 10
+        },
+        "recovery_time_mean_s": {
+          "mean": 16.05,
+          "sd": 8.568190525944722,
+          "n": 10
+        },
+        "safety_violations": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "teleports": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "collisions": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "downstream_deferrals": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "downstream_flushes": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "compensations": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "compensation_green_mean_s": null,
+        "corridor_timeouts": {
+          "mean": 2.9,
+          "sd": 1.3703203194062978,
+          "n": 10
+        }
+      },
+      "comp": {
+        "seeds": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "amb_travel_time_s": {
+          "mean": 243.7,
+          "sd": 44.55221655540833,
+          "n": 10
+        },
+        "amb_excess_delay_s": {
+          "mean": 164.79000000000002,
+          "sd": 44.55221655540833,
+          "n": 10
+        },
+        "amb_waiting_s": {
+          "mean": 27.2,
+          "sd": 23.384705352953336,
+          "n": 10
+        },
+        "amb_stops": {
+          "mean": 4.8,
+          "sd": 2.7406406388125957,
+          "n": 10
+        },
+        "amb_stopped_red_corridor_s": {
+          "mean": 1.2,
+          "sd": 3.7947331922020555,
+          "n": 10
+        },
+        "amb_stopped_red_outside_lookahead_s": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "amb_stopped_queue_s": {
+          "mean": 24.7,
+          "sd": 19.877681510232076,
+          "n": 10
+        },
+        "amb_stopped_other_s": {
+          "mean": 1.3,
+          "sd": 1.8287822299126937,
+          "n": 10
+        },
+        "amb_stopped_red_no_corridor_s": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "amb_red_crossings": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "mission_window_queue_mean_veh": {
+          "mean": 157.5686,
+          "sd": 17.20071238318021,
+          "n": 10
+        },
+        "fixed_window_queue_mean_veh": {
+          "mean": 159.2833,
+          "sd": 17.791449794462757,
+          "n": 10
+        },
+        "cross_street_wait_veh_s": {
+          "mean": 29940.0,
+          "sd": 5722.194839200932,
+          "n": 10
+        },
+        "waiting_time_mean_s": {
+          "mean": 79.10325,
+          "sd": 6.402668806269598,
+          "n": 10
+        },
+        "recovery_time_mean_s": {
+          "mean": 10.27,
+          "sd": 5.706925617177781,
+          "n": 10
+        },
+        "safety_violations": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "teleports": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "collisions": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "downstream_deferrals": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "downstream_flushes": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "compensations": {
+          "mean": 5.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "compensation_green_mean_s": {
+          "mean": 18.32,
+          "sd": 1.003106286602882,
+          "n": 10
+        },
+        "corridor_timeouts": {
+          "mean": 3.3,
+          "sd": 1.4181364924121764,
+          "n": 10
+        }
+      },
+      "comp_exit": {
+        "seeds": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "amb_travel_time_s": {
+          "mean": 240.1,
+          "sd": 42.44591329628279,
+          "n": 10
+        },
+        "amb_excess_delay_s": {
+          "mean": 161.19,
+          "sd": 42.44591329628279,
+          "n": 10
+        },
+        "amb_waiting_s": {
+          "mean": 26.3,
+          "sd": 22.494690731617343,
+          "n": 10
+        },
+        "amb_stops": {
+          "mean": 4.7,
+          "sd": 2.2135943621178655,
+          "n": 10
+        },
+        "amb_stopped_red_corridor_s": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "amb_stopped_red_outside_lookahead_s": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "amb_stopped_queue_s": {
+          "mean": 24.9,
+          "sd": 23.718019403914074,
+          "n": 10
+        },
+        "amb_stopped_other_s": {
+          "mean": 1.4,
+          "sd": 2.4585451886114367,
+          "n": 10
+        },
+        "amb_stopped_red_no_corridor_s": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "amb_red_crossings": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "mission_window_queue_mean_veh": {
+          "mean": 159.6942,
+          "sd": 19.132620206222555,
+          "n": 10
+        },
+        "fixed_window_queue_mean_veh": {
+          "mean": 161.7074,
+          "sd": 18.942699820482005,
+          "n": 10
+        },
+        "cross_street_wait_veh_s": {
+          "mean": 32814.8,
+          "sd": 8042.442895870217,
+          "n": 10
+        },
+        "waiting_time_mean_s": {
+          "mean": 79.40567,
+          "sd": 5.716870786841733,
+          "n": 10
+        },
+        "recovery_time_mean_s": {
+          "mean": 16.330000000000002,
+          "sd": 12.602296968762833,
+          "n": 10
+        },
+        "safety_violations": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "teleports": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "collisions": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "downstream_deferrals": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "downstream_flushes": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "compensations": {
+          "mean": 3.8,
+          "sd": 0.4216370213557839,
+          "n": 10
+        },
+        "compensation_green_mean_s": {
+          "mean": 18.259999999999998,
+          "sd": 1.4523544103741806,
+          "n": 10
+        },
+        "corridor_timeouts": {
+          "mean": 3.1,
+          "sd": 1.3703203194062978,
+          "n": 10
+        }
+      },
+      "ds_both": {
+        "seeds": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "amb_travel_time_s": {
+          "mean": 333.7,
+          "sd": 126.30566979444043,
+          "n": 10
+        },
+        "amb_excess_delay_s": {
+          "mean": 254.79000000000002,
+          "sd": 126.30566979444042,
+          "n": 10
+        },
+        "amb_waiting_s": {
+          "mean": 110.4,
+          "sd": 91.45514990663152,
+          "n": 10
+        },
+        "amb_stops": {
+          "mean": 7.0,
+          "sd": 4.447221354708778,
+          "n": 10
+        },
+        "amb_stopped_red_corridor_s": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "amb_stopped_red_outside_lookahead_s": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "amb_stopped_queue_s": {
+          "mean": 107.7,
+          "sd": 90.85281136725122,
+          "n": 10
+        },
+        "amb_stopped_other_s": {
+          "mean": 2.7,
+          "sd": 3.802046232695699,
+          "n": 10
+        },
+        "amb_stopped_red_no_corridor_s": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "amb_red_crossings": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "mission_window_queue_mean_veh": {
+          "mean": 162.6683,
+          "sd": 22.68904660378855,
+          "n": 10
+        },
+        "fixed_window_queue_mean_veh": {
+          "mean": 164.9916,
+          "sd": 21.716270716267612,
+          "n": 10
+        },
+        "cross_street_wait_veh_s": {
+          "mean": 33542.8,
+          "sd": 7557.339902373057,
+          "n": 10
+        },
+        "waiting_time_mean_s": {
+          "mean": 79.5961,
+          "sd": 5.622266317855184,
+          "n": 10
+        },
+        "recovery_time_mean_s": {
+          "mean": 15.930000000000001,
+          "sd": 10.8462026124866,
+          "n": 10
+        },
+        "safety_violations": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "teleports": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "collisions": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "downstream_deferrals": {
+          "mean": 0.5,
+          "sd": 0.5270462766947299,
+          "n": 10
+        },
+        "downstream_flushes": {
+          "mean": 0.6,
+          "sd": 0.5163977794943223,
+          "n": 10
+        },
+        "compensations": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "compensation_green_mean_s": null,
+        "corridor_timeouts": {
+          "mean": 2.9,
+          "sd": 1.286683937707919,
+          "n": 10
+        }
+      },
+      "ds_defer": {
+        "seeds": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "amb_travel_time_s": {
+          "mean": 240.9,
+          "sd": 49.769356926615885,
+          "n": 10
+        },
+        "amb_excess_delay_s": {
+          "mean": 161.99,
+          "sd": 49.769356926615885,
+          "n": 10
+        },
+        "amb_waiting_s": {
+          "mean": 30.6,
+          "sd": 28.449565511230183,
+          "n": 10
+        },
+        "amb_stops": {
+          "mean": 4.6,
+          "sd": 2.6331223544175333,
+          "n": 10
+        },
+        "amb_stopped_red_corridor_s": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "amb_stopped_red_outside_lookahead_s": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "amb_stopped_queue_s": {
+          "mean": 28.9,
+          "sd": 28.053322243343814,
+          "n": 10
+        },
+        "amb_stopped_other_s": {
+          "mean": 1.7,
+          "sd": 2.6267851073127395,
+          "n": 10
+        },
+        "amb_stopped_red_no_corridor_s": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "amb_red_crossings": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "mission_window_queue_mean_veh": {
+          "mean": 158.1694,
+          "sd": 19.52776503227022,
+          "n": 10
+        },
+        "fixed_window_queue_mean_veh": {
+          "mean": 160.22650000000002,
+          "sd": 19.367557238559776,
+          "n": 10
+        },
+        "cross_street_wait_veh_s": {
+          "mean": 33005.5,
+          "sd": 7097.485505444868,
+          "n": 10
+        },
+        "waiting_time_mean_s": {
+          "mean": 78.86574,
+          "sd": 5.940294752731831,
+          "n": 10
+        },
+        "recovery_time_mean_s": {
+          "mean": 15.15,
+          "sd": 8.407172863427727,
+          "n": 10
+        },
+        "safety_violations": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "teleports": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "collisions": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "downstream_deferrals": {
+          "mean": 0.5,
+          "sd": 0.5270462766947299,
+          "n": 10
+        },
+        "downstream_flushes": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "compensations": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "compensation_green_mean_s": null,
+        "corridor_timeouts": {
+          "mean": 3.1,
+          "sd": 1.5238839267549948,
+          "n": 10
+        }
+      },
+      "ds_flush": {
+        "seeds": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "amb_travel_time_s": {
+          "mean": 314.4,
+          "sd": 110.5905360628416,
+          "n": 10
+        },
+        "amb_excess_delay_s": {
+          "mean": 235.49,
+          "sd": 110.59053606284158,
+          "n": 10
+        },
+        "amb_waiting_s": {
+          "mean": 93.8,
+          "sd": 77.9897429153347,
+          "n": 10
+        },
+        "amb_stops": {
+          "mean": 6.1,
+          "sd": 3.6347092196090616,
+          "n": 10
+        },
+        "amb_stopped_red_corridor_s": {
+          "mean": 5.2,
+          "sd": 16.443843832875572,
+          "n": 10
+        },
+        "amb_stopped_red_outside_lookahead_s": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "amb_stopped_queue_s": {
+          "mean": 87.4,
+          "sd": 75.63685168840209,
+          "n": 10
+        },
+        "amb_stopped_other_s": {
+          "mean": 1.2,
+          "sd": 2.3944379994757297,
+          "n": 10
+        },
+        "amb_stopped_red_no_corridor_s": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "amb_red_crossings": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "mission_window_queue_mean_veh": {
+          "mean": 162.3434,
+          "sd": 20.76024951787537,
+          "n": 10
+        },
+        "fixed_window_queue_mean_veh": {
+          "mean": 164.6787,
+          "sd": 20.117806700919353,
+          "n": 10
+        },
+        "cross_street_wait_veh_s": {
+          "mean": 34319.8,
+          "sd": 7817.5573593461195,
+          "n": 10
+        },
+        "waiting_time_mean_s": {
+          "mean": 80.51291,
+          "sd": 4.811033540484483,
+          "n": 10
+        },
+        "recovery_time_mean_s": {
+          "mean": 17.71,
+          "sd": 11.638103129137688,
+          "n": 10
+        },
+        "safety_violations": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "teleports": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "collisions": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "downstream_deferrals": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "downstream_flushes": {
+          "mean": 0.6,
+          "sd": 0.5163977794943223,
+          "n": 10
+        },
+        "compensations": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "compensation_green_mean_s": null,
+        "corridor_timeouts": {
+          "mean": 2.8,
+          "sd": 1.3165611772087666,
+          "n": 10
+        }
+      },
+      "off": {
+        "seeds": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "amb_travel_time_s": {
+          "mean": 627.6,
+          "sd": 172.2525277995459,
+          "n": 10
+        },
+        "amb_excess_delay_s": {
+          "mean": 548.69,
+          "sd": 172.25252779954593,
+          "n": 10
+        },
+        "amb_waiting_s": {
+          "mean": 348.7,
+          "sd": 119.9268758684039,
+          "n": 10
+        },
+        "amb_stops": {
+          "mean": 15.7,
+          "sd": 6.165315167216605,
+          "n": 10
+        },
+        "amb_stopped_red_corridor_s": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "amb_stopped_red_outside_lookahead_s": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "amb_stopped_queue_s": {
+          "mean": 318.3,
+          "sd": 118.23521753972742,
+          "n": 10
+        },
+        "amb_stopped_other_s": {
+          "mean": 4.3,
+          "sd": 4.667856991049414,
+          "n": 10
+        },
+        "amb_stopped_red_no_corridor_s": {
+          "mean": 26.1,
+          "sd": 27.529580050879414,
+          "n": 10
+        },
+        "amb_red_crossings": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "mission_window_queue_mean_veh": {
+          "mean": 164.6828,
+          "sd": 17.645054175163207,
+          "n": 10
+        },
+        "fixed_window_queue_mean_veh": {
+          "mean": 158.7612,
+          "sd": 18.064989625731254,
+          "n": 10
+        },
+        "cross_street_wait_veh_s": {
+          "mean": 22453.7,
+          "sd": 5810.15054404311,
+          "n": 10
+        },
+        "waiting_time_mean_s": {
+          "mean": 79.03265,
+          "sd": 5.490310931945882,
+          "n": 10
+        },
+        "recovery_time_mean_s": null,
+        "safety_violations": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "teleports": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "collisions": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "n": 10
+        },
+        "downstream_deferrals": null,
+        "downstream_flushes": null,
+        "compensations": null,
+        "compensation_green_mean_s": null,
+        "corridor_timeouts": null
+      }
+    }
+  },
+  "paired": {
+    "heavy": {
+      "comp": {
+        "amb_travel_time_s": {
+          "mean_diff": 9.8,
+          "sd_diff": 21.580855713648923,
+          "ci95": [
+            -5.636941619375257,
+            25.23694161937526
+          ],
+          "pct_change": 4.1898247114151355,
+          "seeds_better": 3,
+          "n": 10
+        },
+        "amb_excess_delay_s": {
+          "mean_diff": 9.8,
+          "sd_diff": 21.580855713648923,
+          "ci95": [
+            -5.636941619375257,
+            25.23694161937526
+          ],
+          "pct_change": 6.322988579908381,
+          "seeds_better": 3,
+          "n": 10
+        },
+        "amb_waiting_s": {
+          "mean_diff": 4.5,
+          "sd_diff": 15.742723186708623,
+          "ci95": [
+            -6.760883349009525,
+            15.760883349009525
+          ],
+          "pct_change": 19.823788546255507,
+          "seeds_better": 3,
+          "n": 10
+        },
+        "amb_stops": {
+          "mean_diff": 0.5,
+          "sd_diff": 1.0801234497346435,
+          "ci95": [
+            -0.2726200877533538,
+            1.2726200877533538
+          ],
+          "pct_change": 11.627906976744187,
+          "seeds_better": 1,
+          "n": 10
+        },
+        "amb_stopped_red_corridor_s": {
+          "mean_diff": 1.2,
+          "sd_diff": 3.7947331922020555,
+          "ci95": [
+            -1.5144,
+            3.9143999999999997
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_stopped_red_outside_lookahead_s": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_stopped_queue_s": {
+          "mean_diff": 3.4,
+          "sd_diff": 13.031585560561009,
+          "ci95": [
+            -5.921587066589035,
+            12.721587066589036
+          ],
+          "pct_change": 15.96244131455399,
+          "seeds_better": 3,
+          "n": 10
+        },
+        "amb_stopped_other_s": {
+          "mean_diff": -0.1,
+          "sd_diff": 2.6853512081497106,
+          "ci95": [
+            -2.020851071790835,
+            1.8208510717908348
+          ],
+          "pct_change": -7.142857142857143,
+          "seeds_better": 3,
+          "n": 10
+        },
+        "amb_stopped_red_no_corridor_s": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_red_crossings": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "mission_window_queue_mean_veh": {
+          "mean_diff": -1.3528999999999953,
+          "sd_diff": 3.7294770098053474,
+          "ci95": [
+            -4.020621782447937,
+            1.314821782447946
+          ],
+          "pct_change": -0.8513007994512987,
+          "seeds_better": 7,
+          "n": 10
+        },
+        "fixed_window_queue_mean_veh": {
+          "mean_diff": -1.672600000000004,
+          "sd_diff": 3.4555627038154024,
+          "ci95": [
+            -4.144388905346868,
+            0.7991889053468597
+          ],
+          "pct_change": -1.0391666288716377,
+          "seeds_better": 6,
+          "n": 10
+        },
+        "cross_street_wait_veh_s": {
+          "mean_diff": -4045.2,
+          "sd_diff": 2847.379684317964,
+          "ci95": [
+            -6081.95120848948,
+            -2008.4487915105192
+          ],
+          "pct_change": -11.902828289961514,
+          "seeds_better": 9,
+          "n": 10
+        },
+        "waiting_time_mean_s": {
+          "mean_diff": -0.46665000000000134,
+          "sd_diff": 1.759826319871114,
+          "ci95": [
+            -1.7254664491970972,
+            0.7921664491970946
+          ],
+          "pct_change": -0.5864654850640775,
+          "seeds_better": 6,
+          "n": 10
+        },
+        "recovery_time_mean_s": {
+          "mean_diff": -5.779999999999999,
+          "sd_diff": 6.1216918503883475,
+          "ci95": [
+            -10.158890297963627,
+            -1.4011097020363712
+          ],
+          "pct_change": -36.012461059190024,
+          "seeds_better": 10,
+          "n": 10
+        },
+        "safety_violations": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "teleports": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "collisions": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "downstream_deferrals": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": null,
+          "n": 10
+        },
+        "downstream_flushes": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": null,
+          "n": 10
+        },
+        "compensations": {
+          "mean_diff": 5.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            5.0,
+            5.0
+          ],
+          "pct_change": null,
+          "seeds_better": null,
+          "n": 10
+        },
+        "corridor_timeouts": {
+          "mean_diff": 0.4,
+          "sd_diff": 1.07496769977314,
+          "ci95": [
+            -0.368932142649792,
+            1.168932142649792
+          ],
+          "pct_change": 13.793103448275863,
+          "seeds_better": 1,
+          "n": 10
+        }
+      },
+      "comp_exit": {
+        "amb_travel_time_s": {
+          "mean_diff": 6.2,
+          "sd_diff": 27.255172801588408,
+          "ci95": [
+            -13.295821525650055,
+            25.695821525650054
+          ],
+          "pct_change": 2.6507054296707993,
+          "seeds_better": 5,
+          "n": 10
+        },
+        "amb_excess_delay_s": {
+          "mean_diff": 6.2,
+          "sd_diff": 27.255172801588408,
+          "ci95": [
+            -13.295821525650055,
+            25.695821525650054
+          ],
+          "pct_change": 4.0002580811665265,
+          "seeds_better": 5,
+          "n": 10
+        },
+        "amb_waiting_s": {
+          "mean_diff": 3.6,
+          "sd_diff": 17.20594212603438,
+          "ci95": [
+            -8.707534401333193,
+            15.907534401333193
+          ],
+          "pct_change": 15.859030837004406,
+          "seeds_better": 2,
+          "n": 10
+        },
+        "amb_stops": {
+          "mean_diff": 0.4,
+          "sd_diff": 1.1737877907772674,
+          "ci95": [
+            -0.4396188659147674,
+            1.2396188659147676
+          ],
+          "pct_change": 9.30232558139535,
+          "seeds_better": 1,
+          "n": 10
+        },
+        "amb_stopped_red_corridor_s": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_stopped_red_outside_lookahead_s": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_stopped_queue_s": {
+          "mean_diff": 3.6,
+          "sd_diff": 17.20594212603438,
+          "ci95": [
+            -8.707534401333193,
+            15.907534401333193
+          ],
+          "pct_change": 16.901408450704224,
+          "seeds_better": 2,
+          "n": 10
+        },
+        "amb_stopped_other_s": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": 0.0,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_stopped_red_no_corridor_s": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_red_crossings": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "mission_window_queue_mean_veh": {
+          "mean_diff": 0.7727000000000075,
+          "sd_diff": 4.304509006714808,
+          "ci95": [
+            -2.3063463139376643,
+            3.8517463139376793
+          ],
+          "pct_change": 0.4862148922581322,
+          "seeds_better": 4,
+          "n": 10
+        },
+        "fixed_window_queue_mean_veh": {
+          "mean_diff": 0.7514999999999986,
+          "sd_diff": 3.888287805134234,
+          "ci95": [
+            -2.0298202888532324,
+            3.53282028885323
+          ],
+          "pct_change": 0.46689807580834175,
+          "seeds_better": 4,
+          "n": 10
+        },
+        "cross_street_wait_veh_s": {
+          "mean_diff": -1170.4,
+          "sd_diff": 2615.6084569369323,
+          "ci95": [
+            -3041.363579231151,
+            700.5635792311509
+          ],
+          "pct_change": -3.44385202970705,
+          "seeds_better": 8,
+          "n": 10
+        },
+        "waiting_time_mean_s": {
+          "mean_diff": -0.1642300000000006,
+          "sd_diff": 2.1542451609425624,
+          "ci95": [
+            -1.7051770886856323,
+            1.3767170886856313
+          ],
+          "pct_change": -0.2063971426381089,
+          "seeds_better": 5,
+          "n": 10
+        },
+        "recovery_time_mean_s": {
+          "mean_diff": 0.2800000000000004,
+          "sd_diff": 9.14704566756089,
+          "ci95": [
+            -6.262947686295528,
+            6.822947686295528
+          ],
+          "pct_change": 1.744548286604364,
+          "seeds_better": 5,
+          "n": 10
+        },
+        "safety_violations": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "teleports": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "collisions": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "downstream_deferrals": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": null,
+          "n": 10
+        },
+        "downstream_flushes": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": null,
+          "n": 10
+        },
+        "compensations": {
+          "mean_diff": 3.8,
+          "sd_diff": 0.4216370213557839,
+          "ci95": [
+            3.4983999999999997,
+            4.1015999999999995
+          ],
+          "pct_change": null,
+          "seeds_better": null,
+          "n": 10
+        },
+        "corridor_timeouts": {
+          "mean_diff": 0.2,
+          "sd_diff": 1.2292725943057183,
+          "ci95": [
+            -0.6793075457426714,
+            1.0793075457426713
+          ],
+          "pct_change": 6.8965517241379315,
+          "seeds_better": 1,
+          "n": 10
+        }
+      },
+      "ds_both": {
+        "amb_travel_time_s": {
+          "mean_diff": 99.8,
+          "sd_diff": 95.37271913684518,
+          "ci95": [
+            31.579206675970127,
+            168.02079332402985
+          ],
+          "pct_change": 42.66780675502351,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_excess_delay_s": {
+          "mean_diff": 99.79999999999998,
+          "sd_diff": 95.37271913684518,
+          "ci95": [
+            31.579206675970113,
+            168.02079332402985
+          ],
+          "pct_change": 64.39125104845472,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_waiting_s": {
+          "mean_diff": 87.7,
+          "sd_diff": 81.45898763590588,
+          "ci95": [
+            29.431799091099442,
+            145.96820090890057
+          ],
+          "pct_change": 386.3436123348018,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_stops": {
+          "mean_diff": 2.7,
+          "sd_diff": 3.802046232695699,
+          "ci95": [
+            -0.019631070568211673,
+            5.419631070568212
+          ],
+          "pct_change": 62.79069767441861,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_stopped_red_corridor_s": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_stopped_red_outside_lookahead_s": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_stopped_queue_s": {
+          "mean_diff": 86.4,
+          "sd_diff": 79.33501398780014,
+          "ci95": [
+            29.651092748494285,
+            143.14890725150573
+          ],
+          "pct_change": 405.6338028169014,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_stopped_other_s": {
+          "mean_diff": 1.3,
+          "sd_diff": 3.7133393177689658,
+          "ci95": [
+            -1.3561783750343273,
+            3.9561783750343276
+          ],
+          "pct_change": 92.85714285714286,
+          "seeds_better": 1,
+          "n": 10
+        },
+        "amb_stopped_red_no_corridor_s": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_red_crossings": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "mission_window_queue_mean_veh": {
+          "mean_diff": 3.746799999999999,
+          "sd_diff": 6.253161969933467,
+          "ci95": [
+            -0.7261318219439201,
+            8.219731821943919
+          ],
+          "pct_change": 2.3576419804746362,
+          "seeds_better": 2,
+          "n": 10
+        },
+        "fixed_window_queue_mean_veh": {
+          "mean_diff": 4.035699999999997,
+          "sd_diff": 5.262385518416954,
+          "ci95": [
+            0.2714777140843023,
+            7.799922285915692
+          ],
+          "pct_change": 2.507332753878545,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "cross_street_wait_veh_s": {
+          "mean_diff": -442.4,
+          "sd_diff": 3196.554540960209,
+          "ci95": [
+            -2728.918499854624,
+            1844.1184998546237
+          ],
+          "pct_change": -1.3017431117074492,
+          "seeds_better": 3,
+          "n": 10
+        },
+        "waiting_time_mean_s": {
+          "mean_diff": 0.026200000000000046,
+          "sd_diff": 1.3113139356301287,
+          "ci95": [
+            -0.9117923084418249,
+            0.9641923084418249
+          ],
+          "pct_change": 0.03292702391230861,
+          "seeds_better": 3,
+          "n": 10
+        },
+        "recovery_time_mean_s": {
+          "mean_diff": -0.11999999999999975,
+          "sd_diff": 5.166301062333347,
+          "ci95": [
+            -3.8154923820243494,
+            3.57549238202435
+          ],
+          "pct_change": -0.7476635514018676,
+          "seeds_better": 3,
+          "n": 10
+        },
+        "safety_violations": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "teleports": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "collisions": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "downstream_deferrals": {
+          "mean_diff": 0.5,
+          "sd_diff": 0.5270462766947299,
+          "ci95": [
+            0.123,
+            0.877
+          ],
+          "pct_change": null,
+          "seeds_better": null,
+          "n": 10
+        },
+        "downstream_flushes": {
+          "mean_diff": 0.6,
+          "sd_diff": 0.5163977794943223,
+          "ci95": [
+            0.23061694678829675,
+            0.9693830532117031
+          ],
+          "pct_change": null,
+          "seeds_better": null,
+          "n": 10
+        },
+        "compensations": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": null,
+          "n": 10
+        },
+        "corridor_timeouts": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.6666666666666666,
+          "ci95": [
+            -0.47687147115339157,
+            0.47687147115339157
+          ],
+          "pct_change": 0.0,
+          "seeds_better": 2,
+          "n": 10
+        }
+      },
+      "ds_defer": {
+        "amb_travel_time_s": {
+          "mean_diff": 7.0,
+          "sd_diff": 19.776529298921766,
+          "ci95": [
+            -7.146293931627461,
+            21.14629393162746
+          ],
+          "pct_change": 2.992731936725096,
+          "seeds_better": 1,
+          "n": 10
+        },
+        "amb_excess_delay_s": {
+          "mean_diff": 7.0,
+          "sd_diff": 19.776529298921766,
+          "ci95": [
+            -7.146293931627461,
+            21.14629393162746
+          ],
+          "pct_change": 4.516420414220272,
+          "seeds_better": 1,
+          "n": 10
+        },
+        "amb_waiting_s": {
+          "mean_diff": 7.9,
+          "sd_diff": 18.982155362925,
+          "ci95": [
+            -5.678072530370429,
+            21.47807253037043
+          ],
+          "pct_change": 34.801762114537446,
+          "seeds_better": 1,
+          "n": 10
+        },
+        "amb_stops": {
+          "mean_diff": 0.3,
+          "sd_diff": 1.3374935098492586,
+          "ci95": [
+            -0.6567187465498938,
+            1.256718746549894
+          ],
+          "pct_change": 6.976744186046512,
+          "seeds_better": 1,
+          "n": 10
+        },
+        "amb_stopped_red_corridor_s": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_stopped_red_outside_lookahead_s": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_stopped_queue_s": {
+          "mean_diff": 7.6,
+          "sd_diff": 17.34743016510899,
+          "ci95": [
+            -4.80874181534937,
+            20.008741815349367
+          ],
+          "pct_change": 35.68075117370892,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_stopped_other_s": {
+          "mean_diff": 0.3,
+          "sd_diff": 1.9465068427541912,
+          "ci95": [
+            -1.0923503725715018,
+            1.692350372571502
+          ],
+          "pct_change": 21.42857142857143,
+          "seeds_better": 1,
+          "n": 10
+        },
+        "amb_stopped_red_no_corridor_s": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_red_crossings": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "mission_window_queue_mean_veh": {
+          "mean_diff": -0.7520999999999987,
+          "sd_diff": 3.760146582544658,
+          "ci95": [
+            -3.4417599488557022,
+            1.937559948855705
+          ],
+          "pct_change": -0.4732525177524745,
+          "seeds_better": 2,
+          "n": 10
+        },
+        "fixed_window_queue_mean_veh": {
+          "mean_diff": -0.7293999999999983,
+          "sd_diff": 4.126838208604747,
+          "ci95": [
+            -3.6813571116240573,
+            2.2225571116240608
+          ],
+          "pct_change": -0.4531676067792472,
+          "seeds_better": 2,
+          "n": 10
+        },
+        "cross_street_wait_veh_s": {
+          "mean_diff": -979.7,
+          "sd_diff": 3204.74138495518,
+          "ci95": [
+            -3272.0746083646018,
+            1312.6746083646015
+          ],
+          "pct_change": -2.8827254216541323,
+          "seeds_better": 3,
+          "n": 10
+        },
+        "waiting_time_mean_s": {
+          "mean_diff": -0.7041600000000002,
+          "sd_diff": 1.9760999244865043,
+          "ci95": [
+            -2.117678517203978,
+            0.7093585172039777
+          ],
+          "pct_change": -0.8849577541256183,
+          "seeds_better": 2,
+          "n": 10
+        },
+        "recovery_time_mean_s": {
+          "mean_diff": -0.8999999999999992,
+          "sd_diff": 4.67618077780005,
+          "ci95": [
+            -4.24490581033308,
+            2.444905810333082
+          ],
+          "pct_change": -5.607476635514014,
+          "seeds_better": 2,
+          "n": 10
+        },
+        "safety_violations": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "teleports": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "collisions": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "downstream_deferrals": {
+          "mean_diff": 0.5,
+          "sd_diff": 0.5270462766947299,
+          "ci95": [
+            0.123,
+            0.877
+          ],
+          "pct_change": null,
+          "seeds_better": null,
+          "n": 10
+        },
+        "downstream_flushes": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": null,
+          "n": 10
+        },
+        "compensations": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": null,
+          "n": 10
+        },
+        "corridor_timeouts": {
+          "mean_diff": 0.2,
+          "sd_diff": 0.6324555320336759,
+          "ci95": [
+            -0.25239999999999996,
+            0.6524
+          ],
+          "pct_change": 6.8965517241379315,
+          "seeds_better": 0,
+          "n": 10
+        }
+      },
+      "ds_flush": {
+        "amb_travel_time_s": {
+          "mean_diff": 80.5,
+          "sd_diff": 76.47258041648362,
+          "ci95": [
+            25.798612110843116,
+            135.20138788915688
+          ],
+          "pct_change": 34.416417272338606,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_excess_delay_s": {
+          "mean_diff": 80.49999999999999,
+          "sd_diff": 76.47258041648361,
+          "ci95": [
+            25.798612110843116,
+            135.20138788915685
+          ],
+          "pct_change": 51.938834763533116,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_waiting_s": {
+          "mean_diff": 71.1,
+          "sd_diff": 65.36130353657278,
+          "ci95": [
+            24.346588539016743,
+            117.85341146098324
+          ],
+          "pct_change": 313.21585903083695,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_stops": {
+          "mean_diff": 1.8,
+          "sd_diff": 2.2010098692292237,
+          "ci95": [
+            0.22560177845628915,
+            3.3743982215437107
+          ],
+          "pct_change": 41.86046511627907,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_stopped_red_corridor_s": {
+          "mean_diff": 5.2,
+          "sd_diff": 16.443843832875572,
+          "ci95": [
+            -6.562399999999998,
+            16.9624
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_stopped_red_outside_lookahead_s": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_stopped_queue_s": {
+          "mean_diff": 66.1,
+          "sd_diff": 62.37957286733463,
+          "ci95": [
+            21.479441975250914,
+            110.72055802474907
+          ],
+          "pct_change": 310.32863849765255,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_stopped_other_s": {
+          "mean_diff": -0.2,
+          "sd_diff": 0.6324555320336759,
+          "ci95": [
+            -0.6524,
+            0.25239999999999996
+          ],
+          "pct_change": -14.285714285714286,
+          "seeds_better": 1,
+          "n": 10
+        },
+        "amb_stopped_red_no_corridor_s": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_red_crossings": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "mission_window_queue_mean_veh": {
+          "mean_diff": 3.421900000000002,
+          "sd_diff": 6.8704580382646645,
+          "ci95": [
+            -1.4925881483073709,
+            8.336388148307375
+          ],
+          "pct_change": 2.1532014233442314,
+          "seeds_better": 2,
+          "n": 10
+        },
+        "fixed_window_queue_mean_veh": {
+          "mean_diff": 3.722799999999998,
+          "sd_diff": 6.907529672594813,
+          "ci95": [
+            -1.218205755508992,
+            8.663805755508989
+          ],
+          "pct_change": 2.3129316788014593,
+          "seeds_better": 1,
+          "n": 10
+        },
+        "cross_street_wait_veh_s": {
+          "mean_diff": 334.6,
+          "sd_diff": 4356.696000921392,
+          "ci95": [
+            -2781.7760469912228,
+            3450.9760469912226
+          ],
+          "pct_change": 0.9845462142344316,
+          "seeds_better": 2,
+          "n": 10
+        },
+        "waiting_time_mean_s": {
+          "mean_diff": 0.943010000000001,
+          "sd_diff": 3.7149049251928687,
+          "ci95": [
+            -1.714288265307554,
+            3.600308265307556
+          ],
+          "pct_change": 1.185134077081913,
+          "seeds_better": 1,
+          "n": 10
+        },
+        "recovery_time_mean_s": {
+          "mean_diff": 1.6599999999999995,
+          "sd_diff": 4.084986060087734,
+          "ci95": [
+            -1.2620199681727022,
+            4.582019968172701
+          ],
+          "pct_change": 10.342679127725853,
+          "seeds_better": 2,
+          "n": 10
+        },
+        "safety_violations": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "teleports": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "collisions": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "downstream_deferrals": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": null,
+          "n": 10
+        },
+        "downstream_flushes": {
+          "mean_diff": 0.6,
+          "sd_diff": 0.5163977794943223,
+          "ci95": [
+            0.23061694678829675,
+            0.9693830532117031
+          ],
+          "pct_change": null,
+          "seeds_better": null,
+          "n": 10
+        },
+        "compensations": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": null,
+          "n": 10
+        },
+        "corridor_timeouts": {
+          "mean_diff": -0.1,
+          "sd_diff": 0.7378647873726218,
+          "ci95": [
+            -0.6277999999999999,
+            0.42779999999999996
+          ],
+          "pct_change": -3.4482758620689657,
+          "seeds_better": 3,
+          "n": 10
+        }
+      },
+      "off": {
+        "amb_travel_time_s": {
+          "mean_diff": 393.7,
+          "sd_diff": 149.43080896075838,
+          "ci95": [
+            286.8110654428626,
+            500.58893455713735
+          ],
+          "pct_change": 168.31979478409576,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_excess_delay_s": {
+          "mean_diff": 393.7,
+          "sd_diff": 149.43080896075838,
+          "ci95": [
+            286.8110654428626,
+            500.58893455713735
+          ],
+          "pct_change": 254.01638815407443,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_waiting_s": {
+          "mean_diff": 326.0,
+          "sd_diff": 110.32376594974146,
+          "ci95": [
+            247.0846151425465,
+            404.9153848574535
+          ],
+          "pct_change": 1436.123348017621,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_stops": {
+          "mean_diff": 11.4,
+          "sd_diff": 5.89161362540952,
+          "ci95": [
+            7.185686314475393,
+            15.614313685524607
+          ],
+          "pct_change": 265.1162790697675,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_stopped_red_corridor_s": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_stopped_red_outside_lookahead_s": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_stopped_queue_s": {
+          "mean_diff": 297.0,
+          "sd_diff": 107.51950727400329,
+          "ci95": [
+            220.0905215828374,
+            373.90947841716263
+          ],
+          "pct_change": 1394.3661971830986,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_stopped_other_s": {
+          "mean_diff": 2.9,
+          "sd_diff": 3.3149493041204847,
+          "ci95": [
+            0.5287928728177289,
+            5.2712071271822705
+          ],
+          "pct_change": 207.14285714285717,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_stopped_red_no_corridor_s": {
+          "mean_diff": 26.1,
+          "sd_diff": 27.529580050879414,
+          "ci95": [
+            6.407892991353112,
+            45.792107008646894
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "amb_red_crossings": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "mission_window_queue_mean_veh": {
+          "mean_diff": 5.76130000000001,
+          "sd_diff": 10.59707615912154,
+          "ci95": [
+            -1.8188649468872216,
+            13.341464946887243
+          ],
+          "pct_change": 3.625248943660871,
+          "seeds_better": 3,
+          "n": 10
+        },
+        "fixed_window_queue_mean_veh": {
+          "mean_diff": -2.1947000000000045,
+          "sd_diff": 6.24979768650333,
+          "ci95": [
+            -6.665225325760863,
+            2.275825325760854
+          ],
+          "pct_change": -1.3635411935815989,
+          "seeds_better": 6,
+          "n": 10
+        },
+        "cross_street_wait_veh_s": {
+          "mean_diff": -11531.5,
+          "sd_diff": 5716.237384270647,
+          "ci95": [
+            -15620.365796348739,
+            -7442.634203651262
+          ],
+          "pct_change": -33.93094641196757,
+          "seeds_better": 10,
+          "n": 10
+        },
+        "waiting_time_mean_s": {
+          "mean_diff": -0.5372500000000002,
+          "sd_diff": 2.800077880365316,
+          "ci95": [
+            -2.540165887230818,
+            1.4656658872308177
+          ],
+          "pct_change": -0.6751925036980068,
+          "seeds_better": 6,
+          "n": 10
+        },
+        "safety_violations": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "teleports": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        },
+        "collisions": {
+          "mean_diff": 0.0,
+          "sd_diff": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "pct_change": null,
+          "seeds_better": 0,
+          "n": 10
+        }
+      }
+    }
+  }
+}
