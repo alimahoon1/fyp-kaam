@@ -1,0 +1,16 @@
+video,shot,first_frame,last_frame,seconds,labelled_frames,far_row,line_y,method,model,total,down,up,car,bus,truck,motorcycle,rickshaw,van
+v1,3,2674,3034,12.01,25,440.0,580.0,labels_linked_2fps,reviewed labels,28,26,2,10,0,1,14,3,0
+v1,3,2674,3034,12.01,25,440.0,580.0,detections_linked_2fps,new6,33,29,4,15,1,2,12,3,0
+v1,3,2674,3034,12.01,25,440.0,580.0,bytetrack_all_frames,new6,35,34,1,14,0,3,15,3,0
+v1,3,2674,3034,12.01,25,440.0,580.0,detections_linked_2fps,old4,11,11,0,5,1,3,2,0,0
+v1,3,2674,3034,12.01,25,440.0,580.0,bytetrack_all_frames,old4,20,20,0,12,2,3,3,0,0
+v1,4,3053,3743,23.02,47,220.0,470.0,labels_linked_2fps,reviewed labels,46,5,41,17,1,0,21,6,1
+v1,4,3053,3743,23.02,47,220.0,470.0,detections_linked_2fps,new6,48,7,41,19,1,2,21,5,0
+v1,4,3053,3743,23.02,47,220.0,470.0,bytetrack_all_frames,new6,67,2,65,22,1,0,33,10,1
+v1,4,3053,3743,23.02,47,220.0,470.0,detections_linked_2fps,old4,38,7,31,22,2,3,11,0,0
+v1,4,3053,3743,23.02,47,220.0,470.0,bytetrack_all_frames,old4,56,3,53,24,4,6,22,0,0
+v2,0,8,382,12.47,25,760.0,980.0,labels_linked_2fps,reviewed labels,15,0,15,9,0,0,3,2,1
+v2,0,8,382,12.47,25,760.0,980.0,detections_linked_2fps,new6,15,0,15,10,0,0,3,2,0
+v2,0,8,382,12.47,25,760.0,980.0,bytetrack_all_frames,new6,16,0,16,10,0,0,3,3,0
+v2,0,8,382,12.47,25,760.0,980.0,detections_linked_2fps,old4,14,0,14,9,0,2,3,0,0
+v2,0,8,382,12.47,25,760.0,980.0,bytetrack_all_frames,old4,16,0,16,11,1,1,3,0,0

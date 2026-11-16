@@ -1,0 +1,8 @@
+true\pred,car,bus,truck,motorcycle,rickshaw,van,missed
+car,167,0,2,0,0,0,41
+bus,0,0,0,0,0,0,0
+truck,0,0,0,0,0,0,0
+motorcycle,0,0,0,45,0,0,21
+rickshaw,10,2,12,1,0,0,77
+van,11,0,0,0,0,0,0
+background,0,0,1,1,0,0,0
