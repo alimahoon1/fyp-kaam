@@ -25,3 +25,22 @@ Checksums and properties measured on 16 Nov 2026 with OpenCV on the downloaded f
 - Research use in this FYP only. Do not publish the videos or upload them to a public dataset.
 - Frames in the repo or report: only small samples, blurred where a plate or face is readable.
 - Results from these videos are reported as from "team-provided footage, one location".
+
+## W2 additions (16 Nov 2026, cloud session)
+
+- **Location of video 1:** its first ~6.5 s carry a burned-in caption "ICHHRA, FEROZEPUR ROAD, LAHORE",
+  so the place is Ichhra on Ferozepur Road (beside the Metro Bus track). Frames under the caption
+  are not used for labels (`unused` in the manifest).
+- **Video 1 is edited:** one hard cut at 101.6 s (found automatically) and camera moves (zoom near
+  15.5 s, tilt up 60-64 s, tilt down 84-87 s). Segments, frame counts and cut scores:
+  `results/fyp2/vision_lahore/shots.json`, `cut_scores.csv`.
+- **Frames:** 273 frames at ~2 fps (video 2 downscaled to 1920x1200) are the output of the private
+  Kaggle kernel `mibrahimsalman022/manzil-lahore-frames` (sha256 per frame in
+  `results/fyp2/vision_lahore/frames.csv`). The videos never left Kaggle.
+- **Split manifest:** `data/lahore_video/split_manifest.csv` (split by segment, never by frame;
+  2 s guard band at split boundaries; title-caption frames unused).
+- **Labels:** private Kaggle dataset `mibrahimsalman022/manzil-lahore-labels`
+  (labels sha256 in `results/fyp2/vision_lahore/README.md`).
+- **Privacy:** number plates in video 2 are readable at full resolution when zoomed. Do not put
+  video 2 frames into the repo or report unless plates are blurred. Video 1 frames are only used
+  downscaled (plates and faces not readable).

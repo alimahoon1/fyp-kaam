@@ -1,0 +1,459 @@
+video,shot,method,model,frame,track_id,class,direction,x,y
+v1,3,labels_linked_2fps,reviewed labels,2689,44,motorcycle,down,698.2,580.0
+v1,3,labels_linked_2fps,reviewed labels,2719,3,car,down,661.7,580.0
+v1,3,labels_linked_2fps,reviewed labels,2719,10,car,down,480.9,580.0
+v1,3,labels_linked_2fps,reviewed labels,2719,31,car,down,546.8,580.0
+v1,3,labels_linked_2fps,reviewed labels,2734,32,motorcycle,down,616.4,580.0
+v1,3,labels_linked_2fps,reviewed labels,2734,52,motorcycle,down,585.2,580.0
+v1,3,labels_linked_2fps,reviewed labels,2734,59,motorcycle,down,999.6,580.0
+v1,3,labels_linked_2fps,reviewed labels,2749,57,motorcycle,down,681.5,580.0
+v1,3,labels_linked_2fps,reviewed labels,2779,45,car,down,484.7,580.0
+v1,3,labels_linked_2fps,reviewed labels,2794,8,car,down,608.4,580.0
+v1,3,labels_linked_2fps,reviewed labels,2794,55,motorcycle,down,667.0,580.0
+v1,3,labels_linked_2fps,reviewed labels,2794,22,motorcycle,down,697.9,580.0
+v1,3,labels_linked_2fps,reviewed labels,2809,4,car,down,768.5,580.0
+v1,3,labels_linked_2fps,reviewed labels,2839,13,car,down,588.8,580.0
+v1,3,labels_linked_2fps,reviewed labels,2869,39,motorcycle,down,688.5,580.0
+v1,3,labels_linked_2fps,reviewed labels,2869,86,car,down,939.6,580.0
+v1,3,labels_linked_2fps,reviewed labels,2884,15,truck,down,450.5,580.0
+v1,3,labels_linked_2fps,reviewed labels,2899,74,motorcycle,down,623.8,580.0
+v1,3,labels_linked_2fps,reviewed labels,2899,83,car,up,60.0,580.0
+v1,3,labels_linked_2fps,reviewed labels,2914,27,motorcycle,down,723.3,580.0
+v1,3,labels_linked_2fps,reviewed labels,2929,79,motorcycle,down,649.8,580.0
+v1,3,labels_linked_2fps,reviewed labels,2989,50,rickshaw,down,558.5,580.0
+v1,3,labels_linked_2fps,reviewed labels,2989,105,motorcycle,up,760.2,580.0
+v1,3,labels_linked_2fps,reviewed labels,3004,40,car,down,506.7,580.0
+v1,3,labels_linked_2fps,reviewed labels,3004,115,motorcycle,down,461.9,580.0
+v1,3,labels_linked_2fps,reviewed labels,3004,102,rickshaw,down,892.9,580.0
+v1,3,labels_linked_2fps,reviewed labels,3034,107,motorcycle,down,574.7,580.0
+v1,3,labels_linked_2fps,reviewed labels,3034,106,rickshaw,down,202.4,580.0
+v1,3,detections_linked_2fps,new6,2689,38,motorcycle,down,698.0,580.0
+v1,3,detections_linked_2fps,new6,2704,29,truck,up,554.2,580.0
+v1,3,detections_linked_2fps,new6,2719,5,car,down,661.2,580.0
+v1,3,detections_linked_2fps,new6,2719,9,car,down,481.6,580.0
+v1,3,detections_linked_2fps,new6,2719,28,car,down,547.1,580.0
+v1,3,detections_linked_2fps,new6,2734,33,motorcycle,down,616.4,580.0
+v1,3,detections_linked_2fps,new6,2734,51,motorcycle,down,585.1,580.0
+v1,3,detections_linked_2fps,new6,2734,18,motorcycle,down,682.5,580.0
+v1,3,detections_linked_2fps,new6,2764,61,car,down,914.2,580.0
+v1,3,detections_linked_2fps,new6,2779,41,car,down,484.4,580.0
+v1,3,detections_linked_2fps,new6,2794,13,car,down,608.4,580.0
+v1,3,detections_linked_2fps,new6,2794,78,motorcycle,down,667.4,580.0
+v1,3,detections_linked_2fps,new6,2794,57,motorcycle,down,699.1,580.0
+v1,3,detections_linked_2fps,new6,2809,4,car,down,767.9,580.0
+v1,3,detections_linked_2fps,new6,2839,16,car,down,589.2,580.0
+v1,3,detections_linked_2fps,new6,2839,92,car,down,911.0,580.0
+v1,3,detections_linked_2fps,new6,2869,30,motorcycle,down,688.3,580.0
+v1,3,detections_linked_2fps,new6,2869,90,car,up,81.2,580.0
+v1,3,detections_linked_2fps,new6,2869,15,bus,down,462.3,580.0
+v1,3,detections_linked_2fps,new6,2899,65,motorcycle,down,623.6,580.0
+v1,3,detections_linked_2fps,new6,2914,55,car,down,534.6,580.0
+v1,3,detections_linked_2fps,new6,2914,93,car,up,51.4,580.0
+v1,3,detections_linked_2fps,new6,2929,86,motorcycle,down,653.3,580.0
+v1,3,detections_linked_2fps,new6,2989,43,rickshaw,down,558.8,580.0
+v1,3,detections_linked_2fps,new6,2989,118,car,up,766.9,580.0
+v1,3,detections_linked_2fps,new6,2989,121,rickshaw,down,853.5,580.0
+v1,3,detections_linked_2fps,new6,3004,67,car,down,506.4,580.0
+v1,3,detections_linked_2fps,new6,3004,125,motorcycle,down,462.0,580.0
+v1,3,detections_linked_2fps,new6,3004,49,rickshaw,down,891.7,580.0
+v1,3,detections_linked_2fps,new6,3019,108,car,down,423.4,580.0
+v1,3,detections_linked_2fps,new6,3019,114,motorcycle,down,522.2,580.0
+v1,3,detections_linked_2fps,new6,3019,8,truck,down,822.4,580.0
+v1,3,detections_linked_2fps,new6,3034,100,motorcycle,down,574.9,580.0
+v1,3,bytetrack_all_frames,new6,2683,38,motorcycle,down,698.2,580.0
+v1,3,bytetrack_all_frames,new6,2685,32,motorcycle,down,624.6,580.0
+v1,3,bytetrack_all_frames,new6,2710,9,car,down,482.2,580.0
+v1,3,bytetrack_all_frames,new6,2713,5,car,down,661.1,580.0
+v1,3,bytetrack_all_frames,new6,2714,26,car,down,547.6,580.0
+v1,3,bytetrack_all_frames,new6,2714,118,car,down,547.2,580.0
+v1,3,bytetrack_all_frames,new6,2721,45,motorcycle,down,617.1,580.0
+v1,3,bytetrack_all_frames,new6,2727,50,motorcycle,down,585.5,580.0
+v1,3,bytetrack_all_frames,new6,2734,176,motorcycle,down,681.6,580.0
+v1,3,bytetrack_all_frames,new6,2748,125,car,down,913.5,580.0
+v1,3,bytetrack_all_frames,new6,2763,122,motorcycle,down,699.6,580.0
+v1,3,bytetrack_all_frames,new6,2774,39,car,down,485.8,580.0
+v1,3,bytetrack_all_frames,new6,2785,264,motorcycle,down,666.9,580.0
+v1,3,bytetrack_all_frames,new6,2790,12,car,down,610.3,580.0
+v1,3,bytetrack_all_frames,new6,2807,3,car,down,767.3,580.0
+v1,3,bytetrack_all_frames,new6,2836,18,car,down,589.3,580.0
+v1,3,bytetrack_all_frames,new6,2844,288,motorcycle,up,55.4,580.0
+v1,3,bytetrack_all_frames,new6,2865,28,motorcycle,down,688.7,580.0
+v1,3,bytetrack_all_frames,new6,2869,274,truck,down,462.4,580.0
+v1,3,bytetrack_all_frames,new6,2870,10,truck,down,461.4,580.0
+v1,3,bytetrack_all_frames,new6,2876,53,car,down,566.9,580.0
+v1,3,bytetrack_all_frames,new6,2888,150,motorcycle,down,623.6,580.0
+v1,3,bytetrack_all_frames,new6,2910,43,car,down,540.2,580.0
+v1,3,bytetrack_all_frames,new6,2915,290,motorcycle,down,656.2,580.0
+v1,3,bytetrack_all_frames,new6,2953,175,car,down,515.2,580.0
+v1,3,bytetrack_all_frames,new6,2980,44,rickshaw,down,558.2,580.0
+v1,3,bytetrack_all_frames,new6,2996,48,rickshaw,down,891.1,580.0
+v1,3,bytetrack_all_frames,new6,2997,222,car,down,506.7,580.0
+v1,3,bytetrack_all_frames,new6,3000,414,motorcycle,down,430.3,580.0
+v1,3,bytetrack_all_frames,new6,3004,529,motorcycle,down,464.1,580.0
+v1,3,bytetrack_all_frames,new6,3010,627,car,down,761.1,580.0
+v1,3,bytetrack_all_frames,new6,3019,425,motorcycle,down,522.3,580.0
+v1,3,bytetrack_all_frames,new6,3023,474,motorcycle,down,570.4,580.0
+v1,3,bytetrack_all_frames,new6,3023,8,truck,down,826.4,580.0
+v1,3,bytetrack_all_frames,new6,3025,59,rickshaw,down,664.5,580.0
+v1,3,detections_linked_2fps,old4,2719,8,car,down,660.2,580.0
+v1,3,detections_linked_2fps,old4,2719,14,bus,down,546.6,580.0
+v1,3,detections_linked_2fps,old4,2719,15,truck,down,479.8,580.0
+v1,3,detections_linked_2fps,old4,2734,25,truck,down,893.0,580.0
+v1,3,detections_linked_2fps,old4,2794,20,car,down,608.7,580.0
+v1,3,detections_linked_2fps,old4,2809,5,car,down,769.0,580.0
+v1,3,detections_linked_2fps,old4,2839,50,car,down,589.5,580.0
+v1,3,detections_linked_2fps,old4,2839,54,truck,down,588.9,580.0
+v1,3,detections_linked_2fps,old4,2869,53,motorcycle,down,689.3,580.0
+v1,3,detections_linked_2fps,old4,2959,58,car,down,521.4,580.0
+v1,3,detections_linked_2fps,old4,3034,85,motorcycle,down,572.1,580.0
+v1,3,bytetrack_all_frames,old4,2711,17,truck,down,480.7,580.0
+v1,3,bytetrack_all_frames,old4,2713,6,car,down,660.1,580.0
+v1,3,bytetrack_all_frames,old4,2714,14,car,down,547.8,580.0
+v1,3,bytetrack_all_frames,old4,2742,107,truck,down,886.5,580.0
+v1,3,bytetrack_all_frames,old4,2777,224,car,down,483.4,580.0
+v1,3,bytetrack_all_frames,old4,2791,18,car,down,610.1,580.0
+v1,3,bytetrack_all_frames,old4,2807,5,car,down,768.8,580.0
+v1,3,bytetrack_all_frames,old4,2837,24,car,down,589.3,580.0
+v1,3,bytetrack_all_frames,old4,2861,290,motorcycle,down,690.7,580.0
+v1,3,bytetrack_all_frames,old4,2862,2,bus,down,470.5,580.0
+v1,3,bytetrack_all_frames,old4,2877,383,car,down,561.8,580.0
+v1,3,bytetrack_all_frames,old4,2877,454,car,down,562.6,580.0
+v1,3,bytetrack_all_frames,old4,2886,475,motorcycle,down,624.6,580.0
+v1,3,bytetrack_all_frames,old4,2910,183,car,down,541.6,580.0
+v1,3,bytetrack_all_frames,old4,2954,463,car,down,514.8,580.0
+v1,3,bytetrack_all_frames,old4,2954,643,truck,down,516.2,580.0
+v1,3,bytetrack_all_frames,old4,2980,394,car,down,558.8,580.0
+v1,3,bytetrack_all_frames,old4,2997,725,car,down,506.6,580.0
+v1,3,bytetrack_all_frames,old4,3023,755,motorcycle,down,569.8,580.0
+v1,3,bytetrack_all_frames,old4,3025,87,bus,down,663.9,580.0
+v1,4,labels_linked_2fps,reviewed labels,3098,8,rickshaw,down,521.8,470.0
+v1,4,labels_linked_2fps,reviewed labels,3113,83,motorcycle,up,736.6,470.0
+v1,4,labels_linked_2fps,reviewed labels,3113,32,car,up,435.8,470.0
+v1,4,labels_linked_2fps,reviewed labels,3128,44,car,up,827.0,470.0
+v1,4,labels_linked_2fps,reviewed labels,3128,4,van,up,942.0,470.0
+v1,4,labels_linked_2fps,reviewed labels,3158,62,car,up,714.3,470.0
+v1,4,labels_linked_2fps,reviewed labels,3158,86,motorcycle,up,617.1,470.0
+v1,4,labels_linked_2fps,reviewed labels,3158,73,motorcycle,up,793.3,470.0
+v1,4,labels_linked_2fps,reviewed labels,3173,69,motorcycle,up,656.1,470.0
+v1,4,labels_linked_2fps,reviewed labels,3203,68,car,up,921.0,470.0
+v1,4,labels_linked_2fps,reviewed labels,3203,96,motorcycle,up,798.4,470.0
+v1,4,labels_linked_2fps,reviewed labels,3218,45,car,up,850.1,470.0
+v1,4,labels_linked_2fps,reviewed labels,3218,2,motorcycle,up,616.9,470.0
+v1,4,labels_linked_2fps,reviewed labels,3233,7,rickshaw,up,679.4,470.0
+v1,4,labels_linked_2fps,reviewed labels,3233,108,motorcycle,up,727.9,470.0
+v1,4,labels_linked_2fps,reviewed labels,3263,102,car,up,787.7,470.0
+v1,4,labels_linked_2fps,reviewed labels,3263,118,car,up,871.9,470.0
+v1,4,labels_linked_2fps,reviewed labels,3293,122,car,up,966.6,470.0
+v1,4,labels_linked_2fps,reviewed labels,3293,124,motorcycle,up,899.5,470.0
+v1,4,labels_linked_2fps,reviewed labels,3308,125,car,up,822.8,470.0
+v1,4,labels_linked_2fps,reviewed labels,3338,143,car,up,959.0,470.0
+v1,4,labels_linked_2fps,reviewed labels,3368,101,rickshaw,up,792.8,470.0
+v1,4,labels_linked_2fps,reviewed labels,3398,91,rickshaw,down,484.7,470.0
+v1,4,labels_linked_2fps,reviewed labels,3443,117,car,up,714.0,470.0
+v1,4,labels_linked_2fps,reviewed labels,3443,179,motorcycle,down,649.6,470.0
+v1,4,labels_linked_2fps,reviewed labels,3443,99,car,up,887.0,470.0
+v1,4,labels_linked_2fps,reviewed labels,3488,158,motorcycle,up,670.4,470.0
+v1,4,labels_linked_2fps,reviewed labels,3503,165,motorcycle,up,757.8,470.0
+v1,4,labels_linked_2fps,reviewed labels,3503,156,motorcycle,up,697.9,470.0
+v1,4,labels_linked_2fps,reviewed labels,3533,176,bus,up,822.7,470.0
+v1,4,labels_linked_2fps,reviewed labels,3533,201,motorcycle,up,904.7,470.0
+v1,4,labels_linked_2fps,reviewed labels,3578,119,rickshaw,up,646.5,470.0
+v1,4,labels_linked_2fps,reviewed labels,3593,202,motorcycle,up,713.3,470.0
+v1,4,labels_linked_2fps,reviewed labels,3608,222,motorcycle,up,758.8,470.0
+v1,4,labels_linked_2fps,reviewed labels,3623,226,motorcycle,down,786.6,470.0
+v1,4,labels_linked_2fps,reviewed labels,3623,203,motorcycle,up,673.7,470.0
+v1,4,labels_linked_2fps,reviewed labels,3623,227,car,up,477.8,470.0
+v1,4,labels_linked_2fps,reviewed labels,3638,210,car,up,891.4,470.0
+v1,4,labels_linked_2fps,reviewed labels,3638,235,motorcycle,up,604.8,470.0
+v1,4,labels_linked_2fps,reviewed labels,3638,225,car,up,734.8,470.0
+v1,4,labels_linked_2fps,reviewed labels,3653,240,motorcycle,up,818.1,470.0
+v1,4,labels_linked_2fps,reviewed labels,3683,237,car,down,777.9,470.0
+v1,4,labels_linked_2fps,reviewed labels,3683,220,rickshaw,up,718.1,470.0
+v1,4,labels_linked_2fps,reviewed labels,3713,263,car,up,905.1,470.0
+v1,4,labels_linked_2fps,reviewed labels,3713,252,motorcycle,up,602.5,470.0
+v1,4,labels_linked_2fps,reviewed labels,3728,251,motorcycle,up,648.6,470.0
+v1,4,detections_linked_2fps,new6,3083,31,car,down,589.9,470.0
+v1,4,detections_linked_2fps,new6,3083,37,motorcycle,down,483.2,470.0
+v1,4,detections_linked_2fps,new6,3113,72,motorcycle,up,737.2,470.0
+v1,4,detections_linked_2fps,new6,3113,54,motorcycle,up,846.5,470.0
+v1,4,detections_linked_2fps,new6,3128,43,car,up,827.3,470.0
+v1,4,detections_linked_2fps,new6,3128,79,car,up,944.3,470.0
+v1,4,detections_linked_2fps,new6,3128,35,car,up,942.8,470.0
+v1,4,detections_linked_2fps,new6,3158,60,car,up,714.6,470.0
+v1,4,detections_linked_2fps,new6,3158,9,motorcycle,up,617.1,470.0
+v1,4,detections_linked_2fps,new6,3158,45,motorcycle,up,794.7,470.0
+v1,4,detections_linked_2fps,new6,3173,89,motorcycle,up,656.6,470.0
+v1,4,detections_linked_2fps,new6,3188,97,motorcycle,up,798.8,470.0
+v1,4,detections_linked_2fps,new6,3203,83,car,up,921.9,470.0
+v1,4,detections_linked_2fps,new6,3218,87,car,up,850.3,470.0
+v1,4,detections_linked_2fps,new6,3218,86,motorcycle,down,677.0,470.0
+v1,4,detections_linked_2fps,new6,3233,102,motorcycle,up,727.8,470.0
+v1,4,detections_linked_2fps,new6,3248,93,rickshaw,up,679.9,470.0
+v1,4,detections_linked_2fps,new6,3263,75,car,up,787.5,470.0
+v1,4,detections_linked_2fps,new6,3293,112,car,up,966.3,470.0
+v1,4,detections_linked_2fps,new6,3293,115,motorcycle,up,898.1,470.0
+v1,4,detections_linked_2fps,new6,3308,98,car,up,823.3,470.0
+v1,4,detections_linked_2fps,new6,3308,138,car,up,967.7,470.0
+v1,4,detections_linked_2fps,new6,3368,132,rickshaw,up,792.5,470.0
+v1,4,detections_linked_2fps,new6,3383,164,rickshaw,up,917.3,470.0
+v1,4,detections_linked_2fps,new6,3413,161,truck,down,534.6,470.0
+v1,4,detections_linked_2fps,new6,3413,151,rickshaw,down,534.9,470.0
+v1,4,detections_linked_2fps,new6,3443,157,car,up,714.0,470.0
+v1,4,detections_linked_2fps,new6,3443,141,car,up,886.8,470.0
+v1,4,detections_linked_2fps,new6,3488,163,motorcycle,up,670.1,470.0
+v1,4,detections_linked_2fps,new6,3503,181,motorcycle,up,757.8,470.0
+v1,4,detections_linked_2fps,new6,3533,209,motorcycle,up,906.2,470.0
+v1,4,detections_linked_2fps,new6,3533,99,bus,up,822.8,470.0
+v1,4,detections_linked_2fps,new6,3578,215,truck,up,542.5,470.0
+v1,4,detections_linked_2fps,new6,3593,211,motorcycle,up,713.0,470.0
+v1,4,detections_linked_2fps,new6,3608,226,motorcycle,up,758.1,470.0
+v1,4,detections_linked_2fps,new6,3623,233,car,down,787.9,470.0
+v1,4,detections_linked_2fps,new6,3623,213,motorcycle,up,672.6,470.0
+v1,4,detections_linked_2fps,new6,3638,229,car,up,669.7,470.0
+v1,4,detections_linked_2fps,new6,3638,243,motorcycle,up,604.4,470.0
+v1,4,detections_linked_2fps,new6,3638,180,car,up,892.8,470.0
+v1,4,detections_linked_2fps,new6,3638,192,rickshaw,up,893.4,470.0
+v1,4,detections_linked_2fps,new6,3653,236,motorcycle,up,816.8,470.0
+v1,4,detections_linked_2fps,new6,3683,162,car,up,717.3,470.0
+v1,4,detections_linked_2fps,new6,3683,219,car,down,778.5,470.0
+v1,4,detections_linked_2fps,new6,3698,268,car,up,905.0,470.0
+v1,4,detections_linked_2fps,new6,3698,261,motorcycle,up,740.1,470.0
+v1,4,detections_linked_2fps,new6,3713,262,motorcycle,up,602.5,470.0
+v1,4,detections_linked_2fps,new6,3728,266,motorcycle,up,649.0,470.0
+v1,4,bytetrack_all_frames,new6,3098,25,motorcycle,up,783.3,470.0
+v1,4,bytetrack_all_frames,new6,3101,20,motorcycle,up,846.1,470.0
+v1,4,bytetrack_all_frames,new6,3101,29,motorcycle,up,759.5,470.0
+v1,4,bytetrack_all_frames,new6,3101,354,motorcycle,up,734.3,470.0
+v1,4,bytetrack_all_frames,new6,3108,42,car,up,547.7,470.0
+v1,4,bytetrack_all_frames,new6,3109,18,rickshaw,up,696.9,470.0
+v1,4,bytetrack_all_frames,new6,3116,386,van,up,949.7,470.0
+v1,4,bytetrack_all_frames,new6,3119,34,car,up,943.6,470.0
+v1,4,bytetrack_all_frames,new6,3121,2,car,up,532.3,470.0
+v1,4,bytetrack_all_frames,new6,3124,258,car,up,435.6,470.0
+v1,4,bytetrack_all_frames,new6,3126,53,car,up,828.0,470.0
+v1,4,bytetrack_all_frames,new6,3146,399,motorcycle,up,794.7,470.0
+v1,4,bytetrack_all_frames,new6,3147,122,car,up,714.6,470.0
+v1,4,bytetrack_all_frames,new6,3149,8,motorcycle,up,616.4,470.0
+v1,4,bytetrack_all_frames,new6,3163,513,motorcycle,up,827.0,470.0
+v1,4,bytetrack_all_frames,new6,3172,409,motorcycle,up,606.4,470.0
+v1,4,bytetrack_all_frames,new6,3174,410,motorcycle,up,656.5,470.0
+v1,4,bytetrack_all_frames,new6,3188,535,motorcycle,up,798.9,470.0
+v1,4,bytetrack_all_frames,new6,3196,526,car,up,920.7,470.0
+v1,4,bytetrack_all_frames,new6,3208,583,car,up,849.6,470.0
+v1,4,bytetrack_all_frames,new6,3220,514,motorcycle,up,620.0,470.0
+v1,4,bytetrack_all_frames,new6,3223,486,rickshaw,up,679.3,470.0
+v1,4,bytetrack_all_frames,new6,3230,582,motorcycle,up,727.9,470.0
+v1,4,bytetrack_all_frames,new6,3251,587,car,up,786.6,470.0
+v1,4,bytetrack_all_frames,new6,3263,607,car,up,871.7,470.0
+v1,4,bytetrack_all_frames,new6,3286,642,car,up,966.2,470.0
+v1,4,bytetrack_all_frames,new6,3289,735,motorcycle,up,900.0,470.0
+v1,4,bytetrack_all_frames,new6,3305,666,car,up,823.9,470.0
+v1,4,bytetrack_all_frames,new6,3329,705,car,up,959.1,470.0
+v1,4,bytetrack_all_frames,new6,3350,693,motorcycle,up,705.7,470.0
+v1,4,bytetrack_all_frames,new6,3355,714,rickshaw,up,792.2,470.0
+v1,4,bytetrack_all_frames,new6,3379,855,rickshaw,up,927.6,470.0
+v1,4,bytetrack_all_frames,new6,3379,993,rickshaw,up,927.8,470.0
+v1,4,bytetrack_all_frames,new6,3387,980,car,down,439.0,470.0
+v1,4,bytetrack_all_frames,new6,3402,611,rickshaw,down,533.9,470.0
+v1,4,bytetrack_all_frames,new6,3432,933,motorcycle,up,775.9,470.0
+v1,4,bytetrack_all_frames,new6,3439,1027,car,up,888.5,470.0
+v1,4,bytetrack_all_frames,new6,3442,884,car,up,714.2,470.0
+v1,4,bytetrack_all_frames,new6,3443,1015,motorcycle,up,802.2,470.0
+v1,4,bytetrack_all_frames,new6,3475,1291,motorcycle,up,670.1,470.0
+v1,4,bytetrack_all_frames,new6,3489,1267,motorcycle,up,758.1,470.0
+v1,4,bytetrack_all_frames,new6,3493,1327,motorcycle,up,697.8,470.0
+v1,4,bytetrack_all_frames,new6,3526,1264,rickshaw,up,904.0,470.0
+v1,4,bytetrack_all_frames,new6,3528,1035,bus,up,824.4,470.0
+v1,4,bytetrack_all_frames,new6,3555,1154,rickshaw,up,648.0,470.0
+v1,4,bytetrack_all_frames,new6,3555,1414,motorcycle,up,707.9,470.0
+v1,4,bytetrack_all_frames,new6,3579,1464,motorcycle,up,697.4,470.0
+v1,4,bytetrack_all_frames,new6,3590,1592,motorcycle,up,929.1,470.0
+v1,4,bytetrack_all_frames,new6,3593,1480,motorcycle,up,712.9,470.0
+v1,4,bytetrack_all_frames,new6,3593,1603,rickshaw,up,478.2,470.0
+v1,4,bytetrack_all_frames,new6,3595,1435,car,up,836.3,470.0
+v1,4,bytetrack_all_frames,new6,3596,1542,motorcycle,up,760.0,470.0
+v1,4,bytetrack_all_frames,new6,3609,1597,motorcycle,up,672.8,470.0
+v1,4,bytetrack_all_frames,new6,3624,1517,rickshaw,up,785.9,470.0
+v1,4,bytetrack_all_frames,new6,3626,1586,car,up,893.6,470.0
+v1,4,bytetrack_all_frames,new6,3631,1530,car,up,667.1,470.0
+v1,4,bytetrack_all_frames,new6,3633,1740,motorcycle,up,606.0,470.0
+v1,4,bytetrack_all_frames,new6,3652,1806,motorcycle,up,839.7,470.0
+v1,4,bytetrack_all_frames,new6,3652,1614,car,up,688.1,470.0
+v1,4,bytetrack_all_frames,new6,3661,1887,motorcycle,up,772.5,470.0
+v1,4,bytetrack_all_frames,new6,3673,1944,motorcycle,up,874.6,470.0
+v1,4,bytetrack_all_frames,new6,3674,1897,motorcycle,up,576.9,470.0
+v1,4,bytetrack_all_frames,new6,3684,1888,motorcycle,up,738.3,470.0
+v1,4,bytetrack_all_frames,new6,3698,1822,car,up,905.5,470.0
+v1,4,bytetrack_all_frames,new6,3699,1901,motorcycle,up,602.4,470.0
+v1,4,bytetrack_all_frames,new6,3717,1953,motorcycle,up,648.4,470.0
+v1,4,bytetrack_all_frames,new6,3731,2002,car,up,761.8,470.0
+v1,4,detections_linked_2fps,old4,3098,33,car,up,586.7,470.0
+v1,4,detections_linked_2fps,old4,3113,17,bus,up,697.2,470.0
+v1,4,detections_linked_2fps,old4,3113,23,car,up,435.9,470.0
+v1,4,detections_linked_2fps,old4,3128,41,car,up,532.9,470.0
+v1,4,detections_linked_2fps,old4,3128,2,car,up,826.9,470.0
+v1,4,detections_linked_2fps,old4,3128,3,car,up,941.5,470.0
+v1,4,detections_linked_2fps,old4,3158,45,car,up,714.5,470.0
+v1,4,detections_linked_2fps,old4,3158,61,motorcycle,up,617.2,470.0
+v1,4,detections_linked_2fps,old4,3158,14,motorcycle,up,793.7,470.0
+v1,4,detections_linked_2fps,old4,3173,57,motorcycle,up,639.3,470.0
+v1,4,detections_linked_2fps,old4,3203,78,car,up,799.9,470.0
+v1,4,detections_linked_2fps,old4,3218,75,car,up,850.3,470.0
+v1,4,detections_linked_2fps,old4,3233,81,motorcycle,up,728.4,470.0
+v1,4,detections_linked_2fps,old4,3263,52,car,up,871.8,470.0
+v1,4,detections_linked_2fps,old4,3293,88,car,up,967.3,470.0
+v1,4,detections_linked_2fps,old4,3308,76,car,up,822.7,470.0
+v1,4,detections_linked_2fps,old4,3353,97,motorcycle,up,705.9,470.0
+v1,4,detections_linked_2fps,old4,3353,119,car,up,795.5,470.0
+v1,4,detections_linked_2fps,old4,3383,127,car,up,919.9,470.0
+v1,4,detections_linked_2fps,old4,3413,93,car,down,534.9,470.0
+v1,4,detections_linked_2fps,old4,3428,124,car,down,479.7,470.0
+v1,4,detections_linked_2fps,old4,3443,129,car,up,713.8,470.0
+v1,4,detections_linked_2fps,old4,3458,133,motorcycle,up,649.9,470.0
+v1,4,detections_linked_2fps,old4,3533,137,bus,up,823.5,470.0
+v1,4,detections_linked_2fps,old4,3533,151,truck,down,520.1,470.0
+v1,4,detections_linked_2fps,old4,3563,177,car,down,480.1,470.0
+v1,4,detections_linked_2fps,old4,3578,168,truck,down,873.8,470.0
+v1,4,detections_linked_2fps,old4,3593,160,motorcycle,up,712.9,470.0
+v1,4,detections_linked_2fps,old4,3638,180,car,up,665.7,470.0
+v1,4,detections_linked_2fps,old4,3638,175,truck,up,892.8,470.0
+v1,4,detections_linked_2fps,old4,3653,195,motorcycle,down,594.9,470.0
+v1,4,detections_linked_2fps,old4,3653,186,car,up,806.5,470.0
+v1,4,detections_linked_2fps,old4,3683,191,car,down,779.1,470.0
+v1,4,detections_linked_2fps,old4,3683,206,car,up,720.6,470.0
+v1,4,detections_linked_2fps,old4,3698,204,car,up,905.5,470.0
+v1,4,detections_linked_2fps,old4,3698,205,motorcycle,up,739.5,470.0
+v1,4,detections_linked_2fps,old4,3713,167,motorcycle,up,601.8,470.0
+v1,4,detections_linked_2fps,old4,3728,212,motorcycle,up,648.2,470.0
+v1,4,bytetrack_all_frames,old4,3099,241,motorcycle,up,783.7,470.0
+v1,4,bytetrack_all_frames,old4,3102,222,motorcycle,up,759.5,470.0
+v1,4,bytetrack_all_frames,old4,3105,23,truck,up,508.5,470.0
+v1,4,bytetrack_all_frames,old4,3109,9,car,up,697.9,470.0
+v1,4,bytetrack_all_frames,old4,3110,34,car,up,435.0,470.0
+v1,4,bytetrack_all_frames,old4,3122,1,car,up,532.4,470.0
+v1,4,bytetrack_all_frames,old4,3123,5,car,up,935.1,470.0
+v1,4,bytetrack_all_frames,old4,3127,146,car,up,827.4,470.0
+v1,4,bytetrack_all_frames,old4,3147,178,car,up,714.1,470.0
+v1,4,bytetrack_all_frames,old4,3147,628,motorcycle,up,794.1,470.0
+v1,4,bytetrack_all_frames,old4,3152,121,motorcycle,up,616.6,470.0
+v1,4,bytetrack_all_frames,old4,3175,426,motorcycle,up,608.3,470.0
+v1,4,bytetrack_all_frames,old4,3195,684,car,up,920.6,470.0
+v1,4,bytetrack_all_frames,old4,3208,703,car,up,849.5,470.0
+v1,4,bytetrack_all_frames,old4,3216,655,motorcycle,up,612.9,470.0
+v1,4,bytetrack_all_frames,old4,3231,753,motorcycle,up,728.4,470.0
+v1,4,bytetrack_all_frames,old4,3250,783,car,up,787.3,470.0
+v1,4,bytetrack_all_frames,old4,3263,814,car,up,871.7,470.0
+v1,4,bytetrack_all_frames,old4,3285,861,car,up,965.5,470.0
+v1,4,bytetrack_all_frames,old4,3306,893,car,up,822.8,470.0
+v1,4,bytetrack_all_frames,old4,3328,1027,truck,up,957.6,470.0
+v1,4,bytetrack_all_frames,old4,3350,1012,truck,up,795.7,470.0
+v1,4,bytetrack_all_frames,old4,3350,910,motorcycle,up,705.3,470.0
+v1,4,bytetrack_all_frames,old4,3354,1029,motorcycle,up,707.2,470.0
+v1,4,bytetrack_all_frames,old4,3376,1258,bus,up,933.9,470.0
+v1,4,bytetrack_all_frames,old4,3378,1166,truck,up,929.0,470.0
+v1,4,bytetrack_all_frames,old4,3402,845,car,down,535.1,470.0
+v1,4,bytetrack_all_frames,old4,3416,1297,truck,down,482.0,470.0
+v1,4,bytetrack_all_frames,old4,3430,1414,motorcycle,up,778.2,470.0
+v1,4,bytetrack_all_frames,old4,3442,1180,car,up,713.4,470.0
+v1,4,bytetrack_all_frames,old4,3443,1299,motorcycle,up,803.4,470.0
+v1,4,bytetrack_all_frames,old4,3443,1233,car,up,882.2,470.0
+v1,4,bytetrack_all_frames,old4,3475,1534,motorcycle,up,670.1,470.0
+v1,4,bytetrack_all_frames,old4,3489,1474,motorcycle,up,759.3,470.0
+v1,4,bytetrack_all_frames,old4,3526,1562,bus,up,904.0,470.0
+v1,4,bytetrack_all_frames,old4,3529,1548,bus,up,822.9,470.0
+v1,4,bytetrack_all_frames,old4,3555,1566,bus,up,647.9,470.0
+v1,4,bytetrack_all_frames,old4,3593,1726,motorcycle,up,713.0,470.0
+v1,4,bytetrack_all_frames,old4,3595,1643,car,up,837.1,470.0
+v1,4,bytetrack_all_frames,old4,3596,1892,truck,up,835.7,470.0
+v1,4,bytetrack_all_frames,old4,3597,1826,motorcycle,up,759.5,470.0
+v1,4,bytetrack_all_frames,old4,3608,1835,motorcycle,up,676.2,470.0
+v1,4,bytetrack_all_frames,old4,3624,1770,car,up,785.1,470.0
+v1,4,bytetrack_all_frames,old4,3625,1818,car,up,893.5,470.0
+v1,4,bytetrack_all_frames,old4,3625,1954,car,up,893.6,470.0
+v1,4,bytetrack_all_frames,old4,3631,1803,car,up,667.4,470.0
+v1,4,bytetrack_all_frames,old4,3634,1992,motorcycle,up,603.7,470.0
+v1,4,bytetrack_all_frames,old4,3652,1963,car,up,690.0,470.0
+v1,4,bytetrack_all_frames,old4,3655,2050,motorcycle,up,595.3,470.0
+v1,4,bytetrack_all_frames,old4,3674,2049,motorcycle,up,576.9,470.0
+v1,4,bytetrack_all_frames,old4,3687,2206,motorcycle,up,739.5,470.0
+v1,4,bytetrack_all_frames,old4,3697,2029,car,up,905.7,470.0
+v1,4,bytetrack_all_frames,old4,3700,2100,motorcycle,up,601.7,470.0
+v1,4,bytetrack_all_frames,old4,3717,2161,motorcycle,up,648.6,470.0
+v1,4,bytetrack_all_frames,old4,3731,2148,car,up,761.8,470.0
+v1,4,bytetrack_all_frames,old4,3740,2127,car,down,408.1,470.0
+v2,0,labels_linked_2fps,reviewed labels,22,3,rickshaw,up,905.8,980.0
+v2,0,labels_linked_2fps,reviewed labels,52,1,car,up,989.7,980.0
+v2,0,labels_linked_2fps,reviewed labels,98,18,motorcycle,up,881.3,980.0
+v2,0,labels_linked_2fps,reviewed labels,112,20,car,up,961.0,980.0
+v2,0,labels_linked_2fps,reviewed labels,202,21,car,up,914.4,980.0
+v2,0,labels_linked_2fps,reviewed labels,232,24,car,up,1016.9,980.0
+v2,0,labels_linked_2fps,reviewed labels,278,25,car,up,827.0,980.0
+v2,0,labels_linked_2fps,reviewed labels,278,27,van,up,1041.8,980.0
+v2,0,labels_linked_2fps,reviewed labels,292,26,car,up,934.0,980.0
+v2,0,labels_linked_2fps,reviewed labels,308,28,car,up,872.0,980.0
+v2,0,labels_linked_2fps,reviewed labels,338,31,car,up,902.6,980.0
+v2,0,labels_linked_2fps,reviewed labels,338,30,car,up,1014.5,980.0
+v2,0,labels_linked_2fps,reviewed labels,368,29,rickshaw,up,737.9,980.0
+v2,0,labels_linked_2fps,reviewed labels,382,34,motorcycle,up,1002.6,980.0
+v2,0,labels_linked_2fps,reviewed labels,382,32,motorcycle,up,852.7,980.0
+v2,0,detections_linked_2fps,new6,22,9,rickshaw,up,905.6,980.0
+v2,0,detections_linked_2fps,new6,52,1,car,up,989.3,980.0
+v2,0,detections_linked_2fps,new6,98,17,motorcycle,up,881.4,980.0
+v2,0,detections_linked_2fps,new6,112,20,car,up,960.8,980.0
+v2,0,detections_linked_2fps,new6,202,21,car,up,914.9,980.0
+v2,0,detections_linked_2fps,new6,232,22,car,up,1015.8,980.0
+v2,0,detections_linked_2fps,new6,278,26,car,up,1041.3,980.0
+v2,0,detections_linked_2fps,new6,278,23,car,up,828.1,980.0
+v2,0,detections_linked_2fps,new6,292,25,car,up,934.0,980.0
+v2,0,detections_linked_2fps,new6,308,28,car,up,872.6,980.0
+v2,0,detections_linked_2fps,new6,338,31,car,up,901.9,980.0
+v2,0,detections_linked_2fps,new6,338,29,car,up,1014.7,980.0
+v2,0,detections_linked_2fps,new6,368,30,rickshaw,up,737.7,980.0
+v2,0,detections_linked_2fps,new6,382,33,motorcycle,up,1002.6,980.0
+v2,0,detections_linked_2fps,new6,382,32,motorcycle,up,853.1,980.0
+v2,0,bytetrack_all_frames,new6,21,9,rickshaw,up,905.8,980.0
+v2,0,bytetrack_all_frames,new6,39,1,car,up,989.3,980.0
+v2,0,bytetrack_all_frames,new6,83,26,motorcycle,up,881.3,980.0
+v2,0,bytetrack_all_frames,new6,101,32,rickshaw,up,960.9,980.0
+v2,0,bytetrack_all_frames,new6,197,94,car,up,915.1,980.0
+v2,0,bytetrack_all_frames,new6,222,113,car,up,1016.1,980.0
+v2,0,bytetrack_all_frames,new6,244,118,car,up,871.8,980.0
+v2,0,bytetrack_all_frames,new6,268,135,car,up,828.0,980.0
+v2,0,bytetrack_all_frames,new6,277,148,car,up,1042.2,980.0
+v2,0,bytetrack_all_frames,new6,283,145,car,up,934.2,980.0
+v2,0,bytetrack_all_frames,new6,300,151,car,up,872.7,980.0
+v2,0,bytetrack_all_frames,new6,329,167,car,up,1013.5,980.0
+v2,0,bytetrack_all_frames,new6,337,173,car,up,901.8,980.0
+v2,0,bytetrack_all_frames,new6,363,161,rickshaw,up,737.9,980.0
+v2,0,bytetrack_all_frames,new6,373,181,motorcycle,up,852.9,980.0
+v2,0,bytetrack_all_frames,new6,373,182,motorcycle,up,1002.9,980.0
+v2,0,detections_linked_2fps,old4,22,4,truck,up,905.7,980.0
+v2,0,detections_linked_2fps,old4,52,1,car,up,989.7,980.0
+v2,0,detections_linked_2fps,old4,98,13,motorcycle,up,881.6,980.0
+v2,0,detections_linked_2fps,old4,202,19,car,up,913.6,980.0
+v2,0,detections_linked_2fps,old4,232,21,car,up,1016.0,980.0
+v2,0,detections_linked_2fps,old4,278,25,car,up,1041.2,980.0
+v2,0,detections_linked_2fps,old4,278,23,car,up,828.0,980.0
+v2,0,detections_linked_2fps,old4,292,24,car,up,933.9,980.0
+v2,0,detections_linked_2fps,old4,308,26,car,up,872.2,980.0
+v2,0,detections_linked_2fps,old4,338,30,car,up,1014.7,980.0
+v2,0,detections_linked_2fps,old4,338,31,car,up,902.5,980.0
+v2,0,detections_linked_2fps,old4,368,29,truck,up,738.8,980.0
+v2,0,detections_linked_2fps,old4,382,34,motorcycle,up,1002.7,980.0
+v2,0,detections_linked_2fps,old4,382,32,motorcycle,up,854.1,980.0
+v2,0,bytetrack_all_frames,old4,21,4,truck,up,905.9,980.0
+v2,0,bytetrack_all_frames,old4,39,1,car,up,989.5,980.0
+v2,0,bytetrack_all_frames,old4,83,35,motorcycle,up,881.9,980.0
+v2,0,bytetrack_all_frames,old4,104,47,car,up,961.1,980.0
+v2,0,bytetrack_all_frames,old4,197,66,car,up,914.0,980.0
+v2,0,bytetrack_all_frames,old4,223,82,car,up,1016.4,980.0
+v2,0,bytetrack_all_frames,old4,243,86,car,up,872.2,980.0
+v2,0,bytetrack_all_frames,old4,268,90,car,up,827.6,980.0
+v2,0,bytetrack_all_frames,old4,277,92,car,up,1041.9,980.0
+v2,0,bytetrack_all_frames,old4,283,94,car,up,934.3,980.0
+v2,0,bytetrack_all_frames,old4,300,98,car,up,872.1,980.0
+v2,0,bytetrack_all_frames,old4,329,104,car,up,1013.7,980.0
+v2,0,bytetrack_all_frames,old4,337,116,car,up,902.8,980.0
+v2,0,bytetrack_all_frames,old4,367,109,bus,up,738.4,980.0
+v2,0,bytetrack_all_frames,old4,374,128,motorcycle,up,1002.8,980.0
+v2,0,bytetrack_all_frames,old4,374,131,motorcycle,up,853.5,980.0

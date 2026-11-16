@@ -1,0 +1,102 @@
+{
+  "settings": {
+    "CUT_ABS": 0.35,
+    "CUT_REL": 4.0,
+    "MIN_SHOT_S": 2.0,
+    "FRAME_STEP_S": 0.5,
+    "EDGE_S": 0.25,
+    "DEDUP_THR": 1.5,
+    "MAX_W": 1920,
+    "JPEG_Q": 95
+  },
+  "opencv": "4.14.0",
+  "videos": {
+    "v1": {
+      "file": "manzil-lahore-video.mp4",
+      "sha256": "d6debb6a663b1f731ae3d81e74e2508c9d332ffe890e98c7e22f90517fa97d9c",
+      "fps": 29.97002997002997,
+      "frames_total": 3765,
+      "duration_s": 125.626,
+      "cut_method": "manual segments (camera moves) + automatic hard cut",
+      "cuts_s": [
+        15.515,
+        59.993,
+        86.987,
+        101.635
+      ],
+      "shots": [
+        {
+          "start_frame": 0,
+          "end_frame": 465,
+          "shot": 0,
+          "start_s": 0.0,
+          "end_s": 15.515,
+          "peak_score_at_start": 0.0,
+          "frames_kept": 31,
+          "dropped_duplicates": 0
+        },
+        {
+          "start_frame": 465,
+          "end_frame": 1798,
+          "shot": 1,
+          "start_s": 15.515,
+          "end_s": 59.993,
+          "peak_score_at_start": 0.008,
+          "frames_kept": 88,
+          "dropped_duplicates": 0
+        },
+        {
+          "start_frame": 1798,
+          "end_frame": 2607,
+          "shot": 2,
+          "start_s": 59.993,
+          "end_s": 86.987,
+          "peak_score_at_start": 0.0079,
+          "frames_kept": 53,
+          "dropped_duplicates": 0
+        },
+        {
+          "start_frame": 2607,
+          "end_frame": 3046,
+          "shot": 3,
+          "start_s": 86.987,
+          "end_s": 101.635,
+          "peak_score_at_start": 0.0053,
+          "frames_kept": 29,
+          "dropped_duplicates": 0
+        },
+        {
+          "start_frame": 3046,
+          "end_frame": 3765,
+          "shot": 4,
+          "start_s": 101.635,
+          "end_s": 125.626,
+          "peak_score_at_start": 0.4164,
+          "frames_kept": 47,
+          "dropped_duplicates": 0
+        }
+      ]
+    },
+    "v2": {
+      "file": "manzil-lahore-video-2.mov",
+      "sha256": "b7f4f90647f3c1fcc7580acae0533382cc6e6eb3ae3a4980891a8a08e78e08c9",
+      "fps": 30.0,
+      "frames_total": 395,
+      "duration_s": 13.167,
+      "cut_method": "automatic",
+      "cuts_s": [],
+      "shots": [
+        {
+          "start_frame": 0,
+          "end_frame": 395,
+          "shot": 0,
+          "start_s": 0.0,
+          "end_s": 13.167,
+          "peak_score_at_start": 0.0,
+          "dropped_duplicates": 1,
+          "frames_kept": 25
+        }
+      ]
+    }
+  }
+}
