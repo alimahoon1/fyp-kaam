@@ -1,14 +1,14 @@
 {
   "path": "(in memory, built from the committed results/ folder only)",
   "schema_version": 1,
-  "runs": 895,
-  "metric_samples": 40130,
-  "missions": 775,
-  "route_versions": 805,
-  "priority_events": 22224,
+  "runs": 1575,
+  "metric_samples": 56130,
+  "missions": 895,
+  "route_versions": 932,
+  "priority_events": 24645,
   "video_jobs": 40,
   "observations": 2477,
-  "artifacts": 2569,
+  "artifacts": 4049,
   "studies": [
     {
       "study": "results/fyp2/corridor/dqn",
@@ -69,6 +69,36 @@
       "controllers": "fixed_time",
       "profiles": "heavy",
       "labels": "v2,comp_exit"
+    },
+    {
+      "study": "results/fyp2/protocol/corridor_v2_newseeds/dqn",
+      "source": "batch",
+      "runs": 60,
+      "completed": 60,
+      "not_completed": 0,
+      "controllers": "dqn",
+      "profiles": "medium,heavy",
+      "labels": "off,v1,v2"
+    },
+    {
+      "study": "results/fyp2/protocol/corridor_v2_newseeds/fixed_time",
+      "source": "batch",
+      "runs": 60,
+      "completed": 60,
+      "not_completed": 0,
+      "controllers": "fixed_time",
+      "profiles": "medium,heavy",
+      "labels": "off,v1,v2"
+    },
+    {
+      "study": "results/fyp2/protocol/main",
+      "source": "batch",
+      "runs": 560,
+      "completed": 560,
+      "not_completed": 0,
+      "controllers": "fixed_time,adaptive,dqn",
+      "profiles": "light,medium,heavy,uneven,uneven_ew,tidal,peak",
+      "labels": "fixed_time,adaptive,dqn_s0,dqn_s1,dqn_s2,dqn_fair_s0,dqn_fair_s1,dqn_fair_s2"
     },
     {
       "study": "results/phase2/comparison",
