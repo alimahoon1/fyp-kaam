@@ -40,7 +40,7 @@
   "amb_waiting_s": 10.0,
   "route_revisions": 0,
   "revision_triggers": [],
-  "route_compute_ms_max": 0.062,
+  "route_compute_ms_max": 0.059,
   "driven_route": [
     "left0A0",
     "A0B0",

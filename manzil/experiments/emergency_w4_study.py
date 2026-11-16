@@ -54,12 +54,13 @@ ARMS = {
     "ds_flush": replace(V2, downstream="flush"),
     "ds_both": replace(V2, downstream="both"),
     "comp": replace(V2, compensation=True),
+    "comp_exit": replace(V2, compensation=True, compensation_start="exit_clear"),
     "sublane": replace(V2, sublane=True),
     "giveway_sl": replace(V2, **GIVE_WAY),
     "all": replace(V2, downstream="both", compensation=True, **GIVE_WAY),
 }
 DEFAULT_ARMS = list(ARMS)
-STRESS_ARMS = ["off", "v2", "ds_defer", "ds_flush", "ds_both", "comp"]
+STRESS_ARMS = ["off", "v2", "ds_defer", "ds_flush", "ds_both", "comp", "comp_exit"]
 SEEDS = list(range(10, 20))
 STRESS = {"routing": "static", "incident": "slowdown", "incident_edge": "A2B2",
           "incident_s": 900.0, "incident_speed_mps": 3.0}  # fmt: skip

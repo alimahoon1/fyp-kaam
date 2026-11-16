@@ -39,7 +39,7 @@
       "cost_s": 116.256,
       "snapshot_step": 1200,
       "trigger": "dispatch",
-      "compute_ms": 0.065
+      "compute_ms": 0.054
     }
   ],
   "routing_log": [
@@ -50,7 +50,7 @@
       "saving_s": null,
       "reason": "dispatch",
       "nodes_expanded": 20,
-      "compute_ms": 0.065
+      "compute_ms": 0.054
     },
     {
       "time_s": 1240.0,
@@ -59,7 +59,7 @@
       "saving_s": 12.0,
       "reason": "persistence",
       "nodes_expanded": 9,
-      "compute_ms": 0.039
+      "compute_ms": 0.033
     },
     {
       "time_s": 1245.0,
@@ -68,7 +68,7 @@
       "saving_s": 12.0,
       "reason": "persistence",
       "nodes_expanded": 9,
-      "compute_ms": 0.038
+      "compute_ms": 0.036
     }
   ],
   "corridor_events": [

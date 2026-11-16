@@ -39,7 +39,7 @@
       "cost_s": 116.256,
       "snapshot_step": 1200,
       "trigger": "dispatch",
-      "compute_ms": 0.055
+      "compute_ms": 0.053
     }
   ],
   "routing_log": [
@@ -50,7 +50,7 @@
       "saving_s": null,
       "reason": "dispatch",
       "nodes_expanded": 21,
-      "compute_ms": 0.055
+      "compute_ms": 0.053
     },
     {
       "time_s": 1215.0,
@@ -59,7 +59,7 @@
       "saving_s": 11.0,
       "reason": "persistence",
       "nodes_expanded": 24,
-      "compute_ms": 0.054
+      "compute_ms": 0.052
     },
     {
       "time_s": 1220.0,
@@ -68,7 +68,7 @@
       "saving_s": 11.0,
       "reason": "persistence",
       "nodes_expanded": 25,
-      "compute_ms": 0.053
+      "compute_ms": 0.05
     },
     {
       "time_s": 1235.0,
@@ -77,7 +77,7 @@
       "saving_s": 11.0,
       "reason": "persistence",
       "nodes_expanded": 23,
-      "compute_ms": 0.055
+      "compute_ms": 0.057
     },
     {
       "time_s": 1245.0,
@@ -86,7 +86,7 @@
       "saving_s": 10.0,
       "reason": "persistence",
       "nodes_expanded": 25,
-      "compute_ms": 0.051
+      "compute_ms": 0.059
     },
     {
       "time_s": 1250.0,
@@ -95,7 +95,7 @@
       "saving_s": 11.0,
       "reason": "persistence",
       "nodes_expanded": 25,
-      "compute_ms": 0.052
+      "compute_ms": 0.058
     },
     {
       "time_s": 1275.0,

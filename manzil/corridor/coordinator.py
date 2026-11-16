@@ -38,6 +38,8 @@ Additions from workstream W4 (all off by default; see ``results/fyp2/corridor/``
   queue among the phases the ambulance's phase denied, for as long as the junction was held
   (at most ``compensation_max_s``) and only after a full normal minimum green (no truncation),
   then hands the junction back to normal control. Recovery time is still measured from passage.
+  ``compensation_start="exit_clear"`` hands the junction to normal control at passage and takes
+  it back for compensation only once the ambulance has left its exit edge.
 
 The coordinator never actuates SUMO: it only sets ownership and submits requests to the filter.
 """
@@ -66,12 +68,17 @@ class CorridorParams:
     vehicle_space_m: float = 7.5  # storage per vehicle (5 m car + 2.5 m gap)
     compensation: bool = False  # W4: bounded compensation plan in recovery
     compensation_max_s: float = 20.0
+    # "passage": compensate at once; "exit_clear": normal control first, compensation only once
+    # the ambulance has left its exit edge (released traffic cannot queue in front of it).
+    compensation_start: str = "passage"
 
     def __post_init__(self):
         if self.downstream not in ("off", "defer", "flush", "both"):
             raise ValueError(f"unknown downstream mode {self.downstream!r}")
         if not 0 < self.downstream_occupancy <= 1:
             raise ValueError("downstream occupancy must be in (0, 1]")
+        if self.compensation_start not in ("passage", "exit_clear"):
+            raise ValueError(f"unknown compensation start {self.compensation_start!r}")
         if self.compensation_max_s <= 0 or self.downstream_max_defer_s < 0:
             raise ValueError("compensation and defer limits must be positive")
 
@@ -120,6 +127,7 @@ class CorridorCoordinator:
     deferrals: int = 0
     flushes: int = 0
     _snap: TrafficSnapshot | None = None
+    _pending_comp: dict[str, tuple[_Request, float]] = field(default_factory=dict)
 
     # ----- per step --------------------------------------------------------------------------
     def step(self, snap: TrafficSnapshot, amb: VehicleState | None, plan: RoutePlan | None):
@@ -132,6 +140,7 @@ class CorridorCoordinator:
                 del h[0]
         self._track_recovery(snap)
         self._compensate(snap)
+        self._start_pending(snap, amb, plan)
         if plan is None or amb is None:
             return
         if not amb.edge_id.startswith(":"):
@@ -238,7 +247,27 @@ class CorridorCoordinator:
                 out.add(nxt[0])
         return out
 
-    def _start_compensation(self, req: _Request, now: float, step: int, snap) -> bool:
+    def _start_pending(self, snap, amb, plan) -> None:
+        """``exit_clear``: take the junction back for compensation once the ambulance is off its
+        exit edge (or has arrived); give up after ``max_priority_s``."""
+        now, step = snap.sim_time_s, snap.effective_step
+        for tls, (req, passed_s) in list(self._pending_comp.items()):
+            if now - passed_s > self.params.max_priority_s:
+                del self._pending_comp[tls]
+                continue
+            if amb is not None and plan is not None and req.exit in plan.edge_ids:
+                idx = self._plan_index(plan, amb)
+                ei = plan.edge_ids.index(req.exit)
+                if idx < ei or (idx == ei and not amb.edge_id.startswith(":")):
+                    continue  # still before or on the exit edge
+            del self._pending_comp[tls]
+            if self.safety.owner(tls) is not Owner.NORMAL:
+                continue
+            self.safety.set_owner(tls, Owner.CORRIDOR, now, step)
+            if not self._start_compensation(req, now, step, snap, held=passed_s - req.activated_s):
+                self.safety.set_owner(tls, Owner.NORMAL, now, step)
+
+    def _start_compensation(self, req: _Request, now: float, step: int, snap, held=None) -> bool:
         """Keep ownership and serve the most-queued phase the priority denied (bounded)."""
         if not self.params.compensation or req.activated_s is None:
             return False
@@ -257,7 +286,7 @@ class CorridorCoordinator:
                 best, best_q = g.index, q
         if best is None:  # nobody is waiting for another phase: plain release
             return False
-        held = now - req.activated_s
+        held = now - req.activated_s if held is None else held
         green = min(max(held, self.safety.config.min_green_s), self.params.compensation_max_s)
         self._compensating[req.tls] = _Compensation(req.tls, best, green, now)
         self.events.append({"time_s": now, "step": step, "tls": req.tls,
@@ -354,7 +383,10 @@ class CorridorCoordinator:
         self._event(now, step, req, state)
         self._active.pop(req.tls, None)
         if self.safety.owner(req.tls) is Owner.CORRIDOR:
-            if not self._start_compensation(req, now, step, snap):
+            later = self.params.compensation and self.params.compensation_start == "exit_clear"
+            if later and req.activated_s is not None:
+                self._pending_comp[req.tls] = (req, now)
+            if later or not self._start_compensation(req, now, step, snap):
                 self.safety.set_owner(req.tls, Owner.NORMAL, now, step)
             self._recovering[req.tls] = (now, req.queue_at_activation)
             self._event(now, step, req, "RECOVERY")

@@ -45,7 +45,7 @@
   "revision_triggers": [
     "improvement"
   ],
-  "route_compute_ms_max": 0.06,
+  "route_compute_ms_max": 0.059,
   "driven_route": [
     "left0A0",
     "A0A1",

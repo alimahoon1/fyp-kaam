@@ -39,7 +39,7 @@
       "cost_s": 113.256,
       "snapshot_step": 1200,
       "trigger": "dispatch",
-      "compute_ms": 0.06
+      "compute_ms": 0.058
     },
     {
       "mission_id": "m1",
@@ -53,7 +53,7 @@
       "cost_s": 60.453,
       "snapshot_step": 1302,
       "trigger": "improvement",
-      "compute_ms": 0.036
+      "compute_ms": 0.03
     }
   ],
   "routing_log": [
@@ -64,7 +64,7 @@
       "saving_s": null,
       "reason": "dispatch",
       "nodes_expanded": 25,
-      "compute_ms": 0.06
+      "compute_ms": 0.058
     },
     {
       "time_s": 1205.0,
@@ -73,7 +73,7 @@
       "saving_s": 12.0,
       "reason": "persistence",
       "nodes_expanded": 22,
-      "compute_ms": 0.061
+      "compute_ms": 0.055
     },
     {
       "time_s": 1215.0,
@@ -82,7 +82,7 @@
       "saving_s": 11.0,
       "reason": "persistence",
       "nodes_expanded": 25,
-      "compute_ms": 0.056
+      "compute_ms": 0.064
     },
     {
       "time_s": 1220.0,
@@ -91,7 +91,7 @@
       "saving_s": 16.0,
       "reason": "persistence",
       "nodes_expanded": 25,
-      "compute_ms": 0.065
+      "compute_ms": 0.061
     },
     {
       "time_s": 1225.0,
@@ -100,7 +100,7 @@
       "saving_s": 20.0,
       "reason": "cooldown",
       "nodes_expanded": 25,
-      "compute_ms": 0.104
+      "compute_ms": 0.092
     },
     {
       "time_s": 1255.0,
@@ -109,7 +109,7 @@
       "saving_s": 12.0,
       "reason": "persistence",
       "nodes_expanded": 22,
-      "compute_ms": 0.06
+      "compute_ms": 0.051
     },
     {
       "time_s": 1260.0,
@@ -118,7 +118,7 @@
       "saving_s": 15.0,
       "reason": "persistence",
       "nodes_expanded": 20,
-      "compute_ms": 0.059
+      "compute_ms": 0.054
     },
     {
       "time_s": 1292.0,
@@ -127,7 +127,7 @@
       "saving_s": 13.0,
       "reason": "persistence",
       "nodes_expanded": 15,
-      "compute_ms": 0.048
+      "compute_ms": 0.038
     },
     {
       "time_s": 1297.0,
@@ -136,7 +136,7 @@
       "saving_s": 15.0,
       "reason": "persistence",
       "nodes_expanded": 13,
-      "compute_ms": 0.053
+      "compute_ms": 0.035
     },
     {
       "time_s": 1302.0,
@@ -145,7 +145,7 @@
       "saving_s": null,
       "reason": "improvement",
       "nodes_expanded": 7,
-      "compute_ms": 0.036
+      "compute_ms": 0.03
     }
   ],
   "corridor_events": [

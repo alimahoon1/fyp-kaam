@@ -1,6 +1,6 @@
 {
   "run_id": "grid3x3_fixed_time_heavy_s10",
-  "created_at_utc": "20261115T221110Z",
+  "created_at_utc": "20261115T234500Z",
   "config": {
     "scenario": "grid3x3",
     "profile": "heavy",
@@ -47,7 +47,7 @@
     "sumo": "Eclipse SUMO sumo 1.28.0",
     "python": "3.13.18",
     "git": {
-      "commit": "9b2a831332723e56c0b1db7efac0a94dd3051180",
+      "commit": "6fba6fb7a5e10a33b7fe81bd987e8dafdff6c649",
       "dirty": true
     }
   },
@@ -182,5 +182,5 @@
     "true"
   ],
   "termination": "completed",
-  "wall_time_s": 7.87
+  "wall_time_s": 7.35
 }

@@ -210,3 +210,19 @@ def test_stress_case_triggers_downstream_check(tmp_path):
             act = [a for a in events if a["tls"] == e["tls"] and a["state"] == "SAFE_TRANSITION"
                    and a["time_s"] >= e["time_s"]]  # fmt: skip
             assert not act or act[0]["time_s"] - e["time_s"] <= 20.0
+
+
+def test_comp_exit_waits_until_ambulance_left_exit(tmp_path):
+    r = run(RunConfig(**SHORT, mission=ARMS["comp_exit"], label="comp_exit"), tmp_path)
+    m = r.metrics
+    assert m["mission_status"] == "ARRIVED" and m["safety_violations"] == 0
+    assert m["amb_red_crossings"] == 0 and m["compensations"] >= 1
+    rec = json.loads((tmp_path / "mission.json").read_text())
+    events, crossings = rec["corridor_events"], rec["signal_crossings"]
+    for e in (e for e in events if e["state"] == "COMPENSATION"):
+        passage = max(p["time_s"] for p in events
+                      if p["tls"] == e["tls"] and p["state"] == "PASSAGE"
+                      and p["time_s"] <= e["time_s"])  # fmt: skip
+        # Compensation starts after the ambulance crossed the next stop line (or arrived).
+        later = [c["time_s"] for c in crossings if c["time_s"] > passage]
+        assert not later or e["time_s"] >= later[0]

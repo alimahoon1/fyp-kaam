@@ -39,7 +39,7 @@
       "cost_s": 110.256,
       "snapshot_step": 1200,
       "trigger": "dispatch",
-      "compute_ms": 0.053
+      "compute_ms": 0.057
     },
     {
       "mission_id": "m1",
@@ -54,7 +54,7 @@
       "cost_s": 86.354,
       "snapshot_step": 1260,
       "trigger": "improvement",
-      "compute_ms": 0.053
+      "compute_ms": 0.082
     }
   ],
   "routing_log": [
@@ -65,7 +65,7 @@
       "saving_s": null,
       "reason": "dispatch",
       "nodes_expanded": 24,
-      "compute_ms": 0.053
+      "compute_ms": 0.057
     },
     {
       "time_s": 1215.0,
@@ -74,7 +74,7 @@
       "saving_s": 14.0,
       "reason": "persistence",
       "nodes_expanded": 22,
-      "compute_ms": 0.057
+      "compute_ms": 0.093
     },
     {
       "time_s": 1220.0,
@@ -83,7 +83,7 @@
       "saving_s": 16.0,
       "reason": "persistence",
       "nodes_expanded": 24,
-      "compute_ms": 0.089
+      "compute_ms": 0.055
     },
     {
       "time_s": 1250.0,
@@ -92,7 +92,7 @@
       "saving_s": 12.0,
       "reason": "persistence",
       "nodes_expanded": 14,
-      "compute_ms": 0.047
+      "compute_ms": 0.039
     },
     {
       "time_s": 1255.0,
@@ -101,7 +101,7 @@
       "saving_s": 15.0,
       "reason": "persistence",
       "nodes_expanded": 13,
-      "compute_ms": 0.049
+      "compute_ms": 0.043
     },
     {
       "time_s": 1260.0,
@@ -110,7 +110,7 @@
       "saving_s": null,
       "reason": "improvement",
       "nodes_expanded": 13,
-      "compute_ms": 0.053
+      "compute_ms": 0.082
     }
   ],
   "corridor_events": [
@@ -246,10 +246,28 @@
       "time_s": 1260.0,
       "step": 1260,
       "tls": "B1",
-      "state": "COMPENSATION",
-      "phase": 1,
-      "green_s": 20.0,
-      "queue": 2
+      "state": "REQUESTED",
+      "route_version": 2,
+      "phase": 0,
+      "eta": 13.1
+    },
+    {
+      "time_s": 1260.0,
+      "step": 1260,
+      "tls": "B1",
+      "state": "SAFE_TRANSITION",
+      "route_version": 2,
+      "phase": 0,
+      "eta": 13.1
+    },
+    {
+      "time_s": 1260.0,
+      "step": 1260,
+      "tls": "B1",
+      "state": "ACTIVE_PRIORITY",
+      "route_version": 2,
+      "phase": 0,
+      "eta": 13.1
     },
     {
       "time_s": 1266.0,
@@ -286,12 +304,6 @@
       "eta": 25.8
     },
     {
-      "time_s": 1268.0,
-      "tls": "B1",
-      "state": "IDLE",
-      "recovery_s": 8.0
-    },
-    {
       "time_s": 1276.0,
       "step": 1276,
       "tls": "C1",
@@ -313,41 +325,59 @@
       "state": "ACTIVE_PRIORITY",
       "route_version": 2,
       "phase": 1,
-      "eta": 13.9
+      "eta": 13.5
     },
     {
-      "time_s": 1285.0,
-      "step": 1285,
+      "time_s": 1284.0,
+      "step": 1284,
       "tls": "B1",
-      "state": "COMPENSATION_DONE",
-      "served_s": 20.0
+      "state": "PASSAGE",
+      "route_version": 2,
+      "phase": 0
     },
     {
-      "time_s": 1285.0,
-      "step": 1285,
+      "time_s": 1284.0,
+      "step": 1284,
       "tls": "B1",
+      "state": "COMPENSATION",
+      "phase": 1,
+      "green_s": 20.0,
+      "queue": 13
+    },
+    {
+      "time_s": 1284.0,
+      "step": 1284,
+      "tls": "B1",
+      "state": "RECOVERY",
+      "route_version": 2,
+      "phase": 0
+    },
+    {
+      "time_s": 1284.0,
+      "step": 1284,
+      "tls": "C2",
       "state": "REQUESTED",
       "route_version": 2,
       "phase": 0,
-      "eta": 0.6
+      "eta": 25.8
     },
     {
-      "time_s": 1285.0,
-      "step": 1285,
-      "tls": "B1",
+      "time_s": 1288.0,
+      "step": 1288,
+      "tls": "C2",
       "state": "SAFE_TRANSITION",
       "route_version": 2,
       "phase": 0,
-      "eta": 0.6
+      "eta": 23.0
     },
     {
       "time_s": 1291.0,
       "step": 1291,
-      "tls": "B1",
+      "tls": "C2",
       "state": "ACTIVE_PRIORITY",
       "route_version": 2,
       "phase": 0,
-      "eta": 0.6
+      "eta": 20.0
     },
     {
       "time_s": 1292.0,
@@ -357,142 +387,90 @@
       "served_s": 20.0
     },
     {
-      "time_s": 1294.0,
-      "step": 1294,
+      "time_s": 1300.0,
+      "step": 1300,
+      "tls": "C1",
+      "state": "PASSAGE",
+      "route_version": 2,
+      "phase": 1
+    },
+    {
+      "time_s": 1300.0,
+      "step": 1300,
+      "tls": "C1",
+      "state": "COMPENSATION",
+      "phase": 0,
+      "green_s": 20.0,
+      "queue": 15
+    },
+    {
+      "time_s": 1300.0,
+      "step": 1300,
+      "tls": "C1",
+      "state": "RECOVERY",
+      "route_version": 2,
+      "phase": 1
+    },
+    {
+      "time_s": 1308.0,
+      "tls": "C1",
+      "state": "IDLE",
+      "recovery_s": 8.0
+    },
+    {
+      "time_s": 1310.0,
+      "step": 1310,
       "tls": "B1",
+      "state": "COMPENSATION_DONE",
+      "served_s": 20.0
+    },
+    {
+      "time_s": 1319.0,
+      "tls": "B1",
+      "state": "IDLE",
+      "recovery_s": 35.0
+    },
+    {
+      "time_s": 1323.0,
+      "step": 1323,
+      "tls": "C2",
       "state": "PASSAGE",
       "route_version": 2,
       "phase": 0
     },
     {
-      "time_s": 1294.0,
-      "step": 1294,
-      "tls": "B1",
+      "time_s": 1323.0,
+      "step": 1323,
+      "tls": "C2",
       "state": "COMPENSATION",
       "phase": 1,
-      "green_s": 10,
-      "queue": 2
+      "green_s": 20.0,
+      "queue": 13
     },
     {
-      "time_s": 1294.0,
-      "step": 1294,
-      "tls": "B1",
+      "time_s": 1323.0,
+      "step": 1323,
+      "tls": "C2",
       "state": "RECOVERY",
       "route_version": 2,
       "phase": 0
     },
     {
-      "time_s": 1294.0,
-      "step": 1294,
+      "time_s": 1324.0,
       "tls": "C2",
-      "state": "REQUESTED",
-      "route_version": 2,
-      "phase": 0,
-      "eta": 25.8
-    },
-    {
-      "time_s": 1295.0,
-      "tls": "B1",
       "state": "IDLE",
       "recovery_s": 1.0
     },
     {
-      "time_s": 1306.0,
-      "step": 1306,
-      "tls": "C2",
-      "state": "SAFE_TRANSITION",
-      "route_version": 2,
-      "phase": 0,
-      "eta": 15.3
-    },
-    {
-      "time_s": 1306.0,
-      "step": 1306,
-      "tls": "C2",
-      "state": "ACTIVE_PRIORITY",
-      "route_version": 2,
-      "phase": 0,
-      "eta": 15.3
-    },
-    {
-      "time_s": 1309.0,
-      "step": 1309,
-      "tls": "C1",
-      "state": "PASSAGE",
-      "route_version": 2,
-      "phase": 1
-    },
-    {
-      "time_s": 1309.0,
-      "step": 1309,
-      "tls": "C1",
-      "state": "COMPENSATION",
-      "phase": 0,
-      "green_s": 20.0,
-      "queue": 16
-    },
-    {
-      "time_s": 1309.0,
-      "step": 1309,
-      "tls": "C1",
-      "state": "RECOVERY",
-      "route_version": 2,
-      "phase": 1
-    },
-    {
-      "time_s": 1315.0,
-      "step": 1315,
-      "tls": "B1",
-      "state": "COMPENSATION_DONE",
-      "served_s": 10.0
-    },
-    {
-      "time_s": 1318.0,
-      "tls": "C1",
-      "state": "IDLE",
-      "recovery_s": 9.0
-    },
-    {
       "time_s": 1326.0,
       "step": 1326,
-      "tls": "C2",
-      "state": "PASSAGE",
-      "route_version": 2,
-      "phase": 0
-    },
-    {
-      "time_s": 1326.0,
-      "step": 1326,
-      "tls": "C2",
-      "state": "COMPENSATION",
-      "phase": 1,
-      "green_s": 20.0,
-      "queue": 19
-    },
-    {
-      "time_s": 1326.0,
-      "step": 1326,
-      "tls": "C2",
-      "state": "RECOVERY",
-      "route_version": 2,
-      "phase": 0
-    },
-    {
-      "time_s": 1335.0,
-      "tls": "C2",
-      "state": "IDLE",
-      "recovery_s": 9.0
-    },
-    {
-      "time_s": 1335.0,
-      "step": 1335,
       "tls": "C1",
       "state": "COMPENSATION_DONE",
       "served_s": 20.0
     },
     {
-      "time_s": 1352.0,
-      "step": 1352,
+      "time_s": 1349.0,
+      "step": 1349,
       "tls": "C2",
       "state": "COMPENSATION_DONE",
       "served_s": 20.0
@@ -742,80 +720,14 @@
       "filter_mode": "green"
     },
     {
-      "time_s": 1285.0,
-      "edge": "B0B1",
-      "reason": "queue_at_red",
-      "tls": "B1",
-      "tls_state": "r",
-      "tls_dist_m": 8.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1286.0,
-      "edge": "B0B1",
-      "reason": "queue_at_red",
-      "tls": "B1",
-      "tls_state": "r",
-      "tls_dist_m": 8.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "SAFE_TRANSITION",
-      "filter_mode": "yellow"
-    },
-    {
-      "time_s": 1287.0,
-      "edge": "B0B1",
-      "reason": "queue_at_red",
-      "tls": "B1",
-      "tls_state": "r",
-      "tls_dist_m": 8.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "SAFE_TRANSITION",
-      "filter_mode": "yellow"
-    },
-    {
-      "time_s": 1288.0,
-      "edge": "B0B1",
-      "reason": "queue_at_red",
-      "tls": "B1",
-      "tls_state": "r",
-      "tls_dist_m": 8.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "SAFE_TRANSITION",
-      "filter_mode": "yellow"
-    },
-    {
-      "time_s": 1289.0,
-      "edge": "B0B1",
-      "reason": "queue_at_red",
-      "tls": "B1",
-      "tls_state": "r",
-      "tls_dist_m": 8.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "SAFE_TRANSITION",
-      "filter_mode": "all_red"
-    },
-    {
-      "time_s": 1290.0,
-      "edge": "B0B1",
-      "reason": "queue_at_red",
-      "tls": "B1",
-      "tls_state": "r",
-      "tls_dist_m": 8.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "SAFE_TRANSITION",
-      "filter_mode": "all_red"
-    },
-    {
-      "time_s": 1291.0,
-      "edge": "B0B1",
-      "reason": "queue_at_green",
-      "tls": "B1",
+      "time_s": 1316.0,
+      "edge": "C1C2",
+      "reason": "green_blocked",
+      "tls": "C2",
       "tls_state": "G",
-      "tls_dist_m": 8.5,
-      "leader_gap_m": 1.7,
-      "corridor_state": "SAFE_TRANSITION",
+      "tls_dist_m": 32.7,
+      "leader_gap_m": 137.0,
+      "corridor_state": "ACTIVE_PRIORITY",
       "filter_mode": "green"
     }
   ],
@@ -835,24 +747,24 @@
       "state": "g"
     },
     {
-      "time_s": 1294.0,
+      "time_s": 1284.0,
       "tls": "B1",
       "approach": "B0B1",
       "link": 8,
       "state": "G"
     },
     {
-      "time_s": 1309.0,
+      "time_s": 1300.0,
       "tls": "C1",
       "approach": "B1C1",
       "link": 15,
       "state": "g"
     },
     {
-      "time_s": 1326.0,
+      "time_s": 1323.0,
       "tls": "C2",
       "approach": "C1C2",
-      "link": 10,
+      "link": 9,
       "state": "G"
     }
   ]

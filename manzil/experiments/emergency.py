@@ -68,6 +68,7 @@ class MissionConfig:
     downstream_occupancy: float = 0.75
     compensation: bool = False
     compensation_max_s: float = 20.0
+    compensation_start: str = "passage"  # or "exit_clear"
 
     def validate(self) -> list[str]:
         problems = []
@@ -116,6 +117,7 @@ class MissionDriver:
                     downstream_occupancy=c.downstream_occupancy,
                     compensation=c.compensation,
                     compensation_max_s=c.compensation_max_s,
+                    compensation_start=c.compensation_start,
                 ),
             )  # fmt: skip
             if c.corridor

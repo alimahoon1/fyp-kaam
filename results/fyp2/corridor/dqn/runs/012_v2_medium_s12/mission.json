@@ -39,7 +39,7 @@
       "cost_s": 106.256,
       "snapshot_step": 1200,
       "trigger": "dispatch",
-      "compute_ms": 0.059
+      "compute_ms": 0.048
     }
   ],
   "routing_log": [
@@ -50,7 +50,7 @@
       "saving_s": null,
       "reason": "dispatch",
       "nodes_expanded": 25,
-      "compute_ms": 0.059
+      "compute_ms": 0.048
     }
   ],
   "corridor_events": [

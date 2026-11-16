@@ -39,7 +39,7 @@
       "cost_s": 65.256,
       "snapshot_step": -1,
       "trigger": "dispatch",
-      "compute_ms": 0.051
+      "compute_ms": 0.082
     }
   ],
   "routing_log": [
@@ -50,7 +50,7 @@
       "saving_s": null,
       "reason": "dispatch",
       "nodes_expanded": 15,
-      "compute_ms": 0.051
+      "compute_ms": 0.082
     }
   ],
   "corridor_events": [
@@ -248,13 +248,22 @@
       "reason": "timeout"
     },
     {
-      "time_s": 1303.0,
-      "step": 1303,
+      "time_s": 1304.0,
+      "step": 1304,
       "tls": "A2",
-      "state": "COMPENSATION",
-      "phase": 1,
-      "green_s": 20.0,
-      "queue": 52
+      "state": "REQUESTED",
+      "route_version": 1,
+      "phase": 0,
+      "eta": 1.7
+    },
+    {
+      "time_s": 1304.0,
+      "step": 1304,
+      "tls": "A2",
+      "state": "SAFE_TRANSITION",
+      "route_version": 1,
+      "phase": 0,
+      "eta": 1.7
     },
     {
       "time_s": 1305.0,
@@ -264,15 +273,6 @@
       "route_version": 1,
       "phase": 1,
       "reason": "timeout"
-    },
-    {
-      "time_s": 1305.0,
-      "step": 1305,
-      "tls": "B2",
-      "state": "COMPENSATION",
-      "phase": 0,
-      "green_s": 20.0,
-      "queue": 18
     },
     {
       "time_s": 1306.0,
@@ -281,46 +281,8 @@
       "recovery_s": 1.0
     },
     {
-      "time_s": 1325.0,
-      "tls": "A2",
-      "state": "IDLE",
-      "recovery_s": 22.0
-    },
-    {
-      "time_s": 1329.0,
-      "step": 1329,
-      "tls": "A2",
-      "state": "COMPENSATION_DONE",
-      "served_s": 20.0
-    },
-    {
-      "time_s": 1329.0,
-      "step": 1329,
-      "tls": "A2",
-      "state": "REQUESTED",
-      "route_version": 1,
-      "phase": 0,
-      "eta": 1.7
-    },
-    {
-      "time_s": 1329.0,
-      "step": 1329,
-      "tls": "A2",
-      "state": "SAFE_TRANSITION",
-      "route_version": 1,
-      "phase": 0,
-      "eta": 1.7
-    },
-    {
-      "time_s": 1331.0,
-      "step": 1331,
-      "tls": "B2",
-      "state": "COMPENSATION_DONE",
-      "served_s": 20.0
-    },
-    {
-      "time_s": 1331.0,
-      "step": 1331,
+      "time_s": 1306.0,
+      "step": 1306,
       "tls": "B2",
       "state": "REQUESTED",
       "route_version": 1,
@@ -328,8 +290,8 @@
       "eta": 14.6
     },
     {
-      "time_s": 1331.0,
-      "step": 1331,
+      "time_s": 1306.0,
+      "step": 1306,
       "tls": "B2",
       "state": "SAFE_TRANSITION",
       "route_version": 1,
@@ -337,51 +299,57 @@
       "eta": 14.6
     },
     {
-      "time_s": 1335.0,
-      "step": 1335,
+      "time_s": 1319.0,
+      "step": 1319,
       "tls": "A2",
       "state": "ACTIVE_PRIORITY",
       "route_version": 1,
       "phase": 0,
       "eta": 1.7
+    },
+    {
+      "time_s": 1321.0,
+      "step": 1321,
+      "tls": "B2",
+      "state": "ACTIVE_PRIORITY",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 14.6
+    },
+    {
+      "time_s": 1322.0,
+      "tls": "A2",
+      "state": "IDLE",
+      "recovery_s": 19.0
     },
     {
       "time_s": 1337.0,
       "step": 1337,
-      "tls": "B2",
-      "state": "ACTIVE_PRIORITY",
-      "route_version": 1,
-      "phase": 1,
-      "eta": 14.6
-    },
-    {
-      "time_s": 1349.0,
-      "step": 1349,
       "tls": "A2",
       "state": "PASSAGE",
       "route_version": 1,
       "phase": 0
     },
     {
-      "time_s": 1349.0,
-      "step": 1349,
+      "time_s": 1337.0,
+      "step": 1337,
       "tls": "A2",
       "state": "COMPENSATION",
       "phase": 1,
       "green_s": 20.0,
-      "queue": 41
+      "queue": 49
     },
     {
-      "time_s": 1349.0,
-      "step": 1349,
+      "time_s": 1337.0,
+      "step": 1337,
       "tls": "A2",
       "state": "RECOVERY",
       "route_version": 1,
       "phase": 0
     },
     {
-      "time_s": 1349.0,
-      "step": 1349,
+      "time_s": 1337.0,
+      "step": 1337,
       "tls": "C2",
       "state": "REQUESTED",
       "route_version": 1,
@@ -389,8 +357,8 @@
       "eta": 25.8
     },
     {
-      "time_s": 1349.0,
-      "step": 1349,
+      "time_s": 1337.0,
+      "step": 1337,
       "tls": "C2",
       "state": "SAFE_TRANSITION",
       "route_version": 1,
@@ -398,30 +366,30 @@
       "eta": 25.8
     },
     {
-      "time_s": 1351.0,
-      "step": 1351,
+      "time_s": 1338.0,
+      "tls": "A2",
+      "state": "IDLE",
+      "recovery_s": 1.0
+    },
+    {
+      "time_s": 1343.0,
+      "step": 1343,
       "tls": "C2",
       "state": "ACTIVE_PRIORITY",
       "route_version": 1,
       "phase": 1,
-      "eta": 25.8
+      "eta": 25.4
     },
     {
-      "time_s": 1371.0,
-      "tls": "A2",
-      "state": "IDLE",
-      "recovery_s": 22.0
-    },
-    {
-      "time_s": 1375.0,
-      "step": 1375,
+      "time_s": 1363.0,
+      "step": 1363,
       "tls": "A2",
       "state": "COMPENSATION_DONE",
       "served_s": 20.0
     },
     {
-      "time_s": 1392.0,
-      "step": 1392,
+      "time_s": 1367.0,
+      "step": 1367,
       "tls": "B2",
       "state": "CANCELLED",
       "route_version": 1,
@@ -429,23 +397,41 @@
       "reason": "timeout"
     },
     {
-      "time_s": 1392.0,
-      "step": 1392,
-      "tls": "B2",
-      "state": "COMPENSATION",
-      "phase": 0,
-      "green_s": 20.0,
-      "queue": 22
-    },
-    {
-      "time_s": 1393.0,
+      "time_s": 1368.0,
       "tls": "B2",
       "state": "IDLE",
       "recovery_s": 1.0
     },
     {
-      "time_s": 1410.0,
-      "step": 1410,
+      "time_s": 1368.0,
+      "step": 1368,
+      "tls": "B2",
+      "state": "REQUESTED",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 9.0
+    },
+    {
+      "time_s": 1368.0,
+      "step": 1368,
+      "tls": "B2",
+      "state": "SAFE_TRANSITION",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 9.0
+    },
+    {
+      "time_s": 1368.0,
+      "step": 1368,
+      "tls": "B2",
+      "state": "ACTIVE_PRIORITY",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 9.0
+    },
+    {
+      "time_s": 1398.0,
+      "step": 1398,
       "tls": "C2",
       "state": "CANCELLED",
       "route_version": 1,
@@ -453,187 +439,99 @@
       "reason": "timeout"
     },
     {
-      "time_s": 1410.0,
-      "step": 1410,
-      "tls": "C2",
-      "state": "COMPENSATION",
-      "phase": 0,
-      "green_s": 20.0,
-      "queue": 17
-    },
-    {
-      "time_s": 1411.0,
+      "time_s": 1399.0,
       "tls": "C2",
       "state": "IDLE",
       "recovery_s": 1.0
     },
     {
-      "time_s": 1418.0,
-      "step": 1418,
-      "tls": "B2",
-      "state": "COMPENSATION_DONE",
-      "served_s": 20.0
-    },
-    {
-      "time_s": 1418.0,
-      "step": 1418,
-      "tls": "B2",
-      "state": "REQUESTED",
-      "route_version": 1,
-      "phase": 1,
-      "eta": 3.9
-    },
-    {
-      "time_s": 1418.0,
-      "step": 1418,
-      "tls": "B2",
-      "state": "SAFE_TRANSITION",
-      "route_version": 1,
-      "phase": 1,
-      "eta": 3.9
-    },
-    {
-      "time_s": 1424.0,
-      "step": 1424,
-      "tls": "B2",
-      "state": "ACTIVE_PRIORITY",
-      "route_version": 1,
-      "phase": 1,
-      "eta": 3.9
-    },
-    {
-      "time_s": 1436.0,
-      "step": 1436,
-      "tls": "C2",
-      "state": "COMPENSATION_DONE",
-      "served_s": 20.0
-    },
-    {
-      "time_s": 1436.0,
-      "step": 1436,
+      "time_s": 1399.0,
+      "step": 1399,
       "tls": "C2",
       "state": "REQUESTED",
       "route_version": 1,
       "phase": 1,
-      "eta": 16.2
+      "eta": 17.7
     },
     {
-      "time_s": 1436.0,
-      "step": 1436,
+      "time_s": 1405.0,
+      "step": 1405,
       "tls": "C2",
       "state": "SAFE_TRANSITION",
       "route_version": 1,
       "phase": 1,
-      "eta": 16.2
+      "eta": 16.8
     },
     {
-      "time_s": 1442.0,
-      "step": 1442,
+      "time_s": 1414.0,
+      "step": 1414,
       "tls": "C2",
       "state": "ACTIVE_PRIORITY",
       "route_version": 1,
       "phase": 1,
-      "eta": 15.4
+      "eta": 15.5
     },
     {
-      "time_s": 1457.0,
-      "step": 1457,
+      "time_s": 1429.0,
+      "step": 1429,
+      "tls": "B2",
+      "state": "CANCELLED",
+      "route_version": 1,
+      "phase": 1,
+      "reason": "timeout"
+    },
+    {
+      "time_s": 1430.0,
+      "step": 1430,
+      "tls": "B2",
+      "state": "REQUESTED",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 0.5
+    },
+    {
+      "time_s": 1430.0,
+      "step": 1430,
+      "tls": "B2",
+      "state": "SAFE_TRANSITION",
+      "route_version": 1,
+      "phase": 1,
+      "eta": 0.5
+    },
+    {
+      "time_s": 1445.0,
+      "step": 1445,
       "tls": "B2",
       "state": "PASSAGE",
       "route_version": 1,
       "phase": 1
     },
     {
-      "time_s": 1457.0,
-      "step": 1457,
+      "time_s": 1445.0,
+      "step": 1445,
       "tls": "B2",
       "state": "COMPENSATION",
       "phase": 0,
-      "green_s": 20.0,
-      "queue": 27
+      "green_s": 15.0,
+      "queue": 24
     },
     {
-      "time_s": 1457.0,
-      "step": 1457,
+      "time_s": 1445.0,
+      "step": 1445,
       "tls": "B2",
       "state": "RECOVERY",
       "route_version": 1,
       "phase": 1
     },
     {
-      "time_s": 1465.0,
+      "time_s": 1446.0,
       "tls": "B2",
-      "state": "IDLE",
-      "recovery_s": 8.0
-    },
-    {
-      "time_s": 1483.0,
-      "step": 1483,
-      "tls": "B2",
-      "state": "COMPENSATION_DONE",
-      "served_s": 20.0
-    },
-    {
-      "time_s": 1497.0,
-      "step": 1497,
-      "tls": "C2",
-      "state": "CANCELLED",
-      "route_version": 1,
-      "phase": 1,
-      "reason": "timeout"
-    },
-    {
-      "time_s": 1497.0,
-      "step": 1497,
-      "tls": "C2",
-      "state": "COMPENSATION",
-      "phase": 0,
-      "green_s": 20.0,
-      "queue": 21
-    },
-    {
-      "time_s": 1498.0,
-      "tls": "C2",
       "state": "IDLE",
       "recovery_s": 1.0
     },
     {
-      "time_s": 1523.0,
-      "step": 1523,
-      "tls": "C2",
-      "state": "COMPENSATION_DONE",
-      "served_s": 20.0
-    },
-    {
-      "time_s": 1523.0,
-      "step": 1523,
-      "tls": "C2",
-      "state": "REQUESTED",
-      "route_version": 1,
-      "phase": 1,
-      "eta": 4.9
-    },
-    {
-      "time_s": 1523.0,
-      "step": 1523,
-      "tls": "C2",
-      "state": "SAFE_TRANSITION",
-      "route_version": 1,
-      "phase": 1,
-      "eta": 4.9
-    },
-    {
-      "time_s": 1529.0,
-      "step": 1529,
-      "tls": "C2",
-      "state": "ACTIVE_PRIORITY",
-      "route_version": 1,
-      "phase": 1,
-      "eta": 4.9
-    },
-    {
-      "time_s": 1584.0,
-      "step": 1584,
+      "time_s": 1466.0,
+      "step": 1466,
       "tls": "C2",
       "state": "CANCELLED",
       "route_version": 1,
@@ -641,91 +539,76 @@
       "reason": "timeout"
     },
     {
-      "time_s": 1584.0,
-      "step": 1584,
-      "tls": "C2",
-      "state": "COMPENSATION",
-      "phase": 0,
-      "green_s": 20.0,
-      "queue": 20
-    },
-    {
-      "time_s": 1592.0,
-      "tls": "C2",
-      "state": "IDLE",
-      "recovery_s": 8.0
-    },
-    {
-      "time_s": 1610.0,
-      "step": 1610,
-      "tls": "C2",
-      "state": "COMPENSATION_DONE",
-      "served_s": 20.0
-    },
-    {
-      "time_s": 1610.0,
-      "step": 1610,
+      "time_s": 1467.0,
+      "step": 1467,
       "tls": "C2",
       "state": "REQUESTED",
       "route_version": 1,
       "phase": 1,
-      "eta": 1.1
+      "eta": 0.7
     },
     {
-      "time_s": 1610.0,
-      "step": 1610,
+      "time_s": 1467.0,
+      "step": 1467,
       "tls": "C2",
       "state": "SAFE_TRANSITION",
       "route_version": 1,
       "phase": 1,
-      "eta": 1.1
+      "eta": 0.7
     },
     {
-      "time_s": 1616.0,
-      "step": 1616,
+      "time_s": 1467.0,
+      "step": 1467,
       "tls": "C2",
       "state": "ACTIVE_PRIORITY",
       "route_version": 1,
       "phase": 1,
-      "eta": 1.1
+      "eta": 0.7
     },
     {
-      "time_s": 1626.0,
-      "step": 1626,
+      "time_s": 1474.0,
+      "step": 1474,
+      "tls": "B2",
+      "state": "COMPENSATION_DONE",
+      "served_s": 15.0
+    },
+    {
+      "time_s": 1484.0,
+      "step": 1484,
       "tls": "C2",
       "state": "PASSAGE",
       "route_version": 1,
       "phase": 1
     },
     {
-      "time_s": 1626.0,
-      "step": 1626,
+      "time_s": 1484.0,
+      "step": 1484,
       "tls": "C2",
       "state": "COMPENSATION",
       "phase": 0,
-      "green_s": 16.0,
-      "queue": 12
+      "green_s": 17.0,
+      "queue": 37
     },
     {
-      "time_s": 1626.0,
-      "step": 1626,
+      "time_s": 1484.0,
+      "step": 1484,
       "tls": "C2",
       "state": "RECOVERY",
       "route_version": 1,
       "phase": 1
     },
     {
-      "time_s": 1627.0,
+      "time_s": 1493.0,
       "tls": "C2",
       "state": "IDLE",
-      "recovery_s": 1.0
+      "recovery_s": 9.0
     },
     {
-      "time_s": 1648.0,
-      "step": 1648,
+      "time_s": 1507.0,
+      "step": 1507,
       "tls": "C2",
       "state": "COMPENSATION_DONE",
-      "served_s": 16.0
+      "served_s": 17.0
     }
   ],
   "stop_log": [
@@ -1172,13 +1055,13 @@
     {
       "time_s": 1304.0,
       "edge": "A1A2",
-      "reason": "queue_at_green",
+      "reason": "queue_at_red",
       "tls": "A2",
-      "tls_state": "G",
+      "tls_state": "y",
       "tls_dist_m": 23.5,
       "leader_gap_m": 0.0,
       "corridor_state": null,
-      "filter_mode": "green"
+      "filter_mode": "yellow"
     },
     {
       "time_s": 1305.0,
@@ -1188,7 +1071,7 @@
       "tls_state": "y",
       "tls_dist_m": 23.5,
       "leader_gap_m": 0.0,
-      "corridor_state": null,
+      "corridor_state": "SAFE_TRANSITION",
       "filter_mode": "yellow"
     },
     {
@@ -1199,7 +1082,7 @@
       "tls_state": "y",
       "tls_dist_m": 23.5,
       "leader_gap_m": 0.0,
-      "corridor_state": null,
+      "corridor_state": "SAFE_TRANSITION",
       "filter_mode": "yellow"
     },
     {
@@ -1207,11 +1090,11 @@
       "edge": "A1A2",
       "reason": "queue_at_red",
       "tls": "A2",
-      "tls_state": "y",
+      "tls_state": "r",
       "tls_dist_m": 23.5,
       "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "yellow"
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "all_red"
     },
     {
       "time_s": 1308.0,
@@ -1221,7 +1104,7 @@
       "tls_state": "r",
       "tls_dist_m": 23.5,
       "leader_gap_m": 0.0,
-      "corridor_state": null,
+      "corridor_state": "SAFE_TRANSITION",
       "filter_mode": "all_red"
     },
     {
@@ -1232,8 +1115,8 @@
       "tls_state": "r",
       "tls_dist_m": 23.5,
       "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "all_red"
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "green"
     },
     {
       "time_s": 1310.0,
@@ -1243,7 +1126,7 @@
       "tls_state": "r",
       "tls_dist_m": 23.5,
       "leader_gap_m": 0.0,
-      "corridor_state": null,
+      "corridor_state": "SAFE_TRANSITION",
       "filter_mode": "green"
     },
     {
@@ -1254,7 +1137,7 @@
       "tls_state": "r",
       "tls_dist_m": 23.5,
       "leader_gap_m": 0.0,
-      "corridor_state": null,
+      "corridor_state": "SAFE_TRANSITION",
       "filter_mode": "green"
     },
     {
@@ -1265,7 +1148,7 @@
       "tls_state": "r",
       "tls_dist_m": 23.5,
       "leader_gap_m": 0.0,
-      "corridor_state": null,
+      "corridor_state": "SAFE_TRANSITION",
       "filter_mode": "green"
     },
     {
@@ -1276,7 +1159,7 @@
       "tls_state": "r",
       "tls_dist_m": 23.5,
       "leader_gap_m": 0.0,
-      "corridor_state": null,
+      "corridor_state": "SAFE_TRANSITION",
       "filter_mode": "green"
     },
     {
@@ -1287,8 +1170,8 @@
       "tls_state": "r",
       "tls_dist_m": 23.5,
       "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "yellow"
     },
     {
       "time_s": 1315.0,
@@ -1298,8 +1181,8 @@
       "tls_state": "r",
       "tls_dist_m": 23.5,
       "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "yellow"
     },
     {
       "time_s": 1316.0,
@@ -1309,8 +1192,8 @@
       "tls_state": "r",
       "tls_dist_m": 23.5,
       "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "yellow"
     },
     {
       "time_s": 1317.0,
@@ -1320,8 +1203,8 @@
       "tls_state": "r",
       "tls_dist_m": 23.5,
       "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "all_red"
     },
     {
       "time_s": 1318.0,
@@ -1331,413 +1214,204 @@
       "tls_state": "r",
       "tls_dist_m": 23.5,
       "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
+      "corridor_state": "SAFE_TRANSITION",
+      "filter_mode": "all_red"
     },
     {
       "time_s": 1319.0,
       "edge": "A1A2",
-      "reason": "queue_at_red",
+      "reason": "queue_at_green",
       "tls": "A2",
-      "tls_state": "r",
+      "tls_state": "G",
       "tls_dist_m": 23.5,
       "leader_gap_m": 0.0,
-      "corridor_state": null,
+      "corridor_state": "SAFE_TRANSITION",
       "filter_mode": "green"
     },
     {
       "time_s": 1320.0,
       "edge": "A1A2",
-      "reason": "queue_at_red",
+      "reason": "queue_at_green",
       "tls": "A2",
-      "tls_state": "r",
+      "tls_state": "G",
       "tls_dist_m": 23.5,
       "leader_gap_m": 0.0,
-      "corridor_state": null,
+      "corridor_state": "ACTIVE_PRIORITY",
       "filter_mode": "green"
     },
     {
       "time_s": 1321.0,
       "edge": "A1A2",
-      "reason": "queue_at_red",
+      "reason": "queue_at_green",
       "tls": "A2",
-      "tls_state": "r",
+      "tls_state": "G",
       "tls_dist_m": 23.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
+      "leader_gap_m": 0.3,
+      "corridor_state": "ACTIVE_PRIORITY",
       "filter_mode": "green"
     },
     {
-      "time_s": 1322.0,
-      "edge": "A1A2",
-      "reason": "queue_at_red",
-      "tls": "A2",
-      "tls_state": "r",
-      "tls_dist_m": 23.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
+      "time_s": 1392.0,
+      "edge": "A2B2",
+      "reason": "queue_at_green",
+      "tls": "B2",
+      "tls_state": "G",
+      "tls_dist_m": 82.9,
+      "leader_gap_m": 3.6,
+      "corridor_state": "ACTIVE_PRIORITY",
       "filter_mode": "green"
     },
     {
-      "time_s": 1323.0,
-      "edge": "A1A2",
-      "reason": "queue_at_red",
-      "tls": "A2",
+      "time_s": 1433.0,
+      "edge": "A2B2",
+      "reason": "red_corridor_clearance",
+      "tls": "B2",
       "tls_state": "r",
-      "tls_dist_m": 23.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1324.0,
-      "edge": "A1A2",
-      "reason": "queue_at_red",
-      "tls": "A2",
-      "tls_state": "r",
-      "tls_dist_m": 23.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1325.0,
-      "edge": "A1A2",
-      "reason": "queue_at_red",
-      "tls": "A2",
-      "tls_state": "r",
-      "tls_dist_m": 23.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1326.0,
-      "edge": "A1A2",
-      "reason": "queue_at_red",
-      "tls": "A2",
-      "tls_state": "r",
-      "tls_dist_m": 23.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1327.0,
-      "edge": "A1A2",
-      "reason": "queue_at_red",
-      "tls": "A2",
-      "tls_state": "r",
-      "tls_dist_m": 23.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1328.0,
-      "edge": "A1A2",
-      "reason": "queue_at_red",
-      "tls": "A2",
-      "tls_state": "r",
-      "tls_dist_m": 23.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1329.0,
-      "edge": "A1A2",
-      "reason": "queue_at_red",
-      "tls": "A2",
-      "tls_state": "r",
-      "tls_dist_m": 23.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1330.0,
-      "edge": "A1A2",
-      "reason": "queue_at_red",
-      "tls": "A2",
-      "tls_state": "r",
-      "tls_dist_m": 23.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "SAFE_TRANSITION",
-      "filter_mode": "yellow"
-    },
-    {
-      "time_s": 1331.0,
-      "edge": "A1A2",
-      "reason": "queue_at_red",
-      "tls": "A2",
-      "tls_state": "r",
-      "tls_dist_m": 23.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "SAFE_TRANSITION",
-      "filter_mode": "yellow"
-    },
-    {
-      "time_s": 1332.0,
-      "edge": "A1A2",
-      "reason": "queue_at_red",
-      "tls": "A2",
-      "tls_state": "r",
-      "tls_dist_m": 23.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "SAFE_TRANSITION",
-      "filter_mode": "yellow"
-    },
-    {
-      "time_s": 1333.0,
-      "edge": "A1A2",
-      "reason": "queue_at_red",
-      "tls": "A2",
-      "tls_state": "r",
-      "tls_dist_m": 23.5,
-      "leader_gap_m": 0.0,
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 23.3,
       "corridor_state": "SAFE_TRANSITION",
       "filter_mode": "all_red"
     },
     {
-      "time_s": 1334.0,
-      "edge": "A1A2",
-      "reason": "queue_at_red",
-      "tls": "A2",
+      "time_s": 1434.0,
+      "edge": "A2B2",
+      "reason": "red_corridor_clearance",
+      "tls": "B2",
       "tls_state": "r",
-      "tls_dist_m": 23.5,
-      "leader_gap_m": 0.0,
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 36.4,
       "corridor_state": "SAFE_TRANSITION",
       "filter_mode": "all_red"
     },
     {
-      "time_s": 1335.0,
-      "edge": "A1A2",
-      "reason": "queue_at_green",
-      "tls": "A2",
-      "tls_state": "G",
-      "tls_dist_m": 23.5,
-      "leader_gap_m": 0.0,
+      "time_s": 1435.0,
+      "edge": "A2B2",
+      "reason": "red_corridor_min_green",
+      "tls": "B2",
+      "tls_state": "r",
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 48.8,
       "corridor_state": "SAFE_TRANSITION",
       "filter_mode": "green"
     },
     {
-      "time_s": 1336.0,
-      "edge": "A1A2",
-      "reason": "queue_at_green",
-      "tls": "A2",
-      "tls_state": "G",
-      "tls_dist_m": 23.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
+      "time_s": 1436.0,
+      "edge": "A2B2",
+      "reason": "red_corridor_min_green",
+      "tls": "B2",
+      "tls_state": "r",
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 61.7,
+      "corridor_state": "SAFE_TRANSITION",
       "filter_mode": "green"
     },
     {
-      "time_s": 1337.0,
-      "edge": "A1A2",
-      "reason": "queue_at_green",
-      "tls": "A2",
-      "tls_state": "G",
-      "tls_dist_m": 23.5,
-      "leader_gap_m": 1.1,
-      "corridor_state": "ACTIVE_PRIORITY",
+      "time_s": 1437.0,
+      "edge": "A2B2",
+      "reason": "red_corridor_min_green",
+      "tls": "B2",
+      "tls_state": "r",
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 74.4,
+      "corridor_state": "SAFE_TRANSITION",
       "filter_mode": "green"
     },
     {
-      "time_s": 1398.0,
+      "time_s": 1438.0,
       "edge": "A2B2",
-      "reason": "queue_at_red",
+      "reason": "red_corridor_min_green",
       "tls": "B2",
       "tls_state": "r",
-      "tls_dist_m": 86.0,
-      "leader_gap_m": 3.7,
-      "corridor_state": null,
-      "filter_mode": "all_red"
-    },
-    {
-      "time_s": 1410.0,
-      "edge": "A2B2",
-      "reason": "queue_at_red",
-      "tls": "B2",
-      "tls_state": "r",
-      "tls_dist_m": 63.2,
-      "leader_gap_m": 5.6,
-      "corridor_state": null,
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 86.7,
+      "corridor_state": "SAFE_TRANSITION",
       "filter_mode": "green"
     },
     {
-      "time_s": 1412.0,
+      "time_s": 1439.0,
       "edge": "A2B2",
-      "reason": "queue_at_red",
+      "reason": "red_corridor_min_green",
       "tls": "B2",
       "tls_state": "r",
-      "tls_dist_m": 61.9,
-      "leader_gap_m": 7.8,
-      "corridor_state": null,
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 99.8,
+      "corridor_state": "SAFE_TRANSITION",
       "filter_mode": "green"
     },
     {
-      "time_s": 1416.0,
+      "time_s": 1440.0,
       "edge": "A2B2",
-      "reason": "queue_at_red",
+      "reason": "red_corridor_clearance",
       "tls": "B2",
       "tls_state": "r",
-      "tls_dist_m": 53.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1417.0,
-      "edge": "A2B2",
-      "reason": "queue_at_red",
-      "tls": "B2",
-      "tls_state": "r",
-      "tls_dist_m": 53.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1418.0,
-      "edge": "A2B2",
-      "reason": "queue_at_red",
-      "tls": "B2",
-      "tls_state": "r",
-      "tls_dist_m": 53.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1419.0,
-      "edge": "A2B2",
-      "reason": "queue_at_red",
-      "tls": "B2",
-      "tls_state": "r",
-      "tls_dist_m": 53.5,
-      "leader_gap_m": 0.0,
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 112.4,
       "corridor_state": "SAFE_TRANSITION",
       "filter_mode": "yellow"
     },
     {
-      "time_s": 1420.0,
+      "time_s": 1441.0,
       "edge": "A2B2",
-      "reason": "queue_at_red",
+      "reason": "red_corridor_clearance",
       "tls": "B2",
       "tls_state": "r",
-      "tls_dist_m": 53.5,
-      "leader_gap_m": 0.0,
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 125.0,
       "corridor_state": "SAFE_TRANSITION",
       "filter_mode": "yellow"
     },
     {
-      "time_s": 1421.0,
+      "time_s": 1442.0,
       "edge": "A2B2",
-      "reason": "queue_at_red",
+      "reason": "red_corridor_clearance",
       "tls": "B2",
       "tls_state": "r",
-      "tls_dist_m": 53.5,
-      "leader_gap_m": 0.0,
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 137.9,
       "corridor_state": "SAFE_TRANSITION",
       "filter_mode": "yellow"
     },
     {
-      "time_s": 1422.0,
+      "time_s": 1443.0,
       "edge": "A2B2",
-      "reason": "queue_at_red",
+      "reason": "red_corridor_clearance",
       "tls": "B2",
       "tls_state": "r",
-      "tls_dist_m": 53.5,
-      "leader_gap_m": 0.0,
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 150.3,
       "corridor_state": "SAFE_TRANSITION",
       "filter_mode": "all_red"
     },
     {
-      "time_s": 1423.0,
+      "time_s": 1444.0,
       "edge": "A2B2",
-      "reason": "queue_at_red",
+      "reason": "red_corridor_clearance",
       "tls": "B2",
       "tls_state": "r",
-      "tls_dist_m": 53.5,
-      "leader_gap_m": 0.0,
+      "tls_dist_m": 1.0,
+      "leader_gap_m": 163.0,
       "corridor_state": "SAFE_TRANSITION",
       "filter_mode": "all_red"
     },
     {
-      "time_s": 1424.0,
-      "edge": "A2B2",
+      "time_s": 1465.0,
+      "edge": "B2C2",
       "reason": "queue_at_green",
-      "tls": "B2",
-      "tls_state": "G",
-      "tls_dist_m": 53.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "SAFE_TRANSITION",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1425.0,
-      "edge": "A2B2",
-      "reason": "queue_at_green",
-      "tls": "B2",
-      "tls_state": "G",
-      "tls_dist_m": 53.5,
+      "tls": "C2",
+      "tls_state": "g",
+      "tls_dist_m": 10.1,
       "leader_gap_m": 0.0,
       "corridor_state": "ACTIVE_PRIORITY",
       "filter_mode": "green"
     },
     {
-      "time_s": 1426.0,
-      "edge": "A2B2",
+      "time_s": 1466.0,
+      "edge": "B2C2",
       "reason": "queue_at_green",
-      "tls": "B2",
-      "tls_state": "G",
-      "tls_dist_m": 53.5,
+      "tls": "C2",
+      "tls_state": "g",
+      "tls_dist_m": 10.1,
       "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1427.0,
-      "edge": "A2B2",
-      "reason": "queue_at_green",
-      "tls": "B2",
-      "tls_state": "G",
-      "tls_dist_m": 53.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1428.0,
-      "edge": "A2B2",
-      "reason": "queue_at_green",
-      "tls": "B2",
-      "tls_state": "G",
-      "tls_dist_m": 53.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1429.0,
-      "edge": "A2B2",
-      "reason": "queue_at_green",
-      "tls": "B2",
-      "tls_state": "G",
-      "tls_dist_m": 53.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1430.0,
-      "edge": "A2B2",
-      "reason": "queue_at_green",
-      "tls": "B2",
-      "tls_state": "G",
-      "tls_dist_m": 53.5,
-      "leader_gap_m": 0.2,
       "corridor_state": "ACTIVE_PRIORITY",
       "filter_mode": "green"
     },
@@ -1747,9 +1421,9 @@
       "reason": "queue_at_green",
       "tls": "C2",
       "tls_state": "g",
-      "tls_dist_m": 107.7,
+      "tls_dist_m": 10.1,
       "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
+      "corridor_state": null,
       "filter_mode": "green"
     },
     {
@@ -1758,8 +1432,8 @@
       "reason": "queue_at_green",
       "tls": "C2",
       "tls_state": "g",
-      "tls_dist_m": 107.7,
-      "leader_gap_m": 0.1,
+      "tls_dist_m": 10.1,
+      "leader_gap_m": 0.0,
       "corridor_state": "ACTIVE_PRIORITY",
       "filter_mode": "green"
     },
@@ -1769,7 +1443,7 @@
       "reason": "queue_at_green",
       "tls": "C2",
       "tls_state": "g",
-      "tls_dist_m": 107.6,
+      "tls_dist_m": 10.1,
       "leader_gap_m": 0.0,
       "corridor_state": "ACTIVE_PRIORITY",
       "filter_mode": "green"
@@ -1780,7 +1454,7 @@
       "reason": "queue_at_green",
       "tls": "C2",
       "tls_state": "g",
-      "tls_dist_m": 107.6,
+      "tls_dist_m": 10.1,
       "leader_gap_m": 0.0,
       "corridor_state": "ACTIVE_PRIORITY",
       "filter_mode": "green"
@@ -1791,7 +1465,7 @@
       "reason": "queue_at_green",
       "tls": "C2",
       "tls_state": "g",
-      "tls_dist_m": 107.6,
+      "tls_dist_m": 10.1,
       "leader_gap_m": 0.0,
       "corridor_state": "ACTIVE_PRIORITY",
       "filter_mode": "green"
@@ -1802,7 +1476,7 @@
       "reason": "queue_at_green",
       "tls": "C2",
       "tls_state": "g",
-      "tls_dist_m": 107.6,
+      "tls_dist_m": 10.1,
       "leader_gap_m": 0.0,
       "corridor_state": "ACTIVE_PRIORITY",
       "filter_mode": "green"
@@ -1813,7 +1487,7 @@
       "reason": "queue_at_green",
       "tls": "C2",
       "tls_state": "g",
-      "tls_dist_m": 107.6,
+      "tls_dist_m": 10.1,
       "leader_gap_m": 0.0,
       "corridor_state": "ACTIVE_PRIORITY",
       "filter_mode": "green"
@@ -1824,965 +1498,41 @@
       "reason": "queue_at_green",
       "tls": "C2",
       "tls_state": "g",
-      "tls_dist_m": 107.6,
-      "leader_gap_m": 0.1,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1485.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 100.2,
-      "leader_gap_m": 0.1,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1486.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 100.2,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1487.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 100.1,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1488.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 100.1,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1489.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 100.1,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1490.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 100.1,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1491.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 100.1,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1492.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 100.1,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1493.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 100.1,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1494.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 100.1,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1495.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 100.1,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1496.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 100.1,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1497.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 100.1,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1498.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 100.1,
-      "leader_gap_m": 0.2,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1516.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 68.6,
-      "leader_gap_m": 0.1,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1517.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 68.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1518.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 68.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1519.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 68.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1520.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 68.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1521.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 68.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1522.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 68.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1523.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 68.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1524.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 68.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "SAFE_TRANSITION",
-      "filter_mode": "yellow"
-    },
-    {
-      "time_s": 1525.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 68.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "SAFE_TRANSITION",
-      "filter_mode": "yellow"
-    },
-    {
-      "time_s": 1526.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 68.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "SAFE_TRANSITION",
-      "filter_mode": "yellow"
-    },
-    {
-      "time_s": 1527.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 68.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "SAFE_TRANSITION",
-      "filter_mode": "all_red"
-    },
-    {
-      "time_s": 1528.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 68.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "SAFE_TRANSITION",
-      "filter_mode": "all_red"
-    },
-    {
-      "time_s": 1529.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 68.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "SAFE_TRANSITION",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1530.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 68.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1531.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 68.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1532.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 68.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1533.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 68.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1534.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 68.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1535.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 68.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1536.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 68.5,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1537.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 68.5,
-      "leader_gap_m": 0.1,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1547.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 62.6,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1548.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 62.6,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1549.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 62.6,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1550.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 62.6,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1551.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 62.6,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1552.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 62.6,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1553.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 62.6,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1554.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 62.6,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1555.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 62.6,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1556.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 62.6,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1557.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 62.6,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1558.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 62.6,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1559.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 62.6,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1560.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 62.6,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1561.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 62.6,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1562.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 62.6,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1563.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 62.6,
-      "leader_gap_m": 0.2,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1575.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 32.8,
-      "leader_gap_m": 0.1,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1577.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 32.6,
-      "leader_gap_m": 0.0,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1578.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 32.6,
-      "leader_gap_m": 0.5,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1589.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 16.0,
-      "leader_gap_m": 0.1,
-      "corridor_state": null,
-      "filter_mode": "all_red"
-    },
-    {
-      "time_s": 1590.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "all_red"
-    },
-    {
-      "time_s": 1591.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1592.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1593.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1594.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1595.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1596.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1597.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1598.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1599.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1600.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1601.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1602.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1603.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1604.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1605.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1606.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1607.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1608.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1609.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1610.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": null,
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1611.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": "SAFE_TRANSITION",
-      "filter_mode": "yellow"
-    },
-    {
-      "time_s": 1612.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": "SAFE_TRANSITION",
-      "filter_mode": "yellow"
-    },
-    {
-      "time_s": 1613.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": "SAFE_TRANSITION",
-      "filter_mode": "yellow"
-    },
-    {
-      "time_s": 1614.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": "SAFE_TRANSITION",
-      "filter_mode": "all_red"
-    },
-    {
-      "time_s": 1615.0,
-      "edge": "B2C2",
-      "reason": "queue_at_red",
-      "tls": "C2",
-      "tls_state": "r",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": "SAFE_TRANSITION",
-      "filter_mode": "all_red"
-    },
-    {
-      "time_s": 1616.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 0.0,
-      "corridor_state": "SAFE_TRANSITION",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1617.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
-      "tls_dist_m": 15.9,
-      "leader_gap_m": 1.3,
-      "corridor_state": "ACTIVE_PRIORITY",
-      "filter_mode": "green"
-    },
-    {
-      "time_s": 1621.0,
-      "edge": "B2C2",
-      "reason": "queue_at_green",
-      "tls": "C2",
-      "tls_state": "g",
       "tls_dist_m": 10.1,
+      "leader_gap_m": 1.0,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1480.0,
+      "edge": "B2C2",
+      "reason": "queue_at_green",
+      "tls": "C2",
+      "tls_state": "g",
+      "tls_dist_m": 2.6,
       "leader_gap_m": 0.0,
       "corridor_state": "ACTIVE_PRIORITY",
       "filter_mode": "green"
     },
     {
-      "time_s": 1622.0,
+      "time_s": 1481.0,
       "edge": "B2C2",
       "reason": "queue_at_green",
       "tls": "C2",
       "tls_state": "g",
-      "tls_dist_m": 10.1,
-      "leader_gap_m": 0.7,
+      "tls_dist_m": 2.6,
+      "leader_gap_m": 0.0,
+      "corridor_state": "ACTIVE_PRIORITY",
+      "filter_mode": "green"
+    },
+    {
+      "time_s": 1482.0,
+      "edge": "B2C2",
+      "reason": "queue_at_green",
+      "tls": "C2",
+      "tls_state": "g",
+      "tls_dist_m": 2.6,
+      "leader_gap_m": 1.6,
       "corridor_state": "ACTIVE_PRIORITY",
       "filter_mode": "green"
     }
@@ -2803,21 +1553,21 @@
       "state": "G"
     },
     {
-      "time_s": 1349.0,
+      "time_s": 1337.0,
       "tls": "A2",
       "approach": "A1A2",
       "link": 8,
       "state": "G"
     },
     {
-      "time_s": 1457.0,
+      "time_s": 1445.0,
       "tls": "B2",
       "approach": "A2B2",
       "link": 13,
       "state": "G"
     },
     {
-      "time_s": 1626.0,
+      "time_s": 1484.0,
       "tls": "C2",
       "approach": "B2C2",
       "link": 15,
