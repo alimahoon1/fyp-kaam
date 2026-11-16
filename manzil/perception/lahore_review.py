@@ -222,6 +222,9 @@ def cmd_apply(frames_dir, out_dir, review_path):
 TEST_SHOTS = {("v1", 3), ("v1", 4), ("v2", 0)}
 VAL_SHOTS = {("v1", 0)}
 GUARD_S = 2.0
+# Edited-in overlays: video 1 starts with a title caption ("Ichhra, Ferozepur Road, Lahore")
+# across the lower road until about 6.5 s; frames before this time are not used (vehicles hidden).
+OVERLAY_UNTIL_S = {("v1", 0): 6.6}
 
 
 def cmd_manifest(frames_csv, shots_json, out_csv):
@@ -232,6 +235,9 @@ def cmd_manifest(frames_csv, shots_json, out_csv):
     bounds = {(v, s["shot"]): (s["start_s"], s["end_s"]) for v, x in shots.items()
               for s in x["shots"]}
     rows = ll.split_by_shot(frames, TEST_SHOTS, VAL_SHOTS, bounds, GUARD_S)
+    for r in rows:
+        if float(r["time_s"]) < OVERLAY_UNTIL_S.get((r["video"], int(r["shot"])), -1.0):
+            r["split"] = ll.UNUSED
     keep = ["image", "video", "shot", "frame", "time_s", "width", "height", "split", "sha256"]
     with open(out_csv, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=keep, extrasaction="ignore")

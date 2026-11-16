@@ -244,3 +244,12 @@
 {"image": "v2_s0_f00322.jpg", "ops": [{"op": "cls", "id": 8, "to": 5}, {"op": "cls", "id": 15, "to": 4}, {"op": "cls", "id": 14, "to": 4}]}
 {"image": "v2_s0_f00338.jpg", "ops": [{"op": "cls", "id": 6, "to": 0}, {"op": "cls", "id": 3, "to": 5}, {"op": "cls", "id": 14, "to": 4}, {"op": "cls", "id": 17, "to": 4}, {"op": "del", "id": 7}]}
 {"image": "v2_s0_f00352.jpg", "ops": [{"op": "cls", "id": 2, "to": 5}, {"op": "cls", "id": 18, "to": 4}, {"op": "cls", "id": 16, "to": 4}]}
+{"image": "v2_s0_f00368.jpg", "ops": [{"op": "cls", "id": 11, "to": 5}, {"op": "add", "cls": 4, "box": [922.0, 771.0, 940.0, 797.0]}, {"op": "add", "cls": 4, "box": [877.0, 765.0, 892.0, 784.0]}, {"op": "add", "cls": 0, "box": [914.0, 761.0, 932.0, 779.0]}]}
+{"image": "v2_s0_f00382.jpg", "ops": [{"op": "cls", "id": 10, "to": 5}, {"op": "cls", "id": 17, "to": 4}, {"op": "add", "cls": 4, "box": [919.0, 767.0, 936.0, 793.0]}]}
+{"image": "v1_s0_f00217.jpg", "ops": [{"op": "cls", "id": 25, "to": 2}, {"op": "cls", "id": 15, "to": 2}, {"op": "cls", "id": 37, "to": 5}]}
+{"image": "v1_s0_f00247.jpg", "ops": [{"op": "cls", "id": 5, "to": 2}, {"op": "cls", "id": 25, "to": 2}, {"op": "del", "id": 60}, {"op": "del", "id": 53}]}
+{"image": "v1_s0_f00277.jpg", "ops": [{"op": "cls", "id": 10, "to": 2}, {"op": "cls", "id": 20, "to": 2}, {"op": "del", "id": 59}, {"op": "del", "id": 62}]}
+{"image": "v1_s0_f00307.jpg", "ops": [{"op": "cls", "id": 32, "to": 2}, {"op": "cls", "id": 18, "to": 2}, {"op": "del", "id": 51}]}
+{"image": "v1_s0_f00337.jpg", "ops": [{"op": "cls", "id": 19, "to": 2}, {"op": "cls", "id": 6, "to": 2}]}
+{"image": "v1_s0_f00367.jpg", "ops": [{"op": "cls", "id": 32, "to": 2}, {"op": "cls", "id": 8, "to": 2}]}
+{"image": "v1_s0_f00397.jpg", "ops": [{"op": "cls", "id": 15, "to": 2}, {"op": "del", "id": 67}]}
