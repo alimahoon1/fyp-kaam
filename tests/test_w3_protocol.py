@@ -213,7 +213,8 @@ def test_protocol_runs_on_another_network(tmp_path):
     out = tmp_path / "out"
     P.main(["run", "--scenario", "grid2x2", "--scenario-root", str(scen), "--arms", "fixed_time",
             "adaptive", "--profiles", "light", "tidal", "--seeds", "1", "2", "--warmup", "60",
-            "--measure", "240", "--workers", "1", "--out", str(out)])  # fmt: skip
+            "--measure", "240", "--workers", "1", "--out", str(out),
+            "--group", "ad=adaptive"])  # fmt: skip
     proto = json.loads((out / "protocol.json").read_text())
     assert proto["fixed_time_plans"]["light"] == "light"
     assert proto["fixed_time_plans"]["tidal"] in SignalTiming.load(scen / "signals.json").plans
@@ -227,6 +228,10 @@ def test_protocol_runs_on_another_network(tmp_path):
     assert summary["totals"] == {"runs": 8, "failed": 0, "safety_violations": 0,
                                  "teleports": 0, "collisions": 0}  # fmt: skip
     assert (out / "plan_selection.csv").is_file() and (out / "tables.md").is_file()
+    per = P.read_table(out / "per_model_ad.csv")
+    assert {r["profile"] for r in per} == {"light", "tidal"} and {r["arm"] for r in per} == {
+        "adaptive"
+    }
 
 
 def test_corridor_confirmation_refuses_development_seeds(tmp_path):

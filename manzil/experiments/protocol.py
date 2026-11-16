@@ -484,6 +484,22 @@ def plot_paired(summary: dict, metrics, path: Path, title: str) -> None:
     plt.close(fig)
 
 
+def per_model_rows(summary: dict, members) -> list[dict]:
+    """Flat table: paired difference of every model against the reference, per profile."""
+    out = []
+    for p in summary["profiles"]:
+        for a in members:
+            for m, d in summary["paired"].get(p, {}).get(a, {}).items():
+                ci = d["ci95"] or [None, None]
+                out.append({"profile": p, "arm": a, "metric": m,
+                            "mean": round(summary["summary"][p][a][m]["mean"], 3),
+                            "mean_diff": round(d["mean_diff"], 3),
+                            "ci95_low": None if ci[0] is None else round(ci[0], 3),
+                            "ci95_high": None if ci[1] is None else round(ci[1], 3),
+                            "seeds_better": d["seeds_better"], "n": d["n"]})  # fmt: skip
+    return out
+
+
 def report(out: Path, reference: str, groups: dict[str, list[str]], comparisons) -> dict:
     """Recompute every table and plot from ``results.csv`` (no simulation)."""
     out = Path(out)
@@ -506,6 +522,10 @@ def report(out: Path, reference: str, groups: dict[str, list[str]], comparisons)
     for name, members in groups.items():
         tv = training_variance(ok, members, reference, PROTOCOL_METRICS)
         write_table(tv, out / f"training_variance_{name}.csv")
+        s = summarise(ok, reference, [reference, *members], allm)
+        md.append(compact_markdown(s, PROTOCOL_METRICS[:1] + ["teleports"],
+                                   f"Each trained model of {name} vs {reference}"))  # fmt: skip
+        write_table(per_model_rows(s, members), out / f"per_model_{name}.csv")
     safety = {k: sum(int(r.get(k) or 0) for r in rows if r["termination"] == "completed")
               for k in ("safety_violations", "teleports", "collisions")}  # fmt: skip
     results["totals"] = {"runs": len(rows), "failed": len(failed), **safety}

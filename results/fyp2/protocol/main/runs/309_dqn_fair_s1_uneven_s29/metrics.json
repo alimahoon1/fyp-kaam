@@ -1,0 +1,34 @@
+{
+  "metric_version": 1,
+  "run_id": "grid3x3_dqn_uneven_s29",
+  "window_s": [
+    900.0,
+    4500.0
+  ],
+  "throughput_veh": 5491,
+  "completed_trips": 5336,
+  "unfinished_veh": 172,
+  "travel_time_mean_s": 107.5988,
+  "travel_time_all_mean_s": 106.3785,
+  "waiting_time_mean_s": 25.8349,
+  "time_loss_mean_s": 47.7631,
+  "queue_mean_veh": 1.0509,
+  "queue_max_veh": 15,
+  "phase_changes": 1641,
+  "max_red_s": 70.0,
+  "vehicles_loaded": 6891,
+  "vehicles_inserted": 6888,
+  "teleports": 0,
+  "teleports_jam": 0,
+  "collisions": 0,
+  "emergency_braking": 0,
+  "safety_violations": 0,
+  "safety_interventions": {
+    "none": 2037
+  },
+  "controller_decisions": {
+    "fallback": 0,
+    "greedy": 6056
+  },
+  "corridor_held_requests": 0
+}

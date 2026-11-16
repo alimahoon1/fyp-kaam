@@ -1,0 +1,34 @@
+{
+  "metric_version": 1,
+  "run_id": "grid3x3_dqn_light_s26",
+  "window_s": [
+    900.0,
+    4500.0
+  ],
+  "throughput_veh": 2442,
+  "completed_trips": 2379,
+  "unfinished_veh": 64,
+  "travel_time_mean_s": 88.285,
+  "travel_time_all_mean_s": 87.2882,
+  "waiting_time_mean_s": 15.1248,
+  "time_loss_mean_s": 28.5569,
+  "queue_mean_veh": 0.2764,
+  "queue_max_veh": 6,
+  "phase_changes": 1363,
+  "max_red_s": 80.0,
+  "vehicles_loaded": 3000,
+  "vehicles_inserted": 2999,
+  "teleports": 0,
+  "teleports_jam": 0,
+  "collisions": 0,
+  "emergency_braking": 0,
+  "safety_violations": 0,
+  "safety_interventions": {
+    "none": 1683
+  },
+  "controller_decisions": {
+    "fallback": 0,
+    "greedy": 6412
+  },
+  "corridor_held_requests": 0
+}

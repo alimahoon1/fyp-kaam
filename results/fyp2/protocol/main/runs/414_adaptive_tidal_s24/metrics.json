@@ -1,0 +1,35 @@
+{
+  "metric_version": 1,
+  "run_id": "grid3x3_adaptive_tidal_s24",
+  "window_s": [
+    900.0,
+    4500.0
+  ],
+  "throughput_veh": 4710,
+  "completed_trips": 4567,
+  "unfinished_veh": 162,
+  "travel_time_mean_s": 105.3578,
+  "travel_time_all_mean_s": 103.7695,
+  "waiting_time_mean_s": 24.3004,
+  "time_loss_mean_s": 45.4294,
+  "queue_mean_veh": 0.8501,
+  "queue_max_veh": 14,
+  "phase_changes": 1451,
+  "max_red_s": 50.0,
+  "vehicles_loaded": 5921,
+  "vehicles_inserted": 5920,
+  "teleports": 0,
+  "teleports_jam": 0,
+  "collisions": 0,
+  "emergency_braking": 0,
+  "safety_violations": 0,
+  "safety_interventions": {
+    "none": 1796
+  },
+  "controller_decisions": {
+    "extend": 4541,
+    "max_green": 25,
+    "pressure": 1771
+  },
+  "corridor_held_requests": 0
+}

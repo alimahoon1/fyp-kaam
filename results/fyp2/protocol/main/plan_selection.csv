@@ -1,0 +1,16 @@
+profile,plan,dev_seeds,travel_time_all_mean_s,completed,chosen
+uneven_ew,equal,100 101,146.49,2/2,True
+uneven_ew,heavy,100 101,149.58,2/2,False
+uneven_ew,light,100 101,166.8,2/2,False
+uneven_ew,medium,100 101,152.51,2/2,False
+uneven_ew,uneven,100 101,372.35,2/2,False
+tidal,equal,100 101,114.08,2/2,False
+tidal,heavy,100 101,116.28,2/2,False
+tidal,light,100 101,113.86,2/2,False
+tidal,medium,100 101,111.89,2/2,True
+tidal,uneven,100 101,159.5,2/2,False
+peak,equal,100 101,142.19,2/2,False
+peak,heavy,100 101,140.05,2/2,False
+peak,light,100 101,150.5,2/2,False
+peak,medium,100 101,139.69,2/2,True
+peak,uneven,100 101,245.95,2/2,False
