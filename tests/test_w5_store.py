@@ -15,7 +15,7 @@ from manzil.experiments.runner import REPO_ROOT
 from manzil.store.__main__ import main as store_cli
 from manzil.store.analytics import compare_runs
 from manzil.store.export import EXPORT_FORMAT, build_export, to_csv
-from manzil.store.importer import arm_name, import_all, import_runs, metric_unit
+from manzil.store.importer import arm_name, import_runs, import_tracking, metric_unit
 from manzil.store.repository import (
     MissionRecord,
     RouteVersionRecord,
@@ -28,8 +28,10 @@ PHASE2 = "results/phase2/comparison"
 
 @pytest.fixture(scope="module")
 def repo():
+    # committed files only, so the result does not depend on local runs/live/ folders
     r = SqliteRepository(":memory:")
-    import_all(r, REPO_ROOT)
+    import_runs(r, REPO_ROOT / "results", REPO_ROOT)
+    import_tracking(r, REPO_ROOT / "results" / "vision" / "tracking", REPO_ROOT)
     yield r
     r.close()
 
@@ -80,7 +82,7 @@ def test_arms_follow_the_batch_naming(repo):
     assert arm_name({"controller": "dqn", "label": "v2"}) == "v2"
     arms = {r["arm"] for r in repo.list_runs(study=PHASE2)}
     assert arms == {"fixed_time", "fixed_time:equal", "adaptive"}
-    assert metric_unit("cross_street_wait_veh_s") == "veh*s"
+    assert metric_unit("some_wait_veh_s") == "veh*s"  # suffix rule (name not in METRICS)
     assert metric_unit("queue_mean_veh") == "veh"
 
 

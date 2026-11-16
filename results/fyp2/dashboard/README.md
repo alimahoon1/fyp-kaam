@@ -41,7 +41,7 @@ The script drives the dashboard with Playwright (Chromium, 1440×900, scale 2) a
 | `09_fr16_disconnected.png` | FR-16: DISCONNECTED banner after the API was stopped |
 | `10_fr16_invalid_no_route.png` | FR-16: INVALID banner (NO_ROUTE) on G04 |
 | `capture_log.txt` | Times and values logged during the capture run |
-| `store_summary.json` | Store built from the committed `results/` only: 375 runs, 13,690 metric samples, 255 missions, 274 route versions, 5,769 priority events, 40 video jobs, 2,477 observations, 1,009 artifacts |
+| `store_summary.json` | Store built from the committed `results/` only (after the W4 merge): 895 runs, 40,130 metric samples, 775 missions, 805 route versions, 22,224 priority events, 40 video jobs, 2,477 observations, 2,569 artifacts |
 | `export_phase4_heavy.json`, `.csv` | FR-19 sample export: the 15 Phase 4 heavy runs (format in `manzil/store/README.md`) |
 
 ## Check against committed results

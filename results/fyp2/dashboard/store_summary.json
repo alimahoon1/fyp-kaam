@@ -1,15 +1,75 @@
 {
   "path": "(in memory, built from the committed results/ folder only)",
   "schema_version": 1,
-  "runs": 375,
-  "metric_samples": 13690,
-  "missions": 255,
-  "route_versions": 274,
-  "priority_events": 5769,
+  "runs": 895,
+  "metric_samples": 40130,
+  "missions": 775,
+  "route_versions": 805,
+  "priority_events": 22224,
   "video_jobs": 40,
   "observations": 2477,
-  "artifacts": 1009,
+  "artifacts": 2569,
   "studies": [
+    {
+      "study": "results/fyp2/corridor/dqn",
+      "source": "batch",
+      "runs": 180,
+      "completed": 180,
+      "not_completed": 0,
+      "controllers": "dqn",
+      "profiles": "medium,heavy",
+      "labels": "off,v2,ds_defer,ds_flush,ds_both,comp,sublane,giveway_sl,all"
+    },
+    {
+      "study": "results/fyp2/corridor/dqn/extra_comp_exit",
+      "source": "batch",
+      "runs": 40,
+      "completed": 40,
+      "not_completed": 0,
+      "controllers": "dqn",
+      "profiles": "medium,heavy",
+      "labels": "v2,comp_exit"
+    },
+    {
+      "study": "results/fyp2/corridor/fixed_time",
+      "source": "batch",
+      "runs": 180,
+      "completed": 180,
+      "not_completed": 0,
+      "controllers": "fixed_time",
+      "profiles": "medium,heavy",
+      "labels": "off,v2,ds_defer,ds_flush,ds_both,comp,sublane,giveway_sl,all"
+    },
+    {
+      "study": "results/fyp2/corridor/fixed_time/extra_comp_exit",
+      "source": "batch",
+      "runs": 40,
+      "completed": 40,
+      "not_completed": 0,
+      "controllers": "fixed_time",
+      "profiles": "medium,heavy",
+      "labels": "v2,comp_exit"
+    },
+    {
+      "study": "results/fyp2/corridor/stress_spillback",
+      "source": "batch",
+      "runs": 60,
+      "completed": 60,
+      "not_completed": 0,
+      "controllers": "fixed_time",
+      "profiles": "heavy",
+      "labels": "off,v2,ds_defer,ds_flush,ds_both,comp"
+    },
+    {
+      "study": "results/fyp2/corridor/stress_spillback/extra_comp_exit",
+      "source": "batch",
+      "runs": 20,
+      "completed": 20,
+      "not_completed": 0,
+      "controllers": "fixed_time",
+      "profiles": "heavy",
+      "labels": "v2,comp_exit"
+    },
     {
       "study": "results/phase2/comparison",
       "source": "batch",
